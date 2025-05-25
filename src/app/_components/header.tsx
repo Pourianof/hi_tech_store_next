@@ -6,7 +6,7 @@ import Icon from "./icon";
 export function Header() {
   return (
     <header className="border-b py-2">
-      <div className="mx-auto max-w-[90%] items-center flex">
+      <div className="wrapper items-center flex">
         <Image alt={APP_TITLE} src={"/icons/logo.svg"} width={50} height={50} />
         <div className="mx-auto space-x-14">
           <Link href={"/"}>Home</Link>
