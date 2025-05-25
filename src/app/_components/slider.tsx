@@ -46,6 +46,7 @@ function sliderButtonProvider({ isForward }: { isForward: boolean }) {
   return function SliderButton(props: {
     children: ReactNode;
     className?: string;
+    inActiveClassName?: string;
   }) {
     const [btnDisabled, setBtnDisabled] = useState(true);
     const { emblaApi } = useContext(SliderContext);
@@ -59,7 +60,7 @@ function sliderButtonProvider({ isForward }: { isForward: boolean }) {
     const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
       setBtnDisabled(
         (isForward && !emblaApi.canScrollNext()) ||
-          (!isForward && emblaApi.canScrollPrev())
+          (!isForward && !emblaApi.canScrollPrev())
       );
     }, []);
 
@@ -70,9 +71,12 @@ function sliderButtonProvider({ isForward }: { isForward: boolean }) {
       emblaApi.on("reInit", onSelect).on("select", onSelect);
     }, [emblaApi, onSelect]);
 
+    console.log(isForward, btnDisabled);
     return (
       <div
-        className={`${props.className} ${btnDisabled ? "text-gray-400" : ""}`}
+        className={`${props.className} ${
+          btnDisabled ? "text-gray-400 " + (props.inActiveClassName ?? "") : ""
+        }`}
         onClick={onButtonClick}
       >
         {props.children}
