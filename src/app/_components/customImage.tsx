@@ -6,6 +6,7 @@ export function CustomImage(props: {
   className?: string;
   aspectRatio?: number;
   square?: boolean;
+  imageClassName?: string;
 }) {
   const isSquare = "square" in props && props.square !== false;
   if (isSquare && props.aspectRatio)
@@ -23,7 +24,12 @@ export function CustomImage(props: {
           : ""
       }`}
     >
-      <Image src={props.src} fill alt="string" />
+      <Image
+        src={props.src}
+        fill
+        alt="string"
+        className={props.imageClassName ?? ""}
+      />
     </div>
   );
 }
