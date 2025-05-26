@@ -53,7 +53,7 @@ const ON_SALE_PRODUCTS: Product[] = [
 
 export function OnSaleProductList() {
   return (
-    <div className="p-2 pt-8 pr-0 flex touch-pan-y touch-pinch-zoom relative rounded-lg bg-blue-800 wrapper min-h-[200px] items-stretch gap-x-4">
+    <div className="p-2 pt-8 pr-0 flex touch-pan-y touch-pinch-zoom relative rounded-lg bg-blue-800 min-h-[200px] items-stretch gap-x-4">
       <Image
         src="/sketches/curvy.svg"
         className="top-0 left-0 absolute"

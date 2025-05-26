@@ -2,7 +2,7 @@ import { CustomImage } from "./customImage";
 
 export function Banner() {
   return (
-    <div className="flex align-top wrapper h-[300px] mt-4">
+    <div className="flex align-top h-[300px] mt-4">
       <div className="flex flex-col justify-around items-start">
         <h2 className="text-6xl text-blue-950 font-semibold">Tech Store</h2>
         <p className="text-blue-950 text-3xl text-nowrap">

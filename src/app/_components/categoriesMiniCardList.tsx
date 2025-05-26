@@ -23,7 +23,7 @@ function CategoryMiniCard(props: { category: { title: string; img: string } }) {
 
 export function CategoriesMiniCardList() {
   return (
-    <div className="flex gap-4 my-4 wrapper">
+    <div className="flex gap-4 my-4">
       {CATEGORIES.map((cat) => (
         <CategoryMiniCard category={cat} key={cat.title} />
       ))}

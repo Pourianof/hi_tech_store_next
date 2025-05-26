@@ -7,9 +7,11 @@ export default function MainPage() {
   return (
     <div>
       <Header />
-      <Banner />
-      <CategoriesMiniCardList />
-      <OnSaleProductList />
+      <div className="wrapper">
+        <Banner />
+        <CategoriesMiniCardList />
+        <OnSaleProductList />
+      </div>
     </div>
   );
 }
