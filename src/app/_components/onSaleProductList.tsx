@@ -13,6 +13,7 @@ const ON_SALE_PRODUCTS: Product[] = [
     price: 19,
     discount: 50,
     img: "/images/on_sale/mouse.png",
+    score: 0,
   },
 
   {
@@ -22,6 +23,7 @@ const ON_SALE_PRODUCTS: Product[] = [
     price: 19,
     discount: 50,
     img: "/images/on_sale/keyboard.png",
+    score: 0,
   },
   {
     id: 2,
@@ -29,6 +31,7 @@ const ON_SALE_PRODUCTS: Product[] = [
     price: 19,
     discount: 50,
     img: "/images/on_sale/smart_watch1.png",
+    score: 0,
   },
   {
     id: 3,
@@ -36,6 +39,7 @@ const ON_SALE_PRODUCTS: Product[] = [
     price: 19,
     discount: 50,
     img: "/images/on_sale/laptop.png",
+    score: 0,
   },
   {
     id: 4,
@@ -43,6 +47,7 @@ const ON_SALE_PRODUCTS: Product[] = [
     price: 19,
     discount: 50,
     img: "/images/on_sale/smart_watch2.png",
+    score: 0,
   },
 ];
 
