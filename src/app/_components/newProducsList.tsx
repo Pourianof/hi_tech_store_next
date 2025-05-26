@@ -1,6 +1,7 @@
 import { Product } from "@/models/product";
 import { CustomImage } from "./customImage";
 import Icon from "./icon";
+import { ItemsListBox } from "./iemsListBox";
 
 const NEW_PRODUCTS: Product[] = [
   {
@@ -39,11 +40,13 @@ const NEW_PRODUCTS: Product[] = [
 
 export function NewProductsList() {
   return (
-    <div className="flex *:flex-1 gap-4 my-4">
-      {NEW_PRODUCTS.map((prod) => (
-        <ProductItem product={prod} key={prod.id} />
-      ))}
-    </div>
+    <ItemsListBox label="New Products" linkLabel="view all">
+      <div className="flex *:flex-1 gap-4 my-4">
+        {NEW_PRODUCTS.map((prod) => (
+          <ProductItem product={prod} key={prod.id} />
+        ))}
+      </div>
+    </ItemsListBox>
   );
 }
 
