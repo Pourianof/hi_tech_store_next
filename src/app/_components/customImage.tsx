@@ -17,12 +17,9 @@ export function CustomImage(props: {
   return (
     <div
       className={`relative w-full ${props.className ?? ""} ${
-        isSquare
-          ? "aspect-square"
-          : props.aspectRatio
-          ? `aspect-[${props.aspectRatio}]`
-          : ""
+        isSquare ? "aspect-square" : ""
       }`}
+      style={props.aspectRatio ? { aspectRatio: props.aspectRatio } : undefined}
     >
       <Image
         src={props.src}
