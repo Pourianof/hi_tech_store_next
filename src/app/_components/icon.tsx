@@ -11,8 +11,17 @@ export const techIconsFont = localFont({
   ],
 });
 
-export default function Icon(props: { children: ReactNode }) {
+export default function Icon(props: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <i className={`not-italic ${techIconsFont.className}`}>{props.children}</i>
+    <i
+      className={`not-italic ${techIconsFont.className} ${
+        props.className ?? ""
+      }`}
+    >
+      {props.children}
+    </i>
   );
 }
