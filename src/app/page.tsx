@@ -1,6 +1,7 @@
 import { Banner } from "./_components/banner";
 import { CategoriesMiniCardList } from "./_components/categoriesMiniCardList";
 import { Header } from "./_components/header";
+import { NewProductsList } from "./_components/newProducsList";
 import { OnSaleProductList } from "./_components/onSaleProductList";
 
 export default function MainPage() {
@@ -11,6 +12,7 @@ export default function MainPage() {
         <Banner />
         <CategoriesMiniCardList />
         <OnSaleProductList />
+        <NewProductsList />
       </div>
     </div>
   );
