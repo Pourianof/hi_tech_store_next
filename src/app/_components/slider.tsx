@@ -71,7 +71,6 @@ function sliderButtonProvider({ isForward }: { isForward: boolean }) {
       emblaApi.on("reInit", onSelect).on("select", onSelect);
     }, [emblaApi, onSelect]);
 
-    console.log(isForward, btnDisabled);
     return (
       <div
         className={`${props.className} ${
