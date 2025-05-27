@@ -11,6 +11,12 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        mainBlue: "#0C68F4",
+        highlightBoxBlue: "#005690",
+        highlightYellow: "#FCC870",
+        gradientStartBlue: "#1975B9",
+        gradientMiddleBlue: "#1FB6CF",
+        gradientEndBlue: "#B0E9C9",
       },
     },
   },
