@@ -10,7 +10,7 @@ export function ProductItem({ product }: { product: Product }) {
         src={product.img}
         alt={product.title}
       />
-      <div className="h-[1px] bg-gradient-to-r from-transparent via-black to-transparent my-2"></div>
+      <div className="h-[1px] bg-gradient-to-r from-transparent via-black opacity-40 to-transparent my-2"></div>
       <h3 className="line-clamp-2 text-sm flex-1">{product.title}</h3>
       <div className="flex justify-between my-2">
         <span>{`$${product.price.toFixed(2)}`}</span>
