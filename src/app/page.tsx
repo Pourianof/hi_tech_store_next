@@ -1,4 +1,5 @@
 import { Banner } from "./_components/banner";
+import { BestSellersList } from "./_components/bestSellersList";
 import { CategoriesMiniCardList } from "./_components/categoriesMiniCardList";
 import { Header } from "./_components/header";
 import { HighlightedItems } from "./_components/highlightedItems";
@@ -15,6 +16,7 @@ export default function MainPage() {
         <OnSaleProductList />
         <NewProductsList />
         <HighlightedItems />
+        <BestSellersList />
       </div>
     </div>
   );
