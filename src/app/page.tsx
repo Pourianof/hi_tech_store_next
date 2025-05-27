@@ -5,6 +5,7 @@ import { Header } from "./_components/header";
 import { HighlightedItems } from "./_components/highlightedItems";
 import { NewProductsList } from "./_components/newProducsList";
 import { OnSaleProductList } from "./_components/onSaleProductList";
+import { TopBrandsList } from "./_components/topBrandsList";
 
 export default function MainPage() {
   return (
@@ -17,6 +18,7 @@ export default function MainPage() {
         <NewProductsList />
         <HighlightedItems />
         <BestSellersList />
+        <TopBrandsList />
       </div>
     </div>
   );
