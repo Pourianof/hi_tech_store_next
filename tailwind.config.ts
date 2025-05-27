@@ -11,6 +11,8 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        navy: "#223949",
+        pastilRed: "#FF6951",
         mainBlue: "#0C68F4",
         highlightBoxBlue: "#005690",
         highlightYellow: "#FCC870",

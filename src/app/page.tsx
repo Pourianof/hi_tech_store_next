@@ -1,6 +1,7 @@
 import { Banner } from "./_components/banner";
 import { BestSellersList } from "./_components/bestSellersList";
 import { CategoriesMiniCardList } from "./_components/categoriesMiniCardList";
+import { CategoryHighlight } from "./_components/categoryHighlight";
 import { Header } from "./_components/header";
 import { HighlightedItems } from "./_components/highlightedItems";
 import { NewProductsList } from "./_components/newProducsList";
@@ -19,6 +20,7 @@ export default function MainPage() {
         <HighlightedItems />
         <BestSellersList />
         <TopBrandsList />
+        <CategoryHighlight />
       </div>
     </div>
   );
