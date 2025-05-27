@@ -3,6 +3,9 @@
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-gray-neutral: #cbcbcb;
+  --color-primary-blue-50: #aecdfb;
+  --color-primary-blue-400: #0951be;
   --color-primary-blue-900: #021736;
   --color-navy: #223949;
   --color-pastil-red: #ff6951;
