@@ -11,19 +11,19 @@ export function HighlightedItems() {
 
 function SquareBoxHighlight() {
   return (
-    <div className="relative overflow-hidden rounded-2xl lg:h-full bg-highlightBoxBlue lg:aspect-square md:aspect-auto md:h-[200px]">
-      <div className="absolute bottom-0 rounded-[50%] left-[50%] translate-y-1/2 -translate-x-1/2 w-[140%] h-[100%] bg-highlightYellow "></div>
-      <div className="absolute bg-highlightYellow h-[60%] left-0 top-0 -translate-x-1/2 -translate-y-1/2 aspect-square rounded-full"></div>
+    <div className="relative overflow-hidden rounded-2xl lg:h-full bg-highlight-box-blue lg:aspect-square md:aspect-auto md:h-[200px]">
+      <div className="absolute bottom-0 rounded-[50%] left-[50%] translate-y-1/2 -translate-x-1/2 w-[140%] h-full bg-highlight-yellow "></div>
+      <div className="absolute bg-highlight-yellow h-[60%] left-0 top-0 -translate-x-1/2 -translate-y-1/2 aspect-square rounded-full"></div>
       <div className="relative flex flex-col h-full">
-        <h4 className="lg:static absolute left-16 text-xl my-8 text-center text-highlightYellow">
+        <h4 className="lg:static absolute left-16 text-xl my-8 text-center text-highlight-yellow">
           Play Station 5
         </h4>
         <div className="grid grid-cols-[60%_40%] gap-4 mt-auto lg:h-1/2 md:h-full ">
           <div className="flex flex-col items-center justify-end mb-4 gap-2">
-            <span className="text-highlightBoxBlue lg:mb-16">
+            <span className="text-highlight-box-blue lg:mb-16">
               Digital Edition + 2TB
             </span>
-            <button className="bg-mainBlue text-white text-sm py-2 px-8 rounded-md ">
+            <button className="bg-main-blue text-white text-sm py-2 px-8 rounded-md ">
               Buy Now
             </button>
           </div>
@@ -41,7 +41,7 @@ function SquareBoxHighlight() {
 
 function BigHighlight() {
   return (
-    <div className="flex flex-1 *:w-[50%] p-8 rounded-2xl bg-gradient-to-br from-gradientStartBlue via-gradientMiddleBlue to-gradientEndBlue">
+    <div className="flex flex-1 *:w-[50%] p-8 rounded-2xl bg-linear-to-br from-gradient-start-blue via-gradient-middle-blue to-gradient-end-blue">
       <div className="flex flex-col flex-1">
         <h3 className="font-semibold text-xl">
           Iphone <span className="text-white">15 Series</span>

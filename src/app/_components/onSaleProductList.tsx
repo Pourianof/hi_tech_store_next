@@ -78,7 +78,7 @@ export function OnSaleProductList() {
             </Slider.SliderItem>
           ))}
         </Slider.SliderContainer>
-        <div className="flex text-blue-50 text-2xl *:hover:cursor-pointer justify-end mr-2">
+        <div className="flex text-blue-50 text-2xl hover:*:cursor-pointer justify-end mr-2">
           <Slider.SliderBackwardButton>
             <Icon>l</Icon>
           </Slider.SliderBackwardButton>

@@ -10,7 +10,7 @@ const CATEGORIES: { title: string; img: string }[] = [
 
 function CategoryMiniCard(props: { category: { title: string; img: string } }) {
   return (
-    <div className="flex-col items-center text-center w-1/5 relative shadow-md p-4 rounded">
+    <div className="flex-col items-center text-center w-1/5 relative shadow-md p-4 rounded-sm">
       <CustomImage
         className="w-full aspect-square"
         src={props.category.img}
