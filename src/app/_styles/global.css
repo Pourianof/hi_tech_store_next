@@ -1,8 +1,9 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary-blue-900: #021736;
   --color-navy: #223949;
   --color-pastil-red: #ff6951;
   --color-main-blue: #0c68f4;

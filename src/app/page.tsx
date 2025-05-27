@@ -7,12 +7,13 @@ import { HighlightedItems } from "./_components/highlightedItems";
 import { NewProductsList } from "./_components/newProducsList";
 import { OnSaleProductList } from "./_components/onSaleProductList";
 import { TopBrandsList } from "./_components/topBrandsList";
+import { Wrapper } from "./_shared/wrapper";
 
 export default function MainPage() {
   return (
     <div>
       <Header />
-      <div className="wrapper">
+      <Wrapper>
         <Banner />
         <CategoriesMiniCardList />
         <OnSaleProductList />
@@ -21,7 +22,7 @@ export default function MainPage() {
         <BestSellersList />
         <TopBrandsList />
         <CategoryHighlight />
-      </div>
+      </Wrapper>
     </div>
   );
 }

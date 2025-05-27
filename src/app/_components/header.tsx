@@ -2,11 +2,12 @@ import Image from "next/image";
 import { APP_TITLE } from "../consts";
 import Link from "next/link";
 import Icon from "./icon";
+import { Wrapper } from "../_shared/wrapper";
 
 export function Header() {
   return (
     <header className="border-b py-2">
-      <div className="wrapper items-center flex">
+      <Wrapper className="wrapper items-center flex">
         <Image alt={APP_TITLE} src={"/icons/logo.svg"} width={50} height={50} />
         <div className="mx-auto space-x-14">
           <Link href={"/"}>Home</Link>
@@ -20,7 +21,7 @@ export function Header() {
           <Icon>e</Icon>
           <Icon>u</Icon>
         </div>
-      </div>
+      </Wrapper>
     </header>
   );
 }
