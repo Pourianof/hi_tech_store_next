@@ -3,7 +3,6 @@ import { BestSellersList } from "./_components/bestSellersList";
 import { CategoriesMiniCardList } from "./_components/categoriesMiniCardList";
 import { CategoryHighlight } from "./_components/categoryHighlight";
 import { Footer } from "./_components/footer";
-import { Header } from "./_components/header";
 import { HighlightedItems } from "./_components/highlightedItems";
 import { NewProductsList } from "./_components/newProducsList";
 import { OnSaleProductList } from "./_components/onSaleProductList";
@@ -13,7 +12,6 @@ import { Wrapper } from "./_shared/wrapper";
 export default function MainPage() {
   return (
     <div>
-      <Header />
       <Wrapper>
         <Banner />
         <CategoriesMiniCardList />
