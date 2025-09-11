@@ -1,4 +1,4 @@
-import { Product } from "@/models/product";
+import { Product } from "@/core/models/product";
 import { CustomImage } from "./customImage";
 import Icon from "./icon";
 

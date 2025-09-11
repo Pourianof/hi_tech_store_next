@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Product } from "../../models/product";
+import { Product } from "../../core/models/product";
 import { CustomImage } from "./customImage";
 import { Slider } from "./slider";
 import Icon from "./icon";

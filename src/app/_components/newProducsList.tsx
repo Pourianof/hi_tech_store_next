@@ -1,4 +1,4 @@
-import { Product } from "@/models/product";
+import { Product } from "@/core/models/product";
 import { ItemsListBox } from "./iemsListBox";
 import { ProductItem } from "./productItem";
 

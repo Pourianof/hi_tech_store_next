@@ -19,7 +19,9 @@ export function Header() {
         <div className="space-x-4">
           <Icon>s</Icon>
           <Icon>e</Icon>
-          <Icon>u</Icon>
+          <Link href={{ pathname: "auth" }}>
+            <Icon>u</Icon>
+          </Link>
         </div>
       </Wrapper>
     </header>
