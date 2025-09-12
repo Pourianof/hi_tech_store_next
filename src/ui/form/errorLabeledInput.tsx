@@ -25,7 +25,7 @@ export function ErrorLabeledInput(props: {
     const org = props.validationOptions.validate;
     props.validationOptions.validate = (value: string) => {
       const result = org(value as string, getValues());
-      return result;
+      return result ? result : undefined;
     };
   }
   return (
@@ -39,7 +39,7 @@ export function ErrorLabeledInput(props: {
         } as RegisterOpts)}
       />
       {!!errorMessage && (
-        <div className="text-red-500">{errorMessage as string}</div>
+        <div className="text-red-500 text-sm">{errorMessage as string}</div>
       )}
     </div>
   );

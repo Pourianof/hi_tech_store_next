@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ErrorLabeledInput } from "../../ui/form/errorLabeledInput";
 import { StatefulForm } from "../../ui/form/statefulForm";
 import { useFormContext } from "react-hook-form";
+import { handleProblemDetailErrors } from "@/lib/helpers/problemDetailsHelper";
 
 export function LoginForm() {
   const [totalError, setTotalError] = useState<string>();
@@ -19,15 +20,12 @@ export function LoginForm() {
         )) as AuthResult;
         if (result.status === "failed") {
           if (result.errors) {
-            Object.keys(result.errors).forEach((key) => {
-              const normalizedKey = key.toLowerCase();
-              if (normalizedKey == "email") {
-                setError(normalizedKey, {
-                  message: result.errors![
-                    key as never as number
-                  ][0] as unknown as string,
-                });
-              }
+            handleProblemDetailErrors({
+              errors: result.errors!,
+              keys: ["email"],
+              onMatched(key, message) {
+                setError(key, { message });
+              },
             });
           } else if (result.description) {
             setTotalError(result.description);
