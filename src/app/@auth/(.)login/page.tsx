@@ -1,12 +1,10 @@
-"use client";
-
 import { AuthBox } from "@/app/_components/authBox";
-import { Modal } from "@/app/_components/modal";
+import { Modal } from "@/ui/modal";
 
 export default function InterceptedLogin() {
   return (
     <Modal>
-      <AuthBox />
+      <AuthBox mode="login" />
     </Modal>
   );
 }
