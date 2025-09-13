@@ -12,7 +12,7 @@ const SIDEBAR_ITEMS: { title: string; iconName: IconNames; href: string }[] = [
   { title: "Security & access", iconName: "security", href: "/security" },
   { title: "Notification", iconName: "bell", href: "/notification" },
   { title: "Contact us", iconName: "support24", href: "/contact-us" },
-  { title: "Log out", iconName: "exit", href: "/" },
+  { title: "Log out", iconName: "exit", href: "/logout" },
 ];
 
 export async function AccountSideBar() {
@@ -29,7 +29,11 @@ export async function AccountSideBar() {
           {session.user?.name}
         </div>
         {SIDEBAR_ITEMS.map((item) => (
-          <SidebarItem key={item.iconName} {...item} />
+          <SidebarItem
+            key={item.iconName}
+            {...item}
+            notPrependHref={item.href == "/logout"}
+          />
         ))}
       </IconThemeProvider>
     </div>

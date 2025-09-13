@@ -8,20 +8,21 @@ export function SidebarItem({
   iconName,
   title,
   href,
+  notPrependHref,
 }: {
   title: string;
   iconName: IconNames;
   href: string;
+  notPrependHref?: boolean;
 }) {
   const pathname = usePathname().toLowerCase();
-  console.log(pathname);
   const isActivated =
     (pathname == "/account" && href == "/personal-data") ||
     pathname.endsWith(href);
   return (
     <div className={`p-4 ${isActivated ? "border-s-2 border-s-blue-500" : ""}`}>
       <Link
-        href={`/account${href}`}
+        href={`${!notPrependHref ? "/account" : ""}${href}`}
         className={isActivated ? "text-blue-500" : ""}
       >
         <Icon name={iconName} />
