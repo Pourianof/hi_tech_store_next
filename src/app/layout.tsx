@@ -13,8 +13,8 @@ export default async function MainLayout(props: {
   return (
     <html>
       <body>
+        <Header />
         <SessionProvider session={session}>
-          <Header />
           {props.children}
           {props.auth}
         </SessionProvider>
