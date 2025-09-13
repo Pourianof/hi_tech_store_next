@@ -18,10 +18,10 @@ export function Footer() {
             </div>
             <div className="flex flex-col justify-between py-8">
               <button className="text-xl bg-primary-blue-50 rounded-full aspect-square text-primary-blue-900">
-                <Icon>m</Icon>
+                <Icon name="message_question" />
               </button>
               <button className="-rotate-90 text-4xl text-primary-blue-50">
-                <Icon>r</Icon>
+                <Icon name="arrow_right" />
               </button>
             </div>
           </div>
@@ -29,7 +29,7 @@ export function Footer() {
         </div>
         <div className="flex items-center justify-between">
           <div className="flex gap-2 items-center">
-            <Icon>c</Icon>
+            <Icon name="copyright" />
             <p className="text-[10px]">2025 Tech Store</p>
           </div>
           <div className="text-[10px] flex gap-6 p-5">
@@ -91,7 +91,7 @@ function FooterTable() {
           <td rowSpan={2}>
             <div className="has-focus:border-blue-500  border flex gap-1 p-2 rounded-md max-w-[180px]">
               <label htmlFor="subscription-email">
-                <Icon>u</Icon>
+                <Icon name="user" />
               </label>
               <input
                 className="w-32 outline-0"
@@ -100,7 +100,7 @@ function FooterTable() {
                 placeholder="E-mail Address"
               />
               <button>
-                <Icon>R</Icon>
+                <Icon name="right_arrow_circular" />
               </button>
             </div>
           </td>

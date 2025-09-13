@@ -80,10 +80,10 @@ export function OnSaleProductList() {
         </Slider.SliderContainer>
         <div className="flex text-blue-50 text-2xl hover:*:cursor-pointer justify-end mr-2">
           <Slider.SliderBackwardButton>
-            <Icon>l</Icon>
+            <Icon name="left_arrow" />
           </Slider.SliderBackwardButton>
           <Slider.SliderForwardButton>
-            <Icon>r</Icon>
+            <Icon name="arrow_right" />
           </Slider.SliderForwardButton>
         </div>
       </Slider>

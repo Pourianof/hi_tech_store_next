@@ -22,6 +22,11 @@ import AmericanExpress from "@/assets/tech_heim/american express.svg";
 import MasterCard from "@/assets/tech_heim/master card.svg";
 import Paypal from "@/assets/tech_heim/paypal.svg";
 import ArrowRight from "@/assets/tech_heim/arrow-right.svg";
+import MessageQuestion from "@/assets/tech_heim/message-question.svg";
+import Copyright from "@/assets/tech_heim/copyright.svg";
+import ArrowRightCircular from "@/assets/tech_heim/right_arrow.svg";
+import LeftArrow from "@/assets/tech_heim/left_arrow.svg";
+import FilledStart from "@/assets/tech_heim/star_outline.svg";
 
 import { createContext, useContext } from "react";
 
@@ -49,6 +54,11 @@ const ICONS = {
   american_express: AmericanExpress,
   paypal: Paypal,
   arrow_right: ArrowRight,
+  message_question: MessageQuestion,
+  copyright: Copyright,
+  right_arrow_circular: ArrowRightCircular,
+  left_arrow: LeftArrow,
+  filled_star: FilledStart,
 };
 
 export type IconNames = keyof typeof ICONS;

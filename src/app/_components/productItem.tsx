@@ -15,7 +15,7 @@ export function ProductItem({ product }: { product: Product }) {
       <div className="flex justify-between my-2">
         <span>{`$${product.price.toFixed(2)}`}</span>
         <span>
-          <Icon className="text-blue-900">x</Icon>
+          <Icon className="text-blue-900" name="filled_star" />
           {`${product.score.toFixed(1)}`}
         </span>
       </div>
