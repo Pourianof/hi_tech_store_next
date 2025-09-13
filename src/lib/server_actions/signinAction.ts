@@ -20,13 +20,27 @@ export async function signinAction(email: string, password: string) {
       throw err;
     }
 
+    let message: string;
+    let description: string | undefined;
+    if (err instanceof AuthenticationError) {
+      description = err.description;
+      message = err.message;
+    } else if (
+      (err as { cause?: { code: string } }).cause?.code == "ECONNREFUSED"
+    ) {
+      message = "Could not connect to api server.";
+      description = "The server is down.\nWe are trying to fix it.\nTry later";
+    } else if (err instanceof Error) {
+      message = err.message;
+    } else {
+      message = "Unknown error";
+    }
+
     return {
       status: "failed",
-      message:
-        err instanceof AuthenticationError ? err.message : "Unknown error",
-      errors: err instanceof AuthenticationError ? err.errors : [],
-      description:
-        err instanceof AuthenticationError ? err.description : undefined,
+      message,
+      errors: err instanceof AuthenticationError ? err.errors : undefined,
+      description,
     };
   }
 }
