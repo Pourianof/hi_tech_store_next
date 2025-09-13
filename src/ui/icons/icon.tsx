@@ -17,6 +17,11 @@ import Direct from "@/assets/tech_heim/direct.svg";
 import Key from "@/assets/tech_heim/key.svg";
 import Home from "@/assets/tech_heim/home-2.svg";
 import Postal from "@/assets/tech_heim/postal.svg";
+import Visa from "@/assets/tech_heim/visa.svg";
+import AmericanExpress from "@/assets/tech_heim/american express.svg";
+import MasterCard from "@/assets/tech_heim/master card.svg";
+import Paypal from "@/assets/tech_heim/paypal.svg";
+import ArrowRight from "@/assets/tech_heim/arrow-right.svg";
 
 import { createContext, useContext } from "react";
 
@@ -39,6 +44,11 @@ const ICONS = {
   key: Key,
   home: Home,
   postal: Postal,
+  visa: Visa,
+  master_card: MasterCard,
+  american_express: AmericanExpress,
+  paypal: Paypal,
+  arrow_right: ArrowRight,
 };
 
 export type IconNames = keyof typeof ICONS;

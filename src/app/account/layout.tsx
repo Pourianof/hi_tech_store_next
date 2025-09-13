@@ -12,7 +12,7 @@ export default function AccountPageLayout({
     <Wrapper>
       <div className="flex">
         <AccountSideBar />
-        <div className="p-4">{account}</div>
+        <div className="p-4 grow">{account}</div>
       </div>
     </Wrapper>
   );
