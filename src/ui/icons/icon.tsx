@@ -11,6 +11,12 @@ import Security from "@/assets/tech_heim/security-safe.svg";
 import Bell from "@/assets/tech_heim/notification.svg";
 import Support24 from "@/assets/tech_heim/24-support.svg";
 import Exit from "@/assets/tech_heim/logout.svg";
+import Edit from "@/assets/tech_heim/edit.svg";
+import Phone from "@/assets/tech_heim/call.svg";
+import Direct from "@/assets/tech_heim/direct.svg";
+import Key from "@/assets/tech_heim/key.svg";
+import Home from "@/assets/tech_heim/home-2.svg";
+import Postal from "@/assets/tech_heim/postal.svg";
 
 import { createContext, useContext } from "react";
 
@@ -27,6 +33,12 @@ const ICONS = {
   bell: Bell,
   support24: Support24,
   exit: Exit,
+  edit: Edit,
+  phone: Phone,
+  email: Direct,
+  key: Key,
+  home: Home,
+  postal: Postal,
 };
 
 export type IconNames = keyof typeof ICONS;

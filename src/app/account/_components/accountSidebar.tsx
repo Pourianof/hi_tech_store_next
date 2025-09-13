@@ -1,27 +1,28 @@
 import { redirect } from "next/navigation";
-import { auth } from "../../../../auth";
 import Icon, { IconNames, IconThemeProvider } from "@/ui/icons/icon";
+import { SidebarItem } from "./sidebarItem";
+import { auth } from "../../../../auth";
 
-const SIDEBAR_ITEMS: { title: string; iconName: IconNames }[] = [
-  { title: "Personal Data", iconName: "user_edit" },
-  { title: "Payment & Instalments", iconName: "dollar" },
-  { title: "Orders", iconName: "order_basket" },
-  { title: "Wish list", iconName: "heart_outline" },
-  { title: "Discounts", iconName: "gift" },
-  { title: "Security & access", iconName: "security" },
-  { title: "Notification", iconName: "bell" },
-  { title: "Contact us", iconName: "support24" },
-  { title: "Log out", iconName: "exit" },
+const SIDEBAR_ITEMS: { title: string; iconName: IconNames; href: string }[] = [
+  { title: "Personal Data", iconName: "user_edit", href: "/personal-data" },
+  { title: "Payment & Instalments", iconName: "dollar", href: "/payments" },
+  { title: "Orders", iconName: "order_basket", href: "/orders" },
+  { title: "Wish list", iconName: "heart_outline", href: "/wish-list" },
+  { title: "Discounts", iconName: "gift", href: "/discounts" },
+  { title: "Security & access", iconName: "security", href: "/security" },
+  { title: "Notification", iconName: "bell", href: "/notification" },
+  { title: "Contact us", iconName: "support24", href: "/contact-us" },
+  { title: "Log out", iconName: "exit", href: "/" },
 ];
 
 export async function AccountSideBar() {
   const session = await auth();
-  if (!session) {
+  if (!session?.user) {
     redirect("/login");
   }
 
   return (
-    <div className="bg-gray-100 w-fit p-4">
+    <div className="bg-gray-100 w-fit">
       <IconThemeProvider theme={{ className: "pe-2" }}>
         <div className="cursor-default py-2 border-b border-gray-400">
           <Icon className="text-4xl" name="profile" />
@@ -31,21 +32,6 @@ export async function AccountSideBar() {
           <SidebarItem key={item.iconName} {...item} />
         ))}
       </IconThemeProvider>
-    </div>
-  );
-}
-
-function SidebarItem({
-  iconName,
-  title,
-}: {
-  title: string;
-  iconName: IconNames;
-}) {
-  return (
-    <div className="py-4">
-      <Icon name={iconName} />
-      <span className={iconName == "exit" ? "text-red-600" : ""}>{title}</span>
     </div>
   );
 }
