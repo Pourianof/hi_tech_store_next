@@ -1,6 +1,6 @@
 import { Product } from "@/core/models/product";
 import { CustomImage } from "./customImage";
-import Icon from "./icon";
+import Icon from "../../ui/icons/icon";
 
 export function ProductItem({ product }: { product: Product }) {
   return (

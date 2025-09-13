@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Product } from "../../core/models/product";
 import { CustomImage } from "./customImage";
 import { Slider } from "./slider";
-import Icon from "./icon";
+import Icon from "../../ui/icons/icon";
 
 const ON_SALE_PRODUCTS: Product[] = [
   {

@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { APP_TITLE } from "../consts";
 import Link from "next/link";
-import Icon from "./icon";
 import { Wrapper } from "../_shared/wrapper";
 import { auth } from "../../../auth";
+import Icon from "@/ui/icons/icon";
 
 export async function Header() {
   const session = await auth();
@@ -18,14 +18,14 @@ export async function Header() {
           <Link href={"/"}>FAQ</Link>
           <Link href={"/"}>Contact Us</Link>
         </div>
-        <div className="space-x-4">
-          <Icon>s</Icon>
-          <Icon>e</Icon>
+        <div className="space-x-2 flex">
+          <Icon name="search" />
+          <Icon name="order_basket" />
           <Link
             className="flex gap-1"
-            href={{ pathname: session ? "/dashboard" : "/login" }}
+            href={{ pathname: session ? "/account" : "/login" }}
           >
-            <Icon>u</Icon>
+            <Icon name="user" />
             {!!session && (
               <span className="text-sm bg-gray-300 inline-block px-1 rounded hover:bg-gray-400">
                 {session.user?.name}

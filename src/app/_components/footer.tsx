@@ -5,7 +5,7 @@ import Twitter from "../../../public/icons/socials/twitter.svg";
 import Youtube from "../../../public/icons/socials/Youtube.svg";
 
 import Image from "next/image";
-import Icon from "./icon";
+import Icon from "../../ui/icons/icon";
 
 export function Footer() {
   return (
