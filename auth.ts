@@ -23,13 +23,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         );
 
         if (data) {
-          const { token, user } = data;
+          const { token: apiToken, user } = data;
           return {
             email: user.email,
             name: user.firstName,
             firstName: user.firstName,
             lastName: user.lastName,
-            token,
+            apiToken,
+            id: user.userName,
           };
         }
 
@@ -37,4 +38,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  session: { strategy: "jwt" },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.apiToken = (user as { apiToken: string })?.apiToken;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) session.user.id = token.id as string;
+      return session;
+    },
+  },
 });

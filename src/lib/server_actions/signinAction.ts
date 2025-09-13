@@ -1,7 +1,8 @@
 "use server";
 
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
-import { auth, CREDENTIAL_PROVIDER_ID, signIn } from "../../../auth";
+import { CREDENTIAL_PROVIDER_ID, signIn } from "../../../auth";
+import { redirect, RedirectType } from "next/navigation";
 
 export async function signinAction(email: string, password: string) {
   try {
@@ -10,9 +11,15 @@ export async function signinAction(email: string, password: string) {
       password,
       redirect: false,
     });
-    const session = await auth();
-    return session?.user;
+
+    const url = new URL(process.env.AUTH_URL as string);
+    url.pathname = "/";
+    redirect(url.toString(), RedirectType.push);
   } catch (err) {
+    if ((err as Error).message == "NEXT_REDIRECT") {
+      throw err;
+    }
+
     return {
       status: "failed",
       message:

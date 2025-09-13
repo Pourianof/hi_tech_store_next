@@ -19,7 +19,7 @@ export function LoginForm() {
           data.password
         )) as AuthResult;
         if (result.status === "failed") {
-          if (result.errors) {
+          if (result.errors?.length) {
             handleProblemDetailErrors({
               errors: result.errors!,
               keys: ["email"],

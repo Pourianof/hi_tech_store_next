@@ -34,7 +34,6 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function register(user: RegisterDto) {
-  console.log(`${process.env.API_SERVER_ADDRESS}/register`);
   const result = await fetch(`${process.env.API_SERVER_ADDRESS}/register`, {
     method: "POST",
     headers: {

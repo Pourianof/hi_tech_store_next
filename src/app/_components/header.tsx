@@ -3,8 +3,10 @@ import { APP_TITLE } from "../consts";
 import Link from "next/link";
 import Icon from "./icon";
 import { Wrapper } from "../_shared/wrapper";
+import { auth } from "../../../auth";
 
-export function Header() {
+export async function Header() {
+  const session = await auth();
   return (
     <header className="border-b py-2">
       <Wrapper className="wrapper items-center flex">
@@ -19,8 +21,16 @@ export function Header() {
         <div className="space-x-4">
           <Icon>s</Icon>
           <Icon>e</Icon>
-          <Link href={{ pathname: "/login" }}>
+          <Link
+            className="flex gap-1"
+            href={{ pathname: session ? "/dashboard" : "/login" }}
+          >
             <Icon>u</Icon>
+            {!!session && (
+              <span className="text-sm bg-gray-300 inline-block px-1 rounded hover:bg-gray-400">
+                {session.user?.name}
+              </span>
+            )}
           </Link>
         </div>
       </Wrapper>
