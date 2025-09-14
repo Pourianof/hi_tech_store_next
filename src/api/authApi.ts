@@ -1,13 +1,19 @@
 import { RegisterDto } from "@/core/Dtos/RegisterDto";
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
 
-export async function signIn(email: string, password: string) {
+export async function signIn(
+  id: {
+    email?: string;
+    username?: string;
+  },
+  password: string
+) {
   const response = await fetch(`${process.env.API_SERVER_ADDRESS}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ ...id, password }),
   });
 
   if (response.ok) {

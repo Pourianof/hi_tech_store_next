@@ -1,7 +1,7 @@
 import "next-auth";
+import { User } from "@/core/models/user";
 
 declare module "next-auth" {
-  import { User } from "@/core/models/user";
   // interface User {
   //   email: string;
   //   name: string;

@@ -4,10 +4,12 @@ import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationErro
 import { CREDENTIAL_PROVIDER_ID, signIn } from "../../../auth";
 import { redirect, RedirectType } from "next/navigation";
 
-export async function signinAction(email: string, password: string) {
+export async function signinAction(emailOrUsername: string, password: string) {
   try {
     await signIn(CREDENTIAL_PROVIDER_ID, {
-      email,
+      ...(emailOrUsername.includes("@")
+        ? { email: emailOrUsername }
+        : { username: emailOrUsername }),
       password,
       redirect: false,
     });

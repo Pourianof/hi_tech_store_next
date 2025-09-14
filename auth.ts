@@ -11,15 +11,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       name: CREDENTIAL_PROVIDER_ID,
       credentials: {
         email: { label: "Email", type: "email" },
+        username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials.email || !credentials.password) {
-          throw new AuthenticationError("Missing email or password");
+        if (
+          (!credentials.email && !credentials.username) ||
+          !credentials.password
+        ) {
+          throw new AuthenticationError(
+            "Missing username(or email) or password"
+          );
         }
 
         const data = await apiSignIn(
-          credentials.email as string,
+          {
+            email: credentials.email as string,
+            username: credentials.username as string,
+          },
           credentials.password as string
         );
 
@@ -45,14 +54,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.apiToken = (user as { apiToken: string })?.apiToken;
-        token.lastName = (user as User).lastName;
+
+        const _user = user as User;
+        token.lastName = _user.lastName;
+        token.role = _user.role;
       }
       return token;
     },
-    async session({ session, token }) {
+    session({ session, token }) {
       if (token) {
         session.user.id = token.id as string;
         session.user.lastName = token.lastName as string;
+        session.user.role = token.role as string;
       }
 
       return session;

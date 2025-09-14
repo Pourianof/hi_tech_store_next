@@ -27,8 +27,12 @@ export function LoginForm() {
                 setError(key, { message });
               },
             });
-          } else if (result.description) {
-            setTotalError(result.description);
+          } else {
+            setTotalError(
+              result.description ??
+                result.message ??
+                "No error message defined."
+            );
           }
         }
       }}
