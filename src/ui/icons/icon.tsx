@@ -27,6 +27,7 @@ import Copyright from "@/assets/tech_heim/copyright.svg";
 import ArrowRightCircular from "@/assets/tech_heim/right_arrow.svg";
 import LeftArrow from "@/assets/tech_heim/left_arrow.svg";
 import FilledStart from "@/assets/tech_heim/star_outline.svg";
+import CMS from "@/assets/tech_heim/cms.svg";
 
 import { createContext, useContext } from "react";
 
@@ -59,6 +60,7 @@ const ICONS = {
   right_arrow_circular: ArrowRightCircular,
   left_arrow: LeftArrow,
   filled_star: FilledStart,
+  cms: CMS,
 };
 
 export type IconNames = keyof typeof ICONS;

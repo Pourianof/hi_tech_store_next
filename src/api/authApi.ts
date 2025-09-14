@@ -1,5 +1,7 @@
+import { LoginDto } from "@/core/Dtos/LoginDto";
 import { RegisterDto } from "@/core/Dtos/RegisterDto";
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
+import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
 
 export async function signIn(
   id: {
@@ -17,24 +19,12 @@ export async function signIn(
   });
 
   if (response.ok) {
-    const data = (await response.json()) as {
-      token: string;
-      user: {
-        userName: string;
-        email: string;
-        firstName: string;
-        lastName: string;
-      };
-    };
+    const data: LoginDto = await response.json();
 
     return data;
   }
 
-  const data = (await response.json()) as {
-    title: string;
-    detail?: string;
-    errors?: { [key: string]: string[] }[];
-  };
+  const data: ProblemDetails = await response.json();
 
   throw new AuthenticationError(data.title, data.detail, data.errors);
 }
