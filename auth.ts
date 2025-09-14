@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { signIn as apiSignIn } from "@/api/authApi";
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
+import { User } from "@/core/models/user";
 
 export const CREDENTIAL_PROVIDER_ID = "credentials";
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -44,11 +45,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.apiToken = (user as { apiToken: string })?.apiToken;
+        token.lastName = (user as User).lastName;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token) session.user.id = token.id as string;
+      if (token) {
+        session.user.id = token.id as string;
+        session.user.lastName = token.lastName as string;
+      }
+
       return session;
     },
   },
