@@ -7,9 +7,13 @@ import { ErrorLabeledInput } from "../../ui/form/errorLabeledInput";
 import { StatefulForm } from "../../ui/form/statefulForm";
 import { useFormContext } from "react-hook-form";
 import { handleProblemDetailErrors } from "@/lib/helpers/problemDetailsHelper";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export function LoginForm() {
   const [totalError, setTotalError] = useState<string>();
+  const router = useRouter();
+  const session = useSession();
 
   return (
     <StatefulForm
@@ -34,6 +38,9 @@ export function LoginForm() {
                 "No error message defined."
             );
           }
+        } else {
+          session.update();
+          router.replace("/");
         }
       }}
     >

@@ -2,7 +2,6 @@
 
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
 import { CREDENTIAL_PROVIDER_ID, signIn } from "../../../auth";
-import { redirect, RedirectType } from "next/navigation";
 
 export async function signinAction(emailOrUsername: string, password: string) {
   try {
@@ -14,9 +13,10 @@ export async function signinAction(emailOrUsername: string, password: string) {
       redirect: false,
     });
 
-    const url = new URL(process.env.AUTH_URL as string);
-    url.pathname = "/";
-    redirect(url.toString(), RedirectType.push);
+    // return state instead of redirect to let frontend to update SessionProvider context
+    return {
+      status: "successful",
+    };
   } catch (err) {
     if ((err as Error).message == "NEXT_REDIRECT") {
       throw err;
