@@ -51,7 +51,7 @@ export function StatefulForm(props: {
     <FormProvider {...methods}>
       <form
         className="flex flex-col gap-2.5"
-        onSubmit={methods.handleSubmit(submitHandler, console.error)}
+        onSubmit={methods.handleSubmit(submitHandler)}
       >
         {props.children}
       </form>

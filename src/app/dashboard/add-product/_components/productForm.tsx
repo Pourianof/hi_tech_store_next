@@ -35,8 +35,10 @@ export function ProductForm(props: {
     return createProduct(formData);
   }
   return (
-    <div className="p-4">
-      <h3 className="mb-2 font-semibold text-xl">Register new product</h3>
+    <div className="p-6 border m-4">
+      <h3 className="mb-2 font-semibold text-2xl border-b border-b-gray-500 pb-2">
+        Register new product
+      </h3>
       <StatefulForm
         onSubmit={handleSubmission}
         onSubmitionSuccessful={(res) => {
@@ -64,8 +66,15 @@ export function ProductForm(props: {
         <label className="text-xl font-semibold">Product media:</label>
         <FilePreviewList />
         <div className="flex gap-4">
-          <button type="submit">Submit</button>
-          <StatefulForm.ResetButton>Reset</StatefulForm.ResetButton>
+          <button
+            type="submit"
+            className="border py-2 px-4 cursor-pointer bg-green-200 hover:bg-green-500 hover:text-gray-200"
+          >
+            Submit
+          </button>
+          <StatefulForm.ResetButton className="border py-2 px-4 cursor-pointer bg-gray-200 hover:bg-gray-300">
+            Reset
+          </StatefulForm.ResetButton>
         </div>
       </StatefulForm>
     </div>
