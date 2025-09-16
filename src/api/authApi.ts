@@ -10,7 +10,8 @@ export async function signIn(
   },
   password: string
 ) {
-  const response = await fetch(`${process.env.API_SERVER_ADDRESS}/login`, {
+  console.log(`${process.env.API_SERVER_ADDRESS}/api/login`);
+  const response = await fetch(`${process.env.API_SERVER_ADDRESS}/api/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

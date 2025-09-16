@@ -1,8 +1,17 @@
 export interface Product {
-  id: number;
+  productId: number;
   title: string;
   price: number;
-  discount: number;
-  img: string;
-  score: number;
+  discount?: number;
+  averageScore: number;
+  scoreCounts: number;
+  myScore?: number;
+  media?: ProductMedia[];
+}
+
+export interface ProductMedia {
+  isMain: boolean;
+  productMediaId: number;
+  type: "Video" | "Image";
+  url: string;
 }

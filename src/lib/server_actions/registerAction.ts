@@ -1,10 +1,12 @@
 "use server";
 import { register } from "@/api/authApi";
-import { AuthResult } from "@/core/Dtos/AuthResult";
 import { RegisterDto } from "@/core/Dtos/RegisterDto";
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
+import { ResultModel } from "@/core/models/resultModel";
 
-export async function registerAction(userModel: RegisterDto) {
+export async function registerAction(
+  userModel: RegisterDto
+): Promise<ResultModel> {
   try {
     const result = await register(userModel);
     return result;
@@ -12,15 +14,21 @@ export async function registerAction(userModel: RegisterDto) {
     if (err instanceof AuthenticationError) {
       return {
         status: "failed",
-        message: err.message,
-        errors: err.errors,
-        description: err.description,
-      } as AuthResult;
+        statusCode: 400,
+        data: {
+          errors: err.errors,
+          detail: err.description,
+          title: err.message,
+        },
+      };
     } else {
       return {
-        message: "Unknown error",
         status: "failed",
-      } as AuthResult;
+        statusCode: 400,
+        data: {
+          title: "Unknown error",
+        },
+      };
     }
   }
 }

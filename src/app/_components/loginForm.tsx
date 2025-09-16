@@ -1,47 +1,24 @@
 "use client";
-import { AuthResult } from "@/core/Dtos/AuthResult";
 import { signinAction } from "@/lib/server_actions/signinAction";
 import Link from "next/link";
-import { useState } from "react";
 import { ErrorLabeledInput } from "../../ui/form/errorLabeledInput";
 import { StatefulForm } from "../../ui/form/statefulForm";
 import { useFormContext } from "react-hook-form";
-import { handleProblemDetailErrors } from "@/lib/helpers/problemDetailsHelper";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export function LoginForm() {
-  const [totalError, setTotalError] = useState<string>();
   const router = useRouter();
   const session = useSession();
 
   return (
     <StatefulForm
-      onSubmit={async (data, { setError }) => {
-        const result = (await signinAction(
-          data.email,
-          data.password
-        )) as AuthResult;
-        if (result.status === "failed") {
-          if (result.errors?.length) {
-            handleProblemDetailErrors({
-              errors: result.errors!,
-              keys: ["email"],
-              onMatched(key, message) {
-                setError(key, { message });
-              },
-            });
-          } else {
-            setTotalError(
-              result.description ??
-                result.message ??
-                "No error message defined."
-            );
-          }
-        } else {
-          session.update();
-          router.replace("/");
-        }
+      onSubmit={(data) => {
+        return signinAction(data.email, data.password);
+      }}
+      onSubmitionSuccessful={() => {
+        session.update();
+        router.replace("/");
       }}
     >
       <ErrorLabeledInput
@@ -59,7 +36,6 @@ export function LoginForm() {
         Forgot your password?
       </Link>
       <RememberMeInput />
-      {totalError && <div className="text-red-500">{totalError}</div>}
       <button
         type="submit"
         className="hover:cursor-pointer bg-blue-500 text-white p-2 rounded w-full"

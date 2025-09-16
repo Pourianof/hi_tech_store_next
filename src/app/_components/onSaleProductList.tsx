@@ -2,52 +2,92 @@
 
 import Image from "next/image";
 import { Product } from "../../core/models/product";
-import { CustomImage } from "./customImage";
 import { Slider } from "./slider";
 import Icon from "../../ui/icons/icon";
+import { SafeImage } from "./safeImage";
 
 const ON_SALE_PRODUCTS: Product[] = [
   {
-    id: 0,
+    productId: 0,
     title: "Logitech G502 Gaming Mouse",
     price: 19,
     discount: 50,
-    img: "/images/on_sale/mouse.png",
-    score: 0,
+    media: [
+      {
+        url: "/images/on_sale/mouse.png",
+        type: "Image",
+        productMediaId: 0,
+        isMain: true,
+      },
+    ],
+    averageScore: 0,
+    scoreCounts: 10,
   },
 
   {
-    id: 1,
+    productId: 1,
     title:
       "NPET K10 Wired Gaming Keyboard, LED Backlit, Spill-Resistant Design",
     price: 19,
     discount: 50,
-    img: "/images/on_sale/keyboard.png",
-    score: 0,
+    media: [
+      {
+        url: "/images/on_sale/keyboard.png",
+        type: "Image",
+        productMediaId: 0,
+        isMain: true,
+      },
+    ],
+    averageScore: 0,
+    scoreCounts: 10,
   },
   {
-    id: 2,
+    productId: 2,
     title: "Apple Watch Series 7 (GPS, 41MM)",
     price: 19,
     discount: 50,
-    img: "/images/on_sale/smart_watch1.png",
-    score: 0,
+    media: [
+      {
+        url: "/images/on_sale/smart_watch1.png",
+        type: "Image",
+        productMediaId: 0,
+        isMain: true,
+      },
+    ],
+    averageScore: 0,
+    scoreCounts: 10,
   },
   {
-    id: 3,
+    productId: 3,
     title: "Apple 2022 MacBook Air M2 Chip (8GB RAM, 256GB SSD)",
     price: 19,
     discount: 50,
-    img: "/images/on_sale/laptop.png",
-    score: 0,
+    media: [
+      {
+        url: "/images/on_sale/laptop.png",
+        type: "Image",
+        productMediaId: 0,
+        isMain: true,
+      },
+    ],
+    averageScore: 0,
+    scoreCounts: 10,
   },
   {
-    id: 4,
+    productId: 4,
     title: "samsung Titan smart watch",
     price: 19,
     discount: 50,
-    img: "/images/on_sale/smart_watch2.png",
-    score: 0,
+    media: [
+      {
+        url: "/images/on_sale/smart_watch2.png",
+        type: "Image",
+        productMediaId: 0,
+        isMain: true,
+      },
+    ],
+    averageScore: 0,
+    scoreCounts: 10,
   },
 ];
 
@@ -71,7 +111,7 @@ export function OnSaleProductList() {
         <Slider.SliderContainer className="gap-5 items-stretch last:me-5">
           {ON_SALE_PRODUCTS.map((prod) => (
             <Slider.SliderItem
-              key={prod.id}
+              key={prod.productId}
               className="shrink-0 basis-[30%] max-w-[200px]"
             >
               <ProductItem product={prod} />
@@ -92,11 +132,12 @@ export function OnSaleProductList() {
 }
 
 function ProductItem({ product }: { product: Product }) {
-  const acualPrice = (product.discount / 100) * product.price;
+  const acualPrice = ((product.discount ?? 100) / 100) * product.price;
+  const coverImage = product.media?.find((m) => m.isMain)?.url;
   return (
     <div className="w-full relative bg-white h-full p-2 rounded-md flex flex-col gap-y-2 aspect-[0.78]">
       <span className="absolute left-0 text-xs bg-orange-200 text-orange-500 z-10 rounded-r-lg px-1 py-0.5">{`-${product.discount}%`}</span>
-      <CustomImage aspectRatio={1.15} src={product.img} alt={product.title} />
+      <SafeImage aspectRatio={1.15} src={coverImage} alt={product.title} />
       <h3 className="text-sm line-clamp-2">{product.title}</h3>
       <div className="flex justify-between items-center">
         <span className="text-gray-600 line-through text-xs">{`$${product.price.toFixed(

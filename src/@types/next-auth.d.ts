@@ -17,5 +17,6 @@ declare module "next-auth" {
     user: User;
     expires_in: string;
     error: string;
+    apiToken: string;
   }
 }

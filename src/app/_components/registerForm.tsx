@@ -3,43 +3,26 @@ import { ErrorLabeledInput } from "../../ui/form/errorLabeledInput";
 import { StatefulForm } from "../../ui/form/statefulForm";
 import { registerAction } from "@/lib/server_actions/registerAction";
 import { RegisterDto } from "@/core/Dtos/RegisterDto";
-import { useFormContext, UseFormReturn } from "react-hook-form";
-import { handleProblemDetailErrors } from "@/lib/helpers/problemDetailsHelper";
-import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
   const router = useRouter();
-  const [totalError, setTotalError] = useState<string>();
 
-  async function onSubmit(
-    data: Record<string, string>,
-    { setError }: UseFormReturn
-  ) {
-    const result = await registerAction(data as unknown as RegisterDto);
-    if (result.status === "failed") {
-      if (result.errors) {
-        handleProblemDetailErrors({
-          errors: result.errors,
-          keys: ["firstname", "username", "lastname", "email", "password"],
-          onMatched(key, message) {
-            setError(key, { message });
-          },
-        });
-      } else if (result.description) {
-        setTotalError(result.description);
-      }
-      return;
-    }
-
-    router.replace("/login");
-    toast("Sign-up succussfully. Now you can login.", {
-      className: "bg-green-800",
-    });
+  async function onSubmit(data: Record<string, string>) {
+    return await registerAction(data as unknown as RegisterDto);
   }
   return (
-    <StatefulForm onSubmit={onSubmit}>
+    <StatefulForm
+      onSubmit={onSubmit}
+      onSubmitionSuccessful={() => {
+        router.replace("/login");
+        toast("Sign-up succussfully. Now you can login.", {
+          className: "bg-green-800",
+        });
+      }}
+    >
       <ErrorLabeledInput type="text" placeholder="Name" filedName="firstname" />
       <ErrorLabeledInput
         type="text"
@@ -79,9 +62,7 @@ export function RegisterForm() {
         }}
       />
       <TermAndConditionAgreetionCheckBox />
-      {!!totalError && (
-        <span className="text-red-500 text-sm">{totalError}</span>
-      )}
+
       <button
         type="submit"
         className="bg-blue-600  text-white p-2 rounded w-full"

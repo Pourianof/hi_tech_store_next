@@ -7,6 +7,7 @@ export function ErrorLabeledInput(props: {
   placeholder: string;
   filedName: string;
   type: string;
+  className?: string;
   validationOptions?: Omit<RegisterOpts, "validate"> & {
     validate?: (
       val: string,
@@ -31,6 +32,7 @@ export function ErrorLabeledInput(props: {
   return (
     <div>
       <TextInput
+        className={props.className}
         type={props.type}
         placeholder={props.placeholder}
         {...register(props.filedName, {

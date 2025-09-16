@@ -1,12 +1,13 @@
+import { ProblemDetailErrors } from "@/core/Dtos/AuthResult";
 import { AuthError } from "next-auth";
 
 export class AuthenticationError extends AuthError {
-  errors?: { [key: string]: string[] }[];
+  errors?: ProblemDetailErrors;
   description?: string;
   constructor(
     message: string,
     description?: string,
-    errors?: { [key: string]: string[] }[]
+    errors?: ProblemDetailErrors
   ) {
     super(message);
     this.message = message;
