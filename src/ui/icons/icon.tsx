@@ -31,6 +31,7 @@ import CMS from "@/assets/tech_heim/cms.svg";
 import Product from "@/assets/tech_heim/product.svg";
 import Category from "@/assets/tech_heim/category.svg";
 import Trash from "@/assets/tech_heim/trash.svg";
+import Image from "@/assets/tech_heim/image.svg";
 
 import { createContext, useContext } from "react";
 
@@ -67,6 +68,7 @@ const ICONS = {
   product: Product,
   category: Category,
   trash: Trash,
+  image: Image,
 };
 
 export type IconNames = keyof typeof ICONS;

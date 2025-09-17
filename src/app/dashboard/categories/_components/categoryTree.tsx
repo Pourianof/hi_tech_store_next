@@ -1,20 +1,34 @@
 "use client";
-import { SafeImage } from "@/app/_components/safeImage";
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
 import { Category } from "@/core/models/category";
 import { CategoryTree as CategoryTreeType } from "@/lib/helpers/categoryTreeBuilder";
-import { deleteCategoryAction } from "@/lib/server_actions/categoryActions";
+import {
+  deleteCategoryAction,
+  registerCategoryAction,
+  updateCategoryAction,
+} from "@/lib/server_actions/categoryActions";
 import Icon, { IconNames } from "@/ui/icons/icon";
 import { Modal } from "@/ui/modal/modal";
 import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { NewCategoryForm } from "./newCategoryForm";
+import { ApiImage } from "@/ui/image/ApiImage";
 
-function CategoryList({ tree: t }: { tree: CategoryTreeType }) {
-  const [tree, setTree] = useState<CategoryTreeType>(t);
-  if (!tree.length) {
-    return null;
-  }
+function CategoryList({
+  categoryItem,
+}: {
+  categoryItem: Partial<CategoryTreeType[number]>;
+  parent?: Category;
+}) {
+  const [tree, setTree] = useState<CategoryTreeType>(
+    categoryItem.subCategories ?? []
+  );
+  const [newSubCategoryForm, setNewSubCategoryForm] = useState(false);
+
+  useEffect(() => {
+    categoryItem.subCategories = tree;
+  }, [tree, categoryItem]);
 
   async function deleteCategory(categoryId: number) {
     const result = await deleteCategoryAction(categoryId);
@@ -31,20 +45,49 @@ function CategoryList({ tree: t }: { tree: CategoryTreeType }) {
     }
   }
 
-  return tree.map((c) => (
-    <CategoryItem
-      key={c.category.categoryId}
-      categoryItem={c}
-      onDelete={deleteCategory}
-    />
-  ));
+  return (
+    <>
+      {newSubCategoryForm && (
+        <Modal onClose={() => setNewSubCategoryForm(false)}>
+          <NewCategoryForm
+            oncancel={() => setNewSubCategoryForm(false)}
+            submit={async (formData) => {
+              if (categoryItem.category) {
+                formData.append(
+                  "parentCategoryId",
+                  `${categoryItem.category.categoryId}`
+                );
+              }
+
+              return registerCategoryAction(formData);
+            }}
+            handleSubmitSuccussfully={(c) => {
+              setTree((t) => [...t, { category: c, subCategories: [] }]);
+              setNewSubCategoryForm(false);
+            }}
+          />
+        </Modal>
+      )}
+      {tree.map((c) => (
+        <CategoryItem
+          key={c.category.categoryId}
+          categoryItem={c}
+          onDelete={deleteCategory}
+        />
+      ))}
+      <AddNewSubCategoryItem
+        onClick={() => {
+          setNewSubCategoryForm(true);
+        }}
+      />
+    </>
+  );
 }
 
 export function CategoryTree({ tree }: { tree: CategoryTreeType }) {
   return (
     <SimpleTreeView>
-      <CategoryList tree={tree} />
-      <AddNewSubCategoryItem />
+      <CategoryList categoryItem={{ subCategories: tree }} />
     </SimpleTreeView>
   );
 }
@@ -57,8 +100,8 @@ export function CategoryItem({
   onDelete?: (categoryId: number) => void;
 }) {
   const [deletingCategory, setDeletingCategory] = useState<Category>();
-  const image = categoryItem.category.image;
-  const categoryImageURL = image ? `http://localhost:5108/${image}` : undefined;
+  const [editingCategory, setEditingCategory] = useState<Category>();
+
   return (
     <>
       {!!deletingCategory && (
@@ -68,22 +111,37 @@ export function CategoryItem({
           onDelete={() => onDelete?.(categoryItem.category.categoryId)}
         />
       )}
+      {!!editingCategory && (
+        <Modal onClose={() => setEditingCategory(undefined)}>
+          <NewCategoryForm
+            handleSubmitSuccussfully={(category) => {
+              editingCategory.name = category.name;
+              editingCategory.description = category.description;
+              editingCategory.image = category.image;
+              editingCategory.parentCategoryId = category.parentCategoryId;
+
+              setEditingCategory(undefined);
+            }}
+            submit={(category, base) => {
+              return updateCategoryAction(base!.categoryId, category);
+            }}
+            oncancel={() => setEditingCategory(undefined)}
+            editingCategory={categoryItem.category}
+          />
+        </Modal>
+      )}
       <TreeItem
         key={categoryItem.category.categoryId}
         itemId={`${categoryItem.category.categoryId}`}
         label={
           <TreeItemLabel
+            handleEdition={setEditingCategory}
             handleDeletion={setDeletingCategory}
             category={categoryItem.category}
-            url={categoryImageURL}
           />
         }
       >
-        <CategoryList tree={categoryItem.subCategories} />
-        <TreeItem
-          itemId={`add-btn-${categoryItem.category.categoryId}`}
-          label={<AddNewSubCategoryItem />}
-        />
+        <CategoryList categoryItem={categoryItem} />
       </TreeItem>
     </>
   );
@@ -100,7 +158,7 @@ function CategoryDeletionModal({
 }) {
   return (
     <Modal onClose={onClose}>
-      <div className="bg-white rounded-4xl p-8">
+      <div className="bg-white rounded-4xl p-2">
         <span className="text-gray-400  text-sm">
           Triying to remove{" "}
           <span className="bg-red-400 inline-block px-1 py-0.5 rounded text-white">
@@ -138,9 +196,16 @@ function CategoryDeletionModal({
   );
 }
 
-function AddNewSubCategoryItem() {
+function AddNewSubCategoryItem({ onClick }: { onClick: VoidFunction }) {
   return (
-    <div className="bg-gray-300 p-1 rounded w-fit cursor-pointer">
+    <div
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick();
+      }}
+      className="ms-4 my-1 bg-gray-300 p-1 rounded w-fit cursor-pointer"
+    >
       + Add Sub-Category
     </div>
   );
@@ -148,26 +213,31 @@ function AddNewSubCategoryItem() {
 
 function TreeItemLabel({
   category,
-  url,
   handleDeletion,
+  handleEdition,
 }: {
   category: Category;
-  url?: string;
   handleDeletion: (category: Category) => void;
+  handleEdition: (category: Category) => void;
 }) {
   return (
     <div className="flex justify-between">
       <div className="flex items-center gap-2">
-        <SafeImage
+        <ApiImage
+          src={category.image}
           className="bg-gray-200 w-16 overflow-hidden rounded-full"
           square={true}
           alt={category.name}
-          src={url}
         />
         {category.name}
       </div>
       <div className=" flex items-center gap-1">
-        <TreeIconButton iconName="edit" onClick={() => {}} />
+        <TreeIconButton
+          iconName="edit"
+          onClick={() => {
+            handleEdition(category);
+          }}
+        />
         <TreeIconButton
           iconClassNames="text-red-400"
           iconName="trash"
@@ -198,7 +268,6 @@ function TreeIconButton({
         e.stopPropagation();
         onClick();
       }}
-      data-action="delete"
       className={`cursor-pointer p-2 w-[40px] aspect-square rounded-full hover:bg-gray-300 ${
         classNames ?? ""
       }`}

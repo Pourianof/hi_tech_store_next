@@ -1,6 +1,7 @@
 import { captalize } from "@/lib/helpers/stringHelpers";
 import { TextInput } from "./textInput";
 import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
+import { useEffect } from "react";
 
 type RegisterOpts = RegisterOptions<FieldValues, string>;
 export function ErrorLabeledInput(props: {
@@ -8,6 +9,7 @@ export function ErrorLabeledInput(props: {
   filedName: string;
   type: string;
   className?: string;
+  initValue?: string;
   validationOptions?: Omit<RegisterOpts, "validate"> & {
     validate?: (
       val: string,
@@ -19,6 +21,7 @@ export function ErrorLabeledInput(props: {
     register,
     formState: { errors },
     getValues,
+    setValue,
   } = useFormContext();
 
   const errorMessage = errors[props.filedName]?.message;
@@ -29,6 +32,13 @@ export function ErrorLabeledInput(props: {
       return result ? result : undefined;
     };
   }
+
+  useEffect(() => {
+    if (props.initValue) {
+      setValue(props.filedName, props.initValue);
+    }
+  }, [setValue, props.filedName, props.initValue]);
+
   return (
     <div>
       <TextInput

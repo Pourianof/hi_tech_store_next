@@ -1,6 +1,6 @@
 import { Product } from "@/core/models/product";
 import Icon from "../../ui/icons/icon";
-import { SafeImage } from "./safeImage";
+import { SafeImage } from "../../ui/image/safeImage";
 
 export function ProductItem({ product }: { product: Product }) {
   const coverImage = product.media?.find((m) => m.isMain)?.url;

@@ -1,4 +1,4 @@
-import { CustomImage } from "./customImage";
+import { CustomImage } from "../../ui/image/customImage";
 
 export function Banner() {
   return (

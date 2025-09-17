@@ -1,4 +1,4 @@
-import { CustomImage } from "./customImage";
+import { CustomImage } from "../../ui/image/customImage";
 
 const CATEGORIES: { title: string; img: string }[] = [
   { title: "Accessories", img: "/images/accessories.png" },

@@ -4,6 +4,7 @@ import { StatefulForm } from "@/ui/form/statefulForm";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { FilePreviewList, FormProductMedia } from "./productMediaSelector";
 import { ProductDto } from "@/core/Dtos/ProductDto";
+import { convertFieldValuesToFormData } from "@/lib/helpers/convertFieldValuesToFormData";
 
 export function ProductForm(props: {
   onFormSubmitted: (submittedProduct: ProductDto) => void;
@@ -24,11 +25,8 @@ export function ProductForm(props: {
       return;
     }
 
-    const formData = new FormData();
     delete data.media;
-    for (const [key, val] of Object.entries(data)) {
-      formData.append(key, val);
-    }
+    const formData = convertFieldValuesToFormData(data);
 
     media.forEach((m) => formData.append("media", m.file));
 
