@@ -2,7 +2,7 @@ import { Session } from "next-auth";
 import { auth } from "../../../auth";
 import { ResultModel } from "@/core/models/resultModel";
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export async function workWithSession<T = Record<string, unknown>>(
   onSessionExist: (session: Session) => Promise<ResultModel<T>>,
@@ -22,7 +22,7 @@ export async function workWithSession<T = Record<string, unknown>>(
 
   const result = await onSessionExist(session);
 
-  invalidateTags?.forEach((t) => revalidatePath(t));
+  invalidateTags?.forEach((t) => revalidateTag(t));
 
   return result;
 }

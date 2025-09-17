@@ -14,7 +14,9 @@ export function ApiImage({
       const [main, id] = src.split("?");
       const url = new URL(apiOrigin);
       url.pathname = main;
-      url.search = id;
+      if (id) {
+        url.search = id;
+      }
       _src = url.href;
     }
   }

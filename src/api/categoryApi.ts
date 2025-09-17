@@ -3,6 +3,7 @@ import { generateResultModelFromResponse } from "./apiHelper";
 
 const CATEGORIES_BASE_URL = `${process.env.API_SERVER_ADDRESS}/categories`;
 
+export const CATEGORY_TAG = "getTag";
 export async function getCategories() {
   const respond = await fetch(CATEGORIES_BASE_URL, {
     method: "GET",
@@ -10,12 +11,13 @@ export async function getCategories() {
       "Content-Type": "application/json",
     },
     cache: "no-cache",
+    next: {
+      tags: [CATEGORY_TAG],
+    },
   });
 
   return generateResultModelFromResponse<Category[]>(respond);
 }
-
-export const CATEGORY_TAG = "getTag";
 
 export async function createCategory(category: FormData, token: string) {
   const respond = await fetch(CATEGORIES_BASE_URL, {
@@ -24,9 +26,6 @@ export async function createCategory(category: FormData, token: string) {
       Authorization: `Bearer ${token}`,
     },
     body: category,
-    next: {
-      tags: [CATEGORY_TAG],
-    },
   });
 
   return generateResultModelFromResponse<Category[]>(respond);
