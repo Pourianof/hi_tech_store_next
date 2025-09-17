@@ -15,6 +15,8 @@ export async function getCategories() {
   return generateResultModelFromResponse<Category[]>(respond);
 }
 
+export const CATEGORY_TAG = "getTag";
+
 export async function createCategory(category: FormData, token: string) {
   const respond = await fetch(CATEGORIES_BASE_URL, {
     method: "POST",
@@ -22,6 +24,9 @@ export async function createCategory(category: FormData, token: string) {
       Authorization: `Bearer ${token}`,
     },
     body: category,
+    next: {
+      tags: [CATEGORY_TAG],
+    },
   });
 
   return generateResultModelFromResponse<Category[]>(respond);

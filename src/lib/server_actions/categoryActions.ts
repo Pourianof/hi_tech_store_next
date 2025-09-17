@@ -1,6 +1,7 @@
 "use server";
 
 import {
+  CATEGORY_TAG,
   createCategory,
   deleteCategory,
   getCategories,
@@ -28,7 +29,8 @@ export async function updateCategoryAction(
   categoryId: number,
   updatingCategory: FormData
 ) {
-  return workWithSession((session) =>
-    updateCategory(categoryId, updatingCategory, session.apiToken)
+  return workWithSession(
+    (session) => updateCategory(categoryId, updatingCategory, session.apiToken),
+    [CATEGORY_TAG]
   );
 }

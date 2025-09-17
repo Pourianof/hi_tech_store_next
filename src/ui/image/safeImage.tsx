@@ -1,3 +1,4 @@
+"use client";
 import { DetailedHTMLProps, ImgHTMLAttributes } from "react";
 import { CustomImage, RawImage } from "./customImage";
 
@@ -21,7 +22,7 @@ export function SafeImage({
   }
   const coverImageURL = isValidURL ? new URL(src!) : undefined;
   const isSameOrigin =
-    coverImageURL && window.location.origin == coverImageURL.origin;
+    coverImageURL && window?.location.origin == coverImageURL.origin;
 
   const shouldUseCustom = !!src && isSameOrigin;
   if (!shouldUseCustom) {

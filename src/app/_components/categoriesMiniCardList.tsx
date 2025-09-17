@@ -1,31 +1,32 @@
-import { CustomImage } from "../../ui/image/customImage";
+import { getCategories } from "@/api/categoryApi";
+import { Category } from "@/core/models/category";
+import { ApiImage } from "@/ui/image/ApiImage";
 
-const CATEGORIES: { title: string; img: string }[] = [
-  { title: "Accessories", img: "/images/accessories.png" },
-  { title: "Camera", img: "/images/camera.png" },
-  { title: "Smart Phone", img: "/images/iphone.png" },
-  { title: "Gaming", img: "/images/controller.png" },
-  { title: "Smart watch", img: "/images/smart_watch.png" },
-];
-
-function CategoryMiniCard(props: { category: { title: string; img: string } }) {
+function CategoryMiniCard(props: { category: Category }) {
   return (
     <div className="flex-col items-center text-center w-1/5 relative shadow-md p-4 rounded-sm">
-      <CustomImage
+      <ApiImage
+        serverMode
         className="w-full aspect-square"
-        src={props.category.img}
-        alt={props.category.img}
+        src={props.category.image}
+        alt={props.category.name}
       />
-      {props.category.title}
+      {props.category.name}
     </div>
   );
 }
 
-export function CategoriesMiniCardList() {
+export async function CategoriesMiniCardList() {
+  const categoriesResult = await getCategories();
+  if (categoriesResult.status != "success") {
+    return <span>Something wrong to fetching categories</span>;
+  }
+
+  const categories = categoriesResult.data as Category[];
   return (
     <div className="flex gap-4 my-4">
-      {CATEGORIES.map((cat) => (
-        <CategoryMiniCard category={cat} key={cat.title} />
+      {categories.map((cat) => (
+        <CategoryMiniCard category={cat} key={cat.categoryId} />
       ))}
     </div>
   );

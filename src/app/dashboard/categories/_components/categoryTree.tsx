@@ -115,10 +115,13 @@ export function CategoryItem({
         <Modal onClose={() => setEditingCategory(undefined)}>
           <NewCategoryForm
             handleSubmitSuccussfully={(category) => {
-              editingCategory.name = category.name;
-              editingCategory.description = category.description;
-              editingCategory.image = category.image;
-              editingCategory.parentCategoryId = category.parentCategoryId;
+              categoryItem.category.name = category.name;
+              categoryItem.category.description = category.description;
+              categoryItem.category.image = `${category.image}?${Math.ceil(
+                Math.random() * 100
+              )}`;
+              categoryItem.category.parentCategoryId =
+                category.parentCategoryId;
 
               setEditingCategory(undefined);
             }}

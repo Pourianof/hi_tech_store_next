@@ -16,6 +16,17 @@ const nextConfig: NextConfig = {
       },
     },
   },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        pathname: "/images/**",
+      },
+    ],
+    unoptimized: true,
+  },
 };
 
 export default nextConfig;
