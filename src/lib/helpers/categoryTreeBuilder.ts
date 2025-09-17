@@ -17,7 +17,9 @@ function treeIterator(
   availablePaths: CategoryTreePath
 ) {
   const pendingCategories: Category[] = [];
-  for (const category of categories) {
+  for (let index = 0; index < categories.length; index++) {
+    const category = categories[index];
+
     if (category.parentCategoryId) {
       if (!availablePaths[category.parentCategoryId]) {
         // deffered to later
@@ -30,11 +32,12 @@ function treeIterator(
           currentParent = tree[node].subCategories;
         }
 
-        availablePaths[category.categoryId] = [...path, category.categoryId];
+        availablePaths[category.categoryId] = [...path, index];
         currentParent.push({ category, subCategories: [] });
       }
     } else {
       tree.push({ category, subCategories: [] });
+      availablePaths[category.categoryId] = [index];
     }
   }
 
