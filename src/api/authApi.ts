@@ -10,7 +10,6 @@ export async function signIn(
   },
   password: string
 ) {
-  console.log(`${process.env.API_SERVER_ADDRESS}/api/login`);
   const response = await fetch(`${process.env.API_SERVER_ADDRESS}/api/login`, {
     method: "POST",
     headers: {
@@ -31,7 +30,7 @@ export async function signIn(
 }
 
 export async function register(user: RegisterDto) {
-  const result = await fetch(`${process.env.API_SERVER_ADDRESS}/register`, {
+  const result = await fetch(`${process.env.API_SERVER_ADDRESS}/api/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

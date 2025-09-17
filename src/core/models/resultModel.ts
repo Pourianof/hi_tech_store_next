@@ -1,7 +1,7 @@
 import { ProblemDetails } from "../errors/AuthErrors/ProblemDetails";
 
-export interface ResultModel {
+export interface ResultModel<T = unknown> {
   status: "failed" | "success";
   statusCode: number;
-  data: ProblemDetails | Record<string, unknown>;
+  data: ProblemDetails | T;
 }

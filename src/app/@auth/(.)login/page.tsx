@@ -1,10 +1,10 @@
 import { AuthBox } from "@/app/_components/authBox";
-import { Modal } from "@/ui/modal";
+import { RedirectModal } from "@/ui/modal/redirectModel";
 
 export default function InterceptedLogin() {
   return (
-    <Modal>
+    <RedirectModal destination="/">
       <AuthBox mode="login" />
-    </Modal>
+    </RedirectModal>
   );
 }

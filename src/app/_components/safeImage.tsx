@@ -1,5 +1,5 @@
 import { DetailedHTMLProps, ImgHTMLAttributes } from "react";
-import { CustomImage } from "./customImage";
+import { CustomImage, RawImage } from "./customImage";
 
 export function SafeImage({
   src,
@@ -30,9 +30,13 @@ export function SafeImage({
     delete props.imageClassName;
   }
   return shouldUseCustom ? (
-    <CustomImage alt={alt} aspectRatio={256 / 190} src={src} {...props} />
+    <CustomImage
+      alt={alt}
+      aspectRatio={props.aspectRatio}
+      src={src}
+      {...props}
+    />
   ) : (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt} {...props} />
+    <RawImage alt={alt} aspectRatio={props.aspectRatio} src={src} {...props} />
   );
 }

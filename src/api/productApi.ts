@@ -1,8 +1,9 @@
-import { ResultModel } from "@/core/models/resultModel";
+import { generateResultModelFromResponse } from "./apiHelper";
 
 const API_URL = `${process.env.API_SERVER_ADDRESS}/products`;
 
 export async function createNewProduct(product: FormData, accessToken: string) {
+  debugger;
   const respond = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -11,9 +12,5 @@ export async function createNewProduct(product: FormData, accessToken: string) {
     body: product,
   });
 
-  return {
-    status: respond.ok ? "success" : "failed",
-    statusCode: respond.status,
-    data: await respond.json(),
-  } as ResultModel;
+  return generateResultModelFromResponse(respond);
 }
