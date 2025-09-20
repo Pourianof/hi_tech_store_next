@@ -6,7 +6,12 @@ import { StatefulForm } from "@/ui/form/statefulForm";
 import Icon from "@/ui/icons/icon";
 import { ApiImage } from "@/ui/image/ApiImage";
 import { useEffect, useState } from "react";
-import { FieldValues, useFormContext, UseFormReturn } from "react-hook-form";
+import {
+  FieldValues,
+  useFieldArray,
+  useFormContext,
+  UseFormReturn,
+} from "react-hook-form";
 
 export function NewCategoryForm({
   handleSubmitSuccussfully,
@@ -61,9 +66,7 @@ export function NewCategoryForm({
         type="text"
         placeholder="Description"
       />
-      <div className="border my-2 p-2">
-        <h4 className="font-semibold border-b py-2">Category features</h4>
-      </div>
+      <CategoryProperties />
       <div className="flex gap-2">
         <button
           type="submit"
@@ -131,6 +134,74 @@ function PreviewFile({ image }: { image?: string }) {
       </label>
       {!!errorMessage && (
         <span className="text-red-500 text-sm">{errorMessage}</span>
+      )}
+    </div>
+  );
+}
+
+function CategoryProperties() {
+  const {
+    formState: { errors },
+    control,
+  } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "properties",
+  });
+  const filedName = "properties";
+
+  useEffect(() => {
+    append({ name: "", description: "" });
+    return () => remove();
+  }, [append, remove]);
+
+  const errorMesage = errors.properties?.message as string;
+
+  return (
+    <div className="border my-2 p-2 flex flex-col gap-2">
+      <h4 className="font-semibold border-b py-2">Category features</h4>
+      {fields.map((field, index) => {
+        return (
+          <div key={field.id} className="flex gap-2 items-center">
+            <span>{index + 1}</span>
+            <ErrorLabeledInput
+              filedName={`${filedName}.${index}.name`}
+              placeholder="Property Name"
+              type="text"
+            />
+            <ErrorLabeledInput
+              filedName={`${filedName}.${index}.description`}
+              placeholder="Property Descriptions"
+              type="text"
+            />
+            <button
+              className=""
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                if (fields.length == 1) {
+                  return;
+                }
+                remove(index);
+              }}
+            >
+              ×
+            </button>
+          </div>
+        );
+      })}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          append({ name: "", description: "" });
+        }}
+        type="button"
+        className="block border"
+      >
+        Add new property
+      </button>
+      {!!errorMesage && (
+        <span className="text-sm text-red-500">{errorMesage}</span>
       )}
     </div>
   );

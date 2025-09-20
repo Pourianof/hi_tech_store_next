@@ -31,7 +31,7 @@ export function StatefulForm(props: {
       if (problemErrors && Object.keys(problemErrors).length) {
         handleProblemDetailErrors({
           errors: problemErrors,
-          keys: ["title", "price", "description", "media"],
+          keys: Object.keys(data).map((key) => key.toLowerCase()),
           onMatched(key, message) {
             methods.setError(key, { message });
           },
