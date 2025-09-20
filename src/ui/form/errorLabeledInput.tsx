@@ -16,6 +16,7 @@ export function ErrorLabeledInput(props: {
   className?: string;
   initValue?: string | number;
   hidden?: boolean;
+  name?: string;
   validationOptions?: Omit<RegisterOpts, "validate"> & {
     validate?: (
       val: string,
@@ -72,7 +73,7 @@ export function ErrorLabeledInput(props: {
     return false;
   });
 
-  const fieldErrorName = fieldPathParts.at(-1);
+  const fieldErrorName = props.name ?? fieldPathParts.at(-1);
   let errorMessage = error?.message as unknown as string;
   if (fieldErrorName && errorMessage)
     errorMessage = errorMessage.replace(
