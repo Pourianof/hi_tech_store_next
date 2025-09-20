@@ -1,6 +1,11 @@
 import { captalize } from "@/lib/helpers/stringHelpers";
 import { TextInput } from "./textInput";
-import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
+import {
+  FieldErrors,
+  FieldValues,
+  RegisterOptions,
+  useFormContext,
+} from "react-hook-form";
 import { useEffect } from "react";
 
 type RegisterOpts = RegisterOptions<FieldValues, string>;
@@ -9,7 +14,8 @@ export function ErrorLabeledInput(props: {
   filedName: string;
   type: string;
   className?: string;
-  initValue?: string;
+  initValue?: string | number;
+  hidden?: boolean;
   validationOptions?: Omit<RegisterOpts, "validate"> & {
     validate?: (
       val: string,
@@ -22,9 +28,25 @@ export function ErrorLabeledInput(props: {
     formState: { errors },
     getValues,
     setValue,
+    resetField,
   } = useFormContext();
 
-  const errorMessage = errors[props.filedName]?.message;
+  useEffect(() => {
+    if (props.initValue) {
+      setValue(props.filedName, props.initValue);
+    }
+
+    return () => {
+      resetField(props.filedName);
+    };
+  }, [setValue, props.filedName, props.initValue, resetField]);
+
+  const isHidden = "hidden" in props && props.hidden !== false;
+
+  if (isHidden) {
+    return null;
+  }
+
   if (props.validationOptions?.validate) {
     const org = props.validationOptions.validate;
     props.validationOptions.validate = (value: string) => {
@@ -33,11 +55,30 @@ export function ErrorLabeledInput(props: {
     };
   }
 
-  useEffect(() => {
-    if (props.initValue) {
-      setValue(props.filedName, props.initValue);
+  const { filedName } = props;
+
+  let error = errors;
+  const fieldPathParts = filedName.split(".");
+
+  fieldPathParts.every((subFieldPath) => {
+    const index = parseInt(subFieldPath);
+    const path = Number.isInteger(index) ? index : subFieldPath;
+
+    if (error[path]) {
+      error = error[path] as FieldErrors<FieldValues>;
+      return true;
     }
-  }, [setValue, props.filedName, props.initValue]);
+
+    return false;
+  });
+
+  const fieldErrorName = fieldPathParts.at(-1);
+  let errorMessage = error?.message as unknown as string;
+  if (fieldErrorName && errorMessage)
+    errorMessage = errorMessage.replace(
+      new RegExp(props.filedName, "i"),
+      fieldErrorName!
+    );
 
   return (
     <div>
@@ -51,7 +92,7 @@ export function ErrorLabeledInput(props: {
         } as RegisterOpts)}
       />
       {!!errorMessage && (
-        <div className="text-red-500 text-sm">{errorMessage as string}</div>
+        <div className="text-red-500 text-sm">{errorMessage}</div>
       )}
     </div>
   );
