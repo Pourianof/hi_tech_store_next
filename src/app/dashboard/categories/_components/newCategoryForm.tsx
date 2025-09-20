@@ -1,4 +1,4 @@
-import { Category } from "@/core/models/category";
+import { Category, CategoryProperty } from "@/core/models/category";
 import { ResultModel } from "@/core/models/resultModel";
 import { convertFieldValuesToFormData } from "@/lib/helpers/convertFieldValuesToFormData";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
@@ -66,7 +66,7 @@ export function NewCategoryForm({
         type="text"
         placeholder="Description"
       />
-      <CategoryProperties />
+      <CategoryProperties defaultProperties={editingCategory?.properties} />
       <div className="flex gap-2">
         <button
           type="submit"
@@ -139,7 +139,11 @@ function PreviewFile({ image }: { image?: string }) {
   );
 }
 
-function CategoryProperties() {
+function CategoryProperties({
+  defaultProperties,
+}: {
+  defaultProperties?: CategoryProperty[];
+}) {
   const {
     formState: { errors },
     control,
@@ -151,9 +155,15 @@ function CategoryProperties() {
   const filedName = "properties";
 
   useEffect(() => {
-    append({ name: "", description: "" });
+    if (defaultProperties) {
+      defaultProperties.forEach(({ name, description }) =>
+        append({ name, description })
+      );
+    } else {
+      append({ name: "", description: "" });
+    }
     return () => remove();
-  }, [append, remove]);
+  }, [append, remove, defaultProperties]);
 
   const errorMesage = errors.properties?.message as string;
 
