@@ -6,6 +6,8 @@ import { SessionProvider } from "next-auth/react";
 import { DashboardLinkButton } from "./_components/dashboardLinkButton";
 import { getCategories } from "@/api/categoryApi";
 import { CategoryProvider } from "@/ui/contexts/categoriesContext";
+import { RoutePath } from "./_components/routePath";
+import { Wrapper } from "./_shared/wrapper";
 
 export default async function MainLayout(props: {
   children: ReactNode;
@@ -17,6 +19,9 @@ export default async function MainLayout(props: {
     <html>
       <body>
         <Header />
+        <Wrapper>
+          <RoutePath />
+        </Wrapper>
         <SessionProvider>
           <CategoryProvider
             categories={
