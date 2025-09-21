@@ -35,6 +35,7 @@ import Image from "@/assets/tech_heim/image.svg";
 import Stock from "@/assets/tech_heim/shop.svg";
 import Verify from "@/assets/tech_heim/verify.svg";
 import Truck from "@/assets/tech_heim/truck.svg";
+import Discount from "@/assets/tech_heim/discount-shape.svg";
 
 import { createContext, useContext } from "react";
 
@@ -76,6 +77,7 @@ const ICONS = {
   verify: Verify,
   guarantee: Verify,
   truck: Truck,
+  discount: Discount,
 };
 
 export type IconNames = keyof typeof ICONS;
@@ -86,7 +88,7 @@ export default function Icon(props: { className?: string; name: IconNames }) {
   return (
     <i
       style={{ fontSize: iconTheme.size ? `${iconTheme.size}px` : undefined }}
-      className={`${
+      className={`icon ${
         iconTheme.className ?? ""
       } not-italic align-middle inline-block ${props.className ?? ""}`}
     >

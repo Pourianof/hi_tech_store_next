@@ -6,10 +6,10 @@ export function TechnicalDetailsTable({ product }: { product: Product }) {
       <caption className=" font-semibold text-2xl text-left">
         Technical Details
       </caption>
-      <tbody>
+      <tbody className="text-gray-neutral-71">
         {product.properties.slice(0, 6).map((prop) => {
           return (
-            <tr className="odd:bg-gray-200 " key={prop.propertyId}>
+            <tr className="odd:bg-gray-neutral-f9 " key={prop.propertyId}>
               <td className="p-2">{prop.name}</td>
               <td className="p-2">{prop.value}</td>
             </tr>

@@ -13,7 +13,7 @@ export function ProductOverview({ product }: { product: Product }) {
         <div className="w-[1px] bg-gray-400"></div>
         <span>sold 125</span>
       </div>
-      <div className="flext gap-2 space-x-2 justify-between">
+      <div className="[&_.icon]:me-1 text-sm flext gap-2 space-x-2 justify-between text-gray-neutral-71">
         <span>
           <Icon name="stock" />
           in stock
@@ -30,7 +30,7 @@ export function ProductOverview({ product }: { product: Product }) {
       <ul className="grid grid-cols-2">
         {product.properties.slice(0, 5).map((prop) => (
           <Fragment key={prop.propertyId}>
-            <li className="text-gray-600 flex items-center gap-2">
+            <li className="text-gray-neutral-71 flex items-center gap-2">
               <span className="inline-block w-1.5 h-1.5 bg-gray-600 rounded-full"></span>
               {prop.name}
             </li>

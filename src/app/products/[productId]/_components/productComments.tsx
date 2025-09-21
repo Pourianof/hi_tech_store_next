@@ -71,13 +71,13 @@ function CommentItem({ comment }: { comment: (typeof COMMENTS)[number] }) {
   return (
     <div
       key={comment.score}
-      className="border border-gray-300 bg-gray-100 p-3 rounded-lg space-y-2"
+      className="border border-gray-neutral-ed bg-gray-neutral-f9 p-3 rounded-lg space-y-2"
     >
       <div className="flex gap-2 items-center">
         <div className="rounded-full w-10 h-10 bg-gray-700"></div>
         <div className="flex flex-col">
           <span className="font-semibold">{comment.user.name}</span>
-          <span className="text-xs text-gray-400">{formattedDate}</span>
+          <span className="text-xs text-gray-neutral-9e">{formattedDate}</span>
         </div>
         <div className="text-white ms-auto bg-blue-900 rounded-lg py-1 px-1">
           <ProductScore score={comment.score} className="fill-white" />
