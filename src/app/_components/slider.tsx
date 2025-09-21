@@ -1,3 +1,4 @@
+"use client";
 import { EmblaCarouselType } from "embla-carousel";
 import useEmblaCarousel, { EmblaViewportRefType } from "embla-carousel-react";
 import {
@@ -92,4 +93,10 @@ Slider.SliderContainer = SliderContainer;
 Slider.SliderBackwardButton = SliderBackwardButton;
 Slider.SliderForwardButton = SliderForwardButton;
 
-export { Slider };
+export {
+  Slider,
+  SliderItem,
+  SliderContainer,
+  SliderBackwardButton,
+  SliderForwardButton,
+};

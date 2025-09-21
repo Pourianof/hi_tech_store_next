@@ -7,6 +7,13 @@ export interface Product {
   scoreCounts: number;
   myScore?: number;
   media?: ProductMedia[];
+  properties: ProductProperty[];
+}
+
+export interface ProductProperty {
+  value: string;
+  name: string;
+  propertyId: number;
 }
 
 export interface ProductMedia {

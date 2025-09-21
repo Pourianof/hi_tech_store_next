@@ -21,3 +21,11 @@ export async function getProducts(): Promise<ResultModel<Product[]>> {
 
   return generateResultModelFromResponse(respond);
 }
+
+export async function getSingleProduct(
+  productId: number
+): Promise<ResultModel<Product>> {
+  const respond = await fetch(`${API_URL}/${productId}`);
+
+  return generateResultModelFromResponse(respond);
+}
