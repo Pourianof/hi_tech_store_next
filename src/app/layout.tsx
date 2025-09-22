@@ -8,6 +8,7 @@ import { getCategories } from "@/api/categoryApi";
 import { CategoryProvider } from "@/ui/contexts/categoriesContext";
 import { RoutePath } from "./_components/routePath";
 import { Wrapper } from "./_shared/wrapper";
+import { Footer } from "./_components/footer";
 
 export default async function MainLayout(props: {
   children: ReactNode;
@@ -35,6 +36,7 @@ export default async function MainLayout(props: {
             <DashboardLinkButton />
           </CategoryProvider>
         </SessionProvider>
+        <Footer />
         <Toaster position="bottom-center" gutter={10} />
       </body>
     </html>

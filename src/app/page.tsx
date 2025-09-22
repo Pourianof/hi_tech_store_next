@@ -2,7 +2,6 @@ import { Banner } from "./_components/banner";
 import { BestSellersList } from "./_components/bestSellersList";
 import { CategoriesMiniCardList } from "./_components/categoriesMiniCardList";
 import { CategoryHighlight } from "./_components/categoryHighlight";
-import { Footer } from "./_components/footer";
 import { HighlightedItems } from "./_components/highlightedItems";
 import { NewProductsList } from "./_components/newProducsList";
 import { OnSaleProductList } from "./_components/onSaleProductList";
@@ -22,7 +21,6 @@ export default function MainPage() {
         <TopBrandsList />
         <CategoryHighlight />
       </Wrapper>
-      <Footer />
     </div>
   );
 }
