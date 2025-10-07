@@ -52,7 +52,7 @@ export function StatefulForm(props: {
       <form
         className="flex flex-col gap-2.5"
         onSubmit={methods.handleSubmit(submitHandler, (e) =>
-          console.log(e, methods.getValues())
+          console.error(e, methods.getValues())
         )}
       >
         {props.children}
