@@ -5,9 +5,11 @@ export function SelectableItemsBox({
   title,
   items,
   valueLabel,
+  initialSelectedItems,
 }: {
   title: string;
   valueLabel: string;
+  initialSelectedItems?: (number | string)[];
   items: {
     name: string;
     frequency?: number;
@@ -21,7 +23,10 @@ export function SelectableItemsBox({
       titleClassName="p-2"
     >
       <ul className="px-2 pb-2">
-        <CheckboxList fieldName={valueLabel}>
+        <CheckboxList
+          fieldName={valueLabel}
+          initialSelectedItems={initialSelectedItems?.map((v) => `${v}`)}
+        >
           {items.map((item) => (
             <li key={item.name}>
               <CheckboxItem

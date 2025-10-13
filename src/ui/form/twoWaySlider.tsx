@@ -10,7 +10,7 @@ export function RangeSlider({
   fieldName,
   initialRange,
 }: {
-  initialRange?: [number, number];
+  initialRange?: [number | undefined, number | undefined];
   min: number;
   max: number;
   fieldName: string;

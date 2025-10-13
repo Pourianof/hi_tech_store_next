@@ -39,9 +39,11 @@ function useCheckboxContext() {
 export function CheckboxList({
   fieldName,
   children,
+  initialSelectedItems,
 }: {
   fieldName: string;
   children: React.ReactNode;
+  initialSelectedItems?: string[];
 }) {
   const { control } = useFormContext();
 
@@ -49,6 +51,7 @@ export function CheckboxList({
     <Controller
       name={fieldName}
       control={control}
+      defaultValue={initialSelectedItems}
       render={({ field }) => {
         const { value, onChange } = field;
 
