@@ -4,6 +4,7 @@ export interface Category {
   description: string;
   parentCategoryId?: number;
   image?: string;
+  icon?: string;
   properties: CategoryProperty[];
 }
 

@@ -16,8 +16,19 @@ export async function createNewProduct(product: FormData, accessToken: string) {
   return generateResultModelFromResponse(respond);
 }
 
-export async function getProducts(): Promise<ResultModel<Product[]>> {
-  const respond = await fetch(API_URL);
+export async function getProducts(
+  searchQueries?: Record<string, string>
+): Promise<ResultModel<Product[]>> {
+  const url = new URL(API_URL);
+  if (searchQueries) {
+    Object.keys(searchQueries).forEach((key) => {
+      if (!!searchQueries[key]?.trim()) {
+        url.searchParams.append(key, searchQueries[key]);
+      }
+    });
+  }
+  console.log(url);
+  const respond = await fetch(url);
 
   return generateResultModelFromResponse(respond);
 }
