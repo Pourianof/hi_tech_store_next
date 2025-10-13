@@ -6,6 +6,7 @@ import {
   FieldValues,
   FormProvider,
   useForm,
+  useFormContext,
   UseFormReturn,
 } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -67,5 +68,16 @@ StatefulForm.ResetButton = function ResetButton(
     HTMLButtonElement
   >
 ) {
-  return <button {...props} type="reset"></button>;
+  const { reset } = useFormContext();
+
+  return (
+    <button
+      {...props}
+      type="reset"
+      onClick={(e) => {
+        e.preventDefault();
+        reset();
+      }}
+    ></button>
+  );
 };

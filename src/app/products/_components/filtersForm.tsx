@@ -19,7 +19,6 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
   const filters = filterStats;
   const router = useRouter();
   const searchParams = useSearchParams();
-
   return (
     <StatefulForm
       onSubmitionSuccessful={() => {}}
@@ -53,12 +52,12 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
       <div>
         <div className="flex">
           <span className="font-semibold">Filters</span>
-          <button
+          <StatefulForm.ResetButton
             type="reset"
-            className="text-sm grow text-center text-main-blue"
+            className="text-sm grow text-center text-main-blue cursor-pointer"
           >
             Clear all
-          </button>
+          </StatefulForm.ResetButton>
         </div>
         <div>
           {!!filters.brands?.length && (
