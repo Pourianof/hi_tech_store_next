@@ -27,7 +27,6 @@ export async function getProducts(
       }
     });
   }
-  console.log(url);
   const respond = await fetch(url);
 
   return generateResultModelFromResponse(respond);

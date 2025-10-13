@@ -55,6 +55,7 @@ export function CheckboxList({
         const handleCheck = (item: string) => {
           if (!value) {
             onChange([item]);
+            return;
           }
           if (value.includes(item)) {
             // delete if already exists

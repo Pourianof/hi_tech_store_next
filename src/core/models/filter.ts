@@ -1,19 +1,24 @@
 export interface Filters {
   properties: PropertyFilter[];
-  components: {
-    componentId: number;
-    name: number;
-    properties: PropertyFilter[];
-  }[];
-  brands?: {
-    brandId?: number;
-    name?: string;
-    frequency?: number;
-  }[];
+  components: ComponentFilter[];
+  brands?: FilterBrand[];
   priceRange?: {
     max?: number;
     min?: number;
   };
+}
+
+interface FilterBrand {
+  brandId?: number;
+  name?: string;
+  frequency?: number;
+}
+
+export interface ComponentFilter {
+  componentId: number;
+  name: string;
+  properties: PropertyFilter[];
+  commonBrands: FilterBrand[];
 }
 
 interface PropertyFilter {

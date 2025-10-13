@@ -1,12 +1,13 @@
 "use client";
-import { Filters } from "@/core/models/filter";
+import { ComponentFilter, Filters } from "@/core/models/filter";
 import { CupertinoSwitch } from "@/ui/form/cupertinoSwitch";
 import { StatefulForm } from "@/ui/form/statefulForm";
 import { RangeSlider } from "@/ui/form/twoWaySlider";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { CheckboxItem, CheckboxList } from "../../../ui/form/checkboxList";
+import React from "react";
 import { ExpandableBox } from "./expandableBox";
+import { SelectableItemsBox } from "./SelectableItemsBox";
 
 export function FilterSection({ filterStats }: { filterStats: Filters }) {
   const filters = filterStats;
@@ -17,9 +18,10 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
       onSubmitionSuccessful={() => {}}
       onSubmit={async (data) => {
         const url = new URL(window.location.href);
-        debugger;
         for (const [key, value] of Object.entries(data)) {
-          const _key = key.toLowerCase().trim();
+          // convert keys like a_b to a.b that compatible with api server format
+          const _key = key.toLowerCase().trim().split("_").join(".");
+
           if (key && value && !url.searchParams.has(_key)) {
             if (typeof value == "object" && (value.upper || value.lower)) {
               const isNotNull = (value: unknown) =>
@@ -30,12 +32,13 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
               if (isNotNull(value.lower)) {
                 url.searchParams.set(`${_key}[gte]`, value.lower);
               }
+            } else if (value instanceof Array) {
+              url.searchParams.set(_key, value.join(","));
             } else {
               url.searchParams.set(_key, value);
             }
           }
         }
-
         router.push(url.href);
         return { status: "success", statusCode: 200, data: {} };
       }}
@@ -52,31 +55,15 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
         </div>
         <div>
           {!!filters.brands?.length && (
-            <ExpandableBox
+            <SelectableItemsBox
               title="Brand"
-              className="border-b border-b-gray-neutral-b4"
-              titleClassName="p-2"
-            >
-              <ul className="px-2 pb-2">
-                <CheckboxList fieldName="brand">
-                  {filters.brands.map((brand) => (
-                    <li key={brand.brandId}>
-                      <CheckboxItem
-                        label={
-                          <>
-                            <span>{brand.name}</span>
-                            <span className="text-xs text-gray-neutral-b4">
-                              ({brand.frequency})
-                            </span>
-                          </>
-                        }
-                        checkedValue={brand.name!}
-                      />
-                    </li>
-                  ))}
-                </CheckboxList>
-              </ul>
-            </ExpandableBox>
+              valueLabel="brand"
+              items={filters.brands.map((b) => ({
+                name: b.name!,
+                value: b.name!,
+                frequency: b.frequency,
+              }))}
+            />
           )}
           <div className="border-b border-b-gray-neutral-b4 p-2 flex items-center justify-between">
             <span>Discount</span>
@@ -100,6 +87,7 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
               </ul>
             </ExpandableBox>
           )}
+          <ComponentFilters components={filterStats.components} />
         </div>
         <Button
           type="submit"
@@ -115,4 +103,36 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
       </div>
     </StatefulForm>
   );
+}
+
+function ComponentFilters({ components }: { components: ComponentFilter[] }) {
+  return components.map((component) => (
+    <React.Fragment key={component.componentId}>
+      {component.properties.map((prop) => {
+        return (
+          <SelectableItemsBox
+            key={prop.propertyId}
+            title={prop.name}
+            valueLabel={`${component.name}_${prop.name}`}
+            items={
+              prop.commonValues?.map((cv) => ({
+                name: `${cv.value}`,
+                value: cv.value,
+                frequency: cv.frequency,
+              })) ?? []
+            }
+          />
+        );
+      })}
+      <SelectableItemsBox
+        title={component.name}
+        valueLabel={component.name}
+        items={component.commonBrands.map((b) => ({
+          name: b.name!,
+          value: b.name!,
+          frequency: b.frequency,
+        }))}
+      />
+    </React.Fragment>
+  ));
 }
