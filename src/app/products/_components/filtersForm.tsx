@@ -9,6 +9,7 @@ import React from "react";
 import { ExpandableBox } from "./expandableBox";
 import { SelectableItemsBox } from "./SelectableItemsBox";
 import {
+  findMatchedKey,
   getSearchParamAllValues,
   getSearchParamValue,
   QueryOperator,
@@ -27,22 +28,36 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
         for (const [key, value] of Object.entries(data)) {
           // convert keys like a_b to a.b that compatible with api server format
           let _key = key.toLowerCase().trim().split("_").join(".");
-          if (key && value) {
+          if (_key && value) {
             if (typeof value == "object" && (value.upper || value.lower)) {
               const isNotNull = (value: unknown) =>
                 value != undefined && value != null;
               if (isNotNull(value.upper)) {
                 url.searchParams.set(`${_key}[lte]`, value.upper);
+              } else {
+                url.searchParams.delete(`${_key}[lte]`);
               }
               if (isNotNull(value.lower)) {
                 url.searchParams.set(`${_key}[gte]`, value.lower);
+              } else {
+                url.searchParams.delete(`${_key}[gte]`);
               }
             } else if (value instanceof Array) {
               _key = `${_key}[in]`;
-              url.searchParams.set(_key, value.join(","));
+              if (!value.length) {
+                url.searchParams.delete(_key);
+              } else {
+                url.searchParams.set(_key, value.join(","));
+              }
             } else {
               url.searchParams.set(_key, value);
             }
+          } else if (_key) {
+            const registeredKey = findMatchedKey(searchParams, _key);
+            if (!registeredKey) {
+              continue;
+            }
+            url.searchParams.delete(registeredKey);
           }
         }
         router.push(url.href);

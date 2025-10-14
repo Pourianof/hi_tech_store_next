@@ -7,13 +7,15 @@ export enum QueryOperator {
   Equal = "eq",
 }
 
-function findMatchedKey(
+export function findMatchedKey(
   searchParams: ReadonlyURLSearchParams,
   key: string,
-  operator: QueryOperator
+  operator?: QueryOperator
 ) {
-  const pattern = `${key}(\\[${operator}\\])${
-    operator == QueryOperator.Equal ? "?" : ""
+  const pattern = `${key}${
+    operator
+      ? `(\\[${operator}\\])${operator == QueryOperator.Equal ? "?" : ""}`
+      : ""
   }`;
   for (const filterKey of searchParams.keys()) {
     if (new RegExp(pattern, "ig").test(filterKey)) {

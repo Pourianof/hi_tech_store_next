@@ -68,15 +68,17 @@ StatefulForm.ResetButton = function ResetButton(
     HTMLButtonElement
   >
 ) {
-  const { reset } = useFormContext();
-
+  const { setValue, getValues } = useFormContext();
+  const values = getValues();
   return (
     <button
       {...props}
       type="reset"
       onClick={(e) => {
         e.preventDefault();
-        reset();
+        Object.entries(values).forEach(([key]) => {
+          setValue(key, null);
+        });
       }}
     ></button>
   );
