@@ -12,7 +12,7 @@ import { Modal } from "@/ui/modal/modal";
 import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { NewCategoryForm } from "./newCategoryForm";
+import { NewCategoryForm } from "./newCategoryForm/newCategoryForm";
 import { ApiImage } from "@/ui/image/ApiImage";
 
 function CategoryList({
@@ -48,25 +48,23 @@ function CategoryList({
   return (
     <>
       {newSubCategoryForm && (
-        <Modal onClose={() => setNewSubCategoryForm(false)}>
-          <NewCategoryForm
-            oncancel={() => setNewSubCategoryForm(false)}
-            submit={async (formData) => {
-              if (categoryItem.category) {
-                formData.append(
-                  "parentCategoryId",
-                  `${categoryItem.category.categoryId}`
-                );
-              }
+        <NewCategoryForm
+          oncancel={() => setNewSubCategoryForm(false)}
+          submit={async (formData) => {
+            if (categoryItem.category) {
+              formData.append(
+                "parentCategoryId",
+                `${categoryItem.category.categoryId}`
+              );
+            }
 
-              return registerCategoryAction(formData);
-            }}
-            handleSubmitSuccussfully={(c) => {
-              setTree((t) => [...t, { category: c, subCategories: [] }]);
-              setNewSubCategoryForm(false);
-            }}
-          />
-        </Modal>
+            return registerCategoryAction(formData);
+          }}
+          handleSubmitSuccussfully={(c) => {
+            setTree((t) => [...t, { category: c, subCategories: [] }]);
+            setNewSubCategoryForm(false);
+          }}
+        />
       )}
       {tree.map((c) => (
         <CategoryItem

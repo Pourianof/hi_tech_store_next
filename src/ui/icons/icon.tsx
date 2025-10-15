@@ -36,6 +36,8 @@ import Stock from "@/assets/tech_heim/shop.svg";
 import Verify from "@/assets/tech_heim/verify.svg";
 import Truck from "@/assets/tech_heim/truck.svg";
 import Discount from "@/assets/tech_heim/discount-shape.svg";
+import Checklist from "@/assets/tech_heim/checklist.svg";
+import Component from "@/assets/tech_heim/component.svg";
 
 import { createContext, useContext } from "react";
 
@@ -78,6 +80,8 @@ const ICONS = {
   guarantee: Verify,
   truck: Truck,
   discount: Discount,
+  checklist: Checklist,
+  component: Component,
 };
 
 export type IconNames = keyof typeof ICONS;
