@@ -36,6 +36,9 @@ export function StatefulForm(props: {
           onMatched(key, message) {
             methods.setError(key, { message });
           },
+          handleUnmatched(items) {
+            toast.error(items.map((i) => `${i.key}: ${i.message}`).join("\n"));
+          },
         });
       } else {
         toast.error(

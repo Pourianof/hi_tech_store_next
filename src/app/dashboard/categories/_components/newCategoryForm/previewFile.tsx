@@ -3,7 +3,15 @@ import { ApiImage } from "@/ui/image/ApiImage";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-export function PreviewFile({ image }: { image?: string }) {
+export function PreviewFile({
+  image,
+  fieldname,
+  className,
+}: {
+  image?: string;
+  fieldname: string;
+  className?: string;
+}) {
   const [file, setFile] = useState<File>();
   const {
     setValue,
@@ -12,12 +20,12 @@ export function PreviewFile({ image }: { image?: string }) {
   } = useFormContext();
 
   useEffect(() => {
-    setValue("image", file);
-  }, [file, setValue]);
+    setValue(fieldname, file);
+  }, [file, setValue, fieldname]);
 
-  const errorMessage = errors.image?.message as string;
+  const errorMessage = errors[fieldname]?.message as string;
   return (
-    <div>
+    <div className={className}>
       <label className="aspect-square w-20 bg-gray-200 rounded-2xl flex items-center justify-center">
         {file ? (
           // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
@@ -34,7 +42,7 @@ export function PreviewFile({ image }: { image?: string }) {
           type="file"
           accept="image/*,video/*"
           onChange={(e) => {
-            clearErrors("image");
+            clearErrors(fieldname);
             const target = e.target as HTMLInputElement;
             const files = target.files;
             if (!files?.length) {

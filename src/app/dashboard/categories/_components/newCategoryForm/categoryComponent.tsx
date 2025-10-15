@@ -4,6 +4,7 @@ import { useCategoryComponents } from "./componentProvider";
 import { useEffect, useState } from "react";
 import { CategoryComponent } from "@/core/models/category";
 import { useCategoryFormContext } from "./categoryFormContext";
+import { useFormContext } from "react-hook-form";
 
 function mapComponentToSelectOption(components: CategoryComponent[]) {
   return components.map((cmnpt) => ({
@@ -11,7 +12,8 @@ function mapComponentToSelectOption(components: CategoryComponent[]) {
     value: cmnpt,
   }));
 }
-export function CategoryComponents() {
+export function CategoryComponents({ fieldname }: { fieldname: string }) {
+  const { setValue } = useFormContext();
   const componentsContext = useCategoryComponents();
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const categoryFormContext = useCategoryFormContext();
@@ -34,6 +36,10 @@ export function CategoryComponents() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [componentsContext.hasLoaded, componentsContext.components]);
 
+  useEffect(() => {
+    setValue(fieldname, selectedComponents);
+  }, [fieldname, selectedComponents, setValue]);
+
   function handleSelectionChange(
     val: OnChangeValue<{ label: string; value: CategoryComponent }, true>,
     actionMeta: ActionMeta<{ label: string; value: CategoryComponent }>
@@ -47,6 +53,13 @@ export function CategoryComponents() {
         setSelectedComponents([...val.map((c) => c.value)]);
     }
   }
+
+  useEffect(() => {
+    if (componentsContext.components.length) {
+      handleMenuOpening();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [componentsContext.components]);
 
   function handleMenuOpening() {
     componentsContext.loadComponents();
@@ -118,18 +131,15 @@ export function CategoryComponents() {
             onChange={handleSelectionChange}
             placeholder="Selet from existing components..."
           />
-          <div className="flex items-center py-2 gap-2">
-            <h3 className="font-semibold">Or register new one:</h3>
-            <button
-              className="text-2xl py-0.5 px-2 bg-blue-200 hover:bg-blue-300 rounded-lg cursor-pointer"
-              onClick={(e) => {
-                e.preventDefault();
-                categoryFormContext.changeToComponentFormMode();
-              }}
-            >
-              +
-            </button>
-          </div>
+          <button
+            className="my-2 text-lg text-blue-700 font-semibold py-0.5 px-2 bg-blue-200 hover:bg-blue-300 rounded-lg cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              categoryFormContext.changeToComponentFormMode();
+            }}
+          >
+            + Or register new one
+          </button>
         </div>
       </div>
     </div>

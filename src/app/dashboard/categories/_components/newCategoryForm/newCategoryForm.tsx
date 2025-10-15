@@ -81,9 +81,24 @@ function CategoryForm({
       onSubmit={handleForSubmission}
     >
       <div className={hide ? "hidden" : ""} aria-hidden={hide}>
-        <center>
-          <PreviewFile image={editingCategory?.image} />
-        </center>
+        <div className="flex justify-evenly">
+          <div className="flex flex-col items-center gap-1">
+            <span>Image</span>
+            <PreviewFile
+              fieldname="image"
+              className="flex flex-col items-center"
+              image={editingCategory?.image}
+            />
+          </div>
+          <div className="flex flex-col gap-1 items-center">
+            <span>Icon</span>
+            <PreviewFile
+              fieldname="icon"
+              className="flex flex-col items-center"
+              image={editingCategory?.icon}
+            />
+          </div>
+        </div>
         <ErrorLabeledInput
           initValue={editingCategory?.name}
           filedName="name"
@@ -96,7 +111,7 @@ function CategoryForm({
           type="text"
           placeholder="Description"
         />
-        <CategoryComponents />
+        <CategoryComponents fieldname="components" />
         <CategoryProperties
           title="Category features"
           defaultProperties={editingCategory?.properties}

@@ -9,8 +9,8 @@ export interface Category {
 }
 
 export enum PropertyType {
-  Number = 0,
-  String = 1,
+  String = 0,
+  Number = 1,
   Boolean = 2,
   DateTime = 3,
 }
