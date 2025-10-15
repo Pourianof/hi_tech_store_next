@@ -69,6 +69,14 @@ function CategoryForm({
       return;
     }
 
+    if (
+      !isEditModeAndKeepOldImage &&
+      (!data.icon || !(data.icon as File)?.type.startsWith("image"))
+    ) {
+      setError("icon", { message: "An icon must set for category" });
+      return;
+    }
+
     const formData = convertFieldValuesToFormData(data);
     return submit(formData, editingCategory);
   }
