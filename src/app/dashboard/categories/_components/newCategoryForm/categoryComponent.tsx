@@ -27,11 +27,14 @@ export function CategoryComponents({ fieldname }: { fieldname: string }) {
   useEffect(() => {
     setValue(
       fieldname,
-      selectedComponents.map(
-        (cmpnt) =>
-          ({
-            componentTypeId: cmpnt.componentTypeId,
-          } as Partial<CategoryComponent>)
+      selectedComponents.map((cmpnt) =>
+        Boolean(cmpnt.componentTypeId)
+          ? {
+              componentId: cmpnt.componentTypeId,
+            }
+          : {
+              newComponent: cmpnt,
+            }
       )
     );
   }, [fieldname, selectedComponents, setValue]);
