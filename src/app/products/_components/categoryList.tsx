@@ -28,7 +28,7 @@ export function CategoryList() {
               },
             }}
           >
-            <ApiImage alt={category.name} src={category.image} />
+            <ApiImage alt={category.name} src={category.icon} />
             <span>{category.name}</span>
           </Link>
         </li>
