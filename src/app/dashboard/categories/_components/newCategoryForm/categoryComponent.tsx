@@ -51,11 +51,21 @@ export function CategoryComponents({ fieldname }: { fieldname: string }) {
   ) {
     switch (actionMeta.action) {
       case "select-option":
-        setSelectedComponents(() => [...val.map((c) => c.value)]);
+        if (!actionMeta.option) return;
+        setSelectedComponents((cs) => [...cs, actionMeta.option!.value]);
         break;
       case "pop-value":
       case "remove-value":
-        setSelectedComponents([...val.map((c) => c.value)]);
+        setSelectedComponents((cs) =>
+          cs.filter(
+            (c) =>
+              c.componentTypeId != actionMeta.removedValue.value.componentTypeId
+          )
+        );
+        break;
+      case "clear":
+        setSelectedComponents((cs) => cs.filter((c) => !c.componentTypeId));
+        break;
     }
   }
 
