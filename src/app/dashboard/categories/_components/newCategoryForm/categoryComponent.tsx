@@ -1,10 +1,13 @@
 import Icon from "@/ui/icons/icon";
 import Select, { ActionMeta, OnChangeValue } from "react-select";
 import { useCategoryComponents } from "./componentProvider";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { CategoryComponent } from "@/core/models/category";
 import { useCategoryFormContext } from "./categoryFormContext";
 import { useFormContext } from "react-hook-form";
+import { ErrorMessageLabel } from "@/ui/form/errorMessageLabel";
+import { useConsumer } from "@/ui/contexts/channelContext";
+import { CATEGORY_COMPONENT_FORM_CHANNEL } from "./newCategoryForm";
 
 function mapComponentToSelectOption(components: CategoryComponent[]) {
   return components.map((cmnpt) => ({
@@ -22,23 +25,25 @@ export function CategoryComponents({ fieldname }: { fieldname: string }) {
   >([]);
 
   useEffect(() => {
-    if (componentsContext.hasLoaded && componentsContext.components.length) {
-      const newlyCreatedComponents = componentsContext.components.filter(
-        (c) =>
-          (c as unknown as { isNew: boolean }).isNew &&
-          !selectedComponents?.find(
-            (_c) => c.componentTypeId == _c.componentTypeId
-          )
-      );
-
-      setSelectedComponents((cs) => [...cs, ...newlyCreatedComponents]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [componentsContext.hasLoaded, componentsContext.components]);
-
-  useEffect(() => {
-    setValue(fieldname, selectedComponents);
+    setValue(
+      fieldname,
+      selectedComponents.map(
+        (cmpnt) =>
+          ({
+            componentTypeId: cmpnt.componentTypeId,
+          } as Partial<CategoryComponent>)
+      )
+    );
   }, [fieldname, selectedComponents, setValue]);
+
+  const updateSelectedCallback = useCallback((data: CategoryComponent) => {
+    setSelectedComponents((c) => [...c, data]);
+  }, []);
+
+  useConsumer<CategoryComponent>(
+    CATEGORY_COMPONENT_FORM_CHANNEL,
+    updateSelectedCallback
+  );
 
   function handleSelectionChange(
     val: OnChangeValue<{ label: string; value: CategoryComponent }, true>,
@@ -53,13 +58,6 @@ export function CategoryComponents({ fieldname }: { fieldname: string }) {
         setSelectedComponents([...val.map((c) => c.value)]);
     }
   }
-
-  useEffect(() => {
-    if (componentsContext.components.length) {
-      handleMenuOpening();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [componentsContext.components]);
 
   function handleMenuOpening() {
     componentsContext.loadComponents();
@@ -124,10 +122,16 @@ export function CategoryComponents({ fieldname }: { fieldname: string }) {
             menuIsOpen={isMenuOpened && componentsContext.hasLoaded}
             onMenuOpen={handleMenuOpening}
             onMenuClose={() => setIsMenuOpened(false)}
-            options={mapComponentToSelectOption(componentsContext.components)}
+            options={mapComponentToSelectOption(
+              componentsContext.loadedComponents.filter(
+                (c) => !!c.componentTypeId
+              )
+            )}
             isSearchable
             isMulti
-            value={mapComponentToSelectOption(selectedComponents)}
+            value={mapComponentToSelectOption(
+              selectedComponents.filter((s) => !!s.componentTypeId)
+            )}
             onChange={handleSelectionChange}
             placeholder="Selet from existing components..."
           />
@@ -140,8 +144,44 @@ export function CategoryComponents({ fieldname }: { fieldname: string }) {
           >
             + Or register new one
           </button>
+          <div>
+            {selectedComponents
+              .filter((c) => !c.componentTypeId)
+              .map((c, i) => (
+                <div key={i} className="relative bg-gray-200 p-2 rounded">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSelectedComponents((components) =>
+                        components.filter((component) => component != c)
+                      );
+                    }}
+                    className="cursor-pointer hover:bg-red-500 [&_svg]:fill-red-900 hover:[&_svg]:fill-red-200 absolute top-2 right-2 text-[8px] bg-red-400 rounded p-2"
+                  >
+                    <Icon name="close" />
+                  </button>
+                  <h4 className="font-semibold text-gray-900 py-0.5">
+                    {c.name}
+                  </h4>
+                  <p className="text-sm my-1 text-gray-600">{c.description}</p>
+                  {!!c.properties && !!c.properties.length && (
+                    <div className="flex flex-wrap">
+                      {c.properties.map((p) => (
+                        <span
+                          key={p.name}
+                          className="bg-gray-300 text-sm rounded px-1 py-0.5 "
+                        >
+                          {p.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+          </div>
         </div>
       </div>
+      <ErrorMessageLabel fieldName={fieldname} />
     </div>
   );
 }

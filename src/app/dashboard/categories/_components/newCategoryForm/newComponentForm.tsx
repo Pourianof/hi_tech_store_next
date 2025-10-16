@@ -1,18 +1,27 @@
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { CategoryProperties } from "./categoryProperties";
 import { useCategoryFormContext } from "./categoryFormContext";
-import { useCategoryComponents } from "./componentProvider";
-import { submitComponentAction } from "@/lib/server_actions/componentActions";
 import { StatefulForm } from "@/ui/form/statefulForm";
 import Icon from "@/ui/icons/icon";
 import { CategoryComponent } from "@/core/models/category";
 import { FieldValues } from "react-hook-form";
+import { ResultModel } from "@/core/models/resultModel";
+import { useSink } from "@/ui/contexts/channelContext";
+import { CATEGORY_COMPONENT_FORM_CHANNEL } from "./newCategoryForm";
 
 export function ComponentForm() {
+  const componentSink = useSink<CategoryComponent>(
+    CATEGORY_COMPONENT_FORM_CHANNEL
+  );
   const categoryFormContext = useCategoryFormContext();
-  const componentContext = useCategoryComponents();
-  async function handleComponentSubmition(data: FieldValues) {
-    return await submitComponentAction(data as CategoryComponent);
+  // async function handleComponentSubmition(data: FieldValues) {
+  //   return await submitComponentAction(data as CategoryComponent);
+  // }
+
+  async function handleComponentSubmition(
+    data: FieldValues
+  ): Promise<ResultModel> {
+    return { data: data, status: "success", statusCode: 200 };
   }
 
   return (
@@ -31,10 +40,7 @@ export function ComponentForm() {
       <div>
         <StatefulForm
           onSubmitionSuccessful={(component) => {
-            component.isNew = true;
-            componentContext.addComponent(
-              component as unknown as CategoryComponent
-            );
+            componentSink.add(component as unknown as CategoryComponent);
             categoryFormContext.backToCategoryFormMode();
           }}
           onSubmit={handleComponentSubmition}

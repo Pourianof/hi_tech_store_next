@@ -1,6 +1,7 @@
 import { Category } from "@/core/models/category";
 import { ResultModel } from "@/core/models/resultModel";
 import { convertFieldValuesToFormData } from "@/lib/helpers/convertFieldValuesToFormData";
+import { ChannelProvider } from "@/ui/contexts/channelContext";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { StatefulForm } from "@/ui/form/statefulForm";
 import { Modal } from "@/ui/modal/modal";
@@ -10,8 +11,8 @@ import { CategoryComponents } from "./categoryComponent";
 import { CategoryFormProvider } from "./categoryFormContext";
 import { CategoryProperties } from "./categoryProperties";
 import { ComponentContextProvider } from "./componentProvider";
-import { PreviewFile } from "./previewFile";
 import { ComponentForm } from "./newComponentForm";
+import { PreviewFile } from "./previewFile";
 
 interface CategoryFormProps {
   submit: (
@@ -23,28 +24,36 @@ interface CategoryFormProps {
   editingCategory?: Category;
 }
 
+export const CATEGORY_COMPONENT_FORM_CHANNEL = "CCFC";
+
 interface HidableCategoryFormProps extends CategoryFormProps {
   hide?: boolean;
 }
 
 export function NewCategoryForm(props: CategoryFormProps) {
   const [isComponentFormMode, setIsComponentFormMode] = useState(false);
-
+  // this channel system work just because two component are active simultaneously
+  // and hide mechanism. but if we destroy the CategoryForm component on displaying
+  // ComponentForm, then when sink a component data to channel then no listener exist
+  // so data will lost.
+  // for those situation need to cache data in channel
   return (
-    <Modal>
-      <ComponentContextProvider>
-        <CategoryFormProvider
-          context={{
-            backToCategoryFormMode() {
-              setIsComponentFormMode(false);
-            },
-            changeToComponentFormMode: () => setIsComponentFormMode(true),
-          }}
-        >
-          {isComponentFormMode && <ComponentForm />}
-          <CategoryForm {...props} hide={isComponentFormMode} />
-        </CategoryFormProvider>
-      </ComponentContextProvider>
+    <Modal className="items-start overflow-auto p-5">
+      <ChannelProvider channelIdentifier={CATEGORY_COMPONENT_FORM_CHANNEL}>
+        <ComponentContextProvider>
+          <CategoryFormProvider
+            context={{
+              backToCategoryFormMode() {
+                setIsComponentFormMode(false);
+              },
+              changeToComponentFormMode: () => setIsComponentFormMode(true),
+            }}
+          >
+            {isComponentFormMode && <ComponentForm />}
+            <CategoryForm {...props} hide={isComponentFormMode} />
+          </CategoryFormProvider>
+        </ComponentContextProvider>
+      </ChannelProvider>
     </Modal>
   );
 }
@@ -55,7 +64,7 @@ function CategoryForm({
   oncancel,
   editingCategory,
   hide,
-}: HidableCategoryFormProps) {
+}: HidableCategoryFormProps & {}) {
   async function handleForSubmission(
     data: FieldValues,
     { setError }: UseFormReturn

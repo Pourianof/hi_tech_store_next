@@ -4,12 +4,19 @@ import { createPortal } from "react-dom";
 export function Modal({
   children,
   onClose,
+  className,
 }: {
   children: ReactNode;
   onClose?: VoidFunction;
+  className?: string;
 }) {
   return createPortal(
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div
+      className={
+        "fixed inset-0 bg-black/50 flex items-center justify-center z-50 " +
+        (className ?? "")
+      }
+    >
       <div
         className="absolute top-0 left-0 right-0 bottom-0 z-10"
         onClick={(e) => {

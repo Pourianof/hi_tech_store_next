@@ -10,7 +10,7 @@ interface IComponentListContext {
   loadComponents(): void;
   addComponent(component: CategoryComponent): void;
   hasLoaded: boolean;
-  components: CategoryComponent[];
+  loadedComponents: CategoryComponent[];
 }
 
 const ComponentListContext = createContext<IComponentListContext>(
@@ -60,7 +60,7 @@ export function ComponentContextProvider({
         loadComponents,
         error,
         addComponent,
-        components: components ?? [],
+        loadedComponents: components ?? [],
       }}
     >
       {children}
