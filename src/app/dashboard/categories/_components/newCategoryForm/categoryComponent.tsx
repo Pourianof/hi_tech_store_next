@@ -76,6 +76,83 @@ export function CategoryComponents({ fieldname }: { fieldname: string }) {
 
   return (
     <div className="border my-2 p-2 flex flex-col gap-2">
+      <ComponentSectionDescription />
+      <div>
+        <h3 className="font-semibold">Select from existing components:</h3>
+        <Select
+          components={{
+            MultiValueLabel: ({ data }) => {
+              return <span className="py-0.5 px-2">{data.label}</span>;
+            },
+            Option: ({ data: { value: cmnpt }, innerProps }) => (
+              <div
+                className={"p-2 hover:bg-blue-200 hover:[&>div]:bg-blue-300"}
+                {...innerProps}
+              >
+                <div className="bg-gray-neutral-ed rounded p-2">
+                  <h3 className="font-semibold">{cmnpt.name}</h3>
+                  <div>
+                    <p className="text-sm">{cmnpt.description}</p>
+                    <div className="flex flex-wrap gap-1">
+                      {cmnpt.properties.map((p) => (
+                        <div
+                          className="text-xs bg-gray-neutral-cb p-1 rounded text-gray-neutral-44"
+                          key={p.propertyId}
+                        >
+                          {p.name}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ),
+          }}
+          isLoading={isMenuOpened && !componentsContext.hasLoaded}
+          menuIsOpen={isMenuOpened && componentsContext.hasLoaded}
+          onMenuOpen={handleMenuOpening}
+          onMenuClose={() => setIsMenuOpened(false)}
+          options={mapComponentToSelectOption(
+            componentsContext.loadedComponents.filter(
+              (c) => !!c.componentTypeId
+            )
+          )}
+          isSearchable
+          isMulti
+          value={mapComponentToSelectOption(
+            selectedComponents.filter((s) => !!s.componentTypeId)
+          )}
+          onChange={handleSelectionChange}
+          placeholder="Selet from existing components..."
+        />
+        <button
+          className="my-2 text-lg text-blue-700 font-semibold py-0.5 px-2 bg-blue-200 hover:bg-blue-300 rounded-lg cursor-pointer"
+          onClick={(e) => {
+            e.preventDefault();
+            categoryFormContext.changeToComponentFormMode();
+          }}
+        >
+          + Or register new one
+        </button>
+        <NewlyCreatedComponents
+          selectedComponents={selectedComponents.filter(
+            (c) => !c.componentTypeId
+          )}
+          onDelete={(c) =>
+            setSelectedComponents((components) =>
+              components.filter((component) => component != c)
+            )
+          }
+        />
+      </div>
+      <ErrorMessageLabel fieldName={fieldname} />
+    </div>
+  );
+}
+
+function ComponentSectionDescription() {
+  return (
+    <>
       <h4 className="font-semibold border-b py-2">
         <Icon name="component" className="text-2xl inline-block me-2" />
         Category Components
@@ -96,102 +173,46 @@ export function CategoryComponents({ fieldname }: { fieldname: string }) {
           </p>
         </div>
       </div>
-      <div>
-        <div>
-          <h3 className="font-semibold">Select from existing components:</h3>
-          <Select
-            components={{
-              MultiValueLabel: ({ data }) => {
-                return <span className="py-0.5 px-2">{data.label}</span>;
-              },
-              Option: ({ data: { value: cmnpt }, innerProps }) => (
-                <div
-                  className={"p-2 hover:bg-blue-200 hover:[&>div]:bg-blue-300"}
-                  {...innerProps}
-                >
-                  <div className="bg-gray-neutral-ed rounded p-2">
-                    <h3 className="font-semibold">{cmnpt.name}</h3>
-                    <div>
-                      <p className="text-sm">{cmnpt.description}</p>
-                      <div className="flex flex-wrap gap-1">
-                        {cmnpt.properties.map((p) => (
-                          <div
-                            className="text-xs bg-gray-neutral-cb p-1 rounded text-gray-neutral-44"
-                            key={p.propertyId}
-                          >
-                            {p.name}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ),
-            }}
-            isLoading={isMenuOpened && !componentsContext.hasLoaded}
-            menuIsOpen={isMenuOpened && componentsContext.hasLoaded}
-            onMenuOpen={handleMenuOpening}
-            onMenuClose={() => setIsMenuOpened(false)}
-            options={mapComponentToSelectOption(
-              componentsContext.loadedComponents.filter(
-                (c) => !!c.componentTypeId
-              )
-            )}
-            isSearchable
-            isMulti
-            value={mapComponentToSelectOption(
-              selectedComponents.filter((s) => !!s.componentTypeId)
-            )}
-            onChange={handleSelectionChange}
-            placeholder="Selet from existing components..."
-          />
+    </>
+  );
+}
+
+function NewlyCreatedComponents({
+  selectedComponents,
+  onDelete,
+}: {
+  selectedComponents: CategoryComponent[];
+  onDelete: (component: CategoryComponent) => void;
+}) {
+  return (
+    <div>
+      {selectedComponents.map((c, i) => (
+        <div key={i} className="relative bg-gray-200 p-2 rounded">
           <button
-            className="my-2 text-lg text-blue-700 font-semibold py-0.5 px-2 bg-blue-200 hover:bg-blue-300 rounded-lg cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
-              categoryFormContext.changeToComponentFormMode();
+              onDelete(c);
             }}
+            className="cursor-pointer hover:bg-red-500 [&_svg]:fill-red-900 hover:[&_svg]:fill-red-200 absolute top-2 right-2 text-[8px] bg-red-400 rounded p-2"
           >
-            + Or register new one
+            <Icon name="close" />
           </button>
-          <div>
-            {selectedComponents
-              .filter((c) => !c.componentTypeId)
-              .map((c, i) => (
-                <div key={i} className="relative bg-gray-200 p-2 rounded">
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedComponents((components) =>
-                        components.filter((component) => component != c)
-                      );
-                    }}
-                    className="cursor-pointer hover:bg-red-500 [&_svg]:fill-red-900 hover:[&_svg]:fill-red-200 absolute top-2 right-2 text-[8px] bg-red-400 rounded p-2"
-                  >
-                    <Icon name="close" />
-                  </button>
-                  <h4 className="font-semibold text-gray-900 py-0.5">
-                    {c.name}
-                  </h4>
-                  <p className="text-sm my-1 text-gray-600">{c.description}</p>
-                  {!!c.properties && !!c.properties.length && (
-                    <div className="flex flex-wrap">
-                      {c.properties.map((p) => (
-                        <span
-                          key={p.name}
-                          className="bg-gray-300 text-sm rounded px-1 py-0.5 "
-                        >
-                          {p.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
+          <h4 className="font-semibold text-gray-900 py-0.5">{c.name}</h4>
+          <p className="text-sm my-1 text-gray-600">{c.description}</p>
+          {!!c.properties && !!c.properties.length && (
+            <div className="flex flex-wrap">
+              {c.properties.map((p) => (
+                <span
+                  key={p.name}
+                  className="bg-gray-300 text-sm rounded px-1 py-0.5 "
+                >
+                  {p.name}
+                </span>
               ))}
-          </div>
+            </div>
+          )}
         </div>
-      </div>
-      <ErrorMessageLabel fieldName={fieldname} />
+      ))}
     </div>
   );
 }
