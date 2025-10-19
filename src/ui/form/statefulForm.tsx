@@ -34,7 +34,7 @@ export function StatefulForm(props: {
   onSubmitionSuccessful: (result: Record<string, unknown>) => void;
   children: ReactNode;
 }) {
-  const methods = useForm();
+  const methods = useForm({ shouldUnregister: true });
 
   async function submitHandler(
     data: FieldValues,
