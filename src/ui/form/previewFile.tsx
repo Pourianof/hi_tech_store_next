@@ -1,3 +1,4 @@
+import { ErrorMessageLabel } from "@/ui/form/errorMessageLabel";
 import Icon from "@/ui/icons/icon";
 import { ApiImage } from "@/ui/image/ApiImage";
 import { useEffect, useState } from "react";
@@ -17,13 +18,16 @@ export function PreviewFile({
     setValue,
     formState: { errors },
     clearErrors,
+    register,
   } = useFormContext();
 
   useEffect(() => {
     setValue(fieldname, file);
-  }, [file, setValue, fieldname]);
+    clearErrors();
+  }, [file, setValue, fieldname, clearErrors]);
 
-  const errorMessage = errors[fieldname]?.message as string;
+  console.log(fieldname, errors);
+
   return (
     <div className={className}>
       <label className="aspect-square w-20 bg-gray-200 rounded-2xl flex items-center justify-center">
@@ -41,23 +45,23 @@ export function PreviewFile({
         <input
           type="file"
           accept="image/*,video/*"
-          onChange={(e) => {
-            clearErrors(fieldname);
-            const target = e.target as HTMLInputElement;
-            const files = target.files;
-            if (!files?.length) {
-              return;
-            }
+          {...register(fieldname, {
+            required: "Select a file is required",
+            onChange: (e) => {
+              const target = e.target as HTMLInputElement;
+              const files = target.files;
+              if (!files?.length) {
+                return;
+              }
 
-            const selectedFile = files.item(0);
-            setFile(selectedFile!);
-          }}
+              const selectedFile = files.item(0);
+              setFile(selectedFile!);
+            },
+          })}
           className="hidden"
         />
       </label>
-      {!!errorMessage && (
-        <span className="text-red-500 text-sm">{errorMessage}</span>
-      )}
+      <ErrorMessageLabel fieldName={fieldname} />
     </div>
   );
 }
