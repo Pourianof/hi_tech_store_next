@@ -8,25 +8,20 @@ export function PreviewFile({
   image,
   fieldname,
   className,
+  isRequired = true,
 }: {
   image?: string;
   fieldname: string;
   className?: string;
+  isRequired?: boolean;
 }) {
   const [file, setFile] = useState<File>();
-  const {
-    setValue,
-    formState: { errors },
-    clearErrors,
-    register,
-  } = useFormContext();
+  const { setValue, clearErrors, register } = useFormContext();
 
   useEffect(() => {
     setValue(fieldname, file);
     clearErrors();
   }, [file, setValue, fieldname, clearErrors]);
-
-  console.log(fieldname, errors);
 
   return (
     <div className={className}>
@@ -46,7 +41,7 @@ export function PreviewFile({
           type="file"
           accept="image/*,video/*"
           {...register(fieldname, {
-            required: "Select a file is required",
+            required: isRequired ? "Select a file is required" : false,
             onChange: (e) => {
               const target = e.target as HTMLInputElement;
               const files = target.files;
