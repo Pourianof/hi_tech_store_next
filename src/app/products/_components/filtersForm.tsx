@@ -147,7 +147,7 @@ function ComponentFilters({ components }: { components: ComponentFilter[] }) {
   const searchParams = useSearchParams();
 
   return components.map((component) => (
-    <React.Fragment key={component.componentId}>
+    <React.Fragment key={component.componentTypeId}>
       {component.properties.map((prop) => {
         const initialValues = getSearchParamAllValues(
           searchParams,

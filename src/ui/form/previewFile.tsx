@@ -20,7 +20,7 @@ export function PreviewFile({
 
   useEffect(() => {
     setValue(fieldname, file);
-    clearErrors();
+    clearErrors(fieldname);
   }, [file, setValue, fieldname, clearErrors]);
 
   return (
@@ -41,7 +41,10 @@ export function PreviewFile({
           type="file"
           accept="image/*,video/*"
           {...register(fieldname, {
-            required: isRequired ? "Select a file is required" : false,
+            validate: {
+              required: () =>
+                !isRequired || !!file || "Select a file is required",
+            },
             onChange: (e) => {
               const target = e.target as HTMLInputElement;
               const files = target.files;

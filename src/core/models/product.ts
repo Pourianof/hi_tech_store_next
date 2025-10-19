@@ -1,3 +1,5 @@
+import { BrandModel } from "./brand";
+
 export interface Product {
   productId: number;
   title: string;
@@ -32,17 +34,10 @@ export interface ProductComponent {
   models: ProductComponentModel[];
 }
 
-interface ProductComponentModel {
+export interface ProductComponentModel {
   componentModelId: number;
   componentTypeId: number;
-  brandModel: BrandMode;
+  brandModel: BrandModel;
   description: string;
   properties: ProductProperty[];
-}
-
-interface BrandMode {
-  modelId: number;
-  brandName: string;
-  modelName: string;
-  descriotion: null;
 }
