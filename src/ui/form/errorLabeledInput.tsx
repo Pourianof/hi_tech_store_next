@@ -1,12 +1,8 @@
 import { captalize } from "@/lib/helpers/stringHelpers";
 import { TextInput } from "./textInput";
-import {
-  FieldErrors,
-  FieldValues,
-  RegisterOptions,
-  useFormContext,
-} from "react-hook-form";
+import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import { useEffect } from "react";
+import { ErrorMessageLabel } from "./errorMessageLabel";
 
 type RegisterOpts = RegisterOptions<FieldValues, string>;
 export function ErrorLabeledInput(props: {
@@ -23,14 +19,9 @@ export function ErrorLabeledInput(props: {
       otherFields: Record<string, string>
     ) => string | undefined | boolean;
   };
+  onChange?: (newValue: string) => void;
 }) {
-  const {
-    register,
-    formState: { errors },
-    getValues,
-    setValue,
-    resetField,
-  } = useFormContext();
+  const { register, getValues, setValue, resetField } = useFormContext();
 
   useEffect(() => {
     if (props.initValue) {
@@ -56,31 +47,6 @@ export function ErrorLabeledInput(props: {
     };
   }
 
-  const { filedName } = props;
-
-  let error = errors;
-  const fieldPathParts = filedName.split(".");
-
-  fieldPathParts.every((subFieldPath) => {
-    const index = parseInt(subFieldPath);
-    const path = Number.isInteger(index) ? index : subFieldPath;
-
-    if (error[path]) {
-      error = error[path] as FieldErrors<FieldValues>;
-      return true;
-    }
-
-    return false;
-  });
-
-  const fieldErrorName = props.name ?? fieldPathParts.at(-1);
-  let errorMessage = error?.message as unknown as string;
-  if (fieldErrorName && errorMessage)
-    errorMessage = errorMessage.replace(
-      new RegExp(props.filedName, "i"),
-      fieldErrorName!
-    );
-
   return (
     <div>
       <TextInput
@@ -90,11 +56,10 @@ export function ErrorLabeledInput(props: {
         {...register(props.filedName, {
           required: `${captalize(props.filedName)} field is required`,
           ...props.validationOptions,
+          onChange: (event) => props.onChange?.(event.target.value as string),
         } as RegisterOpts)}
       />
-      {!!errorMessage && (
-        <div className="text-red-500 text-sm">{errorMessage}</div>
-      )}
+      <ErrorMessageLabel fieldName={props.filedName} name={props.name} />
     </div>
   );
 }

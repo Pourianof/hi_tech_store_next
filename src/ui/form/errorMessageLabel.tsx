@@ -1,15 +1,22 @@
 import { useFormContext } from "react-hook-form";
+import { getMessageFromErrors } from "./rhf/reactHookFormHelpers";
 
-export function ErrorMessageLabel({ fieldName }: { fieldName: string }) {
+export function ErrorMessageLabel({
+  fieldName,
+  name,
+}: {
+  fieldName: string;
+  name?: string;
+}) {
   const {
     formState: { errors },
   } = useFormContext();
 
-  const errorMesage = errors[fieldName]?.message as string;
+  const errorMessage = getMessageFromErrors(fieldName, errors, name);
 
-  if (!errorMesage) {
+  if (!errorMessage) {
     return null;
   }
 
-  return <div className="text-red-500 text-sm">{errorMesage}</div>;
+  return <div className="text-red-500 text-sm">{errorMessage}</div>;
 }

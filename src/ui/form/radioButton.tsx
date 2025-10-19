@@ -3,9 +3,13 @@ import { ReactNode } from "react";
 export function RadioButton({
   label,
   name,
+  onSelect,
+  value,
 }: {
   label: string | ReactNode;
   name: string;
+  value?: unknown;
+  onSelect?: (options: { name: string; value: unknown }) => void;
 }) {
   return (
     <label className="text-gray-neutral-44">
@@ -20,6 +24,9 @@ export function RadioButton({
                [&:checked+span]:after:block"
                 type="radio"
                 name={name}
+                onChange={() => {
+                  onSelect?.({ name, value });
+                }}
               />
               <span
                 className="

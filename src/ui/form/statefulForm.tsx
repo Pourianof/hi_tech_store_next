@@ -1,7 +1,14 @@
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
 import { ResultModel } from "@/core/models/resultModel";
 import { handleProblemDetailErrors } from "@/lib/helpers/problemDetailsHelper";
-import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
+import {
+  BaseSyntheticEvent,
+  ButtonHTMLAttributes,
+  createContext,
+  DetailedHTMLProps,
+  ReactNode,
+  useContext,
+} from "react";
 import {
   FieldValues,
   FormProvider,
@@ -10,6 +17,14 @@ import {
   UseFormReturn,
 } from "react-hook-form";
 import toast from "react-hot-toast";
+import { NoContextDefinedError } from "../errors/NoContextDefinedError";
+
+interface IFormSubmitterContext {
+  submitter: VoidFunction;
+}
+const FormSubmitterContext = createContext<IFormSubmitterContext>(
+  {} as unknown as IFormSubmitterContext
+);
 
 export function StatefulForm(props: {
   onSubmit: (
@@ -21,7 +36,12 @@ export function StatefulForm(props: {
 }) {
   const methods = useForm();
 
-  async function submitHandler(data: FieldValues) {
+  async function submitHandler(
+    data: FieldValues,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    event?: BaseSyntheticEvent<object, any, any>
+  ) {
+    event?.stopPropagation();
     const result = await props.onSubmit(data, methods);
     if (!result) {
       return;
@@ -51,16 +71,17 @@ export function StatefulForm(props: {
 
     props.onSubmitionSuccessful(result.data as Record<string, unknown>);
   }
+
+  const submitter = methods.handleSubmit(submitHandler, (e) =>
+    console.error(e, methods.getValues())
+  );
   return (
     <FormProvider {...methods}>
-      <form
-        className="flex flex-col gap-2.5"
-        onSubmit={methods.handleSubmit(submitHandler, (e) =>
-          console.error(e, methods.getValues())
-        )}
-      >
-        {props.children}
-      </form>
+      <FormSubmitterContext.Provider value={{ submitter }}>
+        <form className="flex flex-col gap-2.5" onSubmit={submitter}>
+          {props.children}
+        </form>
+      </FormSubmitterContext.Provider>
     </FormProvider>
   );
 }
@@ -85,4 +106,25 @@ StatefulForm.ResetButton = function ResetButton(
       }}
     ></button>
   );
+};
+
+// This is helpful for nested forms which submitting inner forms
+// lead to submit of outer forms.
+StatefulForm.Submitter = function Submitter({
+  render,
+}: {
+  render: (submitter: VoidFunction) => ReactNode;
+}) {
+  const submitter = useContext(FormSubmitterContext);
+  const { trigger } = useFormContext();
+  if (!submitter) {
+    throw new NoContextDefinedError("submitter");
+  }
+
+  async function handleSubmission() {
+    const isValid = await trigger();
+    if (isValid) submitter.submitter();
+  }
+
+  return render(handleSubmission);
 };
