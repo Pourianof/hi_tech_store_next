@@ -26,6 +26,12 @@ const FormSubmitterContext = createContext<IFormSubmitterContext>(
   {} as unknown as IFormSubmitterContext
 );
 
+StatefulForm.SuccessSubmit = async function (
+  data: unknown
+): Promise<ResultModel> {
+  return { data, status: "success", statusCode: 200 };
+};
+
 export function StatefulForm(props: {
   onSubmit: (
     data: FieldValues,
@@ -33,8 +39,9 @@ export function StatefulForm(props: {
   ) => Promise<ResultModel | undefined>;
   onSubmitionSuccessful: (result: Record<string, unknown>) => void;
   children: ReactNode;
+  shouldUnregister?: boolean;
 }) {
-  const methods = useForm({ shouldUnregister: true });
+  const methods = useForm({ shouldUnregister: props.shouldUnregister });
 
   async function submitHandler(
     data: FieldValues,

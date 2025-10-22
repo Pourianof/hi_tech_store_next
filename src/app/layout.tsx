@@ -9,6 +9,7 @@ import { CategoryProvider } from "@/ui/contexts/categoriesContext";
 import { RoutePath } from "./_components/routePath";
 import { Wrapper } from "./_shared/wrapper";
 import { Footer } from "./_components/footer";
+import { CCQueryClientProvider } from "./dashboard/categories/_components/queryClientProvider";
 
 export default async function MainLayout(props: {
   children: ReactNode;
@@ -24,17 +25,19 @@ export default async function MainLayout(props: {
           <RoutePath />
         </Wrapper>
         <SessionProvider>
-          <CategoryProvider
-            categories={
-              categoriesResult.status == "success"
-                ? categoriesResult.data
-                : undefined
-            }
-          >
-            {props.children}
-            {props.auth}
-            <DashboardLinkButton />
-          </CategoryProvider>
+          <CCQueryClientProvider>
+            <CategoryProvider
+              categories={
+                categoriesResult.status == "success"
+                  ? categoriesResult.data
+                  : undefined
+              }
+            >
+              {props.children}
+              {props.auth}
+              <DashboardLinkButton />
+            </CategoryProvider>
+          </CCQueryClientProvider>
         </SessionProvider>
         <Footer />
         <Toaster position="bottom-center" gutter={10} />

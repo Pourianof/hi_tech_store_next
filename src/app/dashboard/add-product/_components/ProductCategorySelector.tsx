@@ -1,9 +1,12 @@
+import { ExpandableBox } from "@/app/products/_components/expandableBox";
 import { Category } from "@/core/models/category";
-import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
+import Icon from "@/ui/icons/icon";
 import { ApiImage } from "@/ui/image/ApiImage";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import Select from "react-select";
+import { ProductComponentsFormSection } from "./productComponentModelSettingForm";
+import { CategoryPropertiesForm } from "./propertiesForm";
 
 export function ProductCategorySelector({
   categories,
@@ -13,7 +16,7 @@ export function ProductCategorySelector({
   const form = useFormContext();
   const [selectedCategory, setSelectedCategory] = useState<Category>();
 
-  const propertiesValuesFieldName = "propertiesValues";
+  const categoryValuesFieldName = "categoryValues";
   function handleSelectionChange(val: unknown) {
     const { value: selectedCategory } = val as {
       label: string;
@@ -21,14 +24,14 @@ export function ProductCategorySelector({
     };
 
     form.setValue(
-      `${propertiesValuesFieldName}.categoryId`,
+      `${categoryValuesFieldName}.categoryId`,
       selectedCategory.categoryId
     );
     setSelectedCategory(selectedCategory);
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <label>Select category:</label>
       <Select
         onChange={handleSelectionChange}
@@ -38,29 +41,37 @@ export function ProductCategorySelector({
         }))}
       />
       {!!selectedCategory && (
-        <div className="border p-2 my-2">
-          <h5 className="font-semibold">Product properties:</h5>
-          {selectedCategory.properties.map((prop, index) => {
-            return (
-              <div key={prop.propertyId}>
-                <label>{prop.name}</label>
-                <ErrorLabeledInput
-                  type="text"
-                  filedName={`${propertiesValuesFieldName}.properties.${index}.propertyId`}
-                  placeholder={`Value for ${prop.name} property`}
-                  initValue={prop.propertyId}
-                  hidden
-                />
-                <ErrorLabeledInput
-                  name={prop.name}
-                  type="text"
-                  filedName={`${propertiesValuesFieldName}.properties.${index}.propertyValue`}
-                  placeholder={`Value for ${prop.name} property`}
-                />
-              </div>
-            );
-          })}
-        </div>
+        <>
+          <ExpandableBox
+            className="border p-3"
+            titleClassName="font-semibold border-b pb-2 mb-2"
+            title={
+              <h5>
+                <Icon name="checklist" className="me-2 text-xl" />
+                Product properties:
+              </h5>
+            }
+          >
+            <CategoryPropertiesForm
+              baseFieldName={categoryValuesFieldName}
+              properties={selectedCategory.properties}
+            />
+          </ExpandableBox>
+          <ExpandableBox
+            className="border p-3"
+            titleClassName="font-semibold border-b pb-2 mb-2"
+            title={
+              <h5>
+                <Icon name="component" className="me-2 text-xl" />
+                Product components:
+              </h5>
+            }
+          >
+            <ProductComponentsFormSection
+              components={selectedCategory.components}
+            />
+          </ExpandableBox>
+        </>
       )}
     </div>
   );

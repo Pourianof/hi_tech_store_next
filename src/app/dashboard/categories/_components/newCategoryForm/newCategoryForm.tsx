@@ -12,7 +12,7 @@ import { CategoryFormProvider } from "./categoryFormContext";
 import { CategoryProperties } from "./categoryProperties";
 import { ComponentContextProvider } from "./componentProvider";
 import { ComponentForm } from "./newComponentForm";
-import { PreviewFile } from "./previewFile";
+import { PreviewFile } from "../../../../../ui/form/previewFile";
 
 interface CategoryFormProps {
   submit: (

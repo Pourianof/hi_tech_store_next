@@ -6,6 +6,7 @@ export interface Category {
   image?: string;
   icon?: string;
   properties: CategoryProperty[];
+  components: CategoryComponent[];
 }
 
 export enum PropertyType {

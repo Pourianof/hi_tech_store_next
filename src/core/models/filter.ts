@@ -15,7 +15,7 @@ interface FilterBrand {
 }
 
 export interface ComponentFilter {
-  componentId: number;
+  componentTypeId: number;
   name: string;
   properties: PropertyFilter[];
   commonBrands: FilterBrand[];

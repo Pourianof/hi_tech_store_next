@@ -10,7 +10,7 @@ export function ExpandableBox({
   isOpen = true,
 }: {
   children: ReactNode;
-  title: string;
+  title: string | ReactNode;
   isOpen?: boolean;
   className?: string;
   titleClassName?: string;

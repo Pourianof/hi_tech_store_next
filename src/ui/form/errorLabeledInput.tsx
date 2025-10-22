@@ -13,6 +13,7 @@ export function ErrorLabeledInput(props: {
   initValue?: string | number;
   hidden?: boolean;
   name?: string;
+  isOptional?: boolean;
   validationOptions?: Omit<RegisterOpts, "validate"> & {
     validate?: (
       val: string,
@@ -47,6 +48,8 @@ export function ErrorLabeledInput(props: {
     };
   }
 
+  const isOptional = "isOptional" in props && props.isOptional !== false;
+
   return (
     <div>
       <TextInput
@@ -54,7 +57,9 @@ export function ErrorLabeledInput(props: {
         type={props.type}
         placeholder={props.placeholder}
         {...register(props.filedName, {
-          required: `${captalize(props.filedName)} field is required`,
+          ...(isOptional
+            ? {}
+            : { required: `${captalize(props.filedName)} field is required` }),
           ...props.validationOptions,
           onChange: (event) => props.onChange?.(event.target.value as string),
         } as RegisterOpts)}

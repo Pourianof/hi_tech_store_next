@@ -30,7 +30,7 @@ export function CategoryComponents({ fieldname }: { fieldname: string }) {
       selectedComponents.map((cmpnt) =>
         Boolean(cmpnt.componentTypeId)
           ? {
-              componentId: cmpnt.componentTypeId,
+              componentTypeId: cmpnt.componentTypeId,
             }
           : {
               newComponent: cmpnt,
