@@ -1,9 +1,9 @@
-import { Product } from "@/core/models/product";
 import { ApiImage } from "@/ui/image/ApiImage";
 import Link from "next/link";
 import { ProductScore } from "./productScore";
+import { ProductDto } from "@/core/Dtos/ProductDto";
 
-export function ProductItem({ product }: { product: Product }) {
+export function ProductItem({ product }: { product: ProductDto }) {
   const coverImage = product.media?.find((m) => m.isMain)?.url;
 
   return (

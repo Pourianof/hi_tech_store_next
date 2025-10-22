@@ -34,7 +34,8 @@ export function ProductForm(props: {
     const formData = convertFieldValuesToFormData(data);
 
     media.forEach((m) => formData.append("media", m.file));
-
+    // console.log(data);
+    // return { data: {}, status: "success", statusCode: 200 } as ResultModel;
     return createProduct(formData);
   }
 

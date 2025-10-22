@@ -1,4 +1,8 @@
-import { ProductMedia } from "../models/product";
+import {
+  ProductComponent,
+  ProductMedia,
+  ProductProperty,
+} from "../models/product";
 
 export interface ProductCreationDto {
   title: string;
@@ -11,10 +15,14 @@ export type ProductMediaDto = ProductMedia;
 
 export interface ProductDto {
   productId: number;
+  price: number;
   title: string;
   description?: string;
-  price: number;
-  media: ProductMediaDto[];
+  authorId?: string | number;
+  properties?: ProductProperty[];
+  media: ProductMedia[];
+  categoryId: number;
+  components: ProductComponent[];
   averageScore: number;
   scoreCounts: number;
   myScore?: number;
