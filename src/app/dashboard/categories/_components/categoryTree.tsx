@@ -48,23 +48,25 @@ function CategoryList({
   return (
     <>
       {newSubCategoryForm && (
-        <NewCategoryForm
-          oncancel={() => setNewSubCategoryForm(false)}
-          submit={async (formData) => {
-            if (categoryItem.category) {
-              formData.append(
-                "parentCategoryId",
-                `${categoryItem.category.categoryId}`
-              );
-            }
+        <Modal className="items-start overflow-auto p-5">
+          <NewCategoryForm
+            oncancel={() => setNewSubCategoryForm(false)}
+            submit={async (formData) => {
+              if (categoryItem.category) {
+                formData.append(
+                  "parentCategoryId",
+                  `${categoryItem.category.categoryId}`
+                );
+              }
 
-            return registerCategoryAction(formData);
-          }}
-          handleSubmitSuccussfully={(c) => {
-            setTree((t) => [...t, { category: c, subCategories: [] }]);
-            setNewSubCategoryForm(false);
-          }}
-        />
+              return registerCategoryAction(formData);
+            }}
+            handleSubmitSuccussfully={(c) => {
+              setTree((t) => [...t, { category: c, subCategories: [] }]);
+              setNewSubCategoryForm(false);
+            }}
+          />
+        </Modal>
       )}
       {tree.map((c) => (
         <CategoryItem
@@ -110,7 +112,7 @@ export function CategoryItem({
         />
       )}
       {!!editingCategory && (
-        <Modal onClose={() => setEditingCategory(undefined)}>
+        <Modal className="items-start overflow-auto p-5">
           <NewCategoryForm
             handleSubmitSuccussfully={(category) => {
               categoryItem.category.name = category.name;

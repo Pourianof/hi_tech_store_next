@@ -4,7 +4,6 @@ import { convertFieldValuesToFormData } from "@/lib/helpers/convertFieldValuesTo
 import { ChannelProvider } from "@/ui/contexts/channelContext";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { StatefulForm } from "@/ui/form/statefulForm";
-import { Modal } from "@/ui/modal/modal";
 import { useState } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { CategoryComponents } from "./categoryComponent";
@@ -38,23 +37,21 @@ export function NewCategoryForm(props: CategoryFormProps) {
   // so data will lost.
   // for those situation need to cache data in channel
   return (
-    <Modal className="items-start overflow-auto p-5">
-      <ChannelProvider channelIdentifier={CATEGORY_COMPONENT_FORM_CHANNEL}>
-        <ComponentContextProvider>
-          <CategoryFormProvider
-            context={{
-              backToCategoryFormMode() {
-                setIsComponentFormMode(false);
-              },
-              changeToComponentFormMode: () => setIsComponentFormMode(true),
-            }}
-          >
-            {isComponentFormMode && <ComponentForm />}
-            <CategoryForm {...props} hide={isComponentFormMode} />
-          </CategoryFormProvider>
-        </ComponentContextProvider>
-      </ChannelProvider>
-    </Modal>
+    <ChannelProvider channelIdentifier={CATEGORY_COMPONENT_FORM_CHANNEL}>
+      <ComponentContextProvider>
+        <CategoryFormProvider
+          context={{
+            backToCategoryFormMode() {
+              setIsComponentFormMode(false);
+            },
+            changeToComponentFormMode: () => setIsComponentFormMode(true),
+          }}
+        >
+          {isComponentFormMode && <ComponentForm />}
+          <CategoryForm {...props} hide={isComponentFormMode} />
+        </CategoryFormProvider>
+      </ComponentContextProvider>
+    </ChannelProvider>
   );
 }
 
