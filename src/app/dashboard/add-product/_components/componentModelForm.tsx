@@ -73,7 +73,6 @@ export function ComponentModelForm({
       <StatefulForm
         onSubmit={submitComponent}
         onSubmitionSuccessful={(componentModel) => {
-          console.log(componentModel);
           onSubmit(componentModel as unknown as ProductComponentModel);
         }}
       >
@@ -85,7 +84,6 @@ export function ComponentModelForm({
                 <NewBrandModelForm
                   onCancel={handleNewBrandFormCancel}
                   onNewBrandSubmitted={(brandModel) => {
-                    console.log("BRAND MODEL: ", brandModel);
                     onChange(brandModel);
                     handleNewBrandFormCancel();
                   }}
