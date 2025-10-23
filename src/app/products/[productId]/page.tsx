@@ -31,9 +31,9 @@ export default async function ProductItemPage({
         <div className="grow">
           <ProductOverview product={product} />
         </div>
-        <div className="w-1/4">
-          <PaymentBox product={product} />
-        </div>
+        <ProductProvider product={product}>
+          <PaymentBox />
+        </ProductProvider>
       </div>
       <ProductPageParts product={product} />
     </div>

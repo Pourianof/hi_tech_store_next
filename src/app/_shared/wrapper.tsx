@@ -7,5 +7,13 @@ export function Wrapper({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={`wrapper ${className ?? ""}`}>{children}</div>;
+  return (
+    <div
+      className={`max-w-[1440px] xl:w-[80%] md:w-[90%] w-[95%]  mx-auto ${
+        className ?? ""
+      }`}
+    >
+      {children}
+    </div>
+  );
 }

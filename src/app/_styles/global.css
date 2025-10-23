@@ -48,9 +48,3 @@
     border-color: var(--color-gray-200, currentcolor);
   }
 }
-
-.wrapper {
-  width: 80%;
-  max-width: 1440px;
-  margin-inline: auto;
-}
