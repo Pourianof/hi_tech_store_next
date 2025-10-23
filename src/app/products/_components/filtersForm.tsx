@@ -20,56 +20,57 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
   const filters = filterStats;
   const router = useRouter();
   const searchParams = useSearchParams();
+
   return (
-    <StatefulForm
-      onSubmitionSuccessful={() => {}}
-      onSubmit={async (data) => {
-        const url = new URL(window.location.href);
-        for (const [key, value] of Object.entries(data)) {
-          // convert keys like a_b to a.b that compatible with api server format
-          let _key = key.toLowerCase().trim().split("_").join(".");
-          if (_key && value) {
-            if (typeof value == "object" && (value.upper || value.lower)) {
-              const isNotNull = (value: unknown) =>
-                value != undefined && value != null;
-              if (isNotNull(value.upper)) {
-                url.searchParams.set(`${_key}[lte]`, value.upper);
+    <div className="min-w-1/4">
+      <StatefulForm
+        onSubmitionSuccessful={() => {}}
+        onSubmit={async (data) => {
+          const url = new URL(window.location.href);
+          for (const [key, value] of Object.entries(data)) {
+            // convert keys like a_b to a.b that compatible with api server format
+            let _key = key.toLowerCase().trim().split("_").join(".");
+            if (_key && value) {
+              if (typeof value == "object" && (value.upper || value.lower)) {
+                const isNotNull = (value: unknown) =>
+                  value != undefined && value != null;
+                if (isNotNull(value.upper)) {
+                  url.searchParams.set(`${_key}[lte]`, value.upper);
+                } else {
+                  url.searchParams.delete(`${_key}[lte]`);
+                }
+                if (isNotNull(value.lower)) {
+                  url.searchParams.set(`${_key}[gte]`, value.lower);
+                } else {
+                  url.searchParams.delete(`${_key}[gte]`);
+                }
+              } else if (value instanceof Array) {
+                _key = `${_key}[in]`;
+                if (!value.length) {
+                  url.searchParams.delete(_key);
+                } else {
+                  url.searchParams.set(_key, value.join(","));
+                }
               } else {
-                url.searchParams.delete(`${_key}[lte]`);
+                url.searchParams.set(_key, value);
               }
-              if (isNotNull(value.lower)) {
-                url.searchParams.set(`${_key}[gte]`, value.lower);
-              } else {
-                url.searchParams.delete(`${_key}[gte]`);
+            } else if (_key) {
+              const registeredKey = findMatchedKey(searchParams, _key);
+              if (!registeredKey) {
+                continue;
               }
-            } else if (value instanceof Array) {
-              _key = `${_key}[in]`;
-              if (!value.length) {
-                url.searchParams.delete(_key);
-              } else {
-                url.searchParams.set(_key, value.join(","));
-              }
-            } else {
-              url.searchParams.set(_key, value);
+              url.searchParams.delete(registeredKey);
             }
-          } else if (_key) {
-            const registeredKey = findMatchedKey(searchParams, _key);
-            if (!registeredKey) {
-              continue;
-            }
-            url.searchParams.delete(registeredKey);
           }
-        }
-        router.push(url.href);
-        return { status: "success", statusCode: 200, data: {} };
-      }}
-    >
-      <div>
-        <div className="flex">
+          router.push(url.href);
+          return { status: "success", statusCode: 200, data: {} };
+        }}
+      >
+        <div className="flex justify-between">
           <span className="font-semibold">Filters</span>
           <StatefulForm.ResetButton
             type="reset"
-            className="text-sm grow text-center text-main-blue cursor-pointer"
+            className="text-sm px-1  text-center text-main-blue cursor-pointer"
           >
             Clear all
           </StatefulForm.ResetButton>
@@ -138,8 +139,8 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
         >
           Apply Filters
         </Button>
-      </div>
-    </StatefulForm>
+      </StatefulForm>
+    </div>
   );
 }
 
