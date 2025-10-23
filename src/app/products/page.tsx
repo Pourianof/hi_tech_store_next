@@ -21,7 +21,7 @@ export default async function ProductListPage({
       <CategoryList />
       <div className="flex">
         <FilterFeeder searchParams={params} />
-        <div className="grid grid-cols-3 gap-2">
+        <div className="p-2 grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-2">
           {products.map((product) => (
             <ProductItem key={product.productId} product={product} />
           ))}

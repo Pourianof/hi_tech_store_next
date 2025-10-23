@@ -1,6 +1,7 @@
 import { ResultModel } from "@/core/models/resultModel";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { Product } from "@/core/models/product";
+import { ProductDto } from "@/core/Dtos/ProductDto";
 
 const API_URL = `${process.env.API_SERVER_ADDRESS}/products`;
 
@@ -18,7 +19,7 @@ export async function createNewProduct(product: FormData, accessToken: string) {
 
 export async function getProducts(
   searchQueries?: Record<string, string>
-): Promise<ResultModel<Product[]>> {
+): Promise<ResultModel<ProductDto[]>> {
   const url = new URL(API_URL);
   if (searchQueries) {
     Object.keys(searchQueries).forEach((key) => {
