@@ -1,11 +1,10 @@
 import { getProducts } from "@/api/productApi";
-import { ProductItem } from "../_components/productItem";
-import { CategoryList } from "./_components/categoryList";
-import { FilterSection } from "./_components/filtersForm";
-import { GetProductsFilters } from "@/api/filterApi";
-import { SortProductSelect } from "./_components/sortProductSelect";
 import Icon from "@/ui/icons/icon";
 import Link from "next/link";
+import { ProductItem } from "../_components/productItem";
+import { CategoryList } from "./_components/categoryList";
+import { FilterFeeder } from "./_components/filterFeeder";
+import { SortProductSelect } from "./_components/sortProductSelect";
 
 export default async function ProductListPage({
   searchParams,
@@ -18,17 +17,22 @@ export default async function ProductListPage({
     return <div>Something went wrong on fetching products...</div>;
   }
 
+  const searchString = new URLSearchParams(params).toString();
+
   const products = productsResult.data;
   return (
     <div>
       <CategoryList />
       <div className="flex">
-        <FilterFeeder searchParams={params} />
+        <div className="md:min-w-[max(25%,_200px)] sm:block sm:min-w-1/3 hidden">
+          <FilterFeeder searchParams={params} />
+        </div>
         <div>
           <div className="p-2 grid grid-cols-2 gap-5 sm:flex sm:justify-end">
             <Link
               className="sm:hidden flex items-center gap-2 shadow-lg rounded-xl text-xl text-start px-4"
-              href={{ pathname: "products/filters" }}
+              href={{ pathname: "products/filters", search: searchString }}
+              prefetch={true}
             >
               <Icon name="filter" />
               <span>Filters</span>
@@ -44,17 +48,4 @@ export default async function ProductListPage({
       </div>
     </div>
   );
-}
-
-async function FilterFeeder({
-  searchParams,
-}: {
-  searchParams: Record<string, string>;
-}) {
-  const filterResult = await GetProductsFilters(Number(searchParams.category));
-  if (filterResult.status == "failed") {
-    return <div>Could not fetch the filters</div>;
-  }
-
-  return <FilterSection filterStats={filterResult.data} />;
 }

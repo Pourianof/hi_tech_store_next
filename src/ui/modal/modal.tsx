@@ -5,15 +5,37 @@ export function Modal({
   children,
   onClose,
   className,
+  variants = "center",
 }: {
   children: ReactNode;
   onClose?: VoidFunction;
   className?: string;
+  variants?: "full-page" | "center" | "standard";
 }) {
+  let overlayClassName;
+  let containerClassName = "";
+
+  switch (variants) {
+    case "center":
+      overlayClassName = "items-center justify-center";
+      containerClassName = "rounded-2xl max-w-sm w-full shadow-xl";
+      break;
+    case "full-page":
+      overlayClassName = "items-stretch";
+      containerClassName = "w-full";
+      break;
+
+    case "standard":
+      overlayClassName = "items-center";
+      containerClassName = "rounded-2xl max-w-sm w-full shadow-xl";
+      break;
+  }
   return createPortal(
     <div
       className={
-        "fixed inset-0 bg-black/50 flex items-center justify-center z-50 " +
+        "fixed inset-0 bg-black/50 flex z-50 " +
+        overlayClassName +
+        " " +
         (className ?? "")
       }
     >
@@ -24,7 +46,7 @@ export function Modal({
           onClose?.();
         }}
       ></div>
-      <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-sm z-20">
+      <div className={"bg-white p-6 z-20 " + containerClassName}>
         {children}
       </div>
     </div>,
