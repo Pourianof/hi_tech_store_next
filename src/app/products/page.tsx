@@ -3,6 +3,9 @@ import { ProductItem } from "../_components/productItem";
 import { CategoryList } from "./_components/categoryList";
 import { FilterSection } from "./_components/filtersForm";
 import { GetProductsFilters } from "@/api/filterApi";
+import { SortProductSelect } from "./_components/sortProductSelect";
+import Icon from "@/ui/icons/icon";
+import Link from "next/link";
 
 export default async function ProductListPage({
   searchParams,
@@ -21,10 +24,22 @@ export default async function ProductListPage({
       <CategoryList />
       <div className="flex">
         <FilterFeeder searchParams={params} />
-        <div className="p-2 grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-2">
-          {products.map((product) => (
-            <ProductItem key={product.productId} product={product} />
-          ))}
+        <div>
+          <div className="p-2 grid grid-cols-2 gap-5 sm:flex sm:justify-end">
+            <Link
+              className="sm:hidden flex items-center gap-2 shadow-lg rounded-xl text-xl text-start px-4"
+              href={{ pathname: "products/filters" }}
+            >
+              <Icon name="filter" />
+              <span>Filters</span>
+            </Link>
+            <SortProductSelect />
+          </div>
+          <div className="p-2 grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
+            {products.map((product) => (
+              <ProductItem key={product.productId} product={product} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

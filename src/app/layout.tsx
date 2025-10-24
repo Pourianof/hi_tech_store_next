@@ -19,6 +19,9 @@ export default async function MainLayout(props: {
 
   return (
     <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
       <body>
         <Header />
         <Wrapper>

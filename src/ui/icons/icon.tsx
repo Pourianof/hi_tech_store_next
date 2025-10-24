@@ -39,6 +39,7 @@ import Discount from "@/assets/tech_heim/discount-shape.svg";
 import Checklist from "@/assets/tech_heim/checklist.svg";
 import Component from "@/assets/tech_heim/component.svg";
 import Close from "@/assets/tech_heim/close.svg";
+import Filter from "@/assets/tech_heim/filter.svg";
 
 import { createContext, useContext } from "react";
 
@@ -84,6 +85,7 @@ const ICONS = {
   checklist: Checklist,
   component: Component,
   close: Close,
+  filter: Filter,
 };
 
 export type IconNames = keyof typeof ICONS;

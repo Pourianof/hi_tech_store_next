@@ -22,7 +22,7 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
   const searchParams = useSearchParams();
 
   return (
-    <div className="min-w-1/4">
+    <div className="md:min-w-[max(25%,_200px)] sm:block sm:min-w-1/3 hidden">
       <StatefulForm
         onSubmitionSuccessful={() => {}}
         onSubmit={async (data) => {
