@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+"use client";
+import { ReactNode, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 
 export function Modal({
@@ -6,12 +7,23 @@ export function Modal({
   onClose,
   className,
   variants = "center",
+  diableScroll = true,
 }: {
   children: ReactNode;
   onClose?: VoidFunction;
   className?: string;
   variants?: "full-page" | "center" | "standard";
+  diableScroll?: boolean;
 }) {
+  useLayoutEffect(() => {
+    if (diableScroll) {
+      window.document.body.style.overflow = "hidden";
+      return () => {
+        window.document.body.style.overflow = "auto";
+      };
+    }
+  }, [diableScroll]);
+
   let overlayClassName;
   let containerClassName = "";
 
