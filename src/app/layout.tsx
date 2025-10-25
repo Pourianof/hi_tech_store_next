@@ -10,6 +10,7 @@ import { RoutePath } from "./_components/routePath";
 import { Wrapper } from "./_shared/wrapper";
 import { Footer } from "./_components/footer";
 import { CCQueryClientProvider } from "./dashboard/categories/_components/queryClientProvider";
+import { CartHandlerProvider } from "@/ui/contexts/cart/cartContext";
 
 export default async function MainLayout(props: {
   children: ReactNode;
@@ -23,26 +24,28 @@ export default async function MainLayout(props: {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
-        <CategoryProvider
-          categories={
-            categoriesResult.status == "success"
-              ? categoriesResult.data
-              : undefined
-          }
-        >
-          <Header />
-          <Wrapper>
-            <RoutePath />
-          </Wrapper>
-          <SessionProvider>
-            <CCQueryClientProvider>
-              {props.children}
-              {props.auth}
-              <DashboardLinkButton />
-            </CCQueryClientProvider>
-          </SessionProvider>
-        </CategoryProvider>
-        <Footer />
+        <CartHandlerProvider>
+          <CategoryProvider
+            categories={
+              categoriesResult.status == "success"
+                ? categoriesResult.data
+                : undefined
+            }
+          >
+            <Header />
+            <Wrapper>
+              <RoutePath />
+            </Wrapper>
+            <SessionProvider>
+              <CCQueryClientProvider>
+                {props.children}
+                {props.auth}
+                <DashboardLinkButton />
+              </CCQueryClientProvider>
+            </SessionProvider>
+          </CategoryProvider>
+          <Footer />
+        </CartHandlerProvider>
         <Toaster position="bottom-center" gutter={10} />
       </body>
     </html>
