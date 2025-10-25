@@ -4,9 +4,9 @@ import { NoContextDefinedError } from "@/ui/errors/NoContextDefinedError";
 
 interface ICartContext extends CartState {
   actions: {
-    add(payload: CartPayloads<"Add">): void;
-    remove(payload: CartPayloads<"Remove">): void;
-    decrease(payload: CartPayloads<"Decrease">): void;
+    addProductToCart(payload: CartPayloads<"Add">): void;
+    removeProductFromCart(payload: CartPayloads<"Remove">): void;
+    decreaseAmountOfProduct(payload: CartPayloads<"Decrease">): void;
   };
 }
 
@@ -27,19 +27,19 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
       value={{
         ...state,
         actions: {
-          add(payload) {
+          addProductToCart(payload) {
             dispatch({
               action: "Add",
               payload,
             });
           },
-          decrease(payload) {
+          removeProductFromCart(payload) {
             dispatch({
               action: "Decrease",
               payload,
             });
           },
-          remove(payload) {
+          decreaseAmountOfProduct(payload) {
             dispatch({ action: "Remove", payload });
           },
         },
