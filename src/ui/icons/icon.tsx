@@ -41,6 +41,8 @@ import Component from "@/assets/tech_heim/component.svg";
 import Close from "@/assets/tech_heim/close.svg";
 import Filter from "@/assets/tech_heim/filter.svg";
 import Back from "@/assets/tech_heim/back.svg";
+import Menu from "@/assets/tech_heim/menu.svg";
+import CircleClose from "@/assets/tech_heim/close-circle.svg";
 
 import { createContext, useContext } from "react";
 
@@ -88,6 +90,8 @@ const ICONS = {
   close: Close,
   filter: Filter,
   back: Back,
+  menu: Menu,
+  circular_close: CircleClose,
 };
 
 export type IconNames = keyof typeof ICONS;

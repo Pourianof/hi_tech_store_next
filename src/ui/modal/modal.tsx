@@ -8,12 +8,14 @@ export function Modal({
   className,
   variants = "center",
   diableScroll = true,
+  containerClassName,
 }: {
   children: ReactNode;
   onClose?: VoidFunction;
   className?: string;
-  variants?: "full-page" | "center" | "standard";
+  variants?: "full-page" | "center" | "standard" | "raw";
   diableScroll?: boolean;
+  containerClassName?: string;
 }) {
   useLayoutEffect(() => {
     if (diableScroll) {
@@ -25,22 +27,24 @@ export function Modal({
   }, [diableScroll]);
 
   let overlayClassName;
-  let containerClassName = "";
+  let _containerClassName = "";
 
   switch (variants) {
     case "center":
       overlayClassName = "items-center justify-center";
-      containerClassName = "rounded-2xl max-w-sm w-full shadow-xl";
+      _containerClassName = "rounded-2xl max-w-sm w-full shadow-xl";
       break;
     case "full-page":
       overlayClassName = "items-stretch";
-      containerClassName = "w-full";
+      _containerClassName = "w-full";
       break;
 
     case "standard":
       overlayClassName = "items-center";
-      containerClassName = "rounded-2xl max-w-sm w-full shadow-xl";
+      _containerClassName = "rounded-2xl max-w-sm w-full shadow-xl";
       break;
+    case "raw":
+      _containerClassName = "";
   }
   return createPortal(
     <div
@@ -58,7 +62,14 @@ export function Modal({
           onClose?.();
         }}
       ></div>
-      <div className={"bg-white p-6 z-20 " + containerClassName}>
+      <div
+        className={
+          "bg-white p-6 z-20 " +
+          _containerClassName +
+          " " +
+          (containerClassName ?? "")
+        }
+      >
         {children}
       </div>
     </div>,
