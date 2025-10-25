@@ -1,13 +1,13 @@
-import { ProductDto } from "@/core/Dtos/ProductDto";
+import { Product } from "@/core/models/product";
 
 interface AddProductData {
-  product: ProductDto;
+  product: Product;
   amount?: number;
 }
 
 interface CartActionPayloads {
   Add: AddProductData;
-  Decrease: ProductDto;
+  Decrease: Product;
   Remove: void;
 }
 
@@ -16,7 +16,7 @@ export type CartPayloads<T extends CartActions> = CartActionPayloads[T];
 
 export interface CartState {
   products: {
-    product: ProductDto;
+    product: Product;
     amount: number;
   }[];
 }

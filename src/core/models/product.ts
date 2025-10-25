@@ -11,6 +11,9 @@ export interface Product {
   media?: ProductMedia[];
   properties: ProductProperty[];
   components: ProductComponent[];
+  description?: string;
+  authorId?: string | number;
+  categoryId: number;
 }
 
 export interface ProductProperty {
