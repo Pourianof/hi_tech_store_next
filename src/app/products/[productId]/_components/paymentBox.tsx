@@ -9,6 +9,7 @@ import Icon from "@/ui/icons/icon";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useProduct } from "../_contexts/productContext";
+import { useCart } from "@/ui/contexts/cart/cartContext";
 
 const PAYMENT_CHANNEL = "payment-channel";
 export function PaymentBox() {
@@ -33,6 +34,10 @@ export function PaymentBox() {
 function MainPayment() {
   const channel = useConsumable(PAYMENT_CHANNEL);
   const [showMode, setShowMode] = useState(false);
+  const {
+    actions: { addProductToCart },
+  } = useCart();
+  const product = useProduct();
   // const displayMode = "display" in props && props.display !== false;
 
   useEffect(() => {
@@ -97,6 +102,10 @@ function MainPayment() {
             sx={{
               textTransform: "none",
               paddingY: "0.7rem",
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              addProductToCart({ amount: 1, product });
             }}
           >
             Add to cart

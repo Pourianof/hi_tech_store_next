@@ -8,7 +8,7 @@ interface AddProductData {
 interface CartActionPayloads {
   Add: AddProductData;
   Decrease: Product;
-  Remove: void;
+  Remove: Product;
 }
 
 export type CartActions = keyof CartActionPayloads;
@@ -51,12 +51,12 @@ export function cartReducer<T extends CartActions>(
       return { ...state };
     }
     case "Decrease": {
-      const addedData = action.payload as AddProductData;
-      if (!addedData || !addedData.product) {
+      const addedData = action.payload as Product;
+      if (!addedData || !addedData) {
         throw new Error("no product state provided for Cart Reducer");
       }
       const productIndexInList = state.products.findIndex(
-        (p) => p.product.productId == addedData.product.productId
+        (p) => p.product.productId == addedData.productId
       );
 
       if (productIndexInList < 0) {

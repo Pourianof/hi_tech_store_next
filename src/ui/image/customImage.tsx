@@ -8,6 +8,7 @@ interface CustomImageProps {
   aspectRatio?: number;
   square?: boolean;
   imageClassName?: string;
+  width?: number;
 }
 
 export function CustomImage(props: CustomImageProps) {
@@ -48,6 +49,7 @@ export function RawImage(
       isSquare={isSquare}
       aspectRatio={props.aspectRatio}
       className={props.className}
+      width={props.width}
     >
       {
         // eslint-disable-next-line @next/next/no-img-element
@@ -66,13 +68,19 @@ function ImageBox(props: {
   className?: string;
   aspectRatio?: number;
   children: ReactNode;
+  width?: number;
 }) {
   return (
     <div
       className={`relative ${props.className ?? "w-full"} ${
         props.isSquare ? "aspect-square" : ""
       }`}
-      style={props.aspectRatio ? { aspectRatio: props.aspectRatio } : undefined}
+      style={{
+        ...(props.aspectRatio ? { aspectRatio: props.aspectRatio } : {}),
+        ...(props.width
+          ? { width: `${props.width}px`, minWidth: `${props.width}px` }
+          : {}),
+      }}
     >
       {props.children}
     </div>

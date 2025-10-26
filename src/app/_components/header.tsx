@@ -1,10 +1,11 @@
-import Image from "next/image";
-import { APP_TITLE } from "../consts";
-import Link from "next/link";
-import { Wrapper } from "../_shared/wrapper";
-import { auth } from "../../../auth";
 import Icon from "@/ui/icons/icon";
 import { Session } from "next-auth";
+import Image from "next/image";
+import Link from "next/link";
+import { auth } from "../../../auth";
+import { Wrapper } from "../_shared/wrapper";
+import { APP_TITLE } from "../consts";
+import { CartBadge } from "./cartBadge";
 import { HeaderDrawerButton } from "./headerDrawerButton";
 
 export async function Header() {
@@ -26,8 +27,8 @@ function MobileHeader() {
       <Link href={{ pathname: "/" }}>
         <h4 className="font-semibold text-primary-blue-400">HiTech Store</h4>
       </Link>
-      <div className="flex gap-2">
-        <Icon name="order_basket" />
+      <div className="flex gap-4 items-center">
+        <CartBadge />
         <Icon name="user" />
       </div>
     </div>
@@ -47,7 +48,7 @@ function LargeHeader({ session }: { session: Session | null }) {
       </div>
       <div className="space-x-2 flex">
         <Icon name="search" />
-        <Icon name="order_basket" />
+        <CartBadge />
         <Link
           className="flex gap-1"
           href={{ pathname: session ? "/account" : "/login" }}

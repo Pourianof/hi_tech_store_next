@@ -43,6 +43,10 @@ import Filter from "@/assets/tech_heim/filter.svg";
 import Back from "@/assets/tech_heim/back.svg";
 import Menu from "@/assets/tech_heim/menu.svg";
 import CircleClose from "@/assets/tech_heim/close-circle.svg";
+import ArrowForward from "@/assets/tech_heim/arrow-forward.svg";
+import Add from "@/assets/tech_heim/add-outline.svg";
+import Remove from "@/assets/tech_heim/remove-outline.svg";
+import Cart from "@/assets/tech_heim/cart-outline.svg";
 
 import { createContext, useContext } from "react";
 
@@ -92,6 +96,10 @@ const ICONS = {
   back: Back,
   menu: Menu,
   circular_close: CircleClose,
+  arrow_forward: ArrowForward,
+  add: Add,
+  remove: Remove,
+  cart: Cart,
 };
 
 export type IconNames = keyof typeof ICONS;
