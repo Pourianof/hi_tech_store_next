@@ -14,13 +14,13 @@ export async function Header() {
     <header className="border-b py-2 sticky top-0 bg-white z-50">
       <Wrapper>
         <LargeHeader session={session} />
-        <MobileHeader />
+        <MobileHeader session={session} />
       </Wrapper>
     </header>
   );
 }
 
-function MobileHeader() {
+function MobileHeader({ session }: { session: Session | null }) {
   return (
     <div className="md:hidden flex justify-between gap-2 text-xl font-medium">
       <HeaderDrawerButton />
@@ -29,7 +29,7 @@ function MobileHeader() {
       </Link>
       <div className="flex gap-4 items-center">
         <CartBadge />
-        <Icon name="user" />
+        <UserLink session={session} />
       </div>
     </div>
   );
@@ -49,18 +49,24 @@ function LargeHeader({ session }: { session: Session | null }) {
       <div className="space-x-2 flex">
         <Icon name="search" />
         <CartBadge />
-        <Link
-          className="flex gap-1"
-          href={{ pathname: session ? "/account" : "/login" }}
-        >
-          <Icon name="user" />
-          {!!session && (
-            <span className="text-sm bg-gray-300 inline-block px-1 rounded hover:bg-gray-400">
-              {session.user?.name}
-            </span>
-          )}
-        </Link>
+        <UserLink session={session} />
       </div>
     </div>
+  );
+}
+
+function UserLink({ session }: { session: Session | null }) {
+  return (
+    <Link
+      className="flex gap-1"
+      href={{ pathname: session ? "/account" : "/login" }}
+    >
+      <Icon name="user" />
+      {!!session && (
+        <span className="text-sm bg-gray-300 inline-block px-1 rounded hover:bg-gray-400">
+          {session.user?.name}
+        </span>
+      )}
+    </Link>
   );
 }
