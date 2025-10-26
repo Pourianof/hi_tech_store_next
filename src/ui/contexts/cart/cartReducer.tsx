@@ -76,7 +76,10 @@ export function cartReducer<T extends CartActions>(
     }
     case "Remove": {
       return {
-        products: [],
+        products: state.products.filter(
+          (prod) =>
+            prod.product.productId != (action.payload as Product).productId
+        ),
       };
     }
 
