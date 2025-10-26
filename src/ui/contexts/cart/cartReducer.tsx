@@ -9,6 +9,7 @@ interface CartActionPayloads {
   Add: AddProductData;
   Decrease: Product;
   Remove: Product;
+  Initialize: CartState;
 }
 
 export type CartActions = keyof CartActionPayloads;
@@ -77,6 +78,10 @@ export function cartReducer<T extends CartActions>(
       return {
         products: [],
       };
+    }
+
+    case "Initialize": {
+      return action.payload as CartState;
     }
   }
 }

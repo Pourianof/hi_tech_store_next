@@ -1,8 +1,20 @@
 "use client";
-import { createContext, ReactNode, useContext, useReducer } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+} from "react";
 import { CartPayloads, cartReducer, CartState } from "./cartReducer";
 import { NoContextDefinedError } from "@/ui/errors/NoContextDefinedError";
 import toast from "react-hot-toast";
+import { useLocalStorageChange } from "@/ui/hooks/useLocalStorage";
+import {
+  getFromLocalStorage,
+  saveToLocalStorage,
+} from "@/ui/helpers/storageHelper";
 
 interface ICartContext extends CartState {
   actions: {
@@ -16,11 +28,40 @@ const CartContext = createContext<ICartContext | undefined>(
   undefined as unknown as ICartContext
 );
 
+export const CART_KEY = "local_storage_key";
+
 export function CartHandlerProvider({ children }: { children: ReactNode }) {
   const _context = useCart_();
   const [state, dispatch] = useReducer(cartReducer, {
     products: [],
   });
+
+  const shouldSaveRef = useRef(false);
+
+  useLocalStorageChange({
+    storageKey: CART_KEY,
+    onChange(_context, newValue) {
+      dispatch({
+        action: "Initialize",
+        payload: newValue
+          ? JSON.parse(newValue)
+          : ({ products: [] } as CartState),
+      });
+      shouldSaveRef.current = false;
+    },
+  });
+
+  useEffect(() => {
+    const cartState = getFromLocalStorage(CART_KEY);
+    if (cartState) {
+      dispatch({ action: "Initialize", payload: cartState });
+    }
+  }, []);
+
+  useEffect(() => {
+    // i dont know why but fortunately not stuck in infinite saving -> re-initialize -> notify -> saving loop
+    saveToLocalStorage(CART_KEY, state);
+  }, [state]);
 
   if (_context) {
     throw new Error("Cart context must define only one time in component tree");
@@ -37,6 +78,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
               action: "Add",
               payload,
             });
+
             if (toastNotif) toast.success("Product added to cart successfully");
           },
           removeProductFromCart(payload) {
