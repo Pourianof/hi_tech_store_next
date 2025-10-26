@@ -1,13 +1,16 @@
 "use client";
-import { Product } from "@/core/models/product";
+import { CartItem } from "@/core/models/cartItem";
 import { useCart } from "@/ui/contexts/cart/cartContext";
 import Icon from "@/ui/icons/icon";
 import { ApiImage } from "@/ui/image/ApiImage";
-import { Badge } from "@mui/material";
+import { Badge, Button } from "@mui/material";
 import Link from "next/link";
 
 export function CartBadge() {
   const { products } = useCart();
+  const cartItems = products.map(
+    ({ amount, product }) => new CartItem(product, amount)
+  );
   return (
     <div className="relative hover:[&>.cart-box]:opacity-100 hover:[&>.cart-box]:visible">
       <div className="p-4 text-sm shadow-standard rounded-xl cart-box invisible opacity-0 duration-200 transition delay-100 bg-white absolute z-20 top-full right-0">
@@ -15,11 +18,27 @@ export function CartBadge() {
           <Icon name="cart" />
           Your cart
         </h4>
-        {!!products.length ? (
+        {!!cartItems.length ? (
           <div className="flex flex-col gap-4 py-2 divide-y">
-            {products.map((prod) => (
-              <CartProductItem key={prod.product.productId} {...prod} />
+            {cartItems.map((cartItem) => (
+              <CartProductItem
+                key={cartItem.product.productId}
+                cartItem={cartItem}
+              />
             ))}
+            <div className="flex items-center justify-between">
+              <div>
+                <span>Total price: </span>
+                <span>
+                  {cartItems.reduce((prev, cur) => prev + cur.finalPrice, 0)}
+                </span>
+              </div>
+              <Link href={{ pathname: "/order" }}>
+                <Button variant="outlined" onClick={(e) => e.preventDefault()}>
+                  Order now
+                </Button>
+              </Link>
+            </div>
           </div>
         ) : (
           <div className="w-max relative py-8">
@@ -55,28 +74,36 @@ export function CartBadge() {
   );
 }
 
-function CartProductItem({
-  amount,
-  product,
-}: {
-  product: Product;
-  amount: number;
-}) {
+function CartProductItem({ cartItem }: { cartItem: CartItem }) {
   const { actions } = useCart();
+  const { product, amount } = cartItem;
   const coverImage = product.media?.find((m) => m.isMain)?.url;
   return (
-    <div key={product.productId} className="flex gap-2">
+    <div key={product.productId} className="flex gap-2 py-2">
       <ApiImage square alt={product.title} src={coverImage} width={100} />
       <div>
         <h4 className="text-sm line-clamp-2 w-max max-w-[150px]">
           {product.title}
         </h4>
         <div className="whitespace-nowrap flex items-center my-2">
-          <span>${product.price}</span>
+          <div className="flex flex-col">
+            {!!product.discount && (
+              <>
+                <span className="text-gray-300 text-xs space-x-1">
+                  <span className="line-through">${product.price}</span>
+                  <span className="text-orange-400 text-xs">
+                    {product.discount}%
+                  </span>
+                </span>
+              </>
+            )}
+
+            <span>${cartItem.getPayingProductPrice()}</span>
+          </div>
           <span className="opacity-45 text-[10px]">(×{amount})</span>
           <Icon name="arrow_forward" />
           <span className="bg-slate-300 inline-block p-0.5 rounded">
-            ${product.price * amount}
+            ${cartItem.finalPrice}
           </span>
         </div>
         <div className="flex items-stretch">
