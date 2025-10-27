@@ -38,6 +38,14 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
 
   const shouldSaveRef = useRef(false);
 
+  function save() {
+    shouldSaveRef.current = true;
+  }
+
+  function noSave() {
+    shouldSaveRef.current = false;
+  }
+
   useLocalStorageChange({
     storageKey: CART_KEY,
     onChange(_context, newValue) {
@@ -45,7 +53,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
         action: "Initialize",
         payload: newValue ? JSON.parse(newValue) : ({ items: [] } as CartState),
       });
-      shouldSaveRef.current = false;
+      noSave();
     },
   });
 
@@ -57,8 +65,9 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // no its buggy as f**
-    saveToLocalStorage(CART_KEY, state);
+    if (shouldSaveRef.current) {
+      saveToLocalStorage(CART_KEY, state);
+    }
   }, [state]);
 
   if (_context) {
@@ -78,15 +87,18 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
             });
 
             if (toastNotif) toast.success("Product added to cart successfully");
+            save();
           },
           removeProductFromCart(payload) {
             dispatch({ action: "Remove", payload });
+            save();
           },
           decreaseAmountOfProduct(payload) {
             dispatch({
               action: "Decrease",
               payload,
             });
+            save();
           },
         },
       }}
