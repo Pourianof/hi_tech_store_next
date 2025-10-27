@@ -57,7 +57,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // i dont know why but fortunately not stuck in infinite saving -> re-initialize -> notify -> saving loop
+    // no its buggy as f**
     saveToLocalStorage(CART_KEY, state);
   }, [state]);
 
