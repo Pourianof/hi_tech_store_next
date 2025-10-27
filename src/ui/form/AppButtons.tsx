@@ -20,10 +20,14 @@ export function FilledButton({
         py: "10px",
         fontSize: "16px",
       }}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick?.();
-      }}
+      onClick={
+        onClick
+          ? (e) => {
+              e.preventDefault();
+              onClick?.();
+            }
+          : undefined
+      }
       fullWidth
       className={className}
     >
