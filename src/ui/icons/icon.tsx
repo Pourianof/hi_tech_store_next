@@ -47,6 +47,7 @@ import ArrowForward from "@/assets/tech_heim/arrow-forward.svg";
 import Add from "@/assets/tech_heim/add-outline.svg";
 import Remove from "@/assets/tech_heim/remove-outline.svg";
 import Cart from "@/assets/tech_heim/cart-outline.svg";
+import Card from "@/assets/tech_heim/card.svg";
 
 import { createContext, useContext } from "react";
 
@@ -100,6 +101,7 @@ const ICONS = {
   add: Add,
   remove: Remove,
   cart: Cart,
+  card: Card,
 };
 
 export type IconNames = keyof typeof ICONS;

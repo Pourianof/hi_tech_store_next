@@ -33,7 +33,7 @@ export const CART_KEY = "local_storage_key";
 export function CartHandlerProvider({ children }: { children: ReactNode }) {
   const _context = useCart_();
   const [state, dispatch] = useReducer(cartReducer, {
-    products: [],
+    items: [],
   });
 
   const shouldSaveRef = useRef(false);
@@ -43,9 +43,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     onChange(_context, newValue) {
       dispatch({
         action: "Initialize",
-        payload: newValue
-          ? JSON.parse(newValue)
-          : ({ products: [] } as CartState),
+        payload: newValue ? JSON.parse(newValue) : ({ items: [] } as CartState),
       });
       shouldSaveRef.current = false;
     },

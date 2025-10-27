@@ -16,7 +16,7 @@ export type CartActions = keyof CartActionPayloads;
 export type CartPayloads<T extends CartActions> = CartActionPayloads[T];
 
 export interface CartState {
-  products: {
+  items: {
     product: Product;
     amount: number;
   }[];
@@ -32,7 +32,7 @@ export function cartReducer<T extends CartActions>(
       if (!addedData || !addedData.product) {
         throw new Error("no product state provided for Cart Reducer");
       }
-      const productInList = state.products.find(
+      const productInList = state.items.find(
         (p) => p.product.productId == addedData.product.productId
       );
 
@@ -44,7 +44,7 @@ export function cartReducer<T extends CartActions>(
         return { ...state };
       }
 
-      state.products.push({
+      state.items.push({
         product: addedData.product,
         amount: addedAmount,
       });
@@ -56,7 +56,7 @@ export function cartReducer<T extends CartActions>(
       if (!addedData || !addedData) {
         throw new Error("no product state provided for Cart Reducer");
       }
-      const productIndexInList = state.products.findIndex(
+      const productIndexInList = state.items.findIndex(
         (p) => p.product.productId == addedData.productId
       );
 
@@ -64,10 +64,10 @@ export function cartReducer<T extends CartActions>(
         return state;
       }
 
-      const productInList = state.products[productIndexInList];
+      const productInList = state.items[productIndexInList];
 
       if (!--productInList.amount) {
-        state.products.splice(productIndexInList, 1);
+        state.items.splice(productIndexInList, 1);
       }
 
       return {
@@ -76,7 +76,7 @@ export function cartReducer<T extends CartActions>(
     }
     case "Remove": {
       return {
-        products: state.products.filter(
+        items: state.items.filter(
           (prod) =>
             prod.product.productId != (action.payload as Product).productId
         ),
