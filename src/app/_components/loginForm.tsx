@@ -4,12 +4,14 @@ import Link from "next/link";
 import { ErrorLabeledInput } from "../../ui/form/errorLabeledInput";
 import { StatefulForm } from "../../ui/form/statefulForm";
 import { useFormContext } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 export function LoginForm() {
   const router = useRouter();
   const session = useSession();
+  const searchParams = useSearchParams();
 
   return (
     <StatefulForm
@@ -18,7 +20,15 @@ export function LoginForm() {
       }}
       onSubmitionSuccessful={() => {
         session.update();
-        router.replace("/");
+        const redirectPath = searchParams.get("redirect")?.trim();
+        toast.success("Login was successful.");
+        setTimeout(() => {
+          if (redirectPath) {
+            router.replace(redirectPath);
+          } else {
+            router.replace("/");
+          }
+        }, 1000);
       }}
     >
       <ErrorLabeledInput
