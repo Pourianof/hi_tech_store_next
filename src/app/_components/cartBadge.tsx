@@ -4,7 +4,7 @@ import { useCart } from "@/ui/contexts/cart/cartContext";
 import Icon from "@/ui/icons/icon";
 import { Badge, Button } from "@mui/material";
 import Link from "next/link";
-import { CartItemBox } from "../cart/_components/cartItemBox";
+import { CartItemBox } from "../order/cart/_components/cartItemBox";
 
 export function CartBadge() {
   const { items: products } = useCart();
@@ -33,7 +33,7 @@ export function CartBadge() {
                   {cartItems.reduce((prev, cur) => prev + cur.finalPrice, 0)}
                 </span>
               </div>
-              <Link href={{ pathname: "/cart" }}>
+              <Link href={{ pathname: "/order/cart" }}>
                 <Button variant="outlined" onClick={(e) => e.preventDefault()}>
                   Order now
                 </Button>
@@ -50,7 +50,7 @@ export function CartBadge() {
           </div>
         )}
       </div>
-      <Link href={{ pathname: "/cart" }}>
+      <Link href={{ pathname: "/order/cart" }}>
         <Badge
           badgeContent={products.length}
           anchorOrigin={{

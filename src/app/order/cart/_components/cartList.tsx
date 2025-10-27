@@ -36,7 +36,7 @@ export function CartList() {
           <span className="">Grand total</span>
           <span>${cartPrice + 22.5}</span>
         </div>
-        <Link href={{ pathname: "/checkout" }}>
+        <Link href={{ pathname: "/order/checkout" }}>
           <FilledButton>Procced to checkout</FilledButton>
         </Link>
       </div>
