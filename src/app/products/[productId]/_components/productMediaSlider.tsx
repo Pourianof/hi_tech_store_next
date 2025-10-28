@@ -1,5 +1,5 @@
 "use client";
-import { Slider } from "@/app/_components/slider";
+import { Slider } from "@/ui/slider";
 import { ProductMedia } from "@/core/models/product";
 import { ApiImage } from "@/ui/image/ApiImage";
 import { ReactNode, useEffect, useState } from "react";

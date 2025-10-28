@@ -1,6 +1,6 @@
 import { getProducts } from "@/api/productApi";
 import { ProductItem } from "@/app/_components/productItem";
-import { Slider, SliderContainer, SliderItem } from "@/app/_components/slider";
+import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
 
 export async function SimilarProducts() {
   const productsResult = await getProducts();

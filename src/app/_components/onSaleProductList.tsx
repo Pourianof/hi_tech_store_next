@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Product } from "../../core/models/product";
-import { Slider } from "./slider";
+import { Slider } from "../../ui/slider";
 import Icon from "../../ui/icons/icon";
 import { SafeImage } from "../../ui/image/safeImage";
 
