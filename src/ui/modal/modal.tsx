@@ -1,22 +1,41 @@
 "use client";
 import { ReactNode, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
+import { useBackBtnHandler } from "../hooks/useBackBtnHandler";
+import { useRouter } from "next/navigation";
 
-export function Modal({
+type ModalVariants = "full-page" | "center" | "standard" | "raw";
+type RequiredOnClose = { onClose: VoidFunction };
+export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
   children,
   onClose,
   className,
-  variants = "center",
+  variants = "center" as TVariant,
   diableScroll = true,
   containerClassName,
+  backBtnHandling = true as TBack,
 }: {
   children: ReactNode;
-  onClose?: VoidFunction;
   className?: string;
-  variants?: "full-page" | "center" | "standard" | "raw";
+  variants?: TVariant;
   diableScroll?: boolean;
   containerClassName?: string;
-}) {
+  backBtnHandling?: TBack;
+} & (TBack extends true
+  ? RequiredOnClose
+  : TVariant extends "full-page"
+  ? RequiredOnClose
+  : Partial<RequiredOnClose>)) {
+  const router = useRouter();
+  useBackBtnHandler({
+    onBack: () => {
+      if (backBtnHandling || variants == "full-page") {
+        router.back();
+        onClose?.();
+      }
+    },
+  });
+
   useLayoutEffect(() => {
     if (diableScroll) {
       window.document.body.style.overflow = "hidden";
