@@ -11,12 +11,14 @@ interface RadioButtonInputProps {
 
 export function RadioButton({
   label,
+  containerClassName,
   ...props
 }: {
   label: string | ReactNode;
+  containerClassName?: string;
 } & RadioButtonInputProps) {
   return (
-    <label className="flex">
+    <label className={"flex " + (containerClassName ?? "")}>
       <div className="self-baseline">
         <RadioButtonInput {...props} />
       </div>

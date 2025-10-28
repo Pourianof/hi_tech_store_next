@@ -3,13 +3,13 @@
 import { CartItem as CI } from "@/core/models/cartItem";
 import { useCart } from "@/ui/contexts/cart/cartContext";
 import { CartItemBox } from "./cartItemBox";
-import { FilledButton } from "@/ui/form/AppButtons";
 import Link from "next/link";
+import { CartPaymentDetails } from "./cartPaymentDetails";
+import { FilledButton } from "@/ui/form/AppButtons";
 
 export function CartList() {
   const { items } = useCart();
   const cartItems = items.map((item) => new CI(item.product, item.amount));
-  const cartPrice = cartItems.reduce((prev, cur) => prev + cur.finalPrice, 0);
 
   if (!items.length) {
     return (
@@ -37,29 +37,10 @@ export function CartList() {
           <CartItemBox cartItem={item} variant="large" />
         </div>
       ))}
-      <div className="my-8">
-        <div className="text-gray-neutral-71 flex flex-col gap-2">
-          <div className="flex justify-between">
-            <span>Subtotal</span>
-            <span>${cartPrice}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Discount</span>
-            <span>$0</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Shipment cost</span>
-            <span>$22.50</span>
-          </div>
-        </div>
-        <div className="border-t-1 py-2 mt-2 border-t-gray-neutral-b4 flex justify-between font-semibold">
-          <span className="">Grand total</span>
-          <span>${cartPrice + 22.5}</span>
-        </div>
-        <Link href={{ pathname: "/order/checkout" }}>
-          <FilledButton>Procced to checkout</FilledButton>
-        </Link>
-      </div>
+      <CartPaymentDetails />
+      <Link href={{ pathname: "/order/checkout" }}>
+        <FilledButton>Procced to checkout</FilledButton>
+      </Link>
     </div>
   );
 }
