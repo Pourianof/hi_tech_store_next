@@ -11,6 +11,7 @@ import { Wrapper } from "./_shared/wrapper";
 import { Footer } from "./_components/footer";
 import { CCQueryClientProvider } from "./dashboard/categories/_components/queryClientProvider";
 import { CartHandlerProvider } from "@/ui/contexts/cart/cartContext";
+import Head from "next/head";
 
 export default async function MainLayout(props: {
   children: ReactNode;
@@ -20,9 +21,9 @@ export default async function MainLayout(props: {
 
   return (
     <html>
-      <head>
+      <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
+      </Head>
       <body>
         <CartHandlerProvider>
           <CategoryProvider
