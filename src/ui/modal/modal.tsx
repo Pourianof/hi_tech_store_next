@@ -2,7 +2,6 @@
 import { ReactNode, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 import { useBackBtnHandler } from "../hooks/useBackBtnHandler";
-import { useRouter } from "next/navigation";
 
 type ModalVariants = "full-page" | "center" | "standard" | "raw";
 type RequiredOnClose = { onClose: VoidFunction };
@@ -14,6 +13,7 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
   diableScroll = true,
   containerClassName,
   backBtnHandling = true as TBack,
+  noPadding = false,
 }: {
   children: ReactNode;
   className?: string;
@@ -21,16 +21,15 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
   diableScroll?: boolean;
   containerClassName?: string;
   backBtnHandling?: TBack;
+  noPadding?: boolean;
 } & (TBack extends true
   ? RequiredOnClose
   : TVariant extends "full-page"
   ? RequiredOnClose
   : Partial<RequiredOnClose>)) {
-  const router = useRouter();
   useBackBtnHandler({
     onBack: () => {
       if (backBtnHandling || variants == "full-page") {
-        router.back();
         onClose?.();
       }
     },
@@ -83,7 +82,8 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
       ></div>
       <div
         className={
-          "bg-white p-6 z-20 " +
+          "bg-white z-20 " +
+          (!noPadding ? " p-6 " : "") +
           _containerClassName +
           " " +
           (containerClassName ?? "")
