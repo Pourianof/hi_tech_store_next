@@ -2,6 +2,7 @@
 import { ReactNode, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 import { useBackBtnHandler } from "../hooks/useBackBtnHandler";
+import { MODAL_CONTAINER_ID } from "./modalContainer";
 
 type ModalVariants = "full-page" | "center" | "standard" | "raw";
 type RequiredOnClose = { onClose: VoidFunction };
@@ -92,6 +93,6 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
         {children}
       </div>
     </div>,
-    document.body
+    document.getElementById(MODAL_CONTAINER_ID) || document.body
   );
 }
