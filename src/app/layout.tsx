@@ -12,6 +12,7 @@ import { Footer } from "./_components/footer";
 import { CCQueryClientProvider } from "./dashboard/categories/_components/queryClientProvider";
 import { CartHandlerProvider } from "@/ui/contexts/cart/cartContext";
 import Head from "next/head";
+import { ModalContainer } from "@/ui/modal/modalContainer";
 
 export default async function MainLayout(props: {
   children: ReactNode;
@@ -47,6 +48,7 @@ export default async function MainLayout(props: {
           </CategoryProvider>
           <Footer />
         </CartHandlerProvider>
+        <ModalContainer />
         <Toaster position="bottom-center" gutter={10} />
       </body>
     </html>
