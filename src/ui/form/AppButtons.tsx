@@ -5,13 +5,16 @@ export function FilledButton({
   children,
   onClick,
   className,
+  disabled,
 }: {
+  disabled?: boolean;
   children: ReactNode;
   onClick?: VoidFunction;
   className?: string;
 }) {
   return (
     <Button
+      disabled={disabled}
       variant="contained"
       sx={{
         bgcolor: "var(--color-primary-blue-0c)",
