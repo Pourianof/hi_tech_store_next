@@ -1,3 +1,4 @@
+"use client";
 import { CartItem } from "@/core/models/cartItem";
 import { useCart } from "@/ui/contexts/cart/cartContext";
 

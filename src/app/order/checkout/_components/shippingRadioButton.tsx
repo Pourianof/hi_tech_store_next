@@ -1,6 +1,7 @@
 "use client";
 
 import { RadioButton } from "@/ui/form/radioButton";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 enum ShippingMode {
@@ -10,6 +11,12 @@ enum ShippingMode {
 }
 
 export function ShippingRadioButtonList() {
+  const searchParams = useSearchParams();
+  const errs = searchParams.get("error")?.split(",");
+  const [noShippingSelectionError] = useState(
+    errs?.includes("shipping-method") ?? false
+  );
+
   const [selected, setSelected] = useState<ShippingMode>();
   return (
     <div className="space-y-4 ">
@@ -34,6 +41,11 @@ export function ShippingRadioButtonList() {
         deliveryRange={[1, 3]}
         price={22.5}
       />
+      {noShippingSelectionError ? (
+        <div className="text-white text-sm bg-red-500 p-2 rounded">
+          You must select a shipping method
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -140,7 +140,7 @@ function RecepientSubForm() {
 
   return (
     <div>
-      <TextField disabled={isUserIsRecepient}  />
+      <TextField disabled={isUserIsRecepient} />
       <TextField disabled={isUserIsRecepient} />
     </div>
   );

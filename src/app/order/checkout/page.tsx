@@ -2,23 +2,18 @@ import { Wrapper } from "@/app/_shared/wrapper";
 import { captalize } from "@/lib/helpers/stringHelpers";
 import Icon from "@/ui/icons/icon";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { auth } from "../../../../auth";
 import { CartPreview } from "./_components/cartPreview";
 import { CheckoutSectionHeader } from "./_components/checkoutSectionHeader";
 import { ShippinhMethodInput } from "./_components/shippingMethodInput";
 import { ShippingRadioButtonList } from "./_components/shippingRadioButton";
+import { protectRoute } from "@/lib/helpers/protectRoute";
 
 export default async function CheckoutPage() {
+  await protectRoute({ callbackRoute: "/order/checkout" });
   const session = await auth();
 
-  if (!session) {
-    const searchParams = new URLSearchParams();
-    searchParams.append("redirect", `/order/checkout`);
-    redirect(`/auth/login?${searchParams.toString()}`);
-  }
-
-  const { user } = session;
+  const { user } = session!;
   return (
     <div>
       <Wrapper>
