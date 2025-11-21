@@ -7,7 +7,6 @@ import { Modal } from "@/ui/modal/modal";
 import { TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { MouseEvent, useState } from "react";
-import { CheckoutSectionHeader } from "./checkoutSectionHeader";
 import { AddressPicker } from "@/ui/form/addressPicker/addressPicker";
 import { SimpleCheckBox } from "@/ui/form/simpleCheckBox";
 import { useFormContext } from "react-hook-form";
@@ -28,7 +27,6 @@ export function ShippinhMethodInput() {
           <UserAddressPageForm onClose={() => setDisplayAddressPage(false)} />
         </Modal>
       )}
-      <CheckoutSectionHeader text="Ship to" />
       <div className="flex items-center bg-gray-neutral-f9 p-3 rounded-xl  justify-between">
         <input
           className="text-gray-neutral-50"

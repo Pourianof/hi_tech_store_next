@@ -6,11 +6,13 @@ export function FilledButton({
   onClick,
   className,
   disabled,
+  type,
 }: {
   disabled?: boolean;
   children: ReactNode;
   onClick?: VoidFunction;
   className?: string;
+  type?: "button" | "submit" | "reset";
 }) {
   return (
     <Button
@@ -33,6 +35,7 @@ export function FilledButton({
       }
       fullWidth
       className={className}
+      type={type}
     >
       {children}
     </Button>

@@ -1,6 +1,8 @@
 "use client";
 
-import { RadioButton } from "@/ui/form/radioButton";
+import { SHIPPING_METHOD_FIELD_NAME } from "@/lib/helpers/consts";
+import { ErrorMessageLabel } from "@/ui/form/errorMessageLabel";
+import { ControlledRadioButton } from "@/ui/form/radioButton";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -14,7 +16,7 @@ export function ShippingRadioButtonList() {
   const searchParams = useSearchParams();
   const errs = searchParams.get("error")?.split(",");
   const [noShippingSelectionError] = useState(
-    errs?.includes("shipping-method") ?? false
+    errs?.includes(SHIPPING_METHOD_FIELD_NAME) ?? false
   );
 
   const [selected, setSelected] = useState<ShippingMode>();
@@ -26,6 +28,7 @@ export function ShippingRadioButtonList() {
         title={"Free Shipping"}
         deliveryRange={[7, 30]}
         price={0}
+        value="free"
       />
       <ShippingRadioButton
         onSelect={() => setSelected(ShippingMode.REGULAR)}
@@ -33,6 +36,7 @@ export function ShippingRadioButtonList() {
         title={"Regular Shipping"}
         deliveryRange={[3, 14]}
         price={7.5}
+        value="regular"
       />
       <ShippingRadioButton
         onSelect={() => setSelected(ShippingMode.EXPRESS)}
@@ -40,12 +44,14 @@ export function ShippingRadioButtonList() {
         title={"Express Shipping"}
         deliveryRange={[1, 3]}
         price={22.5}
+        value="express"
       />
       {noShippingSelectionError ? (
         <div className="text-white text-sm bg-red-500 p-2 rounded">
           You must select a shipping method
         </div>
       ) : null}
+      <ErrorMessageLabel fieldName={SHIPPING_METHOD_FIELD_NAME} />
     </div>
   );
 }
@@ -55,17 +61,17 @@ export function ShippingRadioButton({
   price,
   deliveryRange,
   isSelected,
-  onSelect,
+  value,
 }: {
   title: string;
   deliveryRange: [number, number];
   price: number;
   isSelected?: boolean;
   onSelect: VoidFunction;
+  value: string;
 }) {
   return (
-    <RadioButton
-      onSelect={onSelect}
+    <ControlledRadioButton
       size="big"
       containerClassName={
         "cursor-pointer border border-gray-neutral-f6 p-2 rounded-lg bg-gray-neutral-f9 border border-gray-neutral-f6 " +
@@ -82,7 +88,8 @@ export function ShippingRadioButton({
           </div>
         </div>
       }
-      name="shipping-mode"
+      value={value}
+      name={SHIPPING_METHOD_FIELD_NAME}
     />
   );
 }

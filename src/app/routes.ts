@@ -13,8 +13,14 @@ export const routes = {
     get checkout() {
       return `${this.base}/checkout`;
     },
-    get payment() {
+    get paymentConfirmation() {
       return `${this.base}/payment`;
+    },
+    get payment() {
+      return `${this.base}/pay-order`;
+    },
+    get cart() {
+      return `${this.base}/cart`;
     },
   },
 };

@@ -1,5 +1,6 @@
 "use client";
 import { ReactNode } from "react";
+import { Controller } from "react-hook-form";
 
 interface RadioButtonInputProps {
   name: string;
@@ -9,14 +10,16 @@ interface RadioButtonInputProps {
   size?: "big" | "normal";
 }
 
+interface RadioButtonProps extends RadioButtonInputProps {
+  label: string | ReactNode;
+  containerClassName?: string;
+}
+
 export function RadioButton({
   label,
   containerClassName,
   ...props
-}: {
-  label: string | ReactNode;
-  containerClassName?: string;
-} & RadioButtonInputProps) {
+}: RadioButtonProps) {
   return (
     <label className={"flex " + (containerClassName ?? "")}>
       <div className="self-baseline">
@@ -74,5 +77,24 @@ function RadioButtonInput({
                 `}
       ></span>
     </>
+  );
+}
+
+export function ControlledRadioButton(
+  props: Omit<RadioButtonProps, "onChange">
+) {
+  return (
+    <Controller
+      rules={{ required: "You must select the shipping method" }}
+      name={props.name}
+      render={({ field: { onChange } }) => (
+        <RadioButton
+          {...props}
+          onSelect={(val) => {
+            onChange(val.value);
+          }}
+        />
+      )}
+    />
   );
 }
