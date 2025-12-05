@@ -1,4 +1,7 @@
 export const routes = {
+  get main() {
+    return "/";
+  },
   auth: {
     base: "/auth",
     get login() {
@@ -21,6 +24,15 @@ export const routes = {
     },
     get cart() {
       return `${this.base}/cart`;
+    },
+    get orderPaymentConfirmation() {
+      return `${this.base}/order-payment-confirmation`;
+    },
+    get failedPayment() {
+      return `${this.base}/failed-payment`;
+    },
+    get succeedPayment() {
+      return `${this.base}/success-payment`;
     },
   },
 };
