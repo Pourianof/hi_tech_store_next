@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { signIn as apiSignIn } from "@/api/authApi";
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
@@ -52,6 +52,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }) {
+      // login
       if (user) {
         token.id = user.id;
         token.apiToken = (user as { apiToken: string })?.apiToken;
@@ -60,9 +61,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.lastName = _user.lastName;
         token.role = _user.role;
       }
+
+      const oneMinuteAnd30SecondsMs = 90000;
+
+      if (
+        token.exp &&
+        Date.now() <= token.exp * 1000 + oneMinuteAnd30SecondsMs
+      ) {
+        return null;
+      }
+
       return token;
     },
-    session({ session, token }) {
+    async session({ session, token }) {
+      if (!token.accessToken) {
+        return null;
+      }
+
       if (token) {
         session.user.id = token.id as string;
         session.user.lastName = token.lastName as string;
@@ -74,4 +89,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
   },
-});
+} as NextAuthConfig);

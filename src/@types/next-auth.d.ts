@@ -1,5 +1,11 @@
-import "next-auth";
+import * as nextAuth from "next-auth";
 import { User } from "@/core/models/user";
+
+type SessionCallbackParameters = Parameters<
+  NonNullable<nextAuth.NextAuthConfig["callbacks"]>["session"]
+>;
+
+type Awaitable<T> = T | PromiseLike<T>;
 
 declare module "next-auth" {
   // interface User {
@@ -13,7 +19,13 @@ declare module "next-auth" {
   //   jti: string;
   // }
 
-  interface Session extends DefaultSession {
+  interface NextAuthConfig extends nextAuth.NextAuthConfig {
+    callbacks: nextAuth.NextAuthConfig["callbacks"] & {
+      session: (params: SessionCallbackParameters) => Awaitable<Session | null>;
+    };
+  }
+
+  interface Session extends nextAuth.DefaultSession {
     user: User;
     expires_in: string;
     error?: Record<string, string>;
