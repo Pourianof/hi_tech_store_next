@@ -26,28 +26,28 @@ export default async function MainLayout(props: {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <body>
-        <CartHandlerProvider>
-          <CategoryProvider
-            categories={
-              categoriesResult.status == "success"
-                ? categoriesResult.data
-                : undefined
-            }
-          >
-            <Header />
-            <Wrapper>
-              <RoutePath />
-            </Wrapper>
-            <SessionProvider>
+        <SessionProvider>
+          <CartHandlerProvider>
+            <CategoryProvider
+              categories={
+                categoriesResult.status == "success"
+                  ? categoriesResult.data
+                  : undefined
+              }
+            >
+              <Header />
+              <Wrapper>
+                <RoutePath />
+              </Wrapper>
               <CCQueryClientProvider>
                 {props.children}
                 {props.auth}
                 <DashboardLinkButton />
               </CCQueryClientProvider>
-            </SessionProvider>
-          </CategoryProvider>
-          <Footer />
-        </CartHandlerProvider>
+            </CategoryProvider>
+            <Footer />
+          </CartHandlerProvider>
+        </SessionProvider>
         <ModalContainer />
         <Toaster position="bottom-center" gutter={10} />
       </body>

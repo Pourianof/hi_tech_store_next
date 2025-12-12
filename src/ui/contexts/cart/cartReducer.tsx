@@ -10,6 +10,7 @@ interface CartActionPayloads {
   Decrease: Product;
   Remove: Product;
   Initialize: CartState;
+  Clear?: void | undefined;
 }
 
 export type CartActions = keyof CartActionPayloads;
@@ -24,7 +25,9 @@ export interface CartState {
 
 export function cartReducer<T extends CartActions>(
   state: CartState,
-  action: { action: T; payload: CartPayloads<T> }
+  action: { action: T } & (T extends "Clear"
+    ? { payload?: CartPayloads<T> }
+    : { payload: CartPayloads<T> })
 ): CartState {
   switch (action.action) {
     case "Add": {
@@ -76,10 +79,16 @@ export function cartReducer<T extends CartActions>(
     }
     case "Remove": {
       return {
+        ...state,
         items: state.items.filter(
           (prod) =>
             prod.product.productId != (action.payload as Product).productId
         ),
+      };
+    }
+    case "Clear": {
+      return {
+        items: [],
       };
     }
 

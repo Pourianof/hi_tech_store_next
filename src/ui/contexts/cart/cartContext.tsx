@@ -12,9 +12,11 @@ import { NoContextDefinedError } from "@/ui/errors/NoContextDefinedError";
 import toast from "react-hot-toast";
 import { useLocalStorageChange } from "@/ui/hooks/useLocalStorage";
 import {
+  clearLocalStorage,
   getFromLocalStorage,
   saveToLocalStorage,
 } from "@/ui/helpers/storageHelper";
+import { useAuth } from "../authContext";
 
 interface ICartContext extends CartState {
   actions: {
@@ -28,14 +30,21 @@ const CartContext = createContext<ICartContext | undefined>(
   undefined as unknown as ICartContext
 );
 
+interface LocalStorageCartState extends CartState {
+  isLoggedIn: boolean;
+}
+
 export const CART_KEY = "local_storage_key";
 
 export function CartHandlerProvider({ children }: { children: ReactNode }) {
+  const { isLoggedIn, isLoading: isLogginStateLoading } = useAuth();
+
   const _context = useCart_();
   const [state, dispatch] = useReducer(cartReducer, {
     items: [],
   });
 
+  const logginStateRef = useRef(false);
   const shouldSaveRef = useRef(false);
 
   function save() {
@@ -51,24 +60,53 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     onChange(_context, newValue) {
       dispatch({
         action: "Initialize",
-        payload: newValue ? JSON.parse(newValue) : ({ items: [] } as CartState),
+        payload: newValue
+          ? JSON.parse(newValue)
+          : ({ items: [], isLoggedIn } as CartState),
       });
       noSave();
     },
   });
 
   useEffect(() => {
-    const cartState = getFromLocalStorage(CART_KEY);
+    const cartState = getFromLocalStorage(CART_KEY) as LocalStorageCartState;
     if (cartState) {
+      logginStateRef.current = cartState.isLoggedIn;
       dispatch({ action: "Initialize", payload: cartState });
     }
   }, []);
 
   useEffect(() => {
     if (shouldSaveRef.current) {
-      saveToLocalStorage(CART_KEY, state);
+      saveToLocalStorage(CART_KEY, {
+        ...state,
+        isLoggedIn,
+      });
     }
-  }, [state]);
+  }, [state, isLoggedIn]);
+
+  useEffect(() => {
+    if (isLogginStateLoading) {
+      return;
+    }
+
+    if (logginStateRef.current == isLoggedIn) {
+      return;
+    }
+
+    if (isLoggedIn) {
+      // sync logout cart state with user cart
+      if (state.items.length) {
+      }
+    } else {
+      // clear the cart for privacy purpose
+      clearLocalStorage(CART_KEY);
+      dispatch({
+        action: "Clear",
+      });
+    }
+    logginStateRef.current = isLoggedIn;
+  }, [isLoggedIn, isLogginStateLoading, state.items.length]);
 
   if (_context) {
     throw new Error("Cart context must define only one time in component tree");
