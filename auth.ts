@@ -66,7 +66,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       if (
         token.exp &&
-        Date.now() <= token.exp * 1000 + oneMinuteAnd30SecondsMs
+        Date.now() >= token.exp * 1000 - oneMinuteAnd30SecondsMs
       ) {
         return null;
       }
@@ -74,7 +74,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      if (!token.accessToken) {
+      if (!token.apiToken) {
         return null;
       }
 
