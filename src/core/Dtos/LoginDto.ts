@@ -1,5 +1,6 @@
 export interface LoginDto {
   token: string;
+  expiresAt: number;
   user: {
     userName: string;
     email: string;

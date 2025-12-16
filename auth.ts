@@ -33,7 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         );
 
         if (data) {
-          const { token: apiToken, user } = data;
+          const { token: apiToken, user, expiresAt } = data;
           return {
             email: user.email,
             name: user.firstName,
@@ -42,6 +42,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             apiToken,
             id: user.userName,
             role: data.user.role,
+            expiresAt,
           };
         }
 
@@ -56,6 +57,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.apiToken = (user as { apiToken: string })?.apiToken;
+        token.exp = (user as { expiresAt: number })?.expiresAt;
 
         const _user = user as User;
         token.lastName = _user.lastName;
