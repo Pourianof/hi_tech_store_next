@@ -105,16 +105,6 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
 
   const changedItemProductIds = useRef<number[]>([]);
 
-  const shouldSaveRef = useRef(false);
-
-  function save() {
-    shouldSaveRef.current = true;
-  }
-
-  function noSave() {
-    shouldSaveRef.current = false;
-  }
-
   useLocalStorageChange({
     storageKey: CART_KEY,
     onChange(_context, newValue) {
@@ -124,7 +114,6 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
           ? JSON.parse(newValue).cart
           : ({ items: [], isLoggedIn } as CartWithProduct),
       });
-      noSave();
     },
   });
 
@@ -163,9 +152,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    if (shouldSaveRef.current) {
-      saveToLocalStorage(CART_KEY, state);
-    }
+    saveToLocalStorage(CART_KEY, state);
   }, [state, isLoggedIn, isLogginStateLoading]);
 
   // handle login state changing
@@ -242,7 +229,6 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
             changedItemProductIds.current.push(payload.product.productId);
 
             if (toastNotif) toast.success("Product added to cart successfully");
-            save();
           },
           removeProductFromCart(payload) {
             if (isLogginStateLoading) {
@@ -250,8 +236,6 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
             }
             dispatch({ action: "Remove", payload });
             changedItemProductIds.current.push(payload.productId);
-
-            save();
           },
           decreaseAmountOfProduct(payload) {
             if (isLogginStateLoading) {
@@ -262,8 +246,6 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
               payload,
             });
             changedItemProductIds.current.push(payload.productId);
-
-            save();
           },
         },
       }}
