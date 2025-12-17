@@ -17,6 +17,12 @@ import {
   saveToLocalStorage,
 } from "@/ui/helpers/storageHelper";
 import { useAuth } from "../authContext";
+import { Cart, CartWithProduct } from "@/core/models/cart";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  getCartAction,
+  updateCartAction,
+} from "@/lib/server_actions/cartActions";
 
 interface ICartContext extends CartState {
   actions: {
@@ -30,21 +36,75 @@ const CartContext = createContext<ICartContext | undefined>(
   undefined as unknown as ICartContext
 );
 
-interface LocalStorageCartState extends CartState {
-  isLoggedIn: boolean;
-}
-
 export const CART_KEY = "local_storage_key";
+const CART_QUERY_KEY = "cart_query_key";
 
 export function CartHandlerProvider({ children }: { children: ReactNode }) {
   const { isLoggedIn, isLoading: isLogginStateLoading } = useAuth();
 
-  const _context = useCart_();
-  const [state, dispatch] = useReducer(cartReducer, {
-    items: [],
+  const query = useQuery({
+    queryKey: [CART_QUERY_KEY],
+    enabled: isLoggedIn,
+    queryFn: async () => {
+      if (!isLoggedIn) {
+        return;
+      }
+
+      const result = await getCartAction();
+
+      if (result.status == "failed") {
+        return Promise.reject(result.data);
+      }
+
+      return result.data;
+    },
   });
 
-  const logginStateRef = useRef(false);
+  const {
+    mutate: changeItemMutation,
+    mutateAsync: changeItemMutationAndReturnResult,
+  } = useMutation({
+    mutationFn: async (changedItems: Cart["items"]) => {
+      const result = await updateCartAction({ items: changedItems });
+
+      if (result.status == "failed") {
+        throw result.data;
+      }
+
+      return result.data;
+    },
+    onMutate: (_, ctx) => {
+      dispatch({ action: "Loading", payload: true });
+      ctx.meta = {
+        oldState: { ...state },
+      };
+      changedItemProductIds.current = [];
+    },
+    onSettled: () => {
+      dispatch({ action: "Loading", payload: false });
+    },
+    onSuccess: () => {
+      // we updated item before in reducer
+    },
+    onError(_, __, ___, ctx) {
+      // undo state
+      dispatch({
+        action: "Initialize",
+        payload: (ctx.meta!.oldState as CartState).cart,
+      });
+    },
+  });
+
+  const _context = useCart_();
+  const [state, dispatch] = useReducer(cartReducer, {
+    cart: {
+      items: [],
+    },
+    isLoading: true,
+  });
+
+  const changedItemProductIds = useRef<number[]>([]);
+
   const shouldSaveRef = useRef(false);
 
   function save() {
@@ -61,52 +121,104 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
       dispatch({
         action: "Initialize",
         payload: newValue
-          ? JSON.parse(newValue)
-          : ({ items: [], isLoggedIn } as CartState),
+          ? JSON.parse(newValue).cart
+          : ({ items: [], isLoggedIn } as CartWithProduct),
       });
       noSave();
     },
   });
 
-  useEffect(() => {
-    const cartState = getFromLocalStorage(CART_KEY) as LocalStorageCartState;
-    if (cartState) {
-      logginStateRef.current = cartState.isLoggedIn;
-      dispatch({ action: "Initialize", payload: cartState });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (shouldSaveRef.current) {
-      saveToLocalStorage(CART_KEY, {
-        ...state,
-        isLoggedIn,
-      });
-    }
-  }, [state, isLoggedIn]);
-
+  // Initializing state
   useEffect(() => {
     if (isLogginStateLoading) {
       return;
     }
 
-    if (logginStateRef.current == isLoggedIn) {
+    if (!state.isLoading) {
+      return;
+    }
+
+    if (!isLoggedIn) {
+      const cartState = getFromLocalStorage(CART_KEY) as CartState;
+      if (cartState && cartState.cart) {
+        dispatch({ action: "Initialize", payload: cartState.cart });
+      }
+      return;
+    }
+  }, [isLoggedIn, isLogginStateLoading, state.isLoading]);
+
+  useEffect(() => {
+    if (query.data) {
+      dispatch({ action: "Initialize", payload: query.data });
+    }
+  }, [query.data]);
+
+  // persist the cart state when is logout
+  useEffect(() => {
+    if (isLogginStateLoading) {
       return;
     }
 
     if (isLoggedIn) {
-      // sync logout cart state with user cart
-      if (state.items.length) {
-      }
-    } else {
-      // clear the cart for privacy purpose
-      clearLocalStorage(CART_KEY);
-      dispatch({
-        action: "Clear",
-      });
+      return;
     }
-    logginStateRef.current = isLoggedIn;
-  }, [isLoggedIn, isLogginStateLoading, state.items.length]);
+
+    if (shouldSaveRef.current) {
+      saveToLocalStorage(CART_KEY, state);
+    }
+  }, [state, isLoggedIn, isLogginStateLoading]);
+
+  // handle login state changing
+  useEffect(() => {
+    if (isLogginStateLoading) {
+      return;
+    }
+
+    if (isLoggedIn) {
+      clearLocalStorage(CART_KEY);
+      // sync logout cart state with user cart
+      if (state.cart.items.length) {
+        changeItemMutationAndReturnResult(
+          state.cart.items.map((item) => ({
+            amount: item.amount,
+            productId: item.product.productId,
+          }))
+        ).then((cart) => dispatch({ action: "Initialize", payload: cart }));
+      } else {
+        // if user is logged-in the always fetch from server
+        // because the cart may change from other devices or sessions
+        if (query.data) {
+          dispatch({ action: "Initialize", payload: query.data });
+        } else {
+          query.refetch();
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn, isLogginStateLoading]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      changedItemProductIds.current = [];
+      return;
+    }
+
+    if (!changedItemProductIds.current.length) {
+      return;
+    }
+
+    const changedItems = changedItemProductIds.current.map((id) => {
+      return {
+        productId: id,
+        amount:
+          state.cart.items.find((item) => item.product.productId == id)
+            ?.amount ?? 0,
+      };
+    });
+
+    changeItemMutation(changedItems);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, isLoggedIn]);
 
   if (_context) {
     throw new Error("Cart context must define only one time in component tree");
@@ -119,23 +231,38 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
         ...state,
         actions: {
           addProductToCart(payload, toastNotif: boolean = true) {
+            if (isLogginStateLoading) {
+              return;
+            }
             dispatch({
               action: "Add",
               payload,
             });
 
+            changedItemProductIds.current.push(payload.product.productId);
+
             if (toastNotif) toast.success("Product added to cart successfully");
             save();
           },
           removeProductFromCart(payload) {
+            if (isLogginStateLoading) {
+              return;
+            }
             dispatch({ action: "Remove", payload });
+            changedItemProductIds.current.push(payload.productId);
+
             save();
           },
           decreaseAmountOfProduct(payload) {
+            if (isLogginStateLoading) {
+              return;
+            }
             dispatch({
               action: "Decrease",
               payload,
             });
+            changedItemProductIds.current.push(payload.productId);
+
             save();
           },
         },

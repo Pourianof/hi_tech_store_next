@@ -8,7 +8,9 @@ import { Slider } from "@/ui/slider";
 import { CartPaymentDetails } from "../../cart/_components/cartPaymentDetails";
 
 export function CartPreview() {
-  const { items } = useCart();
+  const {
+    cart: { items },
+  } = useCart();
   return (
     <div>
       <FillerBox>

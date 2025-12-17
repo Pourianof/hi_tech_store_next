@@ -8,7 +8,9 @@ import { CartPaymentDetails } from "./cartPaymentDetails";
 import { FilledButton } from "@/ui/form/AppButtons";
 
 export function CartList() {
-  const { items } = useCart();
+  const {
+    cart: { items },
+  } = useCart();
   const cartItems = items.map((item) => new CI(item.product, item.amount));
 
   if (!items.length) {

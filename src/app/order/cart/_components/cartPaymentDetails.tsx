@@ -3,7 +3,9 @@ import { CartItem } from "@/core/models/cartItem";
 import { useCart } from "@/ui/contexts/cart/cartContext";
 
 export function CartPaymentDetails() {
-  const { items } = useCart();
+  const {
+    cart: { items },
+  } = useCart();
   const cartItems = items.map(
     (item) => new CartItem(item.product, item.amount)
   );

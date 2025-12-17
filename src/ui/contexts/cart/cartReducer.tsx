@@ -1,3 +1,4 @@
+import { CartWithProduct } from "@/core/models/cart";
 import { Product } from "@/core/models/product";
 
 interface AddProductData {
@@ -9,19 +10,15 @@ interface CartActionPayloads {
   Add: AddProductData;
   Decrease: Product;
   Remove: Product;
-  Initialize: CartState;
+  Initialize: CartWithProduct;
   Clear?: void | undefined;
+  Loading: boolean;
 }
+
+export type CartState = { cart: CartWithProduct; isLoading: boolean };
 
 export type CartActions = keyof CartActionPayloads;
 export type CartPayloads<T extends CartActions> = CartActionPayloads[T];
-
-export interface CartState {
-  items: {
-    product: Product;
-    amount: number;
-  }[];
-}
 
 export function cartReducer<T extends CartActions>(
   state: CartState,
@@ -35,7 +32,7 @@ export function cartReducer<T extends CartActions>(
       if (!addedData || !addedData.product) {
         throw new Error("no product state provided for Cart Reducer");
       }
-      const productInList = state.items.find(
+      const productInList = state.cart.items.find(
         (p) => p.product.productId == addedData.product.productId
       );
 
@@ -47,7 +44,7 @@ export function cartReducer<T extends CartActions>(
         return { ...state };
       }
 
-      state.items.push({
+      state.cart.items.push({
         product: addedData.product,
         amount: addedAmount,
       });
@@ -59,7 +56,7 @@ export function cartReducer<T extends CartActions>(
       if (!addedData || !addedData) {
         throw new Error("no product state provided for Cart Reducer");
       }
-      const productIndexInList = state.items.findIndex(
+      const productIndexInList = state.cart.items.findIndex(
         (p) => p.product.productId == addedData.productId
       );
 
@@ -67,10 +64,10 @@ export function cartReducer<T extends CartActions>(
         return state;
       }
 
-      const productInList = state.items[productIndexInList];
+      const productInList = state.cart.items[productIndexInList];
 
       if (!--productInList.amount) {
-        state.items.splice(productIndexInList, 1);
+        state.cart.items.splice(productIndexInList, 1);
       }
 
       return {
@@ -80,20 +77,34 @@ export function cartReducer<T extends CartActions>(
     case "Remove": {
       return {
         ...state,
-        items: state.items.filter(
-          (prod) =>
-            prod.product.productId != (action.payload as Product).productId
-        ),
+        cart: {
+          items: state.cart.items.filter(
+            (prod) =>
+              prod.product.productId != (action.payload as Product).productId
+          ),
+        },
       };
     }
     case "Clear": {
       return {
-        items: [],
+        ...state,
+        cart: {
+          items: [],
+        },
       };
     }
 
     case "Initialize": {
-      return action.payload as CartState;
+      return {
+        isLoading: false,
+        cart: {
+          items: (action.payload as CartWithProduct).items,
+        },
+      };
+    }
+
+    case "Loading": {
+      return { ...state, isLoading: action.payload as boolean };
     }
   }
 }

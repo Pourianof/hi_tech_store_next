@@ -7,7 +7,9 @@ import Link from "next/link";
 import { CartItemBox } from "../order/cart/_components/cartItemBox";
 
 export function CartBadge() {
-  const { items: products } = useCart();
+  const {
+    cart: { items: products },
+  } = useCart();
   const cartItems = products.map(
     ({ amount, product }) => new CartItem(product, amount)
   );
