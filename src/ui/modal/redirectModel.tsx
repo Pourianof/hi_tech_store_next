@@ -7,12 +7,17 @@ export function RedirectModal({
   children,
   destination,
 }: {
-  destination: string;
+  destination?: string;
   children: ReactNode;
 }) {
   const router = useRouter();
 
   function redirect() {
+    if (!destination) {
+      router.back();
+      return;
+    }
+
     const url = new URL(window.location.href);
     url.pathname = destination;
     router.replace(url.href);

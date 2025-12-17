@@ -3,7 +3,7 @@ import { RedirectModal } from "@/ui/modal/redirectModel";
 
 export default function InterceptedRegister() {
   return (
-    <RedirectModal destination="/">
+    <RedirectModal>
       <AuthBox mode="register" />
     </RedirectModal>
   );

@@ -26,7 +26,7 @@ export function LoginForm() {
           if (redirectPath) {
             router.replace(redirectPath);
           } else {
-            router.replace("/");
+            router.back();
           }
         }, 1000);
       }}
