@@ -5,12 +5,22 @@ let modalIdTracker = 0;
 
 const modalStack: number[] = [];
 
-export function useBackBtnHandler({ onBack }: { onBack: VoidFunction }) {
+export function useBackBtnHandler({
+  onBack,
+  disable,
+}: {
+  onBack: VoidFunction;
+  disable?: boolean;
+}) {
   const backId = useRef(modalIdTracker++);
   const hasRegisteredRef = useRef(false);
   const router = useRouter();
 
   useEffect(() => {
+    if (disable) {
+      return;
+    }
+
     if (hasRegisteredRef.current) {
       return;
     }
@@ -55,5 +65,5 @@ export function useBackBtnHandler({ onBack }: { onBack: VoidFunction }) {
         }
       }
     };
-  }, [onBack, router]);
+  }, [onBack, router, disable]);
 }

@@ -17,5 +17,9 @@ export function RedirectModal({
     url.pathname = destination;
     router.replace(url.href);
   }
-  return <Modal onClose={redirect}>{children}</Modal>;
+  return (
+    <Modal onClose={redirect} backBtnHandling={false}>
+      {children}
+    </Modal>
+  );
 }

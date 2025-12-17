@@ -53,6 +53,7 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
 
   useBackBtnHandler({
     onBack: backHandler,
+    disable: !isBackBtnHandled,
   });
 
   useLayoutEffect(() => {
