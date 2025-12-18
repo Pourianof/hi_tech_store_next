@@ -118,6 +118,22 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  const loggedInStateRef = useRef(false);
+
+  // clear state when logout
+  // just for multi-tab openinig
+  useEffect(() => {
+    if (isLogginStateLoading) {
+      return;
+    }
+
+    if (!isLoggedIn && loggedInStateRef.current) {
+      dispatch({ action: "Clear" });
+    }
+
+    loggedInStateRef.current = isLoggedIn;
+  }, [isLoggedIn, isLogginStateLoading]);
+
   // Initializing state
   useEffect(() => {
     if (isLogginStateLoading) {
