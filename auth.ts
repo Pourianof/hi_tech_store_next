@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { signIn as apiSignIn } from "@/api/authApi";
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
 import { User } from "@/core/models/user";
+import { JWT } from "next-auth/jwt";
 
 export const CREDENTIAL_PROVIDER_ID = "credentials";
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -41,7 +42,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             lastName: user.lastName,
             apiToken,
             id: user.userName,
-            role: data.user.role,
+            role: user.role,
             expiresAt,
           };
         }
@@ -57,7 +58,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.apiToken = (user as { apiToken: string })?.apiToken;
-        token.exp = (user as { expiresAt: number })?.expiresAt;
+        token.expiresAt = new Date(
+          (user as { expiresAt: string })?.expiresAt
+        ).getTime();
 
         const _user = user as User;
         token.lastName = _user.lastName;
@@ -65,10 +68,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       const oneMinuteAnd30SecondsMs = 90000;
-
+      const tkn: JWT = token as JWT;
       if (
-        token.exp &&
-        Date.now() >= token.exp * 1000 - oneMinuteAnd30SecondsMs
+        tkn.expiresAt &&
+        Date.now() >= token.expiresAt - oneMinuteAnd30SecondsMs
       ) {
         return null;
       }
@@ -76,17 +79,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      if (!token.apiToken) {
+      if (!token || !token.apiToken) {
         return null;
       }
 
-      if (token) {
-        session.user.id = token.id as string;
-        session.user.lastName = token.lastName as string;
-        session.user.role = token.role as string;
-
-        session.apiToken = (token as { apiToken: string }).apiToken;
-      }
+      session.apiToken = token.apiToken;
 
       return session;
     },

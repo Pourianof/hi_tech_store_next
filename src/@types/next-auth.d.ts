@@ -32,3 +32,10 @@ declare module "next-auth" {
     apiToken: string;
   }
 }
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    expiresAt: number;
+    apiToken: string;
+  }
+}
