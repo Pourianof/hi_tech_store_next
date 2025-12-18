@@ -16,15 +16,12 @@ export async function updateCart(cart: Cart, token: string) {
 }
 
 export async function getCart(token: string) {
-  console.log("Getting cart with token: ");
   const respond = await fetch(apiRoutes.carts.base, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
-  console.log("Response: ", respond.status);
 
   return generateResultModelFromResponse<CartWithProduct>(respond);
 }
