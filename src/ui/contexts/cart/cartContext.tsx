@@ -45,6 +45,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
   const query = useQuery({
     queryKey: [CART_QUERY_KEY],
     enabled: isLoggedIn,
+    refetchOnWindowFocus: isLoggedIn ? "always" : false,
     queryFn: async () => {
       if (!isLoggedIn) {
         return;
