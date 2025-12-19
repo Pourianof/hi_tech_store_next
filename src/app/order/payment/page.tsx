@@ -41,9 +41,9 @@ export default async function PaymentDefaultPage({
           <DiscountField />
           <CartPaymentDetails />
         </div>
-        <Link href={{ pathname: routes.order.payment }}>
+        <a href={routes.order.payment}>
           <FilledButton>Place order</FilledButton>
-        </Link>
+        </a>
       </div>
     </Wrapper>
   );
