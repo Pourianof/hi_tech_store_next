@@ -16,6 +16,14 @@ export interface Product {
   categoryId: number;
 }
 
+export interface ProductSummary {
+  productId: number;
+  price: number;
+  title: string;
+  description?: string;
+  media: ProductMedia[];
+}
+
 export interface ProductProperty {
   value: string;
   name: string;

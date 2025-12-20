@@ -2,6 +2,12 @@ export const routes = {
   get main() {
     return "/";
   },
+  products: {
+    base: "/products",
+    forProduct(id: string | number) {
+      return `${this.base}/${id}`;
+    },
+  },
   auth: {
     base: "/auth",
     get login() {
