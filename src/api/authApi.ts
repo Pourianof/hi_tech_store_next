@@ -2,6 +2,7 @@ import { LoginDto } from "@/core/Dtos/LoginDto";
 import { RegisterDto } from "@/core/Dtos/RegisterDto";
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
+import { apiRoutes } from "./apiRoutes";
 
 export async function signIn(
   id: {
@@ -10,7 +11,7 @@ export async function signIn(
   },
   password: string
 ) {
-  const response = await fetch(`${process.env.API_SERVER_ADDRESS}/api/login`, {
+  const response = await fetch(apiRoutes.auth.login, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -30,7 +31,7 @@ export async function signIn(
 }
 
 export async function register(user: RegisterDto) {
-  const result = await fetch(`${process.env.API_SERVER_ADDRESS}/api/register`, {
+  const result = await fetch(apiRoutes.auth.register, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

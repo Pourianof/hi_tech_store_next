@@ -1,19 +1,18 @@
 import { ResultModel } from "@/core/models/resultModel";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { Brand, BrandModel } from "@/core/models/brand";
+import { apiRoutes } from "./apiRoutes";
 
 export async function getAllBrandModelsApi(): Promise<
   ResultModel<BrandModel[]>
 > {
   return generateResultModelFromResponse(
-    await fetch(`${process.env.API_SERVER_ADDRESS}/brandmodels`)
+    await fetch(apiRoutes.brandModels.base)
   );
 }
 
 export async function getAllBrandApi(): Promise<ResultModel<Brand[]>> {
-  return generateResultModelFromResponse(
-    await fetch(`${process.env.API_SERVER_ADDRESS}/brands`)
-  );
+  return generateResultModelFromResponse(await fetch(apiRoutes.brands.base));
 }
 
 export async function createNewBrandModelApi(
@@ -21,7 +20,7 @@ export async function createNewBrandModelApi(
   accessToken: string
 ): Promise<ResultModel<BrandModel>> {
   return generateResultModelFromResponse(
-    await fetch(`${process.env.API_SERVER_ADDRESS}/brandModels`, {
+    await fetch(apiRoutes.brandModels.base, {
       method: "POST",
       body: brandModelDto,
       headers: {

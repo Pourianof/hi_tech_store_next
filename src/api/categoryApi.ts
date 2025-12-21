@@ -1,11 +1,10 @@
 import { Category } from "@/core/models/category";
 import { generateResultModelFromResponse } from "./apiHelper";
-
-const CATEGORIES_BASE_URL = `${process.env.API_SERVER_ADDRESS}/categories`;
+import { apiRoutes } from "./apiRoutes";
 
 export const CATEGORY_TAG = "getTag";
 export async function getCategories() {
-  const respond = await fetch(CATEGORIES_BASE_URL, {
+  const respond = await fetch(apiRoutes.categories.base, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -20,7 +19,7 @@ export async function getCategories() {
 }
 
 export async function createCategory(category: FormData, token: string) {
-  const respond = await fetch(CATEGORIES_BASE_URL, {
+  const respond = await fetch(apiRoutes.categories.base, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -32,7 +31,7 @@ export async function createCategory(category: FormData, token: string) {
 }
 
 export async function deleteCategory(categoryId: number, token: string) {
-  const response = await fetch(`${CATEGORIES_BASE_URL}/${categoryId}`, {
+  const response = await fetch(apiRoutes.categories.forCategory(categoryId), {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -48,7 +47,7 @@ export async function updateCategory(
   token: string
 ) {
   return generateResultModelFromResponse(
-    await fetch(`${CATEGORIES_BASE_URL}/${categoryId}`, {
+    await fetch(apiRoutes.categories.forCategory(categoryId), {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,

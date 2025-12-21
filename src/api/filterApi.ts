@@ -1,13 +1,12 @@
 import { ResultModel } from "@/core/models/resultModel";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { Filters } from "@/core/models/filter";
-
-const API_URL = `${process.env.API_SERVER_ADDRESS}/filters`;
+import { apiRoutes } from "./apiRoutes";
 
 export async function GetProductsFilters(
   categoryId?: number
 ): Promise<ResultModel<Filters>> {
-  const url = new URL(API_URL);
+  const url = new URL(apiRoutes.filters.base);
   if (typeof categoryId == "number") {
     url.searchParams.set("category", `${categoryId}`);
   }

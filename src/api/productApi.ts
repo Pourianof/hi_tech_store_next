@@ -2,11 +2,10 @@ import { ResultModel } from "@/core/models/resultModel";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { Product } from "@/core/models/product";
 import { ProductDto } from "@/core/Dtos/ProductDto";
-
-const API_URL = `${process.env.API_SERVER_ADDRESS}/products`;
+import { apiRoutes } from "./apiRoutes";
 
 export async function createNewProduct(product: FormData, accessToken: string) {
-  const respond = await fetch(API_URL, {
+  const respond = await fetch(apiRoutes.products.base, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -20,7 +19,7 @@ export async function createNewProduct(product: FormData, accessToken: string) {
 export async function getProducts(
   searchQueries?: Record<string, string>
 ): Promise<ResultModel<ProductDto[]>> {
-  const url = new URL(API_URL);
+  const url = new URL(apiRoutes.products.base);
   if (searchQueries) {
     Object.keys(searchQueries).forEach((key) => {
       if (!!searchQueries[key]?.trim()) {
@@ -36,7 +35,7 @@ export async function getProducts(
 export async function getSingleProduct(
   productId: number
 ): Promise<ResultModel<Product>> {
-  const respond = await fetch(`${API_URL}/${productId}`);
+  const respond = await fetch(apiRoutes.products.forProduct(productId));
 
   return generateResultModelFromResponse(respond);
 }
