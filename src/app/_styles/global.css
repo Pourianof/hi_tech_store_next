@@ -1,35 +1,10 @@
 @import "tailwindcss";
+@import "./textTheme.css";
+@import "./colorTheme.css";
 
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-gray-neutral-f9: #f9f9f9;
-  --color-gray-neutral-f6: #f6f6f6;
-  --color-gray-neutral-ed: #ededed;
-  --color-gray-neutral-cb: #cbcbcb;
-  --color-gray-neutral-b4: #b4b4b4;
-  --color-gray-neutral-9e: #9e9e9e;
-  --color-gray-neutral-71: #717171;
-  --color-gray-neutral-50: #505050;
-  --color-gray-neutral-44: #444444;
-  --color-gray-neutral-2d: #2d2d2d;
-  --color-primary-blue-50: #aecdfb;
-  --color-primary-blue-300: #0c68f4;
-  --color-primary-blue-400: #0951be;
-  --color-primary-blue-900: #021736;
-  --color-primary-blue-e4: #e4eefe;
-  --color-primary-blue-78: #78abf9;
-  --color-primary-blue-0c: #0c68f4;
-  --color-primary-blue-09: #0951be;
-  --color-primary-blue-02: #021736;
-  --color-navy: #223949;
-  --color-pastil-red: #ff6951;
-  --color-main-blue: #0c68f4;
-  --color-highlight-box-blue: #005690;
-  --color-highlight-yellow: #fcc870;
-  --color-gradient-start-blue: #1975b9;
-  --color-gradient-middle-blue: #1fb6cf;
-  --color-gradient-end-blue: #b0e9c9;
   --shadow-light: -2px 2px 15px -1px #71717131;
   --shadow-standard: -2px 2px 15px -1px #71717182;
 }
