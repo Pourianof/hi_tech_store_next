@@ -1,3 +1,4 @@
+"use client";
 import { captalize } from "@/lib/helpers/stringHelpers";
 import { TextInput } from "./textInput";
 import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
