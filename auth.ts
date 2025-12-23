@@ -4,6 +4,7 @@ import { signIn as apiSignIn } from "@/api/authApi";
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
 import { User } from "@/core/models/user";
 import { JWT } from "next-auth/jwt";
+import { AdapterUser } from "next-auth/adapters";
 
 export const CREDENTIAL_PROVIDER_ID = "credentials";
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -62,9 +63,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           (user as { expiresAt: string })?.expiresAt
         ).getTime();
 
-        const _user = user as User;
-        token.lastName = _user.lastName;
-        token.role = _user.role;
+        token.user = user;
       }
 
       const oneMinuteAnd30SecondsMs = 90000;
@@ -84,6 +83,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       session.apiToken = token.apiToken;
+      session.user = token.user as AdapterUser & User;
 
       return session;
     },
