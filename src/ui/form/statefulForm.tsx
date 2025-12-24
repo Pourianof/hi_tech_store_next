@@ -8,6 +8,7 @@ import {
   DetailedHTMLProps,
   ReactNode,
   useContext,
+  useState,
 } from "react";
 import {
   FieldValues,
@@ -21,6 +22,7 @@ import { NoContextDefinedError } from "../errors/NoContextDefinedError";
 
 interface IFormSubmitterContext {
   submitter: VoidFunction;
+  isSubmitting: boolean;
 }
 const FormSubmitterContext = createContext<IFormSubmitterContext>(
   {} as unknown as IFormSubmitterContext
@@ -53,6 +55,7 @@ export function StatefulForm(
   } & FormHandlers
 ) {
   const methods = useForm({ shouldUnregister: props.shouldUnregister });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function submitHandler(
     data: FieldValues,
@@ -60,6 +63,7 @@ export function StatefulForm(
     event?: BaseSyntheticEvent<object, any, any>
   ) {
     event?.stopPropagation();
+    setIsSubmitting(true);
     const result = await props.onSubmit(data, methods);
     if (!result) {
       return;
@@ -87,7 +91,8 @@ export function StatefulForm(
       return;
     }
 
-    props.onSubmitionSuccessful(result.data as Record<string, unknown>);
+    await props.onSubmitionSuccessful(result.data as Record<string, unknown>);
+    setIsSubmitting(true);
   }
 
   const submitter = methods.handleSubmit(submitHandler, (e) =>
@@ -95,7 +100,7 @@ export function StatefulForm(
   );
   return (
     <FormProvider {...methods}>
-      <FormSubmitterContext.Provider value={{ submitter }}>
+      <FormSubmitterContext.Provider value={{ submitter, isSubmitting }}>
         <form className="flex flex-col gap-2.5" onSubmit={submitter}>
           {props.children}
         </form>
@@ -131,7 +136,7 @@ StatefulForm.ResetButton = function ResetButton(
 StatefulForm.Submitter = function Submitter({
   render,
 }: {
-  render: (submitter: VoidFunction) => ReactNode;
+  render: (submitter: VoidFunction, isSubmitting: boolean) => ReactNode;
 }) {
   const submitter = useContext(FormSubmitterContext);
   const { trigger } = useFormContext();
@@ -144,5 +149,5 @@ StatefulForm.Submitter = function Submitter({
     if (isValid) submitter.submitter();
   }
 
-  return render(handleSubmission);
+  return render(handleSubmission, submitter.isSubmitting);
 };

@@ -1,5 +1,6 @@
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { ReactNode } from "react";
+import { StatefulForm } from "./statefulForm";
 
 export function FilledButton({
   children,
@@ -39,5 +40,17 @@ export function FilledButton({
     >
       {children}
     </Button>
+  );
+}
+
+export function SubmitSensitiveButton({ children }: { children: ReactNode }) {
+  return (
+    <StatefulForm.Submitter
+      render={(_, isSubmitting) => (
+        <FilledButton type="submit" disabled={isSubmitting}>
+          {isSubmitting ? <CircularProgress /> : children}
+        </FilledButton>
+      )}
+    />
   );
 }

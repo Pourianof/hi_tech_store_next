@@ -1,24 +1,21 @@
 "use client";
 import { ModalEditableInput } from "@/app/account/_components/ModalEditForm";
 import { updateUserAction } from "@/lib/server_actions/userActions";
-import { FilledButton } from "@/ui/form/AppButtons";
+import { useAuth } from "@/ui/contexts/authContext";
+import { SubmitSensitiveButton } from "@/ui/form/AppButtons";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
-import { useSession } from "next-auth/react";
 
-export function FullNameInput({
-  name,
-  lastName,
-}: {
-  name: string;
-  lastName: string;
-}) {
-  const { update } = useSession();
+export function FullNameInput() {
+  const { update, data, isLoading } = useAuth();
+
+  const firstName = data?.user.firstName;
+  const lastName = data?.user.lastName;
 
   return (
     <ModalEditableInput
       iconName="user"
       label="Full name"
-      value={`${name} ${lastName}`}
+      value={isLoading ? "loading..." : `${firstName} ${lastName}`}
       modalTitle="First name and Last name"
       onSubmit={(data) => {
         return updateUserAction(data);
@@ -39,7 +36,7 @@ export function FullNameInput({
           filedName="firstName"
           placeholder="Firstname"
           type="text"
-          initValue={name}
+          initValue={firstName}
         />
         <ErrorLabeledInput
           filedName="lastName"
@@ -49,7 +46,7 @@ export function FullNameInput({
         />
       </div>
       <div>
-        <FilledButton type="submit">Save</FilledButton>
+        <SubmitSensitiveButton>Save</SubmitSensitiveButton>
       </div>
     </ModalEditableInput>
   );
