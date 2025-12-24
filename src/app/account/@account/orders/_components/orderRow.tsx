@@ -29,40 +29,38 @@ export function OrderRow({ order }: { order: OrderWithProduct }) {
         <OrderInfoSlot title={"Total"} subtitle={`$${stat.total}`} />
       </div>
       <div className="flex gap-2">
-        {[...order.items, ...order.items, ...order.items, ...order.items]
-          .slice(0, maxDisplayItemsCount)
-          .map((item) => (
-            <div
-              key={item.id}
-              className="max-w-1/6 min-w-1/6 relative hover:[&_.product-info]:opacity-100"
-            >
-              <ApiImage
-                alt={item.product.title}
-                src={getMainMedia(item.product as Product)?.url}
-                className="w-full"
-              />
-              <div className="product-info space-y-2 top-0 left-0 w-full h-full text-slate-100 p-2 rounded absolute opacity-0 bg-black/60">
-                <h3
-                  className="text-sm font-semibold line-clamp-2 border-b border-b-white/40"
-                  title={item.product.title}
+        {order.items.slice(0, maxDisplayItemsCount).map((item) => (
+          <div
+            key={item.id}
+            className="max-w-1/6 min-w-1/6 relative hover:[&_.product-info]:opacity-100"
+          >
+            <ApiImage
+              alt={item.product.title}
+              src={getMainMedia(item.product as Product)?.url}
+              className="w-full"
+            />
+            <div className="product-info space-y-2 top-0 left-0 w-full h-full text-slate-100 p-2 rounded absolute opacity-0 bg-black/60">
+              <h3
+                className="text-sm font-semibold line-clamp-2 border-b border-b-white/40"
+                title={item.product.title}
+              >
+                <Link
+                  href={{
+                    pathname: `${routes.products.forProduct(
+                      item.product.productId
+                    )}`,
+                  }}
                 >
-                  <Link
-                    href={{
-                      pathname: `${routes.products.forProduct(
-                        item.product.productId
-                      )}`,
-                    }}
-                  >
-                    {item.product.title}
-                  </Link>
-                </h3>
-                <div className="flex gap-2">
-                  <span className="text-xs">${item.orderPayTimePrice}</span>
-                  <span className="text-xs ">×{item.count}</span>
-                </div>
+                  {item.product.title}
+                </Link>
+              </h3>
+              <div className="flex gap-2">
+                <span className="text-xs">${item.orderPayTimePrice}</span>
+                <span className="text-xs ">×{item.count}</span>
               </div>
             </div>
-          ))}
+          </div>
+        ))}
         {order.items.length > maxDisplayItemsCount && (
           <span className="font-semibold inline-block p-2 self-center">
             +{order.items.length - maxDisplayItemsCount}
