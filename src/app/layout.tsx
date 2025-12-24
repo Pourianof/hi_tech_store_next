@@ -13,6 +13,7 @@ import { CCQueryClientProvider } from "./dashboard/categories/_components/queryC
 import { CartHandlerProvider } from "@/ui/contexts/cart/cartContext";
 import Head from "next/head";
 import { ModalContainer } from "@/ui/modal/modalContainer";
+import { auth } from "../../auth";
 
 export default async function MainLayout(props: {
   children: ReactNode;
@@ -26,7 +27,7 @@ export default async function MainLayout(props: {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <body>
-        <SessionProvider>
+        <SessionProvider session={await auth()}>
           <CCQueryClientProvider>
             <CartHandlerProvider>
               <CategoryProvider
