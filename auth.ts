@@ -38,7 +38,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const { token: apiToken, user, expiresAt } = data;
           return {
             email: user.email,
-            name: user.firstName,
             firstName: user.firstName,
             lastName: user.lastName,
             apiToken,
@@ -54,7 +53,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   session: { strategy: "jwt" },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update" && session) {
+        token.user = { ...(token.user ?? {}), ...session.user };
+      }
       // login
       if (user) {
         token.id = user.id;

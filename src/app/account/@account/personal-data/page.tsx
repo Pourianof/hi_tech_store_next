@@ -1,6 +1,7 @@
 import { auth } from "../../../../../auth";
 import { PageTitle } from "../../_components/pageTitle";
 import { EditableInput } from "../../_components/EditableInput";
+import { FullNameInput } from "./_components/FullNameInput";
 
 export default async function AccountPersonalDataPage() {
   const { user } = (await auth())!;
@@ -8,7 +9,7 @@ export default async function AccountPersonalDataPage() {
     <div>
       <PageTitle title="Identification" description="Verify your identitys" />
       <div className="grid grid-cols-2 gap-2">
-        <EditableInput iconName="user" label="Full name" value={user?.name} />
+        <FullNameInput name={user.firstName} lastName={user.lastName} />
         <EditableInput
           iconName="email"
           label="E-mail Address"

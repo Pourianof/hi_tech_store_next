@@ -32,15 +32,26 @@ StatefulForm.SuccessSubmit = async function (
   return { data, status: "success", statusCode: 200 };
 };
 
-export function StatefulForm(props: {
-  onSubmit: (
-    data: FieldValues,
-    form: UseFormReturn
-  ) => Promise<ResultModel | undefined>;
-  onSubmitionSuccessful: (result: Record<string, unknown>) => void;
-  children: ReactNode;
-  shouldUnregister?: boolean;
-}) {
+export type FormSubmitter = (
+  data: FieldValues,
+  form: UseFormReturn
+) => Promise<ResultModel | undefined>;
+
+export type FormSuccessSubmitHandler = (
+  result: Record<string, unknown>
+) => void;
+
+export type FormHandlers = {
+  onSubmit: FormSubmitter;
+  onSubmitionSuccessful: FormSuccessSubmitHandler;
+};
+
+export function StatefulForm(
+  props: {
+    children: ReactNode;
+    shouldUnregister?: boolean;
+  } & FormHandlers
+) {
   const methods = useForm({ shouldUnregister: props.shouldUnregister });
 
   async function submitHandler(

@@ -50,4 +50,10 @@ export const apiRoutes = {
       return `${this.base}/items`;
     },
   },
+  users: {
+    base: `${server}/users`,
+    get me() {
+      return `${this.base}/me`;
+    },
+  },
 };

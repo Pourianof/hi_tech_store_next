@@ -13,7 +13,7 @@ export function UserLink() {
       <Icon name="user" />
       {!!session && (
         <span className="text-sm bg-gray-300 inline-block px-1 rounded hover:bg-gray-400">
-          {session.user?.name}
+          {session.user?.firstName}
         </span>
       )}
     </Link>
