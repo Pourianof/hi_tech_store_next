@@ -1,6 +1,7 @@
 import { PageTitle } from "../../_components/pageTitle";
 import { EditableInput } from "../../_components/EditableInput";
 import { FullNameInput } from "./_components/FullNameInput";
+import { EditableEmailInput } from "./_components/EmailInput";
 
 export default async function AccountPersonalDataPage() {
   return (
@@ -8,7 +9,7 @@ export default async function AccountPersonalDataPage() {
       <PageTitle title="Identification" description="Verify your identitys" />
       <div className="grid grid-cols-2 gap-2">
         <FullNameInput />
-        <EditableInput iconName="email" label="E-mail Address" />
+        <EditableEmailInput />
         <EditableInput
           iconName="phone"
           label="Phone number"

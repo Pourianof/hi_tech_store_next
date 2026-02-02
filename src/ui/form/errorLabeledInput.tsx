@@ -1,9 +1,9 @@
 "use client";
 import { captalize } from "@/lib/helpers/stringHelpers";
-import { TextInput } from "./textInput";
-import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import { useEffect } from "react";
+import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import { ErrorMessageLabel } from "./errorMessageLabel";
+import { TextInput } from "./textInput";
 
 type RegisterOpts = RegisterOptions<FieldValues, string>;
 export function ErrorLabeledInput(props: {
