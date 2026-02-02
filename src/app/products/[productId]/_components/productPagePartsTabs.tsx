@@ -15,7 +15,7 @@ export function ProductPagePartsTabs() {
     <div className="border-b flex">
       {HASH_LINKS.map((link) => (
         <a
-          className={`relative px-4 inline-block pb-1 -bottom-[2px] ${
+          className={`relative px-4 inline-block pb-1 -bottom-0.5 ${
             hash.endsWith(link.hash)
               ? "text-blue-600 border-b-2 border-b-blue-500 relative"
               : ""

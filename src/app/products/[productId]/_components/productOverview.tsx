@@ -10,7 +10,7 @@ export function ProductOverview({ product }: { product: Product }) {
       <h3 className="text-2xl font-semibold">{product.title}</h3>
       <div className="flex gap-4">
         <ProductScore score={product.averageScore} />
-        <div className="w-[1px] bg-gray-400"></div>
+        <div className="w-px bg-gray-400"></div>
         <span>sold 125</span>
       </div>
       <div className="[&_.icon]:me-1 text-sm flext gap-2 space-x-2 justify-between text-gray-neutral-71">

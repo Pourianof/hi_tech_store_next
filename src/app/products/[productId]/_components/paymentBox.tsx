@@ -172,7 +172,7 @@ function PaymentPrice({ mode = "row" }: { mode?: "row" | "col" }) {
 function PaymentOptionsBox() {
   const sink = useSink(PAYMENT_CHANNEL);
   return (
-    <div className="flex md:hidden gap-4 [&>*]:grow [&>*]:text-center">
+    <div className="flex md:hidden gap-4 *:grow *:text-center">
       <Button
         variant="contained"
         onClick={(e) => {
