@@ -3,12 +3,14 @@ import { Slider } from "@/ui/slider";
 import { ProductMedia } from "@/core/models/product";
 import { ApiImage } from "@/ui/image/ApiImage";
 import { ReactNode, useEffect, useState } from "react";
-import { useProduct } from "../_contexts/productContext";
+import { useActiveVariation } from "../_contexts/variationContext";
 
 export function ProductMediaSlider() {
   const [activeMedia, setActiveMedia] = useState<ProductMedia>();
-  const product = useProduct();
-  if (!product.media?.length) {
+  const {
+    activeVariation: { media },
+  } = useActiveVariation();
+  if (!media?.length) {
     return null;
   }
 
@@ -21,7 +23,7 @@ export function ProductMediaSlider() {
       </div>
       <div className="h-40">
         <SelectableSlider
-          items={product.media.filter((m) => m.type == "Image")}
+          items={media.filter((m) => m.type == "Image")}
           builder={(item) => {
             return (
               <div className="h-20">

@@ -24,7 +24,7 @@ export default async function ProductListPage({
     <div>
       <CategoryList />
       <div className="flex">
-        <div className="md:min-w-[max(25%,_200px)] sm:block sm:min-w-1/3 hidden">
+        <div className="md:min-w-[max(25%,200px)] sm:block sm:min-w-1/3 hidden">
           <FilterFeeder searchParams={params} />
         </div>
         <div>

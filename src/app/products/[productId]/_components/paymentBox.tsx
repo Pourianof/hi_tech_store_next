@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useProduct } from "../_contexts/productContext";
 import { useCart } from "@/ui/contexts/cart/cartContext";
+import { useActiveVariation } from "../_contexts/variationContext";
 
 const PAYMENT_CHANNEL = "payment-channel";
 export function PaymentBox() {
@@ -129,13 +130,15 @@ function MainPayment() {
 
 function PaymentPrice({ mode = "row" }: { mode?: "row" | "col" }) {
   const product = useProduct();
+  const {
+    activeVariation: { price },
+  } = useActiveVariation();
   product.discount = 12;
   const hasDiscount = !!product.discount;
-  const paymenyPrice =
-    product.price - (product.price * (product.discount ?? 0)) / 100;
+  const paymenyPrice = price - (price * (product.discount ?? 0)) / 100;
 
   const formattedPaymentPrice = paymenyPrice.toFixed(2);
-  const formmatedMainPrice = product.price.toFixed(2);
+  const formmatedMainPrice = price.toFixed(2);
 
   return (
     <div

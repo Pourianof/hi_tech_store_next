@@ -4,7 +4,6 @@ import { getProducts } from "@/api/productApi";
 
 export async function NewProductsList() {
   const productResult = await getProducts();
-
   if (productResult.status == "failed") {
     return (
       <div>

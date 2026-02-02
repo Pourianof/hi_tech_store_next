@@ -3,17 +3,27 @@ import { BrandModel } from "./brand";
 export interface Product {
   productId: number;
   title: string;
-  price: number;
   discount?: number;
   averageScore: number;
   scoreCounts: number;
   myScore?: number;
-  media?: ProductMedia[];
   properties: ProductProperty[];
   components: ProductComponent[];
   description?: string;
   authorId?: string | number;
   categoryId: number;
+  variations: ProductVariation[];
+}
+
+export interface ProductVariation {
+  color: {
+    colorId: number;
+    code: string;
+    name: string;
+  };
+  inventory: number;
+  media: ProductMedia[];
+  price: number;
 }
 
 export interface ProductSummary {

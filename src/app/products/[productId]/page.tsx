@@ -4,6 +4,7 @@ import { ProductOverview } from "./_components/productOverview";
 import { ProductProvider } from "./_contexts/productContext";
 import { ProductPageParts } from "./_components/productPageParts";
 import { PaymentBox } from "./_components/paymentBox";
+import { VariationProvider } from "./_contexts/variationContext";
 
 export default async function ProductItemPage({
   params,
@@ -11,7 +12,7 @@ export default async function ProductItemPage({
   params: Record<string, string>;
 }) {
   const productResult = await getSingleProduct(
-    parseInt((await params).productId)
+    parseInt((await params).productId),
   );
 
   if (productResult.status == "failed") {
@@ -20,22 +21,26 @@ export default async function ProductItemPage({
 
   const product = productResult.data;
 
+  const prodVariation = product.variations.at(0)!;
+
   return (
-    <div>
-      <div className="flex items-start">
-        <ProductProvider product={product}>
-          <div className="w-1/3">
-            <ProductMediaSlider />
+    <VariationProvider variation={prodVariation}>
+      <div>
+        <div className="flex items-start">
+          <ProductProvider product={product}>
+            <div className="w-1/3">
+              <ProductMediaSlider />
+            </div>
+          </ProductProvider>
+          <div className="grow">
+            <ProductOverview product={product} />
           </div>
-        </ProductProvider>
-        <div className="grow">
-          <ProductOverview product={product} />
+          <ProductProvider product={product}>
+            <PaymentBox />
+          </ProductProvider>
         </div>
-        <ProductProvider product={product}>
-          <PaymentBox />
-        </ProductProvider>
+        <ProductPageParts product={product} />
       </div>
-      <ProductPageParts product={product} />
-    </div>
+    </VariationProvider>
   );
 }
