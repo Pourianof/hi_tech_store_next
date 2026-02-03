@@ -11,7 +11,9 @@ export function CartList() {
   const {
     cart: { items },
   } = useCart();
-  const cartItems = items.map((item) => new CI(item.product, item.amount));
+  const cartItems = items.map(
+    (item) => new CI(item.product, item.variation, item.amount),
+  );
 
   if (!items.length) {
     return (

@@ -1,6 +1,7 @@
 import { CartItem } from "@/core/models/cartItem";
 import { getMainMedia } from "@/core/models/helpers/productHelpers";
 import { useCart } from "@/ui/contexts/cart/cartContext";
+import { priceFormatter } from "@/ui/helpers/priceFormatter";
 import Icon from "@/ui/icons/icon";
 import { ApiImage } from "@/ui/image/ApiImage";
 
@@ -12,8 +13,8 @@ export function CartItemBox({
   variant?: "large" | "mini";
 }) {
   const { actions } = useCart();
-  const { product, amount } = cartItem;
-  const coverImage = getMainMedia(cartItem.product)?.url;
+  const { product, amount, variation } = cartItem;
+  const coverImage = getMainMedia(cartItem.product, variation)?.url;
 
   let titleClassName: string;
   switch (variant) {
@@ -44,7 +45,9 @@ export function CartItemBox({
             {!!product.discount && (
               <>
                 <span className="text-gray-300 text-xs space-x-1">
-                  <span className="line-through">${product.price}</span>
+                  <span className="line-through">
+                    ${priceFormatter(cartItem.variation.price)}
+                  </span>
                   <span className="text-orange-400 text-xs">
                     {product.discount}%
                   </span>
@@ -52,12 +55,12 @@ export function CartItemBox({
               </>
             )}
 
-            <span>${cartItem.getPayingProductPrice()}</span>
+            <span>${priceFormatter(cartItem.getPayingProductPrice())}</span>
           </div>
           <span className="opacity-45 text-[10px]">(×{amount})</span>
           <Icon name="arrow_forward" />
           <span className="bg-slate-300 inline-block p-0.5 rounded">
-            ${cartItem.finalPrice}
+            ${priceFormatter(cartItem.finalPrice)}
           </span>
         </div>
         <div className="flex items-stretch">
@@ -65,7 +68,11 @@ export function CartItemBox({
             className="rounded-l border px-2 cursor-pointer hover:bg-gradient-end-blue"
             onClick={(e) => {
               e.preventDefault();
-              actions.decreaseAmountOfProduct(product);
+              actions.decreaseAmountOfProduct({
+                product,
+                variation,
+                amount: -1,
+              });
             }}
           >
             <Icon name="remove" />
@@ -79,10 +86,11 @@ export function CartItemBox({
               e.preventDefault();
               actions.addProductToCart(
                 {
-                  product: product,
+                  product,
+                  variation,
                   amount: 1,
                 },
-                false
+                false,
               );
             }}
           >

@@ -33,7 +33,7 @@ interface ICartContext extends CartState {
 }
 
 const CartContext = createContext<ICartContext | undefined>(
-  undefined as unknown as ICartContext
+  undefined as unknown as ICartContext,
 );
 
 export const CART_KEY = "local_storage_key";
@@ -186,7 +186,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
           state.cart.items.map((item) => ({
             amount: item.amount,
             productId: item.product.productId,
-          }))
+          })),
         ).then((cart) => dispatch({ action: "Initialize", payload: cart }));
       } else {
         // if user is logged-in the always fetch from server
@@ -258,11 +258,13 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
             if (isLogginStateLoading) {
               return;
             }
+
             dispatch({
               action: "Decrease",
               payload,
             });
-            changedItemProductIds.current.push(payload.productId);
+
+            changedItemProductIds.current.push(payload.product.productId);
           },
         },
       }}

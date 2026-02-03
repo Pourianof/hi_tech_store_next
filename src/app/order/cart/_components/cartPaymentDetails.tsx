@@ -7,7 +7,7 @@ export function CartPaymentDetails() {
     cart: { items },
   } = useCart();
   const cartItems = items.map(
-    (item) => new CartItem(item.product, item.amount)
+    (item) => new CartItem(item.product, item.variation, item.amount),
   );
   const cartPrice = cartItems.reduce((prev, cur) => prev + cur.finalPrice, 0);
 

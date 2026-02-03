@@ -39,6 +39,7 @@ function MainPayment() {
     actions: { addProductToCart },
   } = useCart();
   const product = useProduct();
+  const { activeVariation } = useActiveVariation();
   // const displayMode = "display" in props && props.display !== false;
 
   useEffect(() => {
@@ -106,7 +107,11 @@ function MainPayment() {
             }}
             onClick={(e) => {
               e.preventDefault();
-              addProductToCart({ amount: 1, product });
+              addProductToCart({
+                amount: 1,
+                product,
+                variation: activeVariation,
+              });
             }}
           >
             Add to cart

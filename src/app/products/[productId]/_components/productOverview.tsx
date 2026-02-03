@@ -3,6 +3,7 @@ import { Product } from "@/core/models/product";
 import Icon from "@/ui/icons/icon";
 import Link from "next/link";
 import { Fragment } from "react";
+import { ProductVariations } from "./productVariations";
 
 export function ProductOverview({ product }: { product: Product }) {
   return (
@@ -38,6 +39,7 @@ export function ProductOverview({ product }: { product: Product }) {
           </Fragment>
         ))}
       </ul>
+      <ProductVariations />
       <Link className="text-blue-600" href={{ hash: "details" }}>
         Show more <Icon name="arrow_right" />
       </Link>

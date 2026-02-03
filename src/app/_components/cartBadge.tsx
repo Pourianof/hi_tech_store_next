@@ -11,7 +11,8 @@ export function CartBadge() {
     cart: { items: products },
   } = useCart();
   const cartItems = products.map(
-    ({ amount, product }) => new CartItem(product, amount)
+    ({ amount, product, variation }) =>
+      new CartItem(product, variation, amount),
   );
   return (
     <div className="relative hover:[&>.cart-box]:opacity-100 hover:[&>.cart-box]:visible">
@@ -32,7 +33,9 @@ export function CartBadge() {
               <div>
                 <span>Total price: </span>
                 <span>
-                  {cartItems.reduce((prev, cur) => prev + cur.finalPrice, 0)}
+                  {cartItems
+                    .reduce((prev, cur) => prev + cur.finalPrice, 0)
+                    .toFixed(2)}
                 </span>
               </div>
               <Link href={{ pathname: "/order/cart" }}>

@@ -26,19 +26,17 @@ export default async function ProductItemPage({
   return (
     <VariationProvider variation={prodVariation}>
       <div>
-        <div className="flex items-start">
-          <ProductProvider product={product}>
+        <ProductProvider product={product}>
+          <div className="flex items-start">
             <div className="w-1/3">
               <ProductMediaSlider />
             </div>
-          </ProductProvider>
-          <div className="grow">
-            <ProductOverview product={product} />
-          </div>
-          <ProductProvider product={product}>
+            <div className="grow">
+              <ProductOverview product={product} />
+            </div>
             <PaymentBox />
-          </ProductProvider>
-        </div>
+          </div>
+        </ProductProvider>
         <ProductPageParts product={product} />
       </div>
     </VariationProvider>
