@@ -39,9 +39,7 @@ export function CartBadge() {
                 </span>
               </div>
               <Link href={{ pathname: "/order/cart" }}>
-                <Button variant="outlined" onClick={(e) => e.preventDefault()}>
-                  Order now
-                </Button>
+                <Button variant="outlined">Order now</Button>
               </Link>
             </div>
           </div>
