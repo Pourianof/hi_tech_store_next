@@ -104,7 +104,9 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     isLoading: true,
   });
 
-  const changedItemProductIds = useRef<number[]>([]);
+  const changedItemProductIds = useRef<
+    { productId: number; variationId: number }[]
+  >([]);
 
   useLocalStorageChange({
     storageKey: CART_KEY,
@@ -211,14 +213,19 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const changedItems = changedItemProductIds.current.map((id) => {
-      return {
-        productId: id,
-        amount:
-          state.cart.items.find((item) => item.product.productId == id)
-            ?.amount ?? 0,
-      };
-    });
+    const changedItems = changedItemProductIds.current.map(
+      ({ productId, variationId }) => {
+        return {
+          productId,
+          amount:
+            state.cart.items.find(
+              (item) =>
+                item.product.productId == productId &&
+                item.variation.color.colorId == variationId,
+            )?.amount ?? 0,
+        };
+      },
+    );
 
     changeItemMutation(changedItems);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -243,7 +250,10 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
               payload,
             });
 
-            changedItemProductIds.current.push(payload.product.productId);
+            changedItemProductIds.current.push({
+              productId: payload.product.productId,
+              variationId: payload.variation.color.colorId,
+            });
 
             if (toastNotif) toast.success("Product added to cart successfully");
           },
@@ -252,7 +262,10 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
               return;
             }
             dispatch({ action: "Remove", payload });
-            changedItemProductIds.current.push(payload.productId);
+            changedItemProductIds.current.push({
+              productId: payload.product.productId,
+              variationId: payload.variation.color.colorId,
+            });
           },
           decreaseAmountOfProduct(payload) {
             if (isLogginStateLoading) {
@@ -264,7 +277,10 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
               payload,
             });
 
-            changedItemProductIds.current.push(payload.product.productId);
+            changedItemProductIds.current.push({
+              productId: payload.product.productId,
+              variationId: payload.variation.color.colorId,
+            });
           },
         },
       }}

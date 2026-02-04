@@ -7,21 +7,25 @@ interface AddProductData {
   amount?: number;
 }
 
+interface CartProductItemSpecifier {
+  product: Product;
+  variation: ProductVariation;
+}
+
 interface CartActionPayloads {
   Add: AddProductData;
   Decrease: AddProductData;
-  Remove: Product;
+  Remove: CartProductItemSpecifier;
   Initialize: CartWithProduct;
   Clear?: void | undefined;
   Loading: boolean;
 }
 
+interface CartItemState extends CartProductItemSpecifier {
+  amount: number;
+}
 interface CartItemsState {
-  items: {
-    product: Product;
-    amount: number;
-    variation: ProductVariation;
-  }[];
+  items: CartItemState[];
 }
 
 export type CartState = {
@@ -31,6 +35,22 @@ export type CartState = {
 
 export type CartActions = keyof CartActionPayloads;
 export type CartPayloads<T extends CartActions> = CartActionPayloads[T];
+
+function findProductVariation(
+  target: Omit<CartItemState, "amount">,
+  reverseFilter: boolean = false,
+) {
+  return (p: CartItemState) =>
+    Boolean(
+      +reverseFilter ^ // if reverseFilter is true then we want to find the negation of next condition
+      +(
+        p.product.productId == target.product.productId &&
+        !!p.product.variations.find(
+          (pv) => target.variation.color.colorId == pv.color.colorId,
+        )
+      ),
+    );
+}
 
 export function cartReducer<T extends CartActions>(
   state: CartState,
@@ -47,14 +67,10 @@ export function cartReducer<T extends CartActions>(
       }
 
       const productIndexInList = state.cart.items.findIndex(
-        (p) =>
-          p.product.productId == addedData.product.productId &&
-          !!p.product.variations.find(
-            (pv) => addedData.variation.color.colorId == pv.color.colorId,
-          ),
+        findProductVariation(addedData),
       );
 
-      const productInList = state.cart.items.at(productIndexInList);
+      const productInList = state.cart.items[productIndexInList];
 
       const addedAmount = addedData.amount ?? 1;
 
@@ -82,13 +98,12 @@ export function cartReducer<T extends CartActions>(
       return { ...state };
     }
     case "Remove": {
+      const removed = action.payload as CartProductItemSpecifier;
+
       return {
         ...state,
         cart: {
-          items: state.cart.items.filter(
-            (prod) =>
-              prod.product.productId != (action.payload as Product).productId,
-          ),
+          items: state.cart.items.filter(findProductVariation(removed, true)),
         },
       };
     }

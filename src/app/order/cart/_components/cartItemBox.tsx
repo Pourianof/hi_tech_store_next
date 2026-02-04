@@ -100,7 +100,10 @@ export function CartItemBox({
             className="ms-auto cursor-pointer h-[30px] aspect-square hover:bg-gray-200 rounded-full"
             onClick={(e) => {
               e.preventDefault();
-              actions.removeProductFromCart(product);
+              actions.removeProductFromCart({
+                product,
+                variation: variation,
+              });
             }}
           >
             <Icon name="trash" />
