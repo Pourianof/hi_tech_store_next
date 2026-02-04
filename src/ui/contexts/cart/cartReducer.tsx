@@ -45,9 +45,7 @@ function findProductVariation(
       +reverseFilter ^ // if reverseFilter is true then we want to find the negation of next condition
       +(
         p.product.productId == target.product.productId &&
-        !!p.product.variations.find(
-          (pv) => target.variation.color.colorId == pv.color.colorId,
-        )
+        p.variation.color.colorId == target.variation.color.colorId
       ),
     );
 }
