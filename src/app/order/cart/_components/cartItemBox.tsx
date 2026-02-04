@@ -36,10 +36,17 @@ export function CartItemBox({
         alt={product.title}
         src={coverImage}
       />
-      <div>
+      <div className="flex flex-col gap-1">
         <h4 className={"line-clamp-2 w-full font-semibold " + titleClassName}>
           {product.title}
         </h4>
+        <div className="flex gap-1 items-center">
+          <div
+            className="w-6 aspect-square rounded-full"
+            style={{ backgroundColor: `#${variation.color.code}` }}
+          ></div>
+          <span className="text-sm text-stone-500">{variation.color.name}</span>
+        </div>
         <div className="whitespace-nowrap flex items-center my-2">
           <div className="flex flex-col">
             {!!product.discount && (
