@@ -25,22 +25,22 @@ interface IFormSubmitterContext {
   isSubmitting: boolean;
 }
 const FormSubmitterContext = createContext<IFormSubmitterContext>(
-  {} as unknown as IFormSubmitterContext
+  {} as unknown as IFormSubmitterContext,
 );
 
 StatefulForm.SuccessSubmit = async function (
-  data: unknown
+  data: unknown,
 ): Promise<ResultModel> {
   return { data, status: "success", statusCode: 200 };
 };
 
 export type FormSubmitter = (
   data: FieldValues,
-  form: UseFormReturn
+  form: UseFormReturn,
 ) => Promise<ResultModel | undefined>;
 
 export type FormSuccessSubmitHandler = (
-  result: Record<string, unknown>
+  result: Record<string, unknown>,
 ) => void;
 
 export type FormHandlers = {
@@ -52,7 +52,7 @@ export function StatefulForm(
   props: {
     children: ReactNode;
     shouldUnregister?: boolean;
-  } & FormHandlers
+  } & FormHandlers,
 ) {
   const methods = useForm({ shouldUnregister: props.shouldUnregister });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,7 +60,7 @@ export function StatefulForm(
   async function submitHandler(
     data: FieldValues,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    event?: BaseSyntheticEvent<object, any, any>
+    event?: BaseSyntheticEvent<object, any, any>,
   ) {
     event?.stopPropagation();
     setIsSubmitting(true);
@@ -85,7 +85,7 @@ export function StatefulForm(
       } else {
         toast.error(
           error.detail ?? error.title ?? "No error message defined.",
-          { duration: 4000 }
+          { duration: 4000 },
         );
       }
       return;
@@ -96,7 +96,7 @@ export function StatefulForm(
   }
 
   const submitter = methods.handleSubmit(submitHandler, (e) =>
-    console.error(e, methods.getValues())
+    console.error(e, methods.getValues()),
   );
   return (
     <FormProvider {...methods}>
@@ -113,7 +113,7 @@ StatefulForm.ResetButton = function ResetButton(
   props: DetailedHTMLProps<
     ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
-  >
+  >,
 ) {
   const { setValue, getValues } = useFormContext();
   const values = getValues();
