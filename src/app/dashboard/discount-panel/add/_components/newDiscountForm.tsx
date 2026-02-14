@@ -8,6 +8,13 @@ export function NewDiscountForm({ children }: { children: ReactNode }) {
     <StatefulForm
       onSubmit={StatefulForm.SuccessSubmit}
       onSubmitionSuccessful={() => {}}
+      defaultValues={{
+        rules: [
+          {
+            conditions: [{}],
+          },
+        ],
+      }}
     >
       {children}
     </StatefulForm>
