@@ -3,6 +3,7 @@ import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
 import { ControlledSelect } from "@/ui/form/controlledSelect";
 import { LabeldInput } from "@/ui/form/inputs";
 import { MenuItem } from "@mui/material";
+import { DISCOUNT_ENTITY_OPERATOR } from "./fieldNames";
 
 const OPERATORS = [
   {
@@ -32,7 +33,7 @@ const OPERATORS = [
 ];
 
 export function EntityPropertyOperationSelection() {
-  const fieldname = useFieldPath("discountEntityOperator");
+  const fieldname = useFieldPath(DISCOUNT_ENTITY_OPERATOR);
   return (
     <LabeldInput label="Operator">
       <ControlledSelect fieldname={fieldname} label="Operator">

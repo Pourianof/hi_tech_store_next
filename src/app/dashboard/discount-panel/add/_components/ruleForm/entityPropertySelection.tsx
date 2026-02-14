@@ -7,10 +7,14 @@ import { MenuItem } from "@mui/material";
 import { useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { DISCOUNT_Entities_KEY } from "./ruleForm";
+import {
+  DISCOUNT_CONDITION_ENTITY,
+  DISCOUNT_ENTITY_PROPERTY,
+} from "./fieldNames";
 
 export function EntityPropertySelection() {
-  const propFieldname = useFieldPath("discountProperty");
-  const entityFieldname = useFieldPath("discountEntity");
+  const propFieldname = useFieldPath(DISCOUNT_ENTITY_PROPERTY);
+  const entityFieldname = useFieldPath(DISCOUNT_CONDITION_ENTITY);
 
   const { setValue } = useFormContext();
   const entities = useStaticData(DISCOUNT_Entities_KEY) as DiscountEntity[];
