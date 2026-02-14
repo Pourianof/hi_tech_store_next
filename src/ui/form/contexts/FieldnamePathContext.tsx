@@ -6,11 +6,12 @@ export const FieldnamePathProvider = ({
   name,
   children,
 }: {
-  name: string;
+  name: (string | number) | (string | number)[];
   children: React.ReactNode;
 }) => {
   const parentPath = React.useContext(PathContext);
-  const value = parentPath ? `${parentPath}.${name}` : name;
+  const path = Array.isArray(name) ? name.join(".") : name.toString();
+  const value = parentPath ? `${parentPath}.${path}` : path;
 
   return <PathContext.Provider value={value}>{children}</PathContext.Provider>;
 };
