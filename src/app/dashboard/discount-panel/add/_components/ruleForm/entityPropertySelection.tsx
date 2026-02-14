@@ -12,7 +12,6 @@ export function EntityPropertySelection() {
   const propFieldname = useFieldPath("discountProperty");
   const entityFieldname = useFieldPath("discountEntity");
 
-  console.log(entityFieldname);
   const { setValue } = useFormContext();
   const entities = useStaticData(DISCOUNT_Entities_KEY) as DiscountEntity[];
   const selectedEntityId = +useWatch({ name: entityFieldname });
@@ -33,7 +32,11 @@ export function EntityPropertySelection() {
 
   return (
     <LabeldInput label="Entity properties">
-      <ControlledSelect selectLabel="Entity" fieldname={propFieldname}>
+      <ControlledSelect
+        selectLabel="Entity property"
+        label="Entity property"
+        fieldname={propFieldname}
+      >
         {selectedEntity.properties.map((prop) => (
           <MenuItem key={prop.id} value={prop.id}>
             {prop.name}
