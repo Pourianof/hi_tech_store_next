@@ -52,9 +52,13 @@ export function StatefulForm(
   props: {
     children: ReactNode;
     shouldUnregister?: boolean;
+    defaultValues?: Record<string, unknown>;
   } & FormHandlers,
 ) {
-  const methods = useForm({ shouldUnregister: props.shouldUnregister });
+  const methods = useForm({
+    shouldUnregister: props.shouldUnregister,
+    defaultValues: props.defaultValues,
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function submitHandler(
