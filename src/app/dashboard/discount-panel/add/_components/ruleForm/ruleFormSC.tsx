@@ -55,9 +55,12 @@ function RuleItem({
   index: number;
   onDelete(index: number): void;
 }) {
-  const fieldPath = useFieldPath(index);
+  const ruleNameFieldName = useFieldPath(index, "name");
+  const ruleDescriptionFieldName = useFieldPath(index, "description");
+  const ruleDiscountTypeFieldName = useFieldPath(index, "discountType");
+
   return (
-    <FieldnamePathProvider name={fieldPath}>
+    <FieldnamePathProvider name={index}>
       <div className="bg-slate-100 p-2 rounded">
         <div className="my-2 flex justify-between">
           <span className="inline-block bg-blue-500 w-fit text-gray-neutral-f9 rounded px-1 py-2">
@@ -76,14 +79,14 @@ function RuleItem({
         <Row className="gap-2">
           <LabeldInput label="Rule name">
             <ErrorLabeledInput
-              filedName={`${fieldPath}.name`}
+              filedName={ruleNameFieldName}
               placeholder="Rule name"
               type="text"
             />
           </LabeldInput>
           <LabeldInput label="Description">
             <ErrorLabeledInput
-              filedName={`${fieldPath}.description`}
+              filedName={ruleDescriptionFieldName}
               placeholder="Rule description"
               type="text"
             />
@@ -92,7 +95,7 @@ function RuleItem({
         <Row>
           <Label>Discount type:</Label>
           <Controller
-            name={`${fieldPath}.discountType`}
+            name={ruleDiscountTypeFieldName}
             defaultValue={DiscountActionType.PERCENTAGE}
             render={({ field: { value, onChange } }) => (
               <Select
