@@ -1,8 +1,8 @@
 import { DiscountConditionOperation } from "@/core/models/discount";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
+import { ControlledSelect } from "@/ui/form/controlledSelect";
 import { LabeldInput } from "@/ui/form/inputs";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { Controller } from "react-hook-form";
+import { MenuItem } from "@mui/material";
 
 const OPERATORS = [
   {
@@ -35,26 +35,13 @@ export function EntityPropertyOperationSelection() {
   const fieldname = useFieldPath("discountEntityOperator");
   return (
     <LabeldInput label="Operator">
-      <Controller
-        name={fieldname}
-        render={({ field: { value, onChange } }) => (
-          <FormControl>
-            <InputLabel id="entity-property-operator">Operator</InputLabel>
-            <Select
-              size="small"
-              labelId="entity-property-operator"
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
-            >
-              {OPERATORS.map((op) => (
-                <MenuItem key={op.name} value={op.value}>
-                  {op.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
-      />
+      <ControlledSelect fieldname={fieldname} label="Operator">
+        {OPERATORS.map((op) => (
+          <MenuItem key={op.name} value={op.value}>
+            {op.name}
+          </MenuItem>
+        ))}
+      </ControlledSelect>
     </LabeldInput>
   );
 }

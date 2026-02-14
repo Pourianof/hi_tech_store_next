@@ -1,11 +1,12 @@
 import { DiscountEntity } from "@/core/models/discount";
 import { useStaticData } from "@/ui/contexts/StaticDataInjector";
-import { LabeldInput } from "@/ui/form/inputs";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { useEffect } from "react";
-import { useFormContext, useWatch, Controller } from "react-hook-form";
-import { DISCOUNT_Entities_KEY } from "./ruleForm";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
+import { ControlledSelect } from "@/ui/form/controlledSelect";
+import { LabeldInput } from "@/ui/form/inputs";
+import { MenuItem } from "@mui/material";
+import { useEffect } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
+import { DISCOUNT_Entities_KEY } from "./ruleForm";
 
 export function EntityPropertySelection() {
   const propFieldname = useFieldPath("discountProperty");
@@ -32,27 +33,13 @@ export function EntityPropertySelection() {
 
   return (
     <LabeldInput label="Entity properties">
-      <Controller
-        name={propFieldname}
-        render={({ field: { value, onChange } }) => (
-          <FormControl fullWidth>
-            <InputLabel id="entity">Properties</InputLabel>
-            <Select
-              size="small"
-              label="Entity"
-              labelId="entity"
-              onChange={(event) => onChange(event.target.value)}
-              value={value ?? ""}
-            >
-              {selectedEntity.properties.map((prop) => (
-                <MenuItem key={prop.id} value={prop.id}>
-                  {prop.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
-      />
+      <ControlledSelect selectLabel="Entity" fieldname={propFieldname}>
+        {selectedEntity.properties.map((prop) => (
+          <MenuItem key={prop.id} value={prop.id}>
+            {prop.name}
+          </MenuItem>
+        ))}
+      </ControlledSelect>
     </LabeldInput>
   );
 }

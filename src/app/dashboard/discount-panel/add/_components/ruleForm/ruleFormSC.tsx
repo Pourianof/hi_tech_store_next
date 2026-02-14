@@ -7,12 +7,13 @@ import {
   useFieldPath,
 } from "@/ui/form/contexts/FieldnamePathContext";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
+import { ControlledSelect } from "@/ui/form/controlledSelect";
 import { LabeldInput } from "@/ui/form/inputs";
 import { Label } from "@/ui/form/label";
 import Icon from "@/ui/icons/icon";
 import { Row } from "@/ui/layouts/row";
-import { IconButton, MenuItem, Select } from "@mui/material";
-import { Controller, useFieldArray } from "react-hook-form";
+import { IconButton, MenuItem } from "@mui/material";
+import { useFieldArray } from "react-hook-form";
 import toast from "react-hot-toast";
 import { ConditionForm } from "./conditionListForm";
 import { ActionValueInput } from "./ruleActionInputs";
@@ -94,25 +95,15 @@ function RuleItem({
         </Row>
         <Row>
           <Label>Discount type:</Label>
-          <Controller
-            name={ruleDiscountTypeFieldName}
+          <ControlledSelect
+            fieldname={ruleDiscountTypeFieldName}
             defaultValue={DiscountActionType.PERCENTAGE}
-            render={({ field: { value, onChange } }) => (
-              <Select
-                id="discount-type"
-                value={value}
-                size="small"
-                onChange={(changeContext) => {
-                  onChange(changeContext.target.value);
-                }}
-              >
-                <MenuItem value={DiscountActionType.PERCENTAGE}>
-                  Percentage
-                </MenuItem>
-                <MenuItem value={DiscountActionType.FIXED}>Fixed</MenuItem>
-              </Select>
-            )}
-          />
+          >
+            <MenuItem value={DiscountActionType.PERCENTAGE}>
+              Percentage
+            </MenuItem>
+            <MenuItem value={DiscountActionType.FIXED}>Fixed</MenuItem>
+          </ControlledSelect>
           <ActionValueInput />
         </Row>
         <ConditionForm />

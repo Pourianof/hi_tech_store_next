@@ -2,27 +2,22 @@ import { DiscountEntity } from "@/core/models/discount";
 import { useStaticData } from "@/ui/contexts/StaticDataInjector";
 import { OutlinedButton } from "@/ui/form/AppButtons";
 import {
-  useFieldPath,
   FieldnamePathProvider,
+  useFieldPath,
 } from "@/ui/form/contexts/FieldnamePathContext";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
+import { ControlledSelect } from "@/ui/form/controlledSelect";
 import { LabeldInput } from "@/ui/form/inputs";
+import Icon from "@/ui/icons/icon";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
-import {
-  IconButton,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
-import { useState, useEffect } from "react";
-import { useFieldArray, Controller } from "react-hook-form";
+import { IconButton, MenuItem } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useFieldArray } from "react-hook-form";
+import toast from "react-hot-toast";
 import { EntityPropertyOperationSelection } from "./conditionOperatorSelection";
 import { EntityPropertySelection } from "./entityPropertySelection";
 import { DISCOUNT_Entities_KEY } from "./ruleForm";
-import Icon from "@/ui/icons/icon";
-import toast from "react-hot-toast";
 
 export function ConditionForm() {
   const conditionsPath = useFieldPath("conditions");
@@ -95,28 +90,17 @@ function ConditionItem({
       <div className="bg-discount-condition-blue p-2 rounded grow">
         <Row>
           <LabeldInput label="Choose the criteria you want to target">
-            <Controller
-              key={conditionIndex}
-              name={entityFieldname}
-              render={({ field: { value, onChange } }) => (
-                <FormControl fullWidth>
-                  <InputLabel id="entity">Entity</InputLabel>
-                  <Select
-                    size="small"
-                    label="Entity"
-                    labelId="demo-simple-select-label"
-                    value={value}
-                    onChange={({ target: { value } }) => onChange(value)}
-                  >
-                    {discountEntities.map((entity) => (
-                      <MenuItem key={entity.id} value={entity.id}>
-                        {entity.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-            />
+            <ControlledSelect
+              fieldname={entityFieldname}
+              label="Entity"
+              selectLabel="Entity"
+            >
+              {discountEntities.map((entity) => (
+                <MenuItem key={entity.id} value={entity.id}>
+                  {entity.name}
+                </MenuItem>
+              ))}
+            </ControlledSelect>
           </LabeldInput>
           <EntityPropertySelection />
           <EntityPropertyOperationSelection />
