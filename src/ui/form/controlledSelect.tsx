@@ -6,16 +6,18 @@ type Props = {
   fieldname: string;
   children: ReactNode;
   label?: string;
+  selectLabel?: string;
   defaultValue?: unknown;
   conrollerProps?: ControllerProps;
   selectProps?: SelectProps;
 };
 
-export function FormSelect({
+export function ControlledSelect({
   fieldname,
   label,
   children,
   defaultValue,
+  selectLabel,
   conrollerProps,
   selectProps,
 }: Props) {
@@ -34,6 +36,7 @@ export function FormSelect({
             onChange={(changeContext) => {
               onChange(changeContext.target.value);
             }}
+            label={selectLabel}
             {...selectProps}
           >
             {children}
