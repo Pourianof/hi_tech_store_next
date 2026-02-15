@@ -134,10 +134,7 @@ function ConditionInterpreter() {
           <span className="capitalize bg-red-800" title="Operator">
             {operatorName}
           </span>
-          <span
-            className="bg-gradient-middle-blue font-bold"
-            title="Condition Value"
-          >
+          <span className="bg-[#803090] font-bold px-1" title="Condition Value">
             {val}
           </span>
         </>
