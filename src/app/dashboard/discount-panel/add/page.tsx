@@ -4,6 +4,10 @@ import { LabeldInput } from "@/ui/form/inputs";
 import { NewDiscountForm } from "./_components/newDiscountForm";
 import { RuleForm } from "./_components/ruleForm/ruleForm";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
+import {
+  DISCOUNT_END_DATE,
+  DISCOUNT_START_DATE,
+} from "./_components/ruleForm/fieldNames";
 
 export default async function Page() {
   return (
@@ -19,10 +23,10 @@ export default async function Page() {
         </LabeldInput>
         <div className="flex gap-4">
           <LabeldInput label="Start date">
-            <AppDatePicker />
+            <AppDatePicker fieldname={DISCOUNT_START_DATE} />
           </LabeldInput>
           <LabeldInput label="End date">
-            <AppDatePicker />
+            <AppDatePicker fieldname={DISCOUNT_END_DATE} />
           </LabeldInput>
         </div>
         <RuleForm />

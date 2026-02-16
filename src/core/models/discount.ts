@@ -10,7 +10,15 @@ export interface DiscountEntityProperty {
   name: string;
   description: string;
   subEntity?: DiscountEntity;
-  type: string;
+  type: DiscountEntityProperyValueType;
+}
+
+export enum DiscountEntityProperyValueType {
+  STRING = "String",
+  NUMBER = "Number",
+  BOOLEAN = "Boolean",
+  DATETIME = "Date",
+  OBJECT = "Object",
 }
 
 export interface DiscountCode {

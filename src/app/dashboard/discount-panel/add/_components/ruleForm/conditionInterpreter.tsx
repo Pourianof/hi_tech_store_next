@@ -1,7 +1,6 @@
 import {
-  DiscountEntity,
   DiscountConditionOperation,
-  DiscountEntityProperty,
+  DiscountEntity,
 } from "@/core/models/discount";
 import { useStaticData } from "@/ui/contexts/StaticDataInjector";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
@@ -9,37 +8,25 @@ import { useWatch } from "react-hook-form";
 import {
   DISCOUNT_CONDITION_ENTITY,
   DISCOUNT_CONDITION_VALUE,
-  DISCOUNT_ENTITY_PROPERTY,
   DISCOUNT_ENTITY_OPERATOR,
 } from "./fieldNames";
+import { useSelectedProps } from "./hooks/useSelectedProps";
 import { DISCOUNT_Entities_KEY } from "./ruleForm";
 
 export function ConditionInterpreter() {
   const entityFieldname = useFieldPath(DISCOUNT_CONDITION_ENTITY);
   const valueFieldname = useFieldPath(DISCOUNT_CONDITION_VALUE);
-  const propFieldname = useFieldPath(DISCOUNT_ENTITY_PROPERTY);
   const operatorFieldname = useFieldPath(DISCOUNT_ENTITY_OPERATOR);
 
-  const [ent, val, props, op] = useWatch({
-    name: [entityFieldname, valueFieldname, propFieldname, operatorFieldname],
+  const [ent, val, op] = useWatch({
+    name: [entityFieldname, valueFieldname, operatorFieldname],
   });
 
   const entities = useStaticData(DISCOUNT_Entities_KEY) as DiscountEntity[];
 
   const entity = entities.find((e) => e.id == ent);
 
-  const porperties = (props as number[] | undefined)?.reduce(
-    (acc: DiscountEntityProperty[], propId: number) => {
-      const prop = (acc.at(-1)?.subEntity ?? entity)?.properties.find(
-        (p) => p.id === propId,
-      );
-      if (prop) {
-        acc.push(prop);
-      }
-      return acc;
-    },
-    [],
-  );
+  const porperties = useSelectedProps();
 
   let operatorName: string = "";
   switch (op as DiscountConditionOperation) {

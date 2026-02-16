@@ -2,21 +2,17 @@ import { DiscountEntity } from "@/core/models/discount";
 import { useStaticData } from "@/ui/contexts/StaticDataInjector";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
 import { ControlledSelect } from "@/ui/form/controlledSelect";
-import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { LabeldInput } from "@/ui/form/inputs";
 import { Row } from "@/ui/layouts/row";
 import { MenuItem } from "@mui/material";
 import { useWatch } from "react-hook-form";
 import { EntityPropertyOperationSelection } from "./conditionOperatorSelection";
+import { ConditionValueInput } from "./conditionValueInput";
 import { EntityPropertySelection } from "./entityPropertySelection";
-import {
-  DISCOUNT_CONDITION_ENTITY,
-  DISCOUNT_CONDITION_VALUE,
-} from "./fieldNames";
+import { DISCOUNT_CONDITION_ENTITY } from "./fieldNames";
 import { DISCOUNT_Entities_KEY } from "./ruleForm";
 
 export function EntitSelection() {
-  const valueFieldname = useFieldPath(DISCOUNT_CONDITION_VALUE);
   const discountEntityFieldname = useFieldPath(DISCOUNT_CONDITION_ENTITY);
 
   const selectedEntityId = useWatch({ name: discountEntityFieldname });
@@ -48,13 +44,7 @@ export function EntitSelection() {
         <EntityPropertySelection baseEntity={selectedEntity} index={0} />
       )}
       <EntityPropertyOperationSelection />
-      <LabeldInput label="Value">
-        <ErrorLabeledInput
-          filedName={valueFieldname}
-          type="text"
-          placeholder="Condition value"
-        />
-      </LabeldInput>
+      <ConditionValueInput />
     </Row>
   );
 }
