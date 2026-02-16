@@ -1,21 +1,9 @@
-import { DiscountEntity } from "@/core/models/discount";
-import { useStaticData } from "@/ui/contexts/StaticDataInjector";
-import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
-import { ControlledSelect } from "@/ui/form/controlledSelect";
-import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
-import { LabeldInput } from "@/ui/form/inputs";
 import Icon from "@/ui/icons/icon";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
-import { IconButton, MenuItem } from "@mui/material";
-import { EntityPropertyOperationSelection } from "./conditionOperatorSelection";
-import { EntityPropertySelection } from "./entityPropertySelection";
-import {
-  DISCOUNT_CONDITION_ENTITY,
-  DISCOUNT_CONDITION_VALUE,
-} from "./fieldNames";
-import { DISCOUNT_Entities_KEY } from "./ruleForm";
+import { IconButton } from "@mui/material";
 import { ConditionInterpreter } from "./conditionInterpreter";
+import { EntitSelection } from "./entitySelection";
 
 export function ConditionItem({
   conditionIndex,
@@ -24,13 +12,6 @@ export function ConditionItem({
   conditionIndex: number;
   onConditionRemove(index: number): void;
 }) {
-  const entityFieldname = useFieldPath(DISCOUNT_CONDITION_ENTITY);
-  const valueFieldname = useFieldPath(DISCOUNT_CONDITION_VALUE);
-
-  const discountEntities = useStaticData(
-    DISCOUNT_Entities_KEY,
-  ) as DiscountEntity[];
-
   return (
     <Column>
       <Row>
@@ -43,30 +24,7 @@ export function ConditionItem({
           </IconButton>
         </Column>
         <div className="bg-discount-condition-blue p-2 rounded grow">
-          <Row>
-            <LabeldInput label="Choose the criteria you want to target">
-              <ControlledSelect
-                fieldname={entityFieldname}
-                label="Entity"
-                selectLabel="Entity"
-              >
-                {discountEntities.map((entity) => (
-                  <MenuItem key={entity.id} value={entity.id}>
-                    {entity.name}
-                  </MenuItem>
-                ))}
-              </ControlledSelect>
-            </LabeldInput>
-            <EntityPropertySelection />
-            <EntityPropertyOperationSelection />
-            <LabeldInput label="Value">
-              <ErrorLabeledInput
-                filedName={valueFieldname}
-                type="text"
-                placeholder="Condition value"
-              />
-            </LabeldInput>
-          </Row>
+          <EntitSelection />
         </div>
       </Row>
       <ConditionInterpreter />

@@ -1,6 +1,7 @@
 import {
   DiscountEntity,
   DiscountConditionOperation,
+  DiscountEntityProperty,
 } from "@/core/models/discount";
 import { useStaticData } from "@/ui/contexts/StaticDataInjector";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
@@ -19,14 +20,26 @@ export function ConditionInterpreter() {
   const propFieldname = useFieldPath(DISCOUNT_ENTITY_PROPERTY);
   const operatorFieldname = useFieldPath(DISCOUNT_ENTITY_OPERATOR);
 
-  const [ent, val, prop, op] = useWatch({
+  const [ent, val, props, op] = useWatch({
     name: [entityFieldname, valueFieldname, propFieldname, operatorFieldname],
   });
 
   const entities = useStaticData(DISCOUNT_Entities_KEY) as DiscountEntity[];
 
   const entity = entities.find((e) => e.id == ent);
-  const porperty = entity?.properties.find((p) => p.id == prop);
+
+  const porperties = (props as number[] | undefined)?.reduce(
+    (acc: DiscountEntityProperty[], propId: number) => {
+      const prop = (acc.at(-1)?.subEntity ?? entity)?.properties.find(
+        (p) => p.id === propId,
+      );
+      if (prop) {
+        acc.push(prop);
+      }
+      return acc;
+    },
+    [],
+  );
 
   let operatorName: string = "";
   switch (op as DiscountConditionOperation) {
@@ -53,7 +66,7 @@ export function ConditionInterpreter() {
 
   return (
     <div className="flex gap-1 bg-slate-600 p-1 rounded text-sm text-white">
-      {!entity && !porperty && !op ? (
+      {!entity && !porperties?.length && !op ? (
         <span>Condtition parameters are missing</span>
       ) : (
         <>
@@ -62,7 +75,10 @@ export function ConditionInterpreter() {
             title="Target Entity"
           >{`${entity?.name ?? ""}'s`}</span>
           <span className="capitalize bg-amber-800" title="Target property">
-            {porperty?.name}
+            {porperties
+              ?.map((p) => p.name)
+              .reverse()
+              .join(" of ")}
           </span>
           <span>Must be</span>
           <span className="capitalize bg-red-800" title="Operator">

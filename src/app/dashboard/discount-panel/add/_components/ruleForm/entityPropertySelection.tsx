@@ -1,52 +1,59 @@
 import { DiscountEntity } from "@/core/models/discount";
-import { useStaticData } from "@/ui/contexts/StaticDataInjector";
+import { captalize } from "@/lib/helpers/stringHelpers";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
 import { ControlledSelect } from "@/ui/form/controlledSelect";
 import { LabeldInput } from "@/ui/form/inputs";
+import { Row } from "@/ui/layouts/row";
 import { MenuItem } from "@mui/material";
 import { useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { DISCOUNT_Entities_KEY } from "./ruleForm";
-import {
-  DISCOUNT_CONDITION_ENTITY,
-  DISCOUNT_ENTITY_PROPERTY,
-} from "./fieldNames";
+import { DISCOUNT_ENTITY_PROPERTY } from "./fieldNames";
 
-export function EntityPropertySelection() {
-  const propFieldname = useFieldPath(DISCOUNT_ENTITY_PROPERTY);
-  const entityFieldname = useFieldPath(DISCOUNT_CONDITION_ENTITY);
+type Props = {
+  baseEntity: DiscountEntity;
+  index: number;
+};
+
+export function EntityPropertySelection({ baseEntity, index }: Props) {
+  const propFieldname = useFieldPath(DISCOUNT_ENTITY_PROPERTY, index);
+  const selectedEntityPropertyId = useWatch({ name: propFieldname });
 
   const { setValue } = useFormContext();
-  const entities = useStaticData(DISCOUNT_Entities_KEY) as DiscountEntity[];
-  const selectedEntityId = +useWatch({ name: entityFieldname });
+
+  const selectedEntityProperty = baseEntity.properties.find(
+    (p) => p.id === selectedEntityPropertyId,
+  );
+
+  const isObjectType = selectedEntityProperty?.type.toLowerCase() === "object";
 
   useEffect(() => {
     setValue(propFieldname, undefined);
-  }, [propFieldname, selectedEntityId, setValue]);
+    return () => setValue(propFieldname, undefined);
+  }, [propFieldname, setValue, baseEntity?.id]);
 
-  if (Number.isNaN(selectedEntityId)) {
-    return null;
-  }
-
-  const selectedEntity = entities.find((e) => e.id == selectedEntityId);
-
-  if (!selectedEntity) {
-    return null;
-  }
+  const label = captalize(`${baseEntity.name} properties`)!;
 
   return (
-    <LabeldInput label="Entity properties">
-      <ControlledSelect
-        selectLabel="Entity property"
-        label="Entity property"
-        fieldname={propFieldname}
-      >
-        {selectedEntity.properties.map((prop) => (
-          <MenuItem key={prop.id} value={prop.id}>
-            {prop.name}
-          </MenuItem>
-        ))}
-      </ControlledSelect>
-    </LabeldInput>
+    <Row>
+      <LabeldInput label={label}>
+        <ControlledSelect
+          selectLabel={label}
+          label={label}
+          fieldname={propFieldname}
+        >
+          {baseEntity.properties.map((prop) => (
+            <MenuItem key={prop.id} value={prop.id}>
+              {prop.name}
+            </MenuItem>
+          ))}
+        </ControlledSelect>
+      </LabeldInput>
+      {isObjectType && (
+        <EntityPropertySelection
+          baseEntity={selectedEntityProperty.subEntity!}
+          index={index + 1}
+        />
+      )}
+    </Row>
   );
 }
