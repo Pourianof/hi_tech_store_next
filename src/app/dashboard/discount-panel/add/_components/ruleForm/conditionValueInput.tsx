@@ -5,6 +5,8 @@ import { DISCOUNT_CONDITION_VALUE } from "./fieldNames";
 import { useSelectedProps } from "./hooks/useSelectedProps";
 import { DiscountEntityProperyValueType } from "@/core/models/discount";
 import { AppDatePicker } from "@/ui/form/datePicker";
+import { ControlledSelect } from "@/ui/form/controlledSelect";
+import { MenuItem } from "@mui/material";
 
 export function ConditionValueInput() {
   const valueFieldname = useFieldPath(DISCOUNT_CONDITION_VALUE);
@@ -28,8 +30,37 @@ export function ConditionValueInput() {
     />
   );
 
-  if (lastProp.type === DiscountEntityProperyValueType.DATETIME) {
-    input = <AppDatePicker fieldname={valueFieldname} />;
+  switch (lastProp.type) {
+    case DiscountEntityProperyValueType.DATETIME:
+      input = (
+        <AppDatePicker
+          fieldname={valueFieldname}
+          dateModifier={(date) => {
+            return date.setHour(0).setMinute(0).setSecond(0);
+          }}
+        />
+      );
+      break;
+    case DiscountEntityProperyValueType.BOOLEAN:
+      input = (
+        <ControlledSelect fieldname={valueFieldname}>
+          <MenuItem value={1}>True</MenuItem>
+          <MenuItem value={0}>False</MenuItem>
+        </ControlledSelect>
+      );
+      break;
+    default:
+      input = (
+        <ErrorLabeledInput
+          filedName={valueFieldname}
+          type={
+            lastProp.type === DiscountEntityProperyValueType.NUMBER
+              ? "number"
+              : "text"
+          }
+          placeholder="Condition value"
+        />
+      );
   }
 
   return <LabeldInput label="Value">{input}</LabeldInput>;
