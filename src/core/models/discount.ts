@@ -15,7 +15,7 @@ export interface DiscountEntityProperty {
 
 export enum DiscountEntityProperyValueType {
   STRING = "String",
-  NUMBER = "Number",
+  NUMBER = "Float",
   BOOLEAN = "Boolean",
   DATETIME = "Date",
   OBJECT = "Object",
