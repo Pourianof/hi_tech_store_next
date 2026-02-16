@@ -87,6 +87,10 @@ function formatPropertyValue(
   entity: DiscountEntityProperty,
   value: unknown,
 ): string {
+  if (!value) {
+    return "";
+  }
+
   switch (entity.type) {
     case DiscountEntityProperyValueType.BOOLEAN:
       return value ? "true" : "false";
