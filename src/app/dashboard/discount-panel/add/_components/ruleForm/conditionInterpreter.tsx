@@ -1,6 +1,8 @@
 import {
   DiscountConditionOperation,
   DiscountEntity,
+  DiscountEntityProperty,
+  DiscountEntityProperyValueType,
 } from "@/core/models/discount";
 import { useStaticData } from "@/ui/contexts/StaticDataInjector";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
@@ -51,6 +53,7 @@ export function ConditionInterpreter() {
       break;
   }
 
+  const lastProp = porperties?.at(-1);
   return (
     <div className="flex gap-1 bg-slate-600 p-1 rounded text-sm text-white">
       {!entity && !porperties?.length && !op ? (
@@ -72,10 +75,24 @@ export function ConditionInterpreter() {
             {operatorName}
           </span>
           <span className="bg-[#803090] font-bold px-1" title="Condition Value">
-            {val}
+            {!!lastProp && formatPropertyValue(lastProp, val)}
           </span>
         </>
       )}
     </div>
   );
+}
+
+function formatPropertyValue(
+  entity: DiscountEntityProperty,
+  value: unknown,
+): string {
+  switch (entity.type) {
+    case DiscountEntityProperyValueType.BOOLEAN:
+      return value ? "true" : "false";
+    case DiscountEntityProperyValueType.DATETIME:
+      return new Date(Number(value)).toLocaleString();
+    default:
+      return String(value);
+  }
 }
