@@ -1,9 +1,10 @@
 "use client";
 import { Controller } from "react-hook-form";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 
 type Props = {
   fieldname: string;
+  dateModifier?: (date: DateObject) => DateObject;
 };
 
 const DATE_PICKER_CLASS = "p-1 px-1.5 border border-stone-600 rounded w-40";
@@ -15,7 +16,9 @@ export function AppDatePicker(props: Props) {
         <DatePicker
           value={value}
           onChange={(date) =>
-            date ? onChange(date?.toUnix() * 1000) : undefined
+            date
+              ? onChange((props.dateModifier?.(date) ?? date)?.toUnix() * 1000)
+              : undefined
           }
           inputClass={DATE_PICKER_CLASS}
         />
