@@ -5,7 +5,7 @@ import {
   DiscountEntity,
   DiscountRule,
 } from "@/core/models/discount";
-import { OutlinedButton } from "@/ui/form/AppButtons";
+import { FilledButton, OutlinedButton } from "@/ui/form/AppButtons";
 import Icon from "@/ui/icons/icon";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
@@ -49,9 +49,9 @@ export function DiscountConfirmationModal({ onCancel, onConfirm }: Props) {
           ))}
         </div>
       </Column>
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-between gap-2">
+        <FilledButton onClick={onConfirm}>Confirm</FilledButton>
         <OutlinedButton onClick={onCancel}>Cancel</OutlinedButton>
-        <OutlinedButton onClick={onConfirm}>Confirm</OutlinedButton>
       </div>
     </Modal>
   );
