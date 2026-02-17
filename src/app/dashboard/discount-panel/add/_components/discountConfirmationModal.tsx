@@ -28,36 +28,30 @@ export function DiscountConfirmationModal({ onCancel, onConfirm }: Props) {
   const { description, startDate, endDate, rules } = getValues();
 
   return (
-    <Modal>
-      <div className="p-4">
-        <Column className="gap-2">
-          <h3 className="text font-semibold text-2xl mb-2">
-            Discount overview:
-          </h3>
-          <Column className="overflow-auto border gap-2 p-2">
-            <p className="p-2 rounded bg-slate-300">
-              <strong>Description:</strong> {description}
-            </p>
-            <p className="p-2 rounded bg-slate-300">
-              <strong>Start Date:</strong>{" "}
-              {new DateObject(startDate).format("dddd DD MMM YYYY")}
-            </p>
-            <p className="p-2 rounded bg-slate-300">
-              <strong>End Date:</strong>{" "}
-              {new DateObject(endDate).format("dddd DD MMM YYYY")}
-            </p>
-            <strong>Rules:</strong>{" "}
-            <div className="p-2 rounded bg-neutral-300">
-              {rules.map((rule: DiscountRule, index: number) => (
-                <RuleItemOverview key={index} rule={rule} index={index} />
-              ))}
-            </div>
-          </Column>
-        </Column>
-        <div className="flex justify-end gap-2">
-          <OutlinedButton onClick={onCancel}>Cancel</OutlinedButton>
-          <OutlinedButton onClick={onConfirm}>Confirm</OutlinedButton>
+    <Modal containerClassName="grid grid-rows-[auto_1fr_auto]  ">
+      <h3 className="text font-semibold text-2xl mb-2">Discount overview:</h3>
+      <Column className="border gap-2 p-2 overflow-auto scroll-py-2">
+        <p className="p-2 rounded bg-slate-300">
+          <strong>Description:</strong> {description}
+        </p>
+        <p className="p-2 rounded bg-slate-300">
+          <strong>Start Date:</strong>{" "}
+          {new DateObject(startDate).format("dddd DD MMM YYYY")}
+        </p>
+        <p className="p-2 rounded bg-slate-300">
+          <strong>End Date:</strong>{" "}
+          {new DateObject(endDate).format("dddd DD MMM YYYY")}
+        </p>
+        <strong>Rules:</strong>{" "}
+        <div className="p-2 rounded bg-neutral-300">
+          {rules.map((rule: DiscountRule, index: number) => (
+            <RuleItemOverview key={index} rule={rule} index={index} />
+          ))}
         </div>
+      </Column>
+      <div className="flex justify-end gap-2">
+        <OutlinedButton onClick={onCancel}>Cancel</OutlinedButton>
+        <OutlinedButton onClick={onConfirm}>Confirm</OutlinedButton>
       </div>
     </Modal>
   );
