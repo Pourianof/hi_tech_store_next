@@ -25,7 +25,9 @@ export function RuleFormSC() {
   });
 
   function addNewRule() {
-    append({});
+    append({
+      conditions: [{}],
+    });
   }
 
   function removeRule(index: number) {
