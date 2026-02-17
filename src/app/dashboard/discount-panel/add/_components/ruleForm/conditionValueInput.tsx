@@ -54,7 +54,8 @@ export function ConditionValueInput() {
         <ErrorLabeledInput
           filedName={valueFieldname}
           type={
-            lastProp.type === DiscountEntityProperyValueType.NUMBER
+            lastProp.type === DiscountEntityProperyValueType.INT ||
+            lastProp.type === DiscountEntityProperyValueType.FLOAT
               ? "number"
               : "text"
           }
