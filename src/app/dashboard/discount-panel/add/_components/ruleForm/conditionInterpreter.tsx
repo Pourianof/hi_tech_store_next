@@ -95,7 +95,7 @@ export function BaseConditionInterpreter({
         <>
           <span className="capitalize bg-green-800" title="Target Entity">
             {isNameIncluded && (
-              <span className={fieldNameClassNames}>{entity?.name}</span>
+              <span className={fieldNameClassNames}>Target Entity:</span>
             )}
             {`${entity?.name ?? ""}'s`}
           </span>
