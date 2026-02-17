@@ -10,7 +10,7 @@ import { EntityPropertyOperationSelection } from "./conditionOperatorSelection";
 import { ConditionValueInput } from "./conditionValueInput";
 import { EntityPropertySelection } from "./entityPropertySelection";
 import { DISCOUNT_CONDITION_ENTITY } from "./fieldNames";
-import { DISCOUNT_Entities_KEY } from "./ruleForm";
+import { DISCOUNT_Entities_KEY } from "../ruleMakerEntitiesInjector";
 
 export function EntitSelection() {
   const discountEntityFieldname = useFieldPath(DISCOUNT_CONDITION_ENTITY);

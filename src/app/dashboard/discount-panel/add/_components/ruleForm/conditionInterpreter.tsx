@@ -13,7 +13,9 @@ import {
   DISCOUNT_ENTITY_OPERATOR,
 } from "./fieldNames";
 import { useSelectedProps } from "./hooks/useSelectedProps";
-import { DISCOUNT_Entities_KEY } from "./ruleForm";
+import { DISCOUNT_Entities_KEY } from "../ruleMakerEntitiesInjector";
+import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
 
 export function ConditionInterpreter() {
   const entityFieldname = useFieldPath(DISCOUNT_CONDITION_ENTITY);
@@ -30,6 +32,30 @@ export function ConditionInterpreter() {
 
   const porperties = useSelectedProps();
 
+  return (
+    <BaseConditionInterpreter
+      entity={entity}
+      porperties={porperties}
+      op={op}
+      value={val}
+    />
+  );
+}
+
+export function BaseConditionInterpreter({
+  entity,
+  porperties,
+  op,
+  value,
+  ...props
+}: {
+  entity?: DiscountEntity;
+  porperties?: DiscountEntityProperty[];
+  op?: DiscountConditionOperation;
+  value?: unknown;
+  column?: boolean;
+  withFieldNames?: boolean;
+}) {
   let operatorName: string = "";
   switch (op as DiscountConditionOperation) {
     case DiscountConditionOperation.EQUAL:
@@ -54,17 +80,29 @@ export function ConditionInterpreter() {
   }
 
   const lastProp = porperties?.at(-1);
-  return (
-    <div className="flex gap-1 bg-slate-600 p-1 rounded text-sm text-white">
+
+  const isNameIncluded =
+    "withFieldNames" in props && props.withFieldNames !== false;
+
+  const fieldNameClassNames =
+    "mr-1 font-bold text-xs uppercase bg-white text-slate-800 px-1 rounded";
+
+  const children = (
+    <>
       {!entity && !porperties?.length && !op ? (
         <span>Condtition parameters are missing</span>
       ) : (
         <>
-          <span
-            className="capitalize bg-green-800"
-            title="Target Entity"
-          >{`${entity?.name ?? ""}'s`}</span>
+          <span className="capitalize bg-green-800" title="Target Entity">
+            {isNameIncluded && (
+              <span className={fieldNameClassNames}>{entity?.name}</span>
+            )}
+            {`${entity?.name ?? ""}'s`}
+          </span>
           <span className="capitalize bg-amber-800" title="Target property">
+            {isNameIncluded && (
+              <span className={fieldNameClassNames}>Property:</span>
+            )}
             {porperties
               ?.map((p) => p.name)
               .reverse()
@@ -72,14 +110,29 @@ export function ConditionInterpreter() {
           </span>
           <span>Must be</span>
           <span className="capitalize bg-red-800" title="Operator">
+            {isNameIncluded && (
+              <span className={fieldNameClassNames}>Operator:</span>
+            )}
             {operatorName}
           </span>
           <span className="bg-[#803090] font-bold px-1" title="Condition Value">
-            {!!lastProp && formatPropertyValue(lastProp, val)}
+            {isNameIncluded && (
+              <span className={fieldNameClassNames}>Value:</span>
+            )}
+            {!!lastProp && formatPropertyValue(lastProp, value)}
           </span>
         </>
       )}
-    </div>
+    </>
+  );
+
+  const className = "gap-1 bg-slate-600 p-1 rounded text-sm text-white";
+  const isColumn = "column" in props && props.column !== false;
+
+  return isColumn ? (
+    <Column className={className}>{children}</Column>
+  ) : (
+    <Row className={className}>{children}</Row>
   );
 }
 

@@ -6,7 +6,7 @@ import {
 import { DiscountEntity, DiscountEntityProperty } from "@/core/models/discount";
 import { useWatch } from "react-hook-form";
 import { useStaticData } from "@/ui/contexts/StaticDataInjector";
-import { DISCOUNT_Entities_KEY } from "../ruleForm";
+import { DISCOUNT_Entities_KEY } from "../../ruleMakerEntitiesInjector";
 
 export function useSelectedProps() {
   const propsFieldname = useFieldPath(DISCOUNT_ENTITY_PROPERTY);
@@ -28,7 +28,14 @@ export function useSelectedProps() {
     return [];
   }
 
-  return props.reduce((acc: DiscountEntityProperty[], propId: number) => {
+  return findPropertiesFromEntity(entity, props);
+}
+
+export function findPropertiesFromEntity(
+  entity: DiscountEntity,
+  propertyIds: number[],
+): DiscountEntityProperty[] {
+  return propertyIds.reduce((acc: DiscountEntityProperty[], propId: number) => {
     const prop = (acc.at(-1)?.subEntity ?? entity)?.properties.find(
       (p) => p.id === propId,
     );

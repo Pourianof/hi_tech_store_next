@@ -1,17 +1,15 @@
-import { DiscountActionType } from "@/core/models/discount";
 import {
-  useFieldPath,
   FieldnamePathProvider,
+  useFieldPath,
 } from "@/ui/form/contexts/FieldnamePathContext";
-import { ControlledSelect } from "@/ui/form/controlledSelect";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { LabeldInput } from "@/ui/form/inputs";
-import { Label } from "@/ui/form/label";
-import { Row } from "@/ui/layouts/row";
-import { IconButton, MenuItem } from "@mui/material";
-import { ConditionForm } from "./conditionListForm";
-import { ActionValueInput } from "./ruleActionInputs";
 import Icon from "@/ui/icons/icon";
+import { Row } from "@/ui/layouts/row";
+import { IconButton } from "@mui/material";
+import { ConditionGroupForm } from "./conditionGroupForm";
+import { DISCOUNT_RULE_ACTION } from "./fieldNames";
+import { RuleDiscountTypeAndValueInputs } from "./ruleDiscountTypeInputs";
 
 export function RuleItem({
   index,
@@ -22,7 +20,6 @@ export function RuleItem({
 }) {
   const ruleNameFieldName = useFieldPath(index, "name");
   const ruleDescriptionFieldName = useFieldPath(index, "description");
-  const ruleDiscountTypeFieldName = useFieldPath(index, "discountType");
 
   return (
     <FieldnamePathProvider name={index}>
@@ -57,20 +54,10 @@ export function RuleItem({
             />
           </LabeldInput>
         </Row>
-        <Row>
-          <Label>Discount type:</Label>
-          <ControlledSelect
-            fieldname={ruleDiscountTypeFieldName}
-            defaultValue={DiscountActionType.PERCENTAGE}
-          >
-            <MenuItem value={DiscountActionType.PERCENTAGE}>
-              Percentage
-            </MenuItem>
-            <MenuItem value={DiscountActionType.FIXED}>Fixed</MenuItem>
-          </ControlledSelect>
-          <ActionValueInput />
-        </Row>
-        <ConditionForm />
+        <FieldnamePathProvider name={DISCOUNT_RULE_ACTION}>
+          <RuleDiscountTypeAndValueInputs />
+        </FieldnamePathProvider>
+        <ConditionGroupForm />
       </div>
     </FieldnamePathProvider>
   );

@@ -2,6 +2,7 @@
 
 import { StatefulForm } from "@/ui/form/statefulForm";
 import { ReactNode } from "react";
+import { SubmitButton } from "./submitButton";
 
 export function NewDiscountForm({ children }: { children: ReactNode }) {
   return (
@@ -11,12 +12,17 @@ export function NewDiscountForm({ children }: { children: ReactNode }) {
       defaultValues={{
         rules: [
           {
-            conditions: [{}],
+            conditions: [
+              {
+                conditions: [{}],
+              },
+            ],
           },
         ],
       }}
     >
       {children}
+      <SubmitButton />
     </StatefulForm>
   );
 }

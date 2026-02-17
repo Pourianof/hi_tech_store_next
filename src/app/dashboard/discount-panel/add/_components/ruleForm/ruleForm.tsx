@@ -1,27 +1,43 @@
-import { FailedBox } from "@/app/_components/failedBox";
-import { getDiscountEntitiesAction } from "@/lib/server_actions/discountActions";
-import { StaticDataInjector } from "@/ui/contexts/StaticDataInjector";
-import { RuleFormSC } from "./ruleFormSC";
+"use client";
 
-export const DISCOUNT_Entities_KEY = "discount-rules";
+import { FilledButton } from "@/ui/form/AppButtons";
+import {
+  FieldnamePathProvider,
+  useFieldPath,
+} from "@/ui/form/contexts/FieldnamePathContext";
+import { useFieldArray } from "react-hook-form";
+import toast from "react-hot-toast";
+import { RuleItem } from "./ruleItemForm";
 
-export async function RuleForm() {
-  const discountEntitiesResult = await getDiscountEntitiesAction();
+export function RuleForm() {
+  const fieldPath = useFieldPath("rules");
+  const { fields, append, remove } = useFieldArray({
+    name: fieldPath,
+  });
 
-  if (discountEntitiesResult.status == "failed") {
-    return (
-      <FailedBox
-        title="Displaying Failed"
-        message="There is some problem to fetching discount options"
-      />
-    );
+  function addNewRule() {
+    append({
+      conditions: [{}],
+    });
   }
 
-  const discountEntities = discountEntitiesResult.data;
+  function removeRule(index: number) {
+    if (fields.length <= 1) {
+      toast.error("At least one rule must specified for a discount");
+      return;
+    }
+
+    remove(index);
+  }
 
   return (
-    <StaticDataInjector dataKey={DISCOUNT_Entities_KEY} data={discountEntities}>
-      <RuleFormSC />
-    </StaticDataInjector>
+    <FieldnamePathProvider name={fieldPath}>
+      <div className="space-y-3">
+        {fields.map((r, i) => (
+          <RuleItem key={r.id} index={i} onDelete={removeRule} />
+        ))}
+        <FilledButton onClick={() => addNewRule()}>Add new rule</FilledButton>
+      </div>
+    </FieldnamePathProvider>
   );
 }
