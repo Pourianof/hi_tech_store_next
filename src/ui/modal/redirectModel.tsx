@@ -23,7 +23,11 @@ export function RedirectModal({
     router.replace(url.href);
   }
   return (
-    <Modal onClose={redirect} backBtnHandling={false}>
+    <Modal
+      onClose={redirect}
+      backBtnHandling={false}
+      containerClassName="min-w-sm max-w-1/2"
+    >
       {children}
     </Modal>
   );
