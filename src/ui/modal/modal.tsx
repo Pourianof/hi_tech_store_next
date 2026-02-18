@@ -5,6 +5,7 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -70,13 +71,32 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
     }
   }, [diableScroll]);
 
-  useLayoutEffect(() => {
+  const checkOverflow = useCallback(function () {
     const container = containerRef.current;
     if (!container) return;
-    const diff = window.innerHeight - container.scrollHeight;
+    const diff = window.innerHeight - container!.scrollHeight;
     const hasOverflow = diff < 0 || diff / window.innerHeight < 0.05;
+
+    if (hasOverflow == hasOverflowed) {
+      return;
+    }
+
     setHasOverflowed(hasOverflow);
-  }, [children]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useLayoutEffect(() => {
+    checkOverflow();
+  }, [children, checkOverflow]);
+
+  useEffect(() => {
+    function resizeHandler() {
+      checkOverflow();
+    }
+    window.addEventListener("resize", resizeHandler);
+
+    return () => window.removeEventListener("", resizeHandler);
+  }, [checkOverflow]);
 
   let overlayClassName;
   let _containerClassName = "";
