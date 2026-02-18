@@ -21,7 +21,7 @@ import toast from "react-hot-toast";
 import { NoContextDefinedError } from "../errors/NoContextDefinedError";
 
 interface IFormSubmitterContext {
-  submitter: VoidFunction;
+  submit: VoidFunction;
   isSubmitting: boolean;
 }
 const FormSubmitterContext = createContext<IFormSubmitterContext>(
@@ -104,7 +104,9 @@ export function StatefulForm(
   );
   return (
     <FormProvider {...methods}>
-      <FormSubmitterContext.Provider value={{ submitter, isSubmitting }}>
+      <FormSubmitterContext.Provider
+        value={{ submit: submitter, isSubmitting }}
+      >
         <form className="flex flex-col gap-2.5" onSubmit={submitter}>
           {props.children}
         </form>
@@ -135,6 +137,16 @@ StatefulForm.ResetButton = function ResetButton(
   );
 };
 
+export function useFormSubmitter() {
+  const submitter = useContext(FormSubmitterContext);
+
+  if (!submitter) {
+    throw new NoContextDefinedError("FormSubmitterContext");
+  }
+
+  return submitter;
+}
+
 // This is helpful for nested forms which submitting inner forms
 // lead to submit of outer forms.
 StatefulForm.Submitter = function Submitter({
@@ -142,7 +154,7 @@ StatefulForm.Submitter = function Submitter({
 }: {
   render: (submitter: VoidFunction, isSubmitting: boolean) => ReactNode;
 }) {
-  const submitter = useContext(FormSubmitterContext);
+  const submitter = useFormSubmitter();
   const { trigger } = useFormContext();
   if (!submitter) {
     throw new NoContextDefinedError("submitter");
@@ -150,7 +162,7 @@ StatefulForm.Submitter = function Submitter({
 
   async function handleSubmission() {
     const isValid = await trigger();
-    if (isValid) submitter.submitter();
+    if (isValid) submitter.submit();
   }
 
   return render(handleSubmission, submitter.isSubmitting);
