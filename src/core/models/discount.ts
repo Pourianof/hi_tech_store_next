@@ -35,7 +35,7 @@ export enum DiscountActionType {
 export const discountActionTypeEnum = z.enum(DiscountActionType);
 
 export const discountActionSchema = z.object({
-  value: z.number(),
+  value: z.coerce.number(),
   type: discountActionTypeEnum,
 });
 
@@ -53,10 +53,12 @@ export const discountConditionOperationEnum = z.enum(
 );
 
 export const discountConditionSchema = z.object({
-  entityProperty: z.number(),
-  priority: z.number(),
+  entityProperty: z
+    .union([z.number(), z.array(z.number()).nonempty()])
+    .transform((val) => (Array.isArray(val) ? val.at(-1)! : val)),
+  priority: z.number().optional(),
   operation: discountConditionOperationEnum,
-  value: z.number(),
+  value: z.coerce.number(),
 });
 
 export const discounConditionGroupSchema = z.object({
@@ -71,7 +73,7 @@ export const discountRuleSchema = z.object({
 });
 
 export const discountCodeSchema = z.object({
-  code: z.string(),
+  code: z.string().optional(),
   startTime: z.number(),
   endTime: z.number(),
   rules: z.array(discountRuleSchema),
