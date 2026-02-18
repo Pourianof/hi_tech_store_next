@@ -8,5 +8,5 @@ export const DISCOUNT_RULE_ACTION = "discountAction";
 export const DISCOUNT_RULE_ACTION_TYPE = "type";
 export const DISCOUNT_RULE_ACTION_VALUE = "value";
 
-export const DISCOUNT_START_DATE = "startDate";
-export const DISCOUNT_END_DATE = "endDate";
+export const DISCOUNT_START_DATE = "startTime";
+export const DISCOUNT_END_DATE = "endTime";
