@@ -1,17 +1,4 @@
-export interface DiscountEntity {
-  id: number;
-  name: string;
-  description: string;
-  properties: DiscountEntityProperty[];
-}
-
-export interface DiscountEntityProperty {
-  id: number;
-  name: string;
-  description: string;
-  subEntity?: DiscountEntity;
-  type: DiscountEntityProperyValueType;
-}
+import z from "zod";
 
 export enum DiscountEntityProperyValueType {
   STRING = "String",
@@ -22,40 +9,35 @@ export enum DiscountEntityProperyValueType {
   OBJECT = "Object",
 }
 
-export interface DiscountCode {
-  code: string;
-  startTime: number;
-  endTime: number;
-  rules: DiscountRule[];
-}
+const discountEntityPropertyValueTypeEnum = z.enum(
+  DiscountEntityProperyValueType,
+);
 
-export interface DiscountRule {
-  name: string;
-  description: string;
-  conditions: DiscountConditioGroup[];
-  discountAction: DiscountAction;
-}
+export const discountEntitySchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  description: z.string(),
+});
 
-export interface DiscountAction {
-  value: number;
-  type: DiscountActionType;
-}
+export const discountEntityPropertySchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  description: z.string(),
+  subEntity: discountEntitySchema.optional(),
+  type: discountEntityPropertyValueTypeEnum,
+});
 
 export enum DiscountActionType {
   PERCENTAGE,
   FIXED,
 }
 
-export interface DiscountConditioGroup {
-  conditions: DiscountCondition[];
-}
+export const discountActionTypeEnum = z.enum(DiscountActionType);
 
-export interface DiscountCondition {
-  entityProperty: number;
-  priority: number;
-  operation: DiscountConditionOperation;
-  value: number;
-}
+export const discountActionSchema = z.object({
+  value: z.number(),
+  type: discountActionTypeEnum,
+});
 
 export enum DiscountConditionOperation {
   GREATER_THAN,
@@ -65,3 +47,42 @@ export enum DiscountConditionOperation {
   EQUAL,
   CONTAINS,
 }
+
+export const discountConditionOperationEnum = z.enum(
+  DiscountConditionOperation,
+);
+
+export const discountConditionSchema = z.object({
+  entityProperty: z.number(),
+  priority: z.number(),
+  operation: discountConditionOperationEnum,
+  value: z.number(),
+});
+
+export const discounConditionGroupSchema = z.object({
+  conditions: z.array(discountConditionSchema),
+});
+
+export const discountRuleSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  conditions: z.array(discounConditionGroupSchema),
+  discountAction: discountActionSchema,
+});
+
+export const discountCodeSchema = z.object({
+  code: z.string(),
+  startTime: z.number(),
+  endTime: z.number(),
+  rules: z.array(discountRuleSchema),
+});
+
+export type DiscountEntity = z.infer<typeof discountEntitySchema>;
+export type DiscountEntityProperty = z.infer<
+  typeof discountEntityPropertySchema
+>;
+export type DiscountCode = z.infer<typeof discountCodeSchema>;
+export type DiscountRule = z.infer<typeof discountRuleSchema>;
+export type DiscountAction = z.infer<typeof discountActionSchema>;
+export type DiscountConditioGroup = z.infer<typeof discounConditionGroupSchema>;
+export type DiscountCondition = z.infer<typeof discountConditionSchema>;
