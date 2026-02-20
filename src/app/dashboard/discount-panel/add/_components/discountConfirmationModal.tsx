@@ -16,6 +16,7 @@ import { BaseConditionInterpreter } from "./ruleForm/conditionInterpreter";
 import { findPropertiesFromEntity } from "./ruleForm/hooks/useSelectedProps";
 import { useStaticData } from "@/ui/contexts/StaticDataInjector";
 import { DISCOUNT_Entities_KEY } from "./ruleMakerEntitiesInjector";
+import { DiscountCodeGenerator } from "./discountCodeGenerator";
 
 type Props = {
   onCancel: () => void;
@@ -28,7 +29,7 @@ export function DiscountConfirmationModal({ onCancel, onConfirm }: Props) {
   const { description, startDate, endDate, rules } = getValues();
 
   return (
-    <Modal containerClassName="grid grid-rows-[auto_1fr_auto]  ">
+    <Modal containerClassName="grid grid-rows-[auto_1fr_auto_auto]  ">
       <h3 className="text font-semibold text-2xl mb-2">Discount overview:</h3>
       <Column className="border gap-2 p-2 overflow-auto scroll-py-2">
         <p className="p-2 rounded bg-slate-300">
@@ -49,10 +50,11 @@ export function DiscountConfirmationModal({ onCancel, onConfirm }: Props) {
           ))}
         </div>
       </Column>
-      <div className="flex justify-between gap-2">
+      <DiscountCodeGenerator />
+      <Row className="justify-between gap-2">
         <FilledButton onClick={onConfirm}>Confirm</FilledButton>
         <OutlinedButton onClick={onCancel}>Cancel</OutlinedButton>
-      </div>
+      </Row>
     </Modal>
   );
 }

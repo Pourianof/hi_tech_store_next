@@ -58,8 +58,17 @@ export const apiRoutes = {
   },
   discounts: {
     base: `${server}/discounts`,
+    get codes() {
+      return `${this.base}/codes`;
+    },
     get entities() {
       return `${this.base}/entities`;
+    },
+    get randomCode() {
+      return `${this.codes}/random-code`;
+    },
+    forCode(code: string) {
+      return `${this.codes}/${code}`;
     },
   },
 };
