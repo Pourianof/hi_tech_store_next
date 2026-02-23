@@ -18,12 +18,13 @@ export function ErrorLabeledInput(props: {
   validationOptions?: Omit<RegisterOpts, "validate"> & {
     validate?: (
       val: string,
-      otherFields: Record<string, string>
+      otherFields: Record<string, string>,
     ) => string | undefined | boolean;
   };
   onChange?: (newValue: string) => void;
 }) {
-  const { register, getValues, setValue, resetField } = useFormContext();
+  const { register, getValues, setValue, resetField, unregister } =
+    useFormContext();
 
   useEffect(() => {
     if (props.initValue) {
@@ -34,6 +35,13 @@ export function ErrorLabeledInput(props: {
       resetField(props.filedName);
     };
   }, [setValue, props.filedName, props.initValue, resetField]);
+
+  useEffect(
+    () => () => {
+      unregister(props.filedName);
+    },
+    [props.filedName, unregister],
+  );
 
   const isHidden = "hidden" in props && props.hidden !== false;
 
