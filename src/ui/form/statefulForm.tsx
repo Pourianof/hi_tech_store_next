@@ -80,7 +80,6 @@ export function StatefulForm(
           errors: problemErrors,
           keys: data,
           onMatched(key, message) {
-            console.log(`KEY: ${key}\nMESSAGE: ${message}`);
             methods.setError(key, { message });
           },
           handleUnmatched(items) {
