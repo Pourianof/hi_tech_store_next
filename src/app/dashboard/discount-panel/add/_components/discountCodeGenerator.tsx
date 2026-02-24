@@ -43,7 +43,7 @@ export function DiscountCodeGenerator() {
   );
 }
 
-const DISCOUNT_CODE_FIELDNAME = "discountCode";
+const DISCOUNT_CODE_FIELDNAME = "code";
 function CustomCodeInput({
   codeType,
   onChange,
@@ -51,10 +51,7 @@ function CustomCodeInput({
   codeType: CodeType;
   onChange: VoidFunction;
 }) {
-  const {
-    setError,
-    formState: { errors },
-  } = useFormContext();
+  const { setError, clearErrors } = useFormContext();
   const [discountCode, startTime, ednTime] = useWatch({
     name: [DISCOUNT_CODE_FIELDNAME, "startTime", "ednTime"],
   });
@@ -67,8 +64,8 @@ function CustomCodeInput({
         type="text"
         placeholder="Discount code"
         onChange={() => {
-          console.log(errors[DISCOUNT_CODE_FIELDNAME]);
           onChange();
+          clearErrors();
         }}
       />
       <FilledButton
@@ -95,7 +92,6 @@ function CustomCodeInput({
               // but maybe it is better to delegate the
               // business rules of usability to server side
               // #just_for_simplicity
-
               const { startTime: st, endTime: et } = code.data;
               if (startTime > et || ednTime < st) {
                 // not ovelapping
