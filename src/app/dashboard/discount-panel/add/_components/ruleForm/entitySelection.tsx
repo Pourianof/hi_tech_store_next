@@ -32,6 +32,7 @@ export function EntitSelection() {
           fieldname={discountEntityFieldname}
           label="Entity"
           selectLabel="Entity"
+          required
         >
           {discountEntities.map((entity) => (
             <MenuItem key={entity.id} value={entity.id}>

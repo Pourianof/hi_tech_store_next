@@ -32,12 +32,13 @@ export function ConditionValueInput() {
           dateModifier={(date) => {
             return date.setHour(0).setMinute(0).setSecond(0);
           }}
+          required
         />
       );
       break;
     case DiscountEntityProperyValueType.BOOLEAN:
       input = (
-        <ControlledSelect fieldname={valueFieldname}>
+        <ControlledSelect fieldname={valueFieldname} required>
           <MenuItem value={1}>True</MenuItem>
           <MenuItem value={0}>False</MenuItem>
         </ControlledSelect>

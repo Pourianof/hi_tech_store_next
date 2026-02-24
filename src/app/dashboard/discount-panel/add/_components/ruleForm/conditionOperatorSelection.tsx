@@ -36,7 +36,7 @@ export function EntityPropertyOperationSelection() {
   const fieldname = useFieldPath(DISCOUNT_ENTITY_OPERATOR);
   return (
     <LabeldInput label="Operator">
-      <ControlledSelect fieldname={fieldname} label="Operator">
+      <ControlledSelect required fieldname={fieldname} label="Operator">
         {OPERATORS.map((op) => (
           <MenuItem key={op.name} value={op.value}>
             {op.name}

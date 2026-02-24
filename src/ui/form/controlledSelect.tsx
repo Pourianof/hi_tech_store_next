@@ -1,42 +1,37 @@
 import { FormControl, InputLabel, Select, SelectProps } from "@mui/material";
 import { ReactNode } from "react";
-import { Controller, ControllerProps } from "react-hook-form";
 import { Column } from "../layouts/column";
+import { AppController, AppControllerProps } from "./appController";
 import { ErrorMessageLabel } from "./errorMessageLabel";
 
 type Props = {
-  fieldname: string;
   children: ReactNode;
   label?: string;
   selectLabel?: string;
-  defaultValue?: unknown;
-  conrollerProps?: ControllerProps;
   selectProps?: SelectProps;
   control?: {
     syncWithFormState?: boolean;
     onChange: (value: unknown) => void;
     value?: unknown;
   };
-};
+} & Omit<AppControllerProps, "render">;
 
 export function ControlledSelect({
-  fieldname,
   label,
   children,
-  defaultValue,
   selectLabel,
-  conrollerProps,
   selectProps,
   control,
+  ...props
 }: Props) {
   const selectInput = (
     onChange?: (value: unknown) => void,
     value?: unknown,
   ) => (
     <FormControl>
-      {label && <InputLabel id={fieldname}>{label}</InputLabel>}
+      {label && <InputLabel id={props.fieldname}>{label}</InputLabel>}
       <Select
-        labelId={fieldname}
+        labelId={props.fieldname}
         value={value ?? ""}
         size="small"
         onChange={(changeContext) => {
@@ -57,15 +52,13 @@ export function ControlledSelect({
 
   return (
     <Column>
-      <Controller
-        {...conrollerProps}
-        name={fieldname}
-        defaultValue={defaultValue}
+      <AppController
+        {...props}
         render={({ field: { value, onChange } }) =>
           selectInput(onChange, value)
         }
       />
-      <ErrorMessageLabel fieldName={fieldname} />
+      <ErrorMessageLabel fieldName={props.fieldname} />
     </Column>
   );
 }

@@ -40,6 +40,7 @@ export function EntityPropertySelection({ baseEntity, index }: Props) {
           selectLabel={label}
           label={label}
           fieldname={propFieldname}
+          required
         >
           {baseEntity.properties.map((prop) => (
             <MenuItem key={prop.id} value={prop.id}>

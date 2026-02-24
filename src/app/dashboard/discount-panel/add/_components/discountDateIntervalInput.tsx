@@ -11,10 +11,18 @@ export function DiscountDateIntervalInput() {
   return (
     <div className="flex gap-4">
       <LabeldInput label="Start date">
-        <AppDatePicker fieldname={DISCOUNT_START_DATE} maxDate={endDate} />
+        <AppDatePicker
+          fieldname={DISCOUNT_START_DATE}
+          maxDate={endDate}
+          required
+        />
       </LabeldInput>
       <LabeldInput label="End date">
-        <AppDatePicker fieldname={DISCOUNT_END_DATE} minDate={startDate} />
+        <AppDatePicker
+          fieldname={DISCOUNT_END_DATE}
+          minDate={startDate}
+          required
+        />
       </LabeldInput>
     </div>
   );
