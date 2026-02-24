@@ -78,8 +78,9 @@ export function StatefulForm(
       if (problemErrors && Object.keys(problemErrors).length) {
         handleProblemDetailErrors({
           errors: problemErrors,
-          keys: Object.keys(data).map((key) => key.toLowerCase()),
+          keys: data,
           onMatched(key, message) {
+            console.log(`KEY: ${key}\nMESSAGE: ${message}`);
             methods.setError(key, { message });
           },
           handleUnmatched(items) {
