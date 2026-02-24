@@ -1,6 +1,8 @@
 import { FormControl, InputLabel, Select, SelectProps } from "@mui/material";
 import { ReactNode } from "react";
 import { Controller, ControllerProps } from "react-hook-form";
+import { Column } from "../layouts/column";
+import { ErrorMessageLabel } from "./errorMessageLabel";
 
 type Props = {
   fieldname: string;
@@ -54,11 +56,16 @@ export function ControlledSelect({
   }
 
   return (
-    <Controller
-      {...conrollerProps}
-      name={fieldname}
-      defaultValue={defaultValue}
-      render={({ field: { value, onChange } }) => selectInput(onChange, value)}
-    />
+    <Column>
+      <Controller
+        {...conrollerProps}
+        name={fieldname}
+        defaultValue={defaultValue}
+        render={({ field: { value, onChange } }) =>
+          selectInput(onChange, value)
+        }
+      />
+      <ErrorMessageLabel fieldName={fieldname} />
+    </Column>
   );
 }
