@@ -53,10 +53,14 @@ export function useBackBtnHandler({
     return () => {
       hasRegisteredRef.current = false; // if modal destructed then we must iterate back until close the modal
 
+      if (disable) {
+        return;
+      }
+
       if (modalStack.includes(id)) {
         for (let index = modalStack.length - 1; index >= 0; index--) {
           const poppedId = modalStack.at(index); // pop state and close modal
-
+          debugger;
           router.back();
 
           if (poppedId == id) {
