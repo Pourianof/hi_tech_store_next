@@ -26,7 +26,7 @@ export function EntitSelection() {
   );
 
   return (
-    <Row>
+    <Row className="items-baseline">
       <LabeldInput label="Choose the criteria you want to target">
         <ControlledSelect
           fieldname={discountEntityFieldname}

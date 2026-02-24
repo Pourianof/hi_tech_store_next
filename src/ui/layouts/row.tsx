@@ -2,11 +2,19 @@ import { ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
+  center?: boolean;
   className?: string;
 };
-export function Row({ children, className, ...props }: Props) {
+export function Row({ children, className, center, ...props }: Props) {
   return (
-    <div className={"flex items-center gap-1 " + (className ?? "")} {...props}>
+    <div
+      className={[
+        "flex gap-1",
+        center ? "items-center" : "",
+        className ?? "",
+      ].join(" ")}
+      {...props}
+    >
       {children}
     </div>
   );
