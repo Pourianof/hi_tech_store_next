@@ -22,13 +22,7 @@ export function ConditionValueInput() {
     return null;
   }
 
-  let input = (
-    <ErrorLabeledInput
-      filedName={valueFieldname}
-      type="text"
-      placeholder="Condition value"
-    />
-  );
+  let input = null;
 
   switch (lastProp.type) {
     case DiscountEntityProperyValueType.DATETIME:

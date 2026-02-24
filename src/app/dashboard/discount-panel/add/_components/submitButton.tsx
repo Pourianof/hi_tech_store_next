@@ -1,15 +1,16 @@
 "use client";
 
 import { OutlinedButton } from "@/ui/form/AppButtons";
-import { useState } from "react";
-import { DiscountConfirmationModal } from "./discountConfirmationModal";
-import { useFormContext } from "react-hook-form";
 import { useFormSubmitter } from "@/ui/form/statefulForm";
+import { useState } from "react";
+import { useFormContext } from "react-hook-form";
+import { DiscountConfirmationModal } from "./discountConfirmationModal";
 
 export function SubmitButton() {
   const [displayConfirmationModal, setDisplayConfirmationModal] =
     useState(false);
   const { trigger } = useFormContext();
+
   const submitter = useFormSubmitter();
 
   function onSubmit() {

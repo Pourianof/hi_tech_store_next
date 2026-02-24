@@ -2,6 +2,7 @@ import { ResultModel } from "@/core/models/resultModel";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { apiRoutes } from "./apiRoutes";
 import { DiscountCode, DiscountEntity } from "@/core/models/discount";
+import { fetchWrapper } from "./fetchWrapper";
 
 export async function getDiscountEntities(): Promise<
   ResultModel<DiscountEntity[]>
@@ -35,5 +36,12 @@ export async function getRandomCode(
         "Content-Type": "application/json",
       },
     }),
+  );
+}
+
+export async function submitDiscountCodeApi(discountCode: DiscountCode) {
+  return fetchWrapper.post<DiscountCode>(
+    apiRoutes.discounts.codes,
+    discountCode,
   );
 }

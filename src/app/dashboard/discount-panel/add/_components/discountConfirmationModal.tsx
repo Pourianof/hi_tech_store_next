@@ -5,18 +5,20 @@ import {
   DiscountEntity,
   DiscountRule,
 } from "@/core/models/discount";
+import { useStaticData } from "@/ui/contexts/StaticDataInjector";
 import { FilledButton, OutlinedButton } from "@/ui/form/AppButtons";
+import { flatAllErrors } from "@/ui/form/rhf/reactHookFormHelpers";
 import Icon from "@/ui/icons/icon";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Modal } from "@/ui/modal/modal";
+import { CircularProgress } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { DateObject } from "react-multi-date-picker";
+import { DiscountCodeGenerator } from "./discountCodeGenerator";
 import { BaseConditionInterpreter } from "./ruleForm/conditionInterpreter";
 import { findPropertiesFromEntity } from "./ruleForm/hooks/useSelectedProps";
-import { useStaticData } from "@/ui/contexts/StaticDataInjector";
 import { DISCOUNT_Entities_KEY } from "./ruleMakerEntitiesInjector";
-import { DiscountCodeGenerator } from "./discountCodeGenerator";
 
 type Props = {
   onCancel: () => void;
@@ -24,12 +26,20 @@ type Props = {
 };
 
 export function DiscountConfirmationModal({ onCancel, onConfirm }: Props) {
-  const { getValues } = useFormContext();
+  const {
+    getValues,
+    formState: { isSubmitting, errors },
+  } = useFormContext();
 
   const { description, startDate, endDate, rules } = getValues();
 
+  const errorMessages = flatAllErrors(errors, getValues());
+
   return (
-    <Modal containerClassName="grid grid-rows-[auto_1fr_auto_auto]  ">
+    <Modal
+      containerClassName="grid grid-rows-[auto_1fr_auto_auto]  "
+      backBtnHandling={false}
+    >
       <h3 className="text font-semibold text-2xl mb-2">Discount overview:</h3>
       <Column className="border gap-2 p-2 overflow-auto scroll-py-2">
         <p className="p-2 rounded bg-slate-300">
@@ -51,10 +61,33 @@ export function DiscountConfirmationModal({ onCancel, onConfirm }: Props) {
         </div>
       </Column>
       <DiscountCodeGenerator />
-      <Row className="justify-between gap-2">
-        <FilledButton onClick={onConfirm}>Confirm</FilledButton>
-        <OutlinedButton onClick={onCancel}>Cancel</OutlinedButton>
-      </Row>
+      {isSubmitting ? (
+        <Row className="items-center justify-center">
+          Is submitting
+          <CircularProgress size={25} />
+        </Row>
+      ) : (
+        <Row className="justify-between gap-2">
+          {!!errorMessages.length ? (
+            <Column className="max-h-[60px] scroll-auto gap-2">
+              {errorMessages.map((err, i) => (
+                <span
+                  key={i}
+                  className="text-sm text-red-500 flex items-center before:content-[''] before:block before:w-[8px] before:aspect-square before:rounded-full before:bg-red-500 before:mr-2"
+                >
+                  {err}
+                </span>
+              ))}
+            </Column>
+          ) : (
+            <FilledButton onClick={onConfirm} disabled={isSubmitting}>
+              Confirm
+            </FilledButton>
+          )}
+
+          <OutlinedButton onClick={onCancel}>Cancel</OutlinedButton>
+        </Row>
+      )}
     </Modal>
   );
 }
@@ -130,7 +163,7 @@ function ConditionItemOverview({
   condition: DiscountCondition;
   subCondIndex: number;
 }) {
-  const propIds = condition.entityProperty as never as number[];
+  const propIds = condition.entityPropertyId as never as number[];
 
   const entities = useStaticData(DISCOUNT_Entities_KEY) as DiscountEntity[];
   const entity = entities.find(
