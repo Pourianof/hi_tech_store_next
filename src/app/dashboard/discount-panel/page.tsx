@@ -1,5 +1,6 @@
 import { OutlinedButton } from "@/ui/form/AppButtons";
 import Link from "next/link";
+import { DiscountsList } from "./_components/discountList";
 
 export default async function Page() {
   return (
@@ -13,8 +14,4 @@ export default async function Page() {
       </Link>
     </div>
   );
-}
-
-async function DiscountsList() {
-  return <div></div>;
 }

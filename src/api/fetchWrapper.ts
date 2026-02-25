@@ -29,7 +29,6 @@ async function handleResponse<T>(response: Response) {
 
 async function post<T>(url: string, data: object) {
   const isFormData = data instanceof FormData;
-  console.log(isFormData);
   return handleResponse<T>(
     await fetch(url, {
       method: "POST",

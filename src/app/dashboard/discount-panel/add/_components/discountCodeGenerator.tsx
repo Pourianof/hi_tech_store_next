@@ -1,5 +1,5 @@
 import {
-  getDiscountCodeByNameAction,
+  getDiscountCodeByNameOrIdAction,
   getRandomDiscountCodeAction,
 } from "@/lib/server_actions/discountActions";
 import { FilledButton, OutlinedButton } from "@/ui/form/AppButtons";
@@ -75,7 +75,7 @@ function CustomCodeInput({
         }
         onClick={() => {
           setIsLoading(true);
-          getDiscountCodeByNameAction(discountCode!)
+          getDiscountCodeByNameOrIdAction(discountCode!)
             .then((code) => {
               if (code.status == "failed") {
                 if (code.statusCode == 404) {

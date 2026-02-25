@@ -67,7 +67,7 @@ export const apiRoutes = {
     get randomCode() {
       return `${this.codes}/random-code`;
     },
-    forCode(code: string) {
+    forCode(code: string | number) {
       return `${this.codes}/${code}`;
     },
   },

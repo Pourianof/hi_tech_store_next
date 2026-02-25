@@ -1,9 +1,11 @@
 "use server";
 import {
-  getDiscountCodeByName,
+  getAllDiscountsApi,
+  getDiscountCodeByNameOrId,
   getDiscountEntities,
   getRandomCode,
   submitDiscountCodeApi,
+  updateDiscountApi,
 } from "@/api/discountApi";
 import { workWithSession } from "../helpers/sessionHelper";
 import { DiscountCode } from "@/core/models/discount";
@@ -16,12 +18,18 @@ export async function getRandomDiscountCodeAction() {
   return workWithSession((session) => getRandomCode(session.apiToken));
 }
 
-export async function getDiscountCodeByNameAction(name: string) {
+export async function getDiscountCodeByNameOrIdAction(name: string | number) {
   return workWithSession((session) =>
-    getDiscountCodeByName(session.apiToken, name),
+    getDiscountCodeByNameOrId(session.apiToken, name),
   );
 }
 
 export async function submitDiscountCodeAction(discountCode: DiscountCode) {
   return submitDiscountCodeApi(discountCode);
 }
+
+export async function getAllDiscountsAction() {
+  return getAllDiscountsApi();
+}
+
+export const updateDiscountAction = updateDiscountApi;

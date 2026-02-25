@@ -4,17 +4,24 @@ type Props = {
   children: ReactNode;
   className?: string;
   center?: boolean;
+  centerH?: boolean;
+  centerV?: boolean;
 };
 
-export function Column({ children, className, ...props }: Props) {
-  const isCenter = "center" in props && props.center != false;
-
+export function Column({
+  children,
+  className,
+  centerH,
+  centerV,
+  center,
+}: Props) {
   return (
     <div
       className={[
         "flex flex-col",
         className ?? "",
-        isCenter ? "justify-center" : "",
+        centerH || center ? "items-center" : "",
+        centerV || center ? "justify-center" : "",
       ].join(" ")}
     >
       {children}
