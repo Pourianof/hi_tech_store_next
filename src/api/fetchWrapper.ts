@@ -50,6 +50,17 @@ async function put<T>(url: string, data: object) {
   );
 }
 
+async function patch<T>(url: string, data: object) {
+  const isFormData = data instanceof FormData;
+  return handleResponse<T>(
+    await fetch(url, {
+      method: "PATCH",
+      headers: await getHeaders(),
+      body: isFormData ? data : JSON.stringify(data),
+    }),
+  );
+}
+
 async function _delete<T>(url: string) {
   return handleResponse<T>(
     await fetch(url, {
@@ -74,4 +85,4 @@ async function getHeaders(isFormData: boolean = false) {
   return headers;
 }
 
-export const fetchWrapper = { get, post, put, delete: _delete };
+export const fetchWrapper = { get, post, put, delete: _delete, patch };
