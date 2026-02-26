@@ -22,10 +22,10 @@ export async function CategoriesMiniCardList() {
     return <span>Something wrong to fetching categories</span>;
   }
 
-  const categories = categoriesResult.data as Category[];
+  const categories = categoriesResult.data;
   return (
     <div className="flex gap-4 my-4">
-      {categories.map((cat) => (
+      {categories.items.map((cat) => (
         <CategoryMiniCard category={cat} key={cat.categoryId} />
       ))}
     </div>

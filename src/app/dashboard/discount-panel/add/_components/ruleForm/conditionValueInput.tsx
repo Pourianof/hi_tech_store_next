@@ -3,10 +3,10 @@ import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { LabeldInput } from "@/ui/form/inputs";
 import { DISCOUNT_CONDITION_VALUE } from "./fieldNames";
 import { useSelectedProps } from "./hooks/useSelectedProps";
-import { DiscountEntityProperyValueType } from "@/core/models/discount";
 import { AppDatePicker } from "@/ui/form/datePicker";
 import { ControlledSelect } from "@/ui/form/controlledSelect";
 import { MenuItem } from "@mui/material";
+import { DiscountEntityProperyValueType } from "@/core/schemas/discountCodeSchema";
 
 export function ConditionValueInput() {
   const valueFieldname = useFieldPath(DISCOUNT_CONDITION_VALUE);

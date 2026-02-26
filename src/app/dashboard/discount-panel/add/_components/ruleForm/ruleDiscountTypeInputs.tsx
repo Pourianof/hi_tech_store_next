@@ -1,4 +1,3 @@
-import { DiscountActionType } from "@/core/models/discount";
 import { ControlledSelect } from "@/ui/form/controlledSelect";
 import { Label } from "@/ui/form/label";
 import { Row } from "@/ui/layouts/row";
@@ -6,6 +5,7 @@ import { MenuItem } from "@mui/material";
 import { ActionValueInput } from "./ruleActionInputs";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
 import { DISCOUNT_RULE_ACTION_TYPE } from "./fieldNames";
+import { DiscountActionType } from "@/core/schemas/discountCodeSchema";
 
 export function RuleDiscountTypeAndValueInputs() {
   const ruleDiscountTypeFieldName = useFieldPath(DISCOUNT_RULE_ACTION_TYPE);

@@ -1,9 +1,9 @@
-import { DiscountConditionOperation } from "@/core/models/discount";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
 import { ControlledSelect } from "@/ui/form/controlledSelect";
 import { LabeldInput } from "@/ui/form/inputs";
 import { MenuItem } from "@mui/material";
 import { DISCOUNT_ENTITY_OPERATOR } from "./fieldNames";
+import { DiscountConditionOperation } from "@/core/schemas/discountCodeSchema";
 
 const OPERATORS = [
   {

@@ -1,4 +1,4 @@
-import { DiscountActionType } from "@/core/models/discount";
+import { DiscountActionType } from "@/core/schemas/discountCodeSchema";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { Label } from "@/ui/form/label";

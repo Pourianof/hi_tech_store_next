@@ -1,12 +1,13 @@
 "use client";
 
-import { DiscountCode, discountCodeSchema } from "@/core/models/discount";
+import { DiscountCode } from "@/core/models/discount";
 import { submitDiscountCodeAction } from "@/lib/server_actions/discountActions";
 import { StatefulForm } from "@/ui/form/statefulForm";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 import toast from "react-hot-toast";
 import { SubmitButton } from "./submitButton";
+import { discountCodeSchema } from "@/core/schemas/discountCodeSchema";
 
 export function NewDiscountForm({ children }: { children: ReactNode }) {
   const router = useRouter();

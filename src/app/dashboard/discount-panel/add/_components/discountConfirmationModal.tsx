@@ -1,5 +1,4 @@
 import {
-  DiscountActionType,
   DiscountConditioGroup,
   DiscountCondition,
   DiscountEntity,
@@ -19,6 +18,7 @@ import { DiscountCodeGenerator } from "./discountCodeGenerator";
 import { BaseConditionInterpreter } from "./ruleForm/conditionInterpreter";
 import { findPropertiesFromEntity } from "./ruleForm/hooks/useSelectedProps";
 import { DISCOUNT_Entities_KEY } from "./ruleMakerEntitiesInjector";
+import { DiscountActionType } from "@/core/schemas/discountCodeSchema";
 
 type Props = {
   onCancel: () => void;

@@ -20,7 +20,7 @@ export async function RuleMakerEntitiesInjector({
     );
   }
 
-  const discountEntities = discountEntitiesResult.data;
+  const discountEntities = discountEntitiesResult.data.items;
   return (
     <StaticDataInjector dataKey={DISCOUNT_Entities_KEY} data={discountEntities}>
       {children}

@@ -3,6 +3,7 @@ import { generateResultModelFromResponse } from "./apiHelper";
 import { Product } from "@/core/models/product";
 import { ProductDto } from "@/core/Dtos/ProductDto";
 import { apiRoutes } from "./apiRoutes";
+import { PagedResults } from "@/core/Dtos/pagedResult";
 
 export async function createNewProduct(product: FormData, accessToken: string) {
   const respond = await fetch(apiRoutes.products.base, {
@@ -17,8 +18,8 @@ export async function createNewProduct(product: FormData, accessToken: string) {
 }
 
 export async function getProducts(
-  searchQueries?: Record<string, string>
-): Promise<ResultModel<ProductDto[]>> {
+  searchQueries?: Record<string, string>,
+): Promise<ResultModel<PagedResults<ProductDto>>> {
   const url = new URL(apiRoutes.products.base);
   if (searchQueries) {
     Object.keys(searchQueries).forEach((key) => {
@@ -33,7 +34,7 @@ export async function getProducts(
 }
 
 export async function getSingleProduct(
-  productId: number
+  productId: number,
 ): Promise<ResultModel<Product>> {
   const respond = await fetch(apiRoutes.products.forProduct(productId));
 

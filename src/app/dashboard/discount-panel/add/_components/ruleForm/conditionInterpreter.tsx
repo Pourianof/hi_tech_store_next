@@ -1,9 +1,4 @@
-import {
-  DiscountConditionOperation,
-  DiscountEntity,
-  DiscountEntityProperty,
-  DiscountEntityProperyValueType,
-} from "@/core/models/discount";
+import { DiscountEntity, DiscountEntityProperty } from "@/core/models/discount";
 import { useStaticData } from "@/ui/contexts/StaticDataInjector";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
 import { useWatch } from "react-hook-form";
@@ -16,6 +11,10 @@ import { useSelectedProps } from "./hooks/useSelectedProps";
 import { DISCOUNT_Entities_KEY } from "../ruleMakerEntitiesInjector";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
+import {
+  DiscountConditionOperation,
+  DiscountEntityProperyValueType,
+} from "@/core/schemas/discountCodeSchema";
 
 export function ConditionInterpreter() {
   const entityFieldname = useFieldPath(DISCOUNT_CONDITION_ENTITY);

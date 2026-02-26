@@ -1,6 +1,7 @@
 import { Category } from "@/core/models/category";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { apiRoutes } from "./apiRoutes";
+import { PagedResults } from "@/core/Dtos/pagedResult";
 
 export const CATEGORY_TAG = "getTag";
 export async function getCategories() {
@@ -15,7 +16,7 @@ export async function getCategories() {
     },
   });
 
-  return generateResultModelFromResponse<Category[]>(respond);
+  return generateResultModelFromResponse<PagedResults<Category>>(respond);
 }
 
 export async function createCategory(category: FormData, token: string) {
@@ -44,7 +45,7 @@ export async function deleteCategory(categoryId: number, token: string) {
 export async function updateCategory(
   categoryId: number,
   updatingCategory: FormData,
-  token: string
+  token: string,
 ) {
   return generateResultModelFromResponse(
     await fetch(apiRoutes.categories.forCategory(categoryId), {
@@ -53,6 +54,6 @@ export async function updateCategory(
         Authorization: `Bearer ${token}`,
       },
       body: updatingCategory,
-    })
+    }),
   );
 }

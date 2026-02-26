@@ -1,9 +1,10 @@
 "use client";
 import { DiscountCode } from "@/core/models/discount";
 import { formatDate } from "@/lib/helpers/formatDate";
-import { TableRow, TableCell } from "@mui/material";
+import { TableRow, TableCell, IconButton } from "@mui/material";
 import { DiscountActionsButton } from "./discountActionsButton";
 import { useDiscountCode } from "./hooks/useDiscountCode";
+import Icon from "@/ui/icons/icon";
 
 export function DiscountCodeRow({ discount }: { discount: DiscountCode }) {
   const { data: dc } = useDiscountCode(discount.discountCodeId, discount);
@@ -24,6 +25,11 @@ export function DiscountCodeRow({ discount }: { discount: DiscountCode }) {
           : Date.now() < new Date(dc.endTime).getTime()
             ? "Active"
             : "Staled"}
+      </TableCell>
+      <TableCell>
+        <IconButton>
+          <Icon name="eye" />
+        </IconButton>
       </TableCell>
       <TableCell align="center">
         <DiscountActionsButton discount={dc} />
