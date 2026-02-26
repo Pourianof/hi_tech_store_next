@@ -51,6 +51,7 @@ import Card from "@/assets/tech_heim/card.svg";
 import CircularLeftArrow from "@/assets/tech_heim/arrow-left.svg";
 import EllipsisVertical from "@/assets/tech_heim/ellipsis-vertical.svg";
 import Power from "@/assets/tech_heim/power.svg";
+import Eye from "@/assets/tech_heim/eye.svg";
 
 import { createContext, useContext } from "react";
 
@@ -108,6 +109,7 @@ const ICONS = {
   circular_left_arrow: CircularLeftArrow,
   dotten_menu: EllipsisVertical,
   turn_off: Power,
+  eye: Eye,
 };
 
 export type IconNames = keyof typeof ICONS;

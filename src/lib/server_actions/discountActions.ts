@@ -7,8 +7,11 @@ import {
   submitDiscountCodeApi,
   updateDiscountApi,
 } from "@/api/discountApi";
+import {
+  DiscountCodeCreationDto,
+  DiscountCodeQuery,
+} from "@/core/Dtos/discountCodeDto";
 import { workWithSession } from "../helpers/sessionHelper";
-import { DiscountCode } from "@/core/models/discount";
 
 export async function getDiscountEntitiesAction() {
   return getDiscountEntities();
@@ -24,12 +27,15 @@ export async function getDiscountCodeByNameOrIdAction(name: string | number) {
   );
 }
 
-export async function submitDiscountCodeAction(discountCode: DiscountCode) {
+export async function submitDiscountCodeAction(
+  discountCode: DiscountCodeCreationDto,
+) {
   return submitDiscountCodeApi(discountCode);
 }
 
-export async function getAllDiscountsAction() {
-  return getAllDiscountsApi();
+export async function getAllDiscountsAction(query?: DiscountCodeQuery) {
+  console.log(query);
+  return getAllDiscountsApi(query);
 }
 
 export const updateDiscountAction = updateDiscountApi;

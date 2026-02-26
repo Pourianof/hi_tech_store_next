@@ -3,10 +3,15 @@ import { generateResultModelFromResponse } from "./apiHelper";
 import { apiRoutes } from "./apiRoutes";
 import { DiscountCode, DiscountEntity } from "@/core/models/discount";
 import { fetchWrapper } from "./fetchWrapper";
-import { DiscountUpdateDto } from "@/core/Dtos/discountCodeDto";
+import {
+  DiscountCodeCreationDto,
+  DiscountCodeQuery,
+  DiscountUpdateDto,
+} from "@/core/Dtos/discountCodeDto";
+import { PagedResults } from "@/core/Dtos/pagedResult";
 
 export async function getDiscountEntities(): Promise<
-  ResultModel<DiscountEntity[]>
+  ResultModel<PagedResults<DiscountEntity>>
 > {
   return generateResultModelFromResponse(
     await fetch(apiRoutes.discounts.entities),
@@ -40,15 +45,20 @@ export async function getRandomCode(
   );
 }
 
-export async function submitDiscountCodeApi(discountCode: DiscountCode) {
+export async function submitDiscountCodeApi(
+  discountCode: DiscountCodeCreationDto,
+) {
   return fetchWrapper.post<DiscountCode>(
     apiRoutes.discounts.codes,
     discountCode,
   );
 }
 
-export async function getAllDiscountsApi() {
-  return fetchWrapper.get<DiscountCode[]>(apiRoutes.discounts.codes);
+export async function getAllDiscountsApi(query?: DiscountCodeQuery) {
+  return fetchWrapper.get<PagedResults<DiscountCode>>(
+    apiRoutes.discounts.codes,
+    query,
+  );
 }
 
 export async function updateDiscountApi(

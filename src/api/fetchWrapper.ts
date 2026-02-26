@@ -1,8 +1,20 @@
 import { ResultModel } from "@/core/models/resultModel";
 import { auth } from "../../auth";
 
-async function get<T>(url: string) {
-  const response = await fetch(url, {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function get<T>(url: string, queryParams?: Record<string, any>) {
+  const finalUrl = new URL(url);
+  if (queryParams) {
+    Object.keys(queryParams).forEach((key) => {
+      if (!!queryParams[key]) {
+        finalUrl.searchParams.append(key, queryParams[key].toString());
+      }
+    });
+  }
+
+  console.log(queryParams, finalUrl.href);
+
+  const response = await fetch(finalUrl, {
     method: "GET",
     headers: await getHeaders(),
   });
