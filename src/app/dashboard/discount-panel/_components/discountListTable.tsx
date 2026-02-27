@@ -10,6 +10,7 @@ import {
   TableFooter,
   TablePagination,
   TablePaginationActions,
+  CircularProgress,
 } from "@mui/material";
 import { DiscountCodeRow } from "./discountCodeRow";
 import { PagedResults } from "@/core/Dtos/pagedResult";
@@ -23,7 +24,7 @@ export function DiscountListTable({
   pagedDiscounts: PagedResults<DiscountCode>;
 }) {
   const {
-    query: { data: discountCodes },
+    query: { data: discountCodes, isLoading },
     page,
     nextPage,
     previousPage,
@@ -31,7 +32,7 @@ export function DiscountListTable({
     initialData: pagedDiscounts,
   });
 
-  if (!discountCodes) {
+  if (!discountCodes && !isLoading) {
     return (
       <FailedBox
         title="Some problem with loading discount codes"
@@ -54,39 +55,45 @@ export function DiscountListTable({
             <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {discountCodes.items.map((dc, i) => (
-            <DiscountCodeRow key={dc.discountCodeId + i} discount={dc} />
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={7}
-              count={discountCodes.totalCount}
-              rowsPerPage={discountCodes.pageSize}
-              page={discountCodes.pageNumber - 1}
-              slotProps={{
-                select: {
-                  inputProps: {
-                    "aria-label": "rows per page",
-                  },
-                  native: true,
-                },
-              }}
-              onPageChange={(e, p) => {
-                if (p > page - 1) {
-                  nextPage();
-                } else {
-                  previousPage();
-                }
-              }}
-              onRowsPerPageChange={() => {}}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <>
+            <TableBody>
+              {discountCodes!.items.map((dc, i) => (
+                <DiscountCodeRow key={dc.discountCodeId + i} discount={dc} />
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  colSpan={7}
+                  count={discountCodes!.totalCount}
+                  rowsPerPage={discountCodes!.pageSize}
+                  page={discountCodes!.pageNumber - 1}
+                  slotProps={{
+                    select: {
+                      inputProps: {
+                        "aria-label": "rows per page",
+                      },
+                      native: true,
+                    },
+                  }}
+                  onPageChange={(e, p) => {
+                    if (p > page - 1) {
+                      nextPage();
+                    } else {
+                      previousPage();
+                    }
+                  }}
+                  onRowsPerPageChange={() => {}}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          </>
+        )}
       </Table>
     </TableContainer>
   );
