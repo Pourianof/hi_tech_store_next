@@ -34,7 +34,6 @@ export async function submitDiscountCodeAction(
 }
 
 export async function getAllDiscountsAction(query?: DiscountCodeQuery) {
-  console.log(query);
   return getAllDiscountsApi(query);
 }
 

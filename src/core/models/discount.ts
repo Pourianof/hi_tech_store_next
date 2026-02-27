@@ -1,28 +1,57 @@
-import z from "zod";
 import {
-  discounConditionGroupSchema,
-  discountActionSchema,
-  discountCodeSchema,
-  discountConditionSchema,
-  discountEntityPropertySchema,
-  discountRuleSchema,
+  DiscountActionType,
+  DiscountConditionOperation,
 } from "../schemas/discountCodeSchema";
 
-export type DiscountEntity = {
+export interface DiscountCode {
+  discountCodeId: number;
+  code: string;
+  description?: string;
+  startTime: string;
+  endTime: string;
+  createdAt: string;
+  isDeactivated: boolean;
+  creatorId: string;
+  rules: DiscountRule[];
+}
+
+export interface DiscountRule {
+  discountRuleId: number;
+  name: string;
+  description?: string;
+  conditions: DiscountConditionGroup[];
+  discountAction: DiscountAction;
+}
+
+export interface DiscountAction {
+  type: DiscountActionType;
+  value: number;
+}
+
+export interface DiscountConditionGroup {
+  discountConditionGroupId: number;
+  conditions: DiscountCondition[];
+}
+
+export interface DiscountCondition {
+  discountConditionId: number;
+  entityProperty: DiscountEntityProperty;
+  priority: number;
+  operation: DiscountConditionOperation;
+  value: string;
+}
+
+export interface DiscountEntity {
   id: number;
   name: string;
-  description: string;
+  description?: string;
   properties: DiscountEntityProperty[];
-};
-export type DiscountEntityProperty = z.infer<
-  typeof discountEntityPropertySchema
->;
-export type DiscountCode = z.infer<typeof discountCodeSchema> & {
-  discountCodeId: number;
-  creatorId: number;
-  isDeactivated: boolean;
-};
-export type DiscountRule = z.infer<typeof discountRuleSchema>;
-export type DiscountAction = z.infer<typeof discountActionSchema>;
-export type DiscountConditioGroup = z.infer<typeof discounConditionGroupSchema>;
-export type DiscountCondition = z.infer<typeof discountConditionSchema>;
+}
+
+export interface DiscountEntityProperty {
+  id: number;
+  name: string;
+  description?: string;
+  subEntity?: DiscountEntity;
+  type: string;
+}

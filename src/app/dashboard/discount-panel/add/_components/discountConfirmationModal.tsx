@@ -1,9 +1,3 @@
-import {
-  DiscountConditioGroup,
-  DiscountCondition,
-  DiscountEntity,
-  DiscountRule,
-} from "@/core/models/discount";
 import { useStaticData } from "@/ui/contexts/StaticDataInjector";
 import { FilledButton, OutlinedButton } from "@/ui/form/AppButtons";
 import { flatAllErrors } from "@/ui/form/rhf/reactHookFormHelpers";
@@ -18,7 +12,13 @@ import { DiscountCodeGenerator } from "./discountCodeGenerator";
 import { BaseConditionInterpreter } from "./ruleForm/conditionInterpreter";
 import { findPropertiesFromEntity } from "./ruleForm/hooks/useSelectedProps";
 import { DISCOUNT_Entities_KEY } from "./ruleMakerEntitiesInjector";
-import { DiscountActionType } from "@/core/schemas/discountCodeSchema";
+import {
+  DiscountActionType,
+  DiscountConditionCreationDto,
+  DiscountConditionGroupCreationDto,
+  DiscountRuleCreationDto,
+} from "@/core/schemas/discountCodeSchema";
+import { DiscountEntity } from "@/core/models/discount";
 
 type Props = {
   onCancel: () => void;
@@ -55,7 +55,7 @@ export function DiscountConfirmationModal({ onCancel, onConfirm }: Props) {
         </p>
         <strong>Rules:</strong>{" "}
         <div className="p-2 rounded bg-neutral-300">
-          {rules.map((rule: DiscountRule, index: number) => (
+          {rules.map((rule: DiscountRuleCreationDto, index: number) => (
             <RuleItemOverview key={index} rule={rule} index={index} />
           ))}
         </div>
@@ -96,7 +96,7 @@ function RuleItemOverview({
   rule,
   index,
 }: {
-  rule: DiscountRule;
+  rule: DiscountRuleCreationDto;
   index: number;
 }) {
   return (
@@ -128,17 +128,23 @@ function RuleItemOverview({
   );
 }
 
-function ContionListOverview({ rule }: { rule: DiscountRule }) {
+function ContionListOverview({ rule }: { rule: DiscountRuleCreationDto }) {
   return (
     <ul className="bg-slate-400 p-1 rounded">
       {rule.conditions.map(
-        (conditionGroup: DiscountConditioGroup, condIndex: number) => (
+        (
+          conditionGroup: DiscountConditionGroupCreationDto,
+          condIndex: number,
+        ) => (
           <li key={condIndex}>
             {!!conditionGroup.conditions?.length && (
               <ul>
                 <Column className=" bg-slate-200 rounded p-1 text-slate-800 gap-2">
                   {conditionGroup.conditions.map(
-                    (subCondition: DiscountCondition, subCondIndex: number) => (
+                    (
+                      subCondition: DiscountConditionCreationDto,
+                      subCondIndex: number,
+                    ) => (
                       <ConditionItemOverview
                         key={subCondIndex}
                         condition={subCondition}
@@ -160,7 +166,7 @@ function ConditionItemOverview({
   condition,
   subCondIndex,
 }: {
-  condition: DiscountCondition;
+  condition: DiscountConditionCreationDto;
   subCondIndex: number;
 }) {
   const propIds = condition.entityPropertyId as never as number[];

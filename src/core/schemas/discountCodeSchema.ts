@@ -65,14 +65,14 @@ export const discountConditionSchema = z.object({
   value: z.coerce.string(),
 });
 
-export const discounConditionGroupSchema = z.object({
+export const discountConditionGroupSchema = z.object({
   conditions: z.array(discountConditionSchema),
 });
 
 export const discountRuleSchema = z.object({
   name: z.string(),
   description: z.string(),
-  conditions: z.array(discounConditionGroupSchema),
+  conditions: z.array(discountConditionGroupSchema),
   discountAction: discountActionSchema,
 });
 
@@ -83,3 +83,12 @@ export const discountCodeSchema = z.object({
   endTime: z.number(),
   rules: z.array(discountRuleSchema),
 });
+
+export type DiscountCodeCreationDto = z.infer<typeof discountCodeSchema>;
+export type DiscountRuleCreationDto = z.infer<typeof discountRuleSchema>;
+export type DiscountConditionGroupCreationDto = z.infer<
+  typeof discountConditionGroupSchema
+>;
+export type DiscountConditionCreationDto = z.infer<
+  typeof discountConditionSchema
+>;
