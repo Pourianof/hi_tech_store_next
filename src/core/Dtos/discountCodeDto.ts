@@ -1,4 +1,6 @@
 import z from "zod";
+import { DiscountAction } from "../models/discount";
+import { ProductVariation } from "../models/product";
 import { discountCodeSchema } from "../schemas/discountCodeSchema";
 
 export interface DiscountUpdateDto {
@@ -12,3 +14,10 @@ export interface DiscountCodeQuery {
 }
 
 export type DiscountCodeCreationDto = z.infer<typeof discountCodeSchema>;
+
+export interface DiscountCodeCheckResultDto {
+  isDiscountAppliable: boolean;
+  appliedTo?: string;
+  discountedProducts?: ProductVariation[];
+  discount: DiscountAction;
+}

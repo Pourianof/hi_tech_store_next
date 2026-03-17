@@ -12,8 +12,6 @@ async function get<T>(url: string, queryParams?: Record<string, any>) {
     });
   }
 
-  console.log(queryParams, finalUrl.href);
-
   const response = await fetch(finalUrl, {
     method: "GET",
     headers: await getHeaders(),

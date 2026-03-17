@@ -49,6 +49,9 @@ export const apiRoutes = {
     get items() {
       return `${this.base}/items`;
     },
+    get discountState() {
+      return `${this.base}/discount/state`;
+    },
   },
   users: {
     base: `${server}/users`,
