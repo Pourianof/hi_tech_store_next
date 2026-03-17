@@ -11,6 +11,7 @@ import { CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
+import { DateObject } from "react-multi-date-picker";
 
 enum CodeType {
   CUSTOM,
@@ -92,10 +93,14 @@ function CustomCodeInput({
               // but maybe it is better to delegate the
               // business rules of usability to server side
               // #just_for_simplicity
-              const { startTime: st, endTime: et } = code.data;
+              const { startTime: _st, endTime: _et } = code.data;
+              const st = new DateObject(_st).toUnix() * 1000;
+              const et = new DateObject(_et).toUnix() * 1000;
+
               if (startTime > et || ednTime < st) {
                 // not ovelapping
                 toast.success("Code is usable");
+                clearErrors(DISCOUNT_CODE_FIELDNAME);
                 return;
               }
 
