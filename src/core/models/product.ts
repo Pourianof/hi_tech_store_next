@@ -16,6 +16,7 @@ export interface Product {
 }
 
 export interface ProductVariation {
+  productVariationId: number;
   color: {
     colorId: number;
     code: string;

@@ -1,4 +1,3 @@
-import { CartWithProduct } from "@/core/models/cart";
 import { Product, ProductVariation } from "@/core/models/product";
 
 interface AddProductData {
@@ -16,15 +15,15 @@ interface CartActionPayloads {
   Add: AddProductData;
   Decrease: AddProductData;
   Remove: CartProductItemSpecifier;
-  Initialize: CartWithProduct;
+  Initialize: CartItemsState;
   Clear?: void | undefined;
   Loading: boolean;
 }
 
-interface CartItemState extends CartProductItemSpecifier {
+export interface CartItemState extends CartProductItemSpecifier {
   amount: number;
 }
-interface CartItemsState {
+export interface CartItemsState {
   items: CartItemState[];
 }
 
@@ -87,11 +86,14 @@ export function cartReducer<T extends CartActions>(
         return state;
       }
 
-      state.cart.items.push({
-        product: addedData.product,
-        amount: addedAmount,
-        variation: addedData.variation,
-      });
+      state.cart.items = [
+        ...state.cart.items,
+        {
+          product: addedData.product,
+          amount: addedAmount,
+          variation: addedData.variation,
+        },
+      ];
 
       return { ...state };
     }
@@ -118,7 +120,7 @@ export function cartReducer<T extends CartActions>(
       return {
         isLoading: false,
         cart: {
-          items: (action.payload as CartItemsState).items,
+          items: [...(action.payload as CartItemsState).items],
         },
       };
     }

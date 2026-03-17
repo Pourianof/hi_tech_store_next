@@ -1,4 +1,17 @@
 "use client";
+import { Cart, CartWithProduct } from "@/core/models/cart";
+import {
+  getCartAction,
+  updateCartAction,
+} from "@/lib/server_actions/cartActions";
+import { NoContextDefinedError } from "@/ui/errors/NoContextDefinedError";
+import {
+  clearLocalStorage,
+  getFromLocalStorage,
+  saveToLocalStorage,
+} from "@/ui/helpers/storageHelper";
+import { useLocalStorageChange } from "@/ui/hooks/useLocalStorage";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createContext,
   ReactNode,
@@ -7,22 +20,10 @@ import {
   useReducer,
   useRef,
 } from "react";
-import { CartPayloads, cartReducer, CartState } from "./cartReducer";
-import { NoContextDefinedError } from "@/ui/errors/NoContextDefinedError";
 import toast from "react-hot-toast";
-import { useLocalStorageChange } from "@/ui/hooks/useLocalStorage";
-import {
-  clearLocalStorage,
-  getFromLocalStorage,
-  saveToLocalStorage,
-} from "@/ui/helpers/storageHelper";
 import { useAuth } from "../authContext";
-import { Cart, CartWithProduct } from "@/core/models/cart";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  getCartAction,
-  updateCartAction,
-} from "@/lib/server_actions/cartActions";
+import { CartPayloads, cartReducer, CartState } from "./cartReducer";
+import { convertCartWithProductToCartState } from "./typeHelper/convertCartDtoToCartState";
 
 interface ICartContext extends CartState {
   actions: {
@@ -57,7 +58,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
         return Promise.reject(result.data);
       }
 
-      return result.data;
+      return convertCartWithProductToCartState(result.data);
     },
   });
 
@@ -65,20 +66,21 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     mutate: changeItemMutation,
     mutateAsync: changeItemMutationAndReturnResult,
   } = useMutation({
+    meta: {
+      oldState: {
+        cart: query.data,
+      },
+    },
     mutationFn: async (changedItems: Cart["items"]) => {
       const result = await updateCartAction({ items: changedItems });
-
       if (result.status == "failed") {
         throw result.data;
       }
 
       return result.data;
     },
-    onMutate: (_, ctx) => {
+    onMutate: () => {
       dispatch({ action: "Loading", payload: true });
-      ctx.meta = {
-        oldState: { ...state },
-      };
       changedItemProductIds.current = [];
     },
     onSettled: () => {
@@ -86,8 +88,10 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     },
     onSuccess: () => {
       // we updated item before in reducer
+      toast.success("Product added to cart successfully");
     },
-    onError(_, __, ___, ctx) {
+    onError(err, __, ___, ctx) {
+      toast.error("Something went wrong add item to your cart");
       // undo state
       dispatch({
         action: "Initialize",
@@ -157,7 +161,10 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (query.data) {
-      dispatch({ action: "Initialize", payload: query.data });
+      dispatch({
+        action: "Initialize",
+        payload: query.data,
+      });
     }
   }, [query.data]);
 
@@ -187,14 +194,22 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
         changeItemMutationAndReturnResult(
           state.cart.items.map((item) => ({
             amount: item.amount,
-            productId: item.product.productId,
+            productVariationId: item.variation.productVariationId,
           })),
-        ).then((cart) => dispatch({ action: "Initialize", payload: cart }));
+        ).then((cart) =>
+          dispatch({
+            action: "Initialize",
+            payload: convertCartWithProductToCartState(cart),
+          }),
+        );
       } else {
         // if user is logged-in the always fetch from server
         // because the cart may change from other devices or sessions
         if (query.data) {
-          dispatch({ action: "Initialize", payload: query.data });
+          dispatch({
+            action: "Initialize",
+            payload: query.data,
+          });
         } else {
           query.refetch();
         }
@@ -216,12 +231,12 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     const changedItems = changedItemProductIds.current.map(
       ({ productId, variationId }) => {
         return {
-          productId,
+          productVariationId: variationId,
           amount:
             state.cart.items.find(
               (item) =>
                 item.product.productId == productId &&
-                item.variation.color.colorId == variationId,
+                item.variation.productVariationId == variationId,
             )?.amount ?? 0,
         };
       },
@@ -241,7 +256,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
       value={{
         ...state,
         actions: {
-          addProductToCart(payload, toastNotif: boolean = true) {
+          addProductToCart(payload) {
             if (isLogginStateLoading) {
               return;
             }
@@ -252,10 +267,8 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
 
             changedItemProductIds.current.push({
               productId: payload.product.productId,
-              variationId: payload.variation.color.colorId,
+              variationId: payload.variation.productVariationId,
             });
-
-            if (toastNotif) toast.success("Product added to cart successfully");
           },
           removeProductFromCart(payload) {
             if (isLogginStateLoading) {
@@ -264,7 +277,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
             dispatch({ action: "Remove", payload });
             changedItemProductIds.current.push({
               productId: payload.product.productId,
-              variationId: payload.variation.color.colorId,
+              variationId: payload.variation.productVariationId,
             });
           },
           decreaseAmountOfProduct(payload) {
@@ -279,7 +292,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
 
             changedItemProductIds.current.push({
               productId: payload.product.productId,
-              variationId: payload.variation.color.colorId,
+              variationId: payload.variation.productVariationId,
             });
           },
         },

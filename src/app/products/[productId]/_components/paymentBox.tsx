@@ -45,7 +45,6 @@ function MainPayment() {
   useEffect(() => {
     const sub = channel.consume({
       onData(data) {
-        console.log(data);
         setShowMode((data as { display: boolean }).display);
       },
     });

@@ -1,15 +1,24 @@
-import { Product } from "./product";
+import { ProductVariation } from "./product";
 
 export interface Cart {
   items: {
-    productId: number;
+    productVariationId: number;
     amount: number;
   }[];
 }
 
 export interface CartWithProduct {
-  items: {
-    product: Product;
-    amount: number;
-  }[];
+  items: MinimalProductDto[];
+}
+
+export interface MinimalProductDto {
+  productId: number;
+  title: string;
+  description?: string;
+  variations: ProductVariationWithCartAmount[];
+}
+
+export interface ProductVariationWithCartAmount {
+  variation: ProductVariation;
+  amount: number;
 }
