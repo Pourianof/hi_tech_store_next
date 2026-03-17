@@ -16,7 +16,7 @@ export function CartPreview() {
       <FillerBox>
         <Slider>
           <Slider.SliderContainer>
-            {items.map(({ product, amount }) => (
+            {items.map(({ product, amount, variation }) => (
               <Slider.SliderItem
                 className="min-w-1/4 max-w-1/4 rounded flex flex-col p-1 bg-white"
                 key={product.productId}
@@ -25,7 +25,7 @@ export function CartPreview() {
                   <ApiImage
                     square={true}
                     alt={product.title}
-                    src={getMainMedia(product)?.url}
+                    src={getMainMedia(product, variation)?.url}
                   />
                 }
                 <span>×{amount}</span>
