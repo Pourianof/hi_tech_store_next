@@ -60,7 +60,6 @@ export function useBackBtnHandler({
       if (modalStack.includes(id)) {
         for (let index = modalStack.length - 1; index >= 0; index--) {
           const poppedId = modalStack.at(index); // pop state and close modal
-          debugger;
           router.back();
 
           if (poppedId == id) {
