@@ -1,6 +1,6 @@
 "use client";
 import { Wrapper } from "@/app/_shared/wrapper";
-import { captalize } from "@/lib/helpers/stringHelpers";
+import { captalize } from "@/lib/utils/stringHelpers";
 import { StatefulForm } from "@/ui/form/statefulForm";
 import Icon from "@/ui/icons/icon";
 import { Modal } from "@/ui/modal/modal";

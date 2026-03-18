@@ -1,4 +1,6 @@
-import { ProductSummary } from "./product";
+import { ProductMediaDto } from "../Dtos/ProductDto";
+import { MinimalProductDto } from "./cart";
+import { ProductColor } from "./product";
 
 export enum OrderPaymentState {
   Paid = "Paid",
@@ -27,8 +29,15 @@ export interface OrderWithProduct {
 
 export interface OrderItemWithProduct {
   id: number;
-  product: ProductSummary;
+  productVariation: ProductVariationWithMinimalProduct;
   count: number;
   orderPayTimePrice: number;
   discount?: number;
+}
+export interface ProductVariationWithMinimalProduct {
+  productVariationId: number;
+  price: number;
+  color: ProductColor;
+  media: ProductMediaDto[];
+  product: Omit<MinimalProductDto, "variations">;
 }

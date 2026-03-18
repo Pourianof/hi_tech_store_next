@@ -1,5 +1,5 @@
 import { DiscountEntity } from "@/core/models/discount";
-import { captalize } from "@/lib/helpers/stringHelpers";
+import { captalize } from "@/lib/utils/stringHelpers";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
 import { ControlledSelect } from "@/ui/form/controlledSelect";
 import { LabeldInput } from "@/ui/form/inputs";

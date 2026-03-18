@@ -2,7 +2,7 @@ import { useInjectedData } from "@/ui/contexts/CCInjector";
 import { BRANDS_QUERY_KEY } from "./brandProvider";
 import { Brand } from "@/core/models/brand";
 import { createNewBrandModelAction } from "@/lib/server_actions/brandActions";
-import { isTwoStringEqual } from "@/lib/helpers/stringHelpers";
+import { isTwoStringEqual } from "@/lib/utils/stringHelpers";
 
 export function useBrands() {
   const context = useInjectedData(BRANDS_QUERY_KEY);
@@ -20,7 +20,7 @@ export function useBrands() {
       if (result.status == "success") {
         const brandModel = result.data;
         const brand = (context.data as Brand[]).find((brand) =>
-          isTwoStringEqual(brand.name, brandModel.brandName)
+          isTwoStringEqual(brand.name, brandModel.brandName),
         );
 
         if (brand) {

@@ -1,6 +1,6 @@
 import { Wrapper } from "@/app/_shared/wrapper";
 import { protectRoute } from "@/lib/helpers/protectRoute";
-import { captalize } from "@/lib/helpers/stringHelpers";
+import { captalize } from "@/lib/utils/stringHelpers";
 import Icon from "@/ui/icons/icon";
 import Link from "next/link";
 import { auth } from "../../../../auth";

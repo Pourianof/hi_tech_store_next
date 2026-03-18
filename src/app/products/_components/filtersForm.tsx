@@ -14,7 +14,7 @@ import {
   getSearchParamValue,
   QueryOperator,
 } from "@/lib/helpers/searchParamHelper";
-import { parseNumberOrUndefined } from "@/lib/helpers/converter";
+import { parseNumberOrUndefined } from "@/lib/utils/converter";
 
 export function FilterSection({ filterStats }: { filterStats: Filters }) {
   const filters = filterStats;
@@ -107,15 +107,15 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
                     getSearchParamValue(
                       searchParams,
                       "price",
-                      QueryOperator.GreaterThanOrEqual
-                    )
+                      QueryOperator.GreaterThanOrEqual,
+                    ),
                   ),
                   parseNumberOrUndefined(
                     getSearchParamValue(
                       searchParams,
                       "price",
-                      QueryOperator.LessThanOrEqual
-                    )
+                      QueryOperator.LessThanOrEqual,
+                    ),
                   ),
                 ]}
                 fieldName="price"
@@ -154,7 +154,7 @@ function ComponentFilters({ components }: { components: ComponentFilter[] }) {
         const initialValues = getSearchParamAllValues(
           searchParams,
           `${component.name}.${prop.name}`,
-          QueryOperator.In
+          QueryOperator.In,
         );
 
         return (

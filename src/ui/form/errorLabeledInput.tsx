@@ -1,5 +1,5 @@
 "use client";
-import { captalize } from "@/lib/helpers/stringHelpers";
+import { captalize } from "@/lib/utils/stringHelpers";
 import { useEffect } from "react";
 import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import { ErrorMessageLabel } from "./errorMessageLabel";

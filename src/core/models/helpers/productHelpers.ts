@@ -1,6 +1,10 @@
-import { Product, ProductVariation } from "../product";
+import { Product, ProductMedia } from "../product";
 
-function getMediaOfVariation(variation: ProductVariation) {
+interface WithMedia {
+  media: ProductMedia[];
+}
+
+function getMediaOfVariation(variation: WithMedia) {
   const coverImage = variation.media?.find((m) => m.isMain);
   if (!coverImage && variation.media?.length) {
     return variation.media?.find((m) => m.type == "Image");
@@ -8,7 +12,7 @@ function getMediaOfVariation(variation: ProductVariation) {
   return coverImage;
 }
 
-export function getMainMedia(product: Product, variation?: ProductVariation) {
+export function getMainMedia(product: Product, variation?: WithMedia) {
   if (variation) {
     return getMediaOfVariation(variation);
   }

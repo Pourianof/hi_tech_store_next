@@ -17,22 +17,16 @@ export interface Product {
 
 export interface ProductVariation {
   productVariationId: number;
-  color: {
-    colorId: number;
-    code: string;
-    name: string;
-  };
+  color: ProductColor;
   inventory: number;
   media: ProductMedia[];
   price: number;
 }
 
-export interface ProductSummary {
-  productId: number;
-  price: number;
-  title: string;
-  description?: string;
-  media: ProductMedia[];
+export interface ProductColor {
+  colorId: number;
+  code: string;
+  name: string;
 }
 
 export interface ProductProperty {

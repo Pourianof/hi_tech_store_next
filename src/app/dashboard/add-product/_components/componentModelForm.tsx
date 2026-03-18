@@ -4,7 +4,7 @@ import { ComponentModelDto } from "@/core/Dtos/componentDto";
 import { BrandModel } from "@/core/models/brand";
 import { CategoryComponent } from "@/core/models/category";
 import { ResultModel } from "@/core/models/resultModel";
-import { captalize } from "@/lib/helpers/stringHelpers";
+import { captalize } from "@/lib/utils/stringHelpers";
 import { submitComponentModelAction } from "@/lib/server_actions/componentActions";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { StatefulForm } from "@/ui/form/statefulForm";
@@ -52,7 +52,7 @@ export function ComponentModelForm({
   }
 
   function submitComponent(
-    data: Record<string, unknown>
+    data: Record<string, unknown>,
   ): Promise<ResultModel<ProductComponentModel>> {
     const brandModel = data.brandModel as BrandModel | undefined;
 
@@ -64,7 +64,7 @@ export function ComponentModelForm({
 
     return submitComponentModelAction(
       baseComponent.componentTypeId,
-      componentModel
+      componentModel,
     );
   }
 
@@ -117,7 +117,7 @@ export function ComponentModelForm({
                           style={
                             props.getStyles(
                               "singleValue",
-                              props
+                              props,
                             ) as unknown as React.CSSProperties
                           }
                         >
@@ -136,7 +136,7 @@ export function ComponentModelForm({
                       }))}
                     onChange={(opt) => {
                       onChange(
-                        (opt as { value: BrandModel } | undefined)?.value
+                        (opt as { value: BrandModel } | undefined)?.value,
                       );
                     }}
                     value={
