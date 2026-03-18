@@ -1,14 +1,13 @@
 import { registerOrderApi } from "@/api/orderApi";
 import { workWithSession } from "@/lib/helpers/sessionHelper";
 
-export async function GET() {
-  // req: Request
-  // validate discount if exists
-  // const searchParams = req.url.search("discount");
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const discountCode = searchParams.get("discountCode");
 
   // register order with pending status and recieve payment url
   const result = await workWithSession(async (session) => {
-    return registerOrderApi(session.apiToken);
+    return registerOrderApi(session.apiToken, discountCode);
   });
 
   if (result.status === "success") {
