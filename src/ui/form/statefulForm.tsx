@@ -53,6 +53,7 @@ export function StatefulForm(
     children: ReactNode;
     shouldUnregister?: boolean;
     defaultValues?: Record<string, unknown>;
+    className?: string;
   } & FormHandlers,
 ) {
   const methods = useForm({
@@ -107,7 +108,10 @@ export function StatefulForm(
       <FormSubmitterContext.Provider
         value={{ submit: submitter, isSubmitting }}
       >
-        <form className="flex flex-col gap-2.5" onSubmit={submitter}>
+        <form
+          className={["flex flex-col gap-2.5", props.className ?? ""].join(" ")}
+          onSubmit={submitter}
+        >
           {props.children}
         </form>
       </FormSubmitterContext.Provider>

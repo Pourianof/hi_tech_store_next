@@ -18,6 +18,7 @@ import { useBrands } from "./brandsReducer";
 import { NewBrandModelForm } from "./newBrandModelForm";
 import { CategoryPropertiesForm } from "./propertiesForm";
 import { ProductComponentModel } from "@/core/models/product";
+import { Column } from "@/ui/layouts/column";
 
 function generateFullBrandModelName(brandModel: BrandModel) {
   return `${brandModel.brandName} - ${brandModel.modelName}`;
@@ -69,12 +70,13 @@ export function ComponentModelForm({
   }
 
   return (
-    <div className="text-neutral-700 flex flex-col gap-2">
+    <div className="text-neutral-700 flex flex-col gap-2 h-full">
       <StatefulForm
         onSubmit={submitComponent}
         onSubmitionSuccessful={(componentModel) => {
           onSubmit(componentModel as unknown as ProductComponentModel);
         }}
+        className="h-full"
       >
         {newBrandModelMode && (
           <Modal>
@@ -92,125 +94,131 @@ export function ComponentModelForm({
             />
           </Modal>
         )}
-        <h2 className="font-semibold border-b pb-2">
-          Create new component model for{" "}
-          <span className="bg-slate-600 text-slate-200 px-1 py-0.5 rounded">
-            {baseComponent.name}
-          </span>
-        </h2>
-        <label>
-          <span>Brand model</span>
-          <div className="flex gap-1">
-            {isFetching ? (
-              <CircularProgress size={40} />
-            ) : (
-              <Controller
-                name="brandModel"
-                render={({ field: { value, onChange } }) => (
-                  <Select
-                    className="flex-5/6"
-                    isClearable
-                    components={{
-                      SingleValue: (props) => (
-                        <span
-                          {...props.innerProps}
-                          style={
-                            props.getStyles(
-                              "singleValue",
-                              props,
-                            ) as unknown as React.CSSProperties
-                          }
-                        >
-                          {props.data.label}
-                        </span>
-                      ),
-                    }}
-                    options={brands
-                      ?.filter((brand) => !!brand.brandModels?.length)
-                      .map((b) => ({
-                        label: b.name,
-                        options: b.brandModels.map((bm) => ({
-                          label: bm.modelName,
-                          value: { ...bm, brandId: b.brandId },
-                        })),
-                      }))}
-                    onChange={(opt) => {
-                      onChange(
-                        (opt as { value: BrandModel } | undefined)?.value,
-                      );
-                    }}
-                    value={
-                      value
-                        ? {
-                            label: generateFullBrandModelName(value),
-                            value: value,
-                          }
-                        : undefined
-                    }
+        <div className="grid grid-rows-[auto_1fr_auto] h-full">
+          <h2 className="font-semibold border-b pb-2">
+            Create new component model for{" "}
+            <span className="bg-slate-600 text-slate-200 px-1 py-0.5 rounded">
+              {baseComponent.name}
+            </span>
+          </h2>
+          <Column className="overflow-auto h-full">
+            <label>
+              <span>Brand model</span>
+              <div className="flex gap-1">
+                {isFetching ? (
+                  <CircularProgress size={40} />
+                ) : (
+                  <Controller
+                    name="brandModel"
+                    render={({ field: { value, onChange } }) => (
+                      <Select
+                        className="flex-5/6"
+                        isClearable
+                        components={{
+                          SingleValue: (props) => (
+                            <span
+                              {...props.innerProps}
+                              style={
+                                props.getStyles(
+                                  "singleValue",
+                                  props,
+                                ) as unknown as React.CSSProperties
+                              }
+                            >
+                              {props.data.label}
+                            </span>
+                          ),
+                        }}
+                        options={brands
+                          ?.filter((brand) => !!brand.brandModels?.length)
+                          .map((b) => ({
+                            label: b.name,
+                            options: b.brandModels.map((bm) => ({
+                              label: bm.modelName,
+                              value: { ...bm, brandId: b.brandId },
+                            })),
+                          }))}
+                        onChange={(opt) => {
+                          onChange(
+                            (opt as { value: BrandModel } | undefined)?.value,
+                          );
+                        }}
+                        value={
+                          value
+                            ? {
+                                label: generateFullBrandModelName(value),
+                                value: value,
+                              }
+                            : undefined
+                        }
+                      />
+                    )}
                   />
                 )}
+
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setNewBrandModelMode(true);
+                  }}
+                  className="cursor-pointer hover:transition-colors hover:duration-300 hover:bg-blue-600 text-white text-2xl flex-1/6 bg-blue-500 rounded"
+                >
+                  +
+                </button>
+              </div>
+              <span className="text-sm p-1 rounded inline-block bg-slate-200 mt-2 text-slate-600">
+                <Icon name="guarantee" className="me-1 align-middle" />
+                Brand model is optional but it recommended to specify what brand
+                is this component
+              </span>
+            </label>
+            <div>
+              <label>Description</label>
+              <ErrorLabeledInput
+                isOptional
+                filedName="description"
+                placeholder="Description about component model"
+                type="text"
               />
-            )}
+            </div>
+            <div className="bg-slate-200 rounded p-2 pt-3 mt-2 relative">
+              <span className="absolute top-0 left-2 -translate-y-1/2 bg-inherit shadow py-0.5 px-1.5 rounded text-sm ">
+                Properties:
+              </span>
+              {!!baseComponent.properties.length ? (
+                <CategoryPropertiesForm properties={baseComponent.properties} />
+              ) : (
+                <div>
+                  {captalize(baseComponent.name)} has no property to set
+                </div>
+              )}
+            </div>
+          </Column>
+          <div className="flex gap-2 mt-2">
+            <StatefulForm.Submitter
+              render={(submit) => (
+                <button
+                  className="rounded bg-slate-600 p-1 px-2 text-slate-300 hover:bg-slate-800 cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    submit();
+                  }}
+                >
+                  Add
+                </button>
+              )}
+            />
 
             <button
+              className="rounded bg-neutral-200 p-1 px-2 text-neutral-600 hover:bg-neutral-300 cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
-                setNewBrandModelMode(true);
+                onCancel();
               }}
-              className="cursor-pointer hover:transition-colors hover:duration-300 hover:bg-blue-600 text-white text-2xl flex-1/6 bg-blue-500 rounded"
             >
-              +
+              Cancel
             </button>
           </div>
-          <span className="text-sm p-1 rounded inline-block bg-slate-200 mt-2 text-slate-600">
-            <Icon name="guarantee" className="me-1 align-middle" />
-            Brand model is optional but it recommended to specify what brand is
-            this component
-          </span>
-        </label>
-        <div>
-          <label>Description</label>
-          <ErrorLabeledInput
-            isOptional
-            filedName="description"
-            placeholder="Description about component model"
-            type="text"
-          />
-        </div>
-        <div className="bg-slate-200 rounded p-2 pt-3 mt-2 relative">
-          <span className="absolute top-0 left-2 -translate-y-1/2 bg-inherit shadow py-0.5 px-1.5 rounded text-sm ">
-            Properties:
-          </span>
-          {!!baseComponent.properties.length ? (
-            <CategoryPropertiesForm properties={baseComponent.properties} />
-          ) : (
-            <div>{captalize(baseComponent.name)} has no property to set</div>
-          )}
-        </div>
-        <div className="flex gap-2 mt-2">
-          <StatefulForm.Submitter
-            render={(submit) => (
-              <button
-                className="rounded bg-slate-600 p-1 px-2 text-slate-300 hover:bg-slate-800 cursor-pointer"
-                onClick={(e) => {
-                  e.preventDefault();
-                  submit();
-                }}
-              >
-                Add
-              </button>
-            )}
-          />
-
-          <button
-            className="rounded bg-neutral-200 p-1 px-2 text-neutral-600 hover:bg-neutral-300 cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault();
-              onCancel();
-            }}
-          >
-            Cancel
-          </button>
         </div>
       </StatefulForm>
     </div>
