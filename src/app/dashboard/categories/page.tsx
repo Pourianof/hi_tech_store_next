@@ -9,7 +9,7 @@ export default async function CategoriesMangePage() {
     return <div>Some error happened</div>;
   }
 
-  const categories = categoriesResult.data as Category[];
+  const categories = categoriesResult.data.items as Category[];
   const tree = categoryTreeBuilder(categories);
 
   return (

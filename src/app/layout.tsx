@@ -33,7 +33,7 @@ export default async function MainLayout(props: {
               <CategoryProvider
                 categories={
                   categoriesResult.status == "success"
-                    ? categoriesResult.data
+                    ? categoriesResult.data.items
                     : undefined
                 }
               >

@@ -19,7 +19,7 @@ export default async function ProductListPage({
 
   const searchString = new URLSearchParams(params).toString();
 
-  const products = productsResult.data;
+  const products = productsResult.data.items;
   return (
     <div>
       <CategoryList />
