@@ -41,6 +41,9 @@ export const apiRoutes = {
     get base() {
       return `${server}/orders`;
     },
+    get orderPaymentConfirmation() {
+      return `${this.base}/order-payment-confirmation`;
+    },
   },
   carts: {
     get base() {
