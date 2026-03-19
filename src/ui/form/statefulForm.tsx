@@ -19,6 +19,7 @@ import {
 } from "react-hook-form";
 import toast from "react-hot-toast";
 import { NoContextDefinedError } from "../errors/NoContextDefinedError";
+import { ClearErrorsButton } from "./rhf/clearErrorButton";
 
 interface IFormSubmitterContext {
   submit: VoidFunction;
@@ -108,6 +109,7 @@ export function StatefulForm(
       <FormSubmitterContext.Provider
         value={{ submit: submitter, isSubmitting }}
       >
+        {process.env.NODE_ENV == "development" && <ClearErrorsButton />}
         <form
           className={["flex flex-col gap-2.5", props.className ?? ""].join(" ")}
           onSubmit={submitter}
