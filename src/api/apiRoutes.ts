@@ -37,6 +37,9 @@ export const apiRoutes = {
       return `${this.base}/${productId}`;
     },
   },
+  colors: {
+    base: `${server}/colors`,
+  },
   orders: {
     get base() {
       return `${server}/orders`;

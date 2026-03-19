@@ -1,9 +1,10 @@
 import { ResultModel } from "@/core/models/resultModel";
 import { generateResultModelFromResponse } from "./apiHelper";
-import { Product } from "@/core/models/product";
+import { Product, ProductColor } from "@/core/models/product";
 import { ProductDto } from "@/core/Dtos/ProductDto";
 import { apiRoutes } from "./apiRoutes";
 import { PagedResults } from "@/core/Dtos/pagedResult";
+import { fetchWrapper } from "./fetchWrapper";
 
 export async function createNewProduct(product: FormData, accessToken: string) {
   const respond = await fetch(apiRoutes.products.base, {
@@ -39,4 +40,8 @@ export async function getSingleProduct(
   const respond = await fetch(apiRoutes.products.forProduct(productId));
 
   return generateResultModelFromResponse(respond);
+}
+
+export function getColors() {
+  return fetchWrapper.get<ProductColor[]>(apiRoutes.colors.base);
 }
