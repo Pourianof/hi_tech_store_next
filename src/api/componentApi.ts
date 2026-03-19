@@ -32,7 +32,7 @@ export async function submitComponentApi(
 
 export async function getAllComponentModelsApi(
   componentTypeId: number,
-): Promise<ResultModel<PagedResults<ProductComponentModel>>> {
+): Promise<ResultModel<ProductComponentModel[]>> {
   return generateResultModelFromResponse(
     await fetch(apiRoutes.components.modelsOf(componentTypeId)),
   );
