@@ -4,13 +4,14 @@ import { ProductItem } from "@/app/_components/productItem";
 import { ProductForm } from "./productForm";
 import { ProductDto } from "@/core/Dtos/ProductDto";
 import { useState } from "react";
+import { flatMapBasedOn } from "@/lib/utils/arrayHelpers";
 
 export function AddProductFormPage() {
   const [succeedProductCreation, setSucceedProductCreation] =
     useState<ProductDto>();
 
   function handleProductSubmission(product: ProductDto) {
-    product.media.forEach((m) => {
+    flatMapBasedOn(product.variations, (v) => v.media).forEach((m) => {
       m.url = `http://localhost:5108${m.url}`;
     });
     setSucceedProductCreation(product);

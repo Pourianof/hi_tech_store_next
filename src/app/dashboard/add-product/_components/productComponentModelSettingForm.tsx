@@ -22,8 +22,9 @@ export function ProductComponentsFormSection({
   const { setValue } = useFormContext();
 
   useEffect(() => {
-    addedComponents.forEach((cmpnt, idx) =>
-      setValue(`categoryValues.componentModels.${idx}`, cmpnt.componentModelId)
+    setValue(
+      `categoryValues.componentModels`,
+      addedComponents.map((cmpnt) => cmpnt.componentModelId),
     );
   }, [addedComponents, setValue]);
 
@@ -48,6 +49,9 @@ export function ProductComponentsFormSection({
         </Modal>
       )}
       {components.map((component) => {
+        const associatedModels = addedComponents.filter(
+          (cmpnt) => cmpnt.componentTypeId == component.componentTypeId,
+        );
         return (
           <div
             key={component.componentTypeId}
@@ -107,8 +111,8 @@ export function ProductComponentsFormSection({
                   case "remove-value":
                     setAddedComponents((old) =>
                       old.filter(
-                        (c) => c.componentModelId != cmpnt!.componentModelId
-                      )
+                        (c) => c.componentModelId != cmpnt!.componentModelId,
+                      ),
                     );
                     break;
                   case "clear":
@@ -117,7 +121,7 @@ export function ProductComponentsFormSection({
               }}
               loadOptions={async function () {
                 const result = await getAllComponentModelsAction(
-                  component.componentTypeId
+                  component.componentTypeId,
                 );
 
                 if (result.status == "failed") {
@@ -129,13 +133,17 @@ export function ProductComponentsFormSection({
                   value: m,
                 }));
               }}
-              value={addedComponents.map((cmpnt) => ({
-                label: `${cmpnt.brandModel?.brandName} - ${cmpnt.brandModel?.modelName}`,
+              value={associatedModels.map((cmpnt) => ({
+                label: cmpnt.brandModel
+                  ? `${cmpnt.brandModel.brandName} - ${cmpnt.brandModel.modelName}`
+                  : cmpnt.description
+                    ? `${cmpnt.description}`
+                    : "<No-Name>",
                 value: cmpnt,
               }))}
             />
             <div className="flex flex-col gap-2">
-              {addedComponents.map((component, index) => (
+              {associatedModels.map((component, index) => (
                 <div
                   key={index}
                   className="bg-neutral-300 rounded p-2 text-slate-600"
@@ -151,8 +159,8 @@ export function ProductComponentsFormSection({
                         setAddedComponents((old) =>
                           old.filter(
                             (c) =>
-                              c.componentModelId != component.componentModelId
-                          )
+                              c.componentModelId != component.componentModelId,
+                          ),
                         );
                       }}
                       className="p-0.5 px-1 rounded hover:bg-slate-400 hover:text-red-100 hover:cursor-pointer hover:duration-200"
@@ -180,7 +188,7 @@ export function ProductComponentsFormSection({
                 </div>
               ))}
             </div>
-            {addedComponents.length > 1 && (
+            {associatedModels.length > 1 && (
               <div className="text-sm bg-orange-300 p-2 rounded ">
                 <span className="text-yellow-950 bg-amber-300 p-1 rounded inline-block me-1">
                   Warning:{" "}

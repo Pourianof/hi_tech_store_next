@@ -1,13 +1,16 @@
+import { FailedBox } from "@/app/_components/failedBox";
 import { ProductDto } from "@/core/Dtos/ProductDto";
-import { convertFieldValuesToFormData } from "@/lib/helpers/convertFieldValuesToFormData";
+import { productCreationSchema } from "@/core/schemas/productCreationSchema";
 import { createProduct } from "@/lib/server_actions/productActions";
 import { useCategories } from "@/ui/contexts/categoriesContext";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { StatefulForm } from "@/ui/form/statefulForm";
+import { Column } from "@/ui/layouts/column";
 import Link from "next/link";
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { FilePreviewList, FormProductMedia } from "./productMediaSelector";
+import { BrandSelectorInput } from "./brandSelectorInput";
 import { ProductCategorySelector } from "./ProductCategorySelector";
+import { ProductVariationsList } from "./productVariationsList";
 
 export function ProductForm(props: {
   onFormSubmitted: (submittedProduct: ProductDto) => void;
@@ -16,27 +19,20 @@ export function ProductForm(props: {
 
   async function handleSubmission(
     data: FieldValues,
-    { setError }: UseFormReturn
+    { setError }: UseFormReturn,
   ) {
-    const media = data.media as FormProductMedia[] | null;
-    if (!media?.length || !media.find((m) => m.type == "image")) {
-      setError(
-        "media",
-        {
-          message: "At least one cover image must set for product",
-        },
-        { shouldFocus: true }
+    const parsedData = productCreationSchema.safeParse(data);
+
+    if (!parsedData.success) {
+      parsedData.error.issues.forEach((issue) =>
+        setError(issue.path.join("."), { message: issue.message }),
       );
       return;
     }
 
-    delete data.media;
-    const formData = convertFieldValuesToFormData(data);
-
-    media.forEach((m) => formData.append("media", m.file));
-    // console.log(data);
     // return { data: {}, status: "success", statusCode: 200 } as ResultModel;
-    return createProduct(formData);
+    const result = await createProduct(parsedData.data);
+    return result;
   }
 
   if (!categories) {
@@ -45,17 +41,15 @@ export function ProductForm(props: {
 
   if (!categories.length) {
     return (
-      <div>
-        <h3>No category defined</h3>
-        <span>
-          First you must define the category of the product you want register
-        </span>
-        <span>
+      <Column>
+        <FailedBox
+          title="No category defined"
+          message="First you must define the category of the product you want register\n
           This is mandatory because the category define the properties and
-          features of the product
-        </span>
+          features of the product"
+        />
         <Link href="/dashboard/categories">Add new category</Link>
-      </div>
+      </Column>
     );
   }
 
@@ -69,6 +63,7 @@ export function ProductForm(props: {
         onSubmitionSuccessful={(res) => {
           props.onFormSubmitted(res as unknown as ProductDto);
         }}
+        defaultValues={{ variations: [{}] }}
       >
         <label>Title</label>
         <ErrorLabeledInput
@@ -82,15 +77,9 @@ export function ProductForm(props: {
           placeholder="Product description"
           type="text"
         />
-        <label>Price</label>
-        <ErrorLabeledInput
-          filedName="price"
-          placeholder="Product Price"
-          type="number"
-        />
+        <BrandSelectorInput fieldname="brandId" setIdAsValue />
         <ProductCategorySelector categories={categories} />
-        <label className="text-xl font-semibold">Product media:</label>
-        <FilePreviewList />
+        <ProductVariationsList />
         <div className="flex gap-4">
           <button
             type="submit"

@@ -27,3 +27,15 @@ export interface ProductDto {
   myScore?: number;
   variations: ProductVariation[];
 }
+
+export interface ProductVariationCreationDto {
+  price: number;
+  color: number;
+  inventory: number;
+  mediaMetaData: MediaMetaDataDto[];
+}
+
+export interface MediaMetaDataDto {
+  isMain?: boolean;
+  index: number;
+}
