@@ -15,7 +15,7 @@ export function CustomImage(props: CustomImageProps) {
   const isSquare = "square" in props && props.square !== false;
   if (isSquare && props.aspectRatio)
     throw new Error(
-      "Cannot set [props.aspectRatio] and [props.isSquare] in CustomImage at same time."
+      "Cannot set [props.aspectRatio] and [props.isSquare] in CustomImage at same time.",
     );
 
   return (
@@ -35,15 +35,16 @@ export function CustomImage(props: CustomImageProps) {
 }
 
 export function RawImage(
-  props: Omit<Parameters<typeof CustomImage>[0], "src"> & {
+  props: Omit<CustomImageProps, "src"> & {
     src: string | undefined | null;
-  }
+  },
 ) {
   const isSquare = "square" in props && props.square !== false;
   if (isSquare && props.aspectRatio)
     throw new Error(
-      "Cannot set [props.aspectRatio] and [props.isSquare] in CustomImage at same time."
+      "Cannot set [props.aspectRatio] and [props.isSquare] in CustomImage at same time.",
     );
+
   return (
     <ImageBox
       isSquare={isSquare}
@@ -54,7 +55,7 @@ export function RawImage(
       {
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          className="object-fill max-w-full max-h-full"
+          className="object-cover w-full h-full"
           src={props.src!}
           alt={props.alt}
         />

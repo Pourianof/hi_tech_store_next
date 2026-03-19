@@ -1,4 +1,4 @@
-import { Product, ProductMedia } from "../product";
+import { ProductMedia } from "../product";
 
 interface WithMedia {
   media: ProductMedia[];
@@ -12,7 +12,10 @@ function getMediaOfVariation(variation: WithMedia) {
   return coverImage;
 }
 
-export function getMainMedia(product: Product, variation?: WithMedia) {
+export function getMainMedia(
+  product: { variations: WithMedia[] },
+  variation?: WithMedia,
+) {
   if (variation) {
     return getMediaOfVariation(variation);
   }

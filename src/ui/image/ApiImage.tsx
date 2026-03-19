@@ -21,8 +21,7 @@ export function ApiImage({
     }
   }
 
-  const isServerMode = "serverMode" in props && props.serverMode != false;
-  return isServerMode ? (
+  return props.serverMode ? (
     <CustomImage src={_src!} {...props} />
   ) : (
     <SafeImage src={_src} {...props} />

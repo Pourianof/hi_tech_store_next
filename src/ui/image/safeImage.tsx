@@ -2,18 +2,16 @@
 import { DetailedHTMLProps, ImgHTMLAttributes } from "react";
 import { CustomImage, RawImage } from "./customImage";
 
-export function SafeImage({
-  src,
-  alt,
-  ...props
-}: Omit<
+type Props = Omit<
   DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>,
   "src"
 > &
   Omit<Parameters<typeof CustomImage>[0], "src"> & {
     src?: string;
     alt: string;
-  }) {
+  };
+
+export function SafeImage({ src, alt, ...props }: Props) {
   let isValidURL = true;
   try {
     new URL(src!);
@@ -25,19 +23,10 @@ export function SafeImage({
     coverImageURL && window?.location.origin == coverImageURL.origin;
 
   const shouldUseCustom = !!src && isSameOrigin;
-  if (!shouldUseCustom) {
-    // next errors for assigning camel-case attributes to dom elements
-    delete props.aspectRatio;
-    delete props.imageClassName;
-  }
+
   return shouldUseCustom ? (
-    <CustomImage
-      alt={alt}
-      aspectRatio={props.aspectRatio}
-      src={src}
-      {...props}
-    />
+    <CustomImage alt={alt} src={src} {...props} />
   ) : (
-    <RawImage alt={alt} aspectRatio={props.aspectRatio} src={src} {...props} />
+    <RawImage alt={alt} src={src} {...props} />
   );
 }

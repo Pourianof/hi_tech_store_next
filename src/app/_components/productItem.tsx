@@ -2,17 +2,18 @@ import { ApiImage } from "@/ui/image/ApiImage";
 import Link from "next/link";
 import { ProductScore } from "./productScore";
 import { ProductDto } from "@/core/Dtos/ProductDto";
+import { getMainMedia } from "@/core/models/helpers/productHelpers";
 
 export function ProductItem({ product }: { product: ProductDto }) {
   const mainVariation = product.variations.at(0);
-  const coverImage = mainVariation?.media?.find((m) => m.isMain)?.url;
+  const coverImage = getMainMedia(product, mainVariation);
 
   return (
     <div className="shadow-md rounded-md flex flex-col p-2 gap-1">
       <Link href={`/products/${product.productId}`}>
         <ApiImage
           aspectRatio={256 / 190}
-          src={coverImage}
+          src={coverImage?.url}
           alt={product.title}
         />
 
