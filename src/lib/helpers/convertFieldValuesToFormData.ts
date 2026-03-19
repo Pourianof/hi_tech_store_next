@@ -6,7 +6,7 @@ export function convertFieldValuesToFormData(values: FieldValues) {
     if (!(val instanceof File) && typeof val == "object") {
       formData.append(key, JSON.stringify(val));
     } else if (typeof val == "undefined") {
-      formData.append(key, "null");
+      // formData.append(key, null);
     } else {
       formData.append(key, val);
     }
