@@ -67,6 +67,10 @@ function SidebarDiscountItem() {
       title="Discounts"
       iconName="discount"
       link="/dashboard/discount-panel"
+      subList={[
+        { title: "Discount codes", path: "discount-panel/discount-codes" },
+        { title: "Product discounts", path: "discount-panel/product-discount" },
+      ]}
     />
   );
 }
