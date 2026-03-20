@@ -68,8 +68,14 @@ function SidebarDiscountItem() {
       iconName="discount"
       link="/dashboard/discount-panel"
       subList={[
-        { title: "Discount codes", path: "discount-panel/discount-codes" },
-        { title: "Product discounts", path: "discount-panel/product-discount" },
+        {
+          title: "Discount codes",
+          path: "/dashboard/discount-panel/discount-codes",
+        },
+        {
+          title: "Product discounts",
+          path: "/dashboard/discount-panel/product-discount",
+        },
       ]}
     />
   );
