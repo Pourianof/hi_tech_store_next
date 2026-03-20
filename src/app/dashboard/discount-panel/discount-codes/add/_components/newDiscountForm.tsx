@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { SubmitButton } from "./submitButton";
 import { discountCodeSchema } from "@/core/schemas/discountCodeSchema";
 
-export function NewDiscountForm({ children }: { children: ReactNode }) {
+export function NewDiscountCodeForm({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   function submitDiscount(formData: Record<string, unknown>) {
