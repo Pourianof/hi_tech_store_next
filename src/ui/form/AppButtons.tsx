@@ -25,7 +25,6 @@ export function FilledButton({
 }: ButtonProps & {
   noFullWidth?: boolean;
 }) {
-  const fullwidth = !("noFullWidth" in props && props.noFullWidth != false);
   return (
     <Button
       disabled={disabled}
@@ -45,7 +44,7 @@ export function FilledButton({
             }
           : undefined
       }
-      fullWidth={fullwidth}
+      fullWidth={!props.noFullWidth}
       className={className}
       type={type}
     >
