@@ -79,5 +79,11 @@ export const apiRoutes = {
     forCode(code: string | number) {
       return `${this.codes}/${code}`;
     },
+    get script() {
+      return `${this.base}/script`;
+    },
+    get scriptCheck() {
+      return `${this.script}/check`;
+    },
   },
 };

@@ -11,9 +11,10 @@ import {
   TableBody,
   IconButton,
 } from "@mui/material";
-import { DiscountConditionCollapse } from "./discountConditionCollapse";
 import { useState } from "react";
 import Icon from "@/ui/icons/icon";
+import { DiscountScriptEditor } from "../../_components/discountScriptEditor";
+import { Modal } from "@/ui/modal/modal";
 
 export function DiscountRulesCollapse({
   isOpen,
@@ -73,10 +74,14 @@ function DiscountRuleRow({ rule }: { rule: DiscountRule }) {
           </IconButton>
         </TableCell>
       </TableRow>
-      <DiscountConditionCollapse
-        conditions={rule.conditions[0].conditions}
-        isOpen={isConditionOpen}
-      />
+      {isConditionOpen && (
+        <Modal
+          containerClassName="w-1/2"
+          onClose={() => setIsConditionOpen(false)}
+        >
+          <DiscountScriptEditor readOnly script={rule.rawConditionScript} />
+        </Modal>
+      )}
     </>
   );
 }

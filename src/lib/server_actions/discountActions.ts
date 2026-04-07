@@ -1,15 +1,18 @@
 "use server";
 import {
+  checkDiscountScriptApi,
   getAllDiscountsApi,
   getDiscountCodeByNameOrId,
   getDiscountEntities,
   getRandomCode,
+  submitDiscountApi,
   submitDiscountCodeApi,
   updateDiscountApi,
 } from "@/api/discountApi";
 import {
   DiscountCodeCreationDto,
   DiscountCodeQuery,
+  DiscountCreationDto,
 } from "@/core/Dtos/discountCodeDto";
 import { workWithSession } from "../helpers/sessionHelper";
 
@@ -33,8 +36,13 @@ export async function submitDiscountCodeAction(
   return submitDiscountCodeApi(discountCode);
 }
 
+export async function submitDiscountAction(discountCode: DiscountCreationDto) {
+  return submitDiscountApi(discountCode);
+}
+
 export async function getAllDiscountsAction(query?: DiscountCodeQuery) {
   return getAllDiscountsApi(query);
 }
 
 export const updateDiscountAction = updateDiscountApi;
+export const checkDiscountScriptAction = checkDiscountScriptApi;

@@ -72,16 +72,19 @@ export const discountConditionGroupSchema = z.object({
 export const discountRuleSchema = z.object({
   name: z.string(),
   description: z.string(),
-  conditions: z.array(discountConditionGroupSchema),
   discountAction: discountActionSchema,
+  script: z.string(),
 });
 
-export const discountCodeSchema = z.object({
-  code: z.string(),
+export const discountSchema = z.object({
   description: z.string(),
   startTime: z.number(),
   endTime: z.number(),
   rules: z.array(discountRuleSchema),
+});
+
+export const discountCodeSchema = discountSchema.extend({
+  code: z.string(),
 });
 
 export type DiscountCodeCreationDto = z.infer<typeof discountCodeSchema>;

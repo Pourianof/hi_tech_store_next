@@ -1,7 +1,10 @@
 import z from "zod";
 import { DiscountAction } from "../models/discount";
 import { ProductVariation } from "../models/product";
-import { discountCodeSchema } from "../schemas/discountCodeSchema";
+import {
+  discountCodeSchema,
+  discountSchema,
+} from "../schemas/discountCodeSchema";
 
 export interface DiscountUpdateDto {
   isDeactivated?: boolean;
@@ -13,6 +16,7 @@ export interface DiscountCodeQuery {
   limit?: number;
 }
 
+export type DiscountCreationDto = z.infer<typeof discountSchema>;
 export type DiscountCodeCreationDto = z.infer<typeof discountCodeSchema>;
 
 export interface DiscountCodeCheckResultDto {

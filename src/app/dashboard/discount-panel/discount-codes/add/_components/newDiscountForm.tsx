@@ -1,19 +1,37 @@
 "use client";
 
 import { DiscountCode } from "@/core/models/discount";
-import { submitDiscountCodeAction } from "@/lib/server_actions/discountActions";
+import {
+  submitDiscountAction,
+  submitDiscountCodeAction,
+} from "@/lib/server_actions/discountActions";
 import { StatefulForm } from "@/ui/form/statefulForm";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 import toast from "react-hot-toast";
 import { SubmitButton } from "./submitButton";
-import { discountCodeSchema } from "@/core/schemas/discountCodeSchema";
+import {
+  DiscountCodeCreationDto,
+  discountCodeSchema,
+  discountSchema,
+} from "@/core/schemas/discountCodeSchema";
+import { DiscountFormProvider } from "./context/discountFormContext";
+import { DiscountCreationDto } from "@/core/Dtos/discountCodeDto";
 
-export function NewDiscountCodeForm({ children }: { children: ReactNode }) {
+export function NewDiscountForm({
+  children,
+  isDiscountCode,
+}: {
+  children: ReactNode;
+  isDiscountCode?: boolean;
+}) {
   const router = useRouter();
 
   function submitDiscount(formData: Record<string, unknown>) {
-    const result = discountCodeSchema.safeParse(formData);
+    debugger;
+    const result = isDiscountCode
+      ? discountCodeSchema.safeParse(formData)
+      : discountSchema.safeParse(formData);
 
     if (!result.success) {
       throw new Error(
@@ -21,36 +39,40 @@ export function NewDiscountCodeForm({ children }: { children: ReactNode }) {
       );
     }
 
-    return submitDiscountCodeAction(result.data);
+    return isDiscountCode
+      ? submitDiscountCodeAction(result.data as DiscountCodeCreationDto)
+      : submitDiscountAction(result.data as DiscountCreationDto);
   }
 
   return (
-    <StatefulForm
-      onSubmit={submitDiscount}
-      onSubmitionSuccessful={() => {
-        const delay = 2500;
-        toast.success("Discount code registered successfully", {
-          duration: delay,
-        });
+    <DiscountFormProvider isDiscountCode={isDiscountCode}>
+      <StatefulForm
+        onSubmit={submitDiscount}
+        onSubmitionSuccessful={() => {
+          const delay = 2500;
+          toast.success("Discount code registered successfully", {
+            duration: delay,
+          });
 
-        setTimeout(() => router.replace("/dashboard/discount-panel"), delay);
-      }}
-      defaultValues={
-        {
-          rules: [
-            {
-              conditions: [
-                {
-                  conditions: [{}],
-                },
-              ],
-            },
-          ],
-        } as Partial<DiscountCode>
-      }
-    >
-      {children}
-      <SubmitButton />
-    </StatefulForm>
+          setTimeout(() => router.replace("/dashboard/discount-panel"), delay);
+        }}
+        defaultValues={
+          {
+            rules: [
+              {
+                conditions: [
+                  {
+                    conditions: [{}],
+                  },
+                ],
+              },
+            ],
+          } as Partial<DiscountCode>
+        }
+      >
+        {children}
+        <SubmitButton />
+      </StatefulForm>
+    </DiscountFormProvider>
   );
 }

@@ -1,3 +1,4 @@
+import { DiscountScriptEditor } from "@/app/dashboard/discount-panel/_components/discountScriptEditor";
 import {
   FieldnamePathProvider,
   useFieldPath,
@@ -6,8 +7,8 @@ import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { LabeldInput } from "@/ui/form/inputs";
 import Icon from "@/ui/icons/icon";
 import { Row } from "@/ui/layouts/row";
+import { H4 } from "@/ui/theme/headers";
 import { IconButton } from "@mui/material";
-import { ConditionGroupForm } from "./conditionGroupForm";
 import { DISCOUNT_RULE_ACTION } from "./fieldNames";
 import { RuleDiscountTypeAndValueInputs } from "./ruleDiscountTypeInputs";
 
@@ -19,6 +20,7 @@ export function RuleItem({
   onDelete(index: number): void;
 }) {
   const ruleNameFieldName = useFieldPath(index, "name");
+  const ruleScriptFieldName = useFieldPath(index, "script");
   const ruleDescriptionFieldName = useFieldPath(index, "description");
 
   return (
@@ -57,7 +59,8 @@ export function RuleItem({
         <FieldnamePathProvider name={DISCOUNT_RULE_ACTION}>
           <RuleDiscountTypeAndValueInputs />
         </FieldnamePathProvider>
-        <ConditionGroupForm />
+        <H4>Discount script:</H4>
+        <DiscountScriptEditor fieldname={ruleScriptFieldName} />
       </div>
     </FieldnamePathProvider>
   );

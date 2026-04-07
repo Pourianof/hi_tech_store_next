@@ -1,4 +1,7 @@
-import { useStaticData } from "@/ui/contexts/StaticDataInjector";
+import {
+  DiscountActionType,
+  DiscountRuleCreationDto,
+} from "@/core/schemas/discountCodeSchema";
 import { FilledButton, OutlinedButton } from "@/ui/form/AppButtons";
 import { flatAllErrors } from "@/ui/form/rhf/reactHookFormHelpers";
 import Icon from "@/ui/icons/icon";
@@ -8,17 +11,8 @@ import { Modal } from "@/ui/modal/modal";
 import { CircularProgress } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { DateObject } from "react-multi-date-picker";
+import { DiscountScriptEditor } from "../../../_components/discountScriptEditor";
 import { DiscountCodeGenerator } from "./discountCodeGenerator";
-import { BaseConditionInterpreter } from "./ruleForm/conditionInterpreter";
-import { findPropertiesFromEntity } from "./ruleForm/hooks/useSelectedProps";
-import { DISCOUNT_Entities_KEY } from "./ruleMakerEntitiesInjector";
-import {
-  DiscountActionType,
-  DiscountConditionCreationDto,
-  DiscountConditionGroupCreationDto,
-  DiscountRuleCreationDto,
-} from "@/core/schemas/discountCodeSchema";
-import { DiscountEntity } from "@/core/models/discount";
 
 type Props = {
   onCancel: () => void;
@@ -123,76 +117,7 @@ function RuleItemOverview({
           </span>
         </Row>
       </Row>
-      <ContionListOverview rule={rule} />
+      <DiscountScriptEditor fieldname={`rules.${index}.script`} readOnly />
     </Column>
-  );
-}
-
-function ContionListOverview({ rule }: { rule: DiscountRuleCreationDto }) {
-  return (
-    <ul className="bg-slate-400 p-1 rounded">
-      {rule.conditions.map(
-        (
-          conditionGroup: DiscountConditionGroupCreationDto,
-          condIndex: number,
-        ) => (
-          <li key={condIndex}>
-            {!!conditionGroup.conditions?.length && (
-              <ul>
-                <Column className=" bg-slate-200 rounded p-1 text-slate-800 gap-2">
-                  {conditionGroup.conditions.map(
-                    (
-                      subCondition: DiscountConditionCreationDto,
-                      subCondIndex: number,
-                    ) => (
-                      <ConditionItemOverview
-                        key={subCondIndex}
-                        condition={subCondition}
-                        subCondIndex={subCondIndex}
-                      />
-                    ),
-                  )}
-                </Column>
-              </ul>
-            )}
-          </li>
-        ),
-      )}
-    </ul>
-  );
-}
-
-function ConditionItemOverview({
-  condition,
-  subCondIndex,
-}: {
-  condition: DiscountConditionCreationDto;
-  subCondIndex: number;
-}) {
-  const propIds = condition.entityPropertyId as never as number[];
-
-  const entities = useStaticData(DISCOUNT_Entities_KEY) as DiscountEntity[];
-  const entity = entities.find(
-    (e) =>
-      e.id ===
-      (condition as never as { discountEntity: number }).discountEntity,
-  );
-
-  if (!entity) {
-    return <div>Entity not found</div>;
-  }
-
-  const properties = findPropertiesFromEntity(entity, propIds);
-  return (
-    <li key={subCondIndex}>
-      <BaseConditionInterpreter
-        entity={entity}
-        op={condition.operation}
-        porperties={properties}
-        value={condition.value}
-        column
-        withFieldNames
-      />
-    </li>
   );
 }

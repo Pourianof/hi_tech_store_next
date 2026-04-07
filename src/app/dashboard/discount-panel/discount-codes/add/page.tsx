@@ -1,8 +1,4 @@
-import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
-import { LabeldInput } from "@/ui/form/inputs";
-import { DiscountDateIntervalInput } from "./_components/discountDateIntervalInput";
-import { NewDiscountCodeForm } from "./_components/newDiscountForm";
-import { RuleForm } from "./_components/ruleForm/ruleForm";
+import { DiscountScriptEditor } from "../../_components/discountScriptEditor";
 import { RuleMakerEntitiesInjector } from "./_components/ruleMakerEntitiesInjector";
 
 export default async function Page() {
@@ -10,17 +6,7 @@ export default async function Page() {
     <div className="px-4">
       <h4 className="text-2xl mb-4 font-semibold">Create new discount</h4>
       <RuleMakerEntitiesInjector>
-        <NewDiscountCodeForm>
-          <LabeldInput label="Discount description">
-            <ErrorLabeledInput
-              filedName="description"
-              placeholder="Some description about purpose of discount"
-              type="text"
-            />
-          </LabeldInput>
-          <DiscountDateIntervalInput />
-          <RuleForm />
-        </NewDiscountCodeForm>
+        <DiscountScriptEditor fieldname="" />
       </RuleMakerEntitiesInjector>
     </div>
   );

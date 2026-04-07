@@ -3,9 +3,8 @@ import {
   DiscountConditionOperation,
 } from "../schemas/discountCodeSchema";
 
-export interface DiscountCode {
+export interface Discount {
   discountCodeId: number;
-  code: string;
   description?: string;
   startTime: string;
   endTime: string;
@@ -15,12 +14,17 @@ export interface DiscountCode {
   rules: DiscountRule[];
 }
 
+export interface DiscountCode extends Discount {
+  code: string;
+}
+
 export interface DiscountRule {
   discountRuleId: number;
   name: string;
   description?: string;
   conditions: DiscountConditionGroup[];
   discountAction: DiscountAction;
+  rawConditionScript: string;
 }
 
 export interface DiscountAction {
