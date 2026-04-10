@@ -1,17 +1,17 @@
-import { ResultModel } from "@/core/models/resultModel";
-import { generateResultModelFromResponse } from "./apiHelper";
-import { apiRoutes } from "./apiRoutes";
-import { Discount, DiscountCode, DiscountEntity } from "@/core/models/discount";
-import { fetchWrapper } from "./fetchWrapper";
 import {
   DiscountCodeCreationDto,
   DiscountCodeQuery,
   DiscountCreationDto,
   DiscountUpdateDto,
 } from "@/core/Dtos/discountCodeDto";
-import { PagedResults } from "@/core/Dtos/pagedResult";
 import { DiscountConditionScriptCheckDto } from "@/core/Dtos/discountDto";
+import { PagedResults } from "@/core/Dtos/pagedResult";
+import { Discount, DiscountCode, DiscountEntity } from "@/core/models/discount";
 import { Product } from "@/core/models/product";
+import { ResultModel } from "@/core/models/resultModel";
+import { generateResultModelFromResponse } from "./apiHelper";
+import { apiRoutes } from "./apiRoutes";
+import { fetchWrapper } from "./fetchWrapper";
 
 export async function getDiscountEntities(): Promise<
   ResultModel<PagedResults<DiscountEntity>>
@@ -81,7 +81,6 @@ export async function updateDiscountApi(
 export async function checkDiscountScriptApi(
   scriptDto: DiscountConditionScriptCheckDto,
 ) {
-  console.log(apiRoutes.discounts.scriptCheck);
   return fetchWrapper.post<Product[]>(
     apiRoutes.discounts.scriptCheck,
     scriptDto,

@@ -1,4 +1,4 @@
-import { getProducts } from "@/api/productApi";
+import { getProductsAction } from "@/lib/server_actions/productActions";
 import Icon from "@/ui/icons/icon";
 import Link from "next/link";
 import { ProductItem } from "../_components/productItem";
@@ -12,7 +12,7 @@ export default async function ProductListPage({
   searchParams: Record<string, string>;
 }) {
   const params = await searchParams;
-  const productsResult = await getProducts(params);
+  const productsResult = await getProductsAction(params);
   if (productsResult.status == "failed") {
     return <div>Something went wrong on fetching products...</div>;
   }

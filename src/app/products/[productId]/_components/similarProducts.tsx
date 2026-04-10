@@ -1,14 +1,14 @@
-import { getProducts } from "@/api/productApi";
 import { ProductItem } from "@/app/_components/productItem";
+import { getProductsAction } from "@/lib/server_actions/productActions";
 import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
 
 export async function SimilarProducts() {
-  const productsResult = await getProducts();
+  const productsResult = await getProductsAction();
   if (productsResult.status == "failed") {
     return <div>Something went wrong</div>;
   }
 
-  const products = productsResult.data;
+  const products = productsResult.data.items;
   if (!products.length) {
     return <div>No product exist</div>;
   }

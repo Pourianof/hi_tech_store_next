@@ -24,8 +24,9 @@ import toast from "react-hot-toast";
 import { useAuth } from "../authContext";
 import { CartPayloads, cartReducer, CartState } from "./cartReducer";
 import { convertCartWithProductToCartState } from "./typeHelper/convertCartDtoToCartState";
+import { CartItem } from "@/core/models/cartItem";
 
-interface ICartContext extends CartState {
+interface ICartContext extends CartState<CartItem> {
   actions: {
     addProductToCart(payload: CartPayloads<"Add">, toastNotif?: boolean): void;
     removeProductFromCart(payload: CartPayloads<"Remove">): void;
@@ -254,7 +255,14 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
   return (
     <CartContext.Provider
       value={{
-        ...state,
+        ...{
+          ...state,
+          cart: {
+            items: state.cart.items.map(
+              (ci) => new CartItem(ci.product, ci.variation, ci.amount),
+            ),
+          },
+        },
         actions: {
           addProductToCart(payload) {
             if (isLogginStateLoading) {

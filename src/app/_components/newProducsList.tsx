@@ -1,9 +1,9 @@
+import { getProductsAction } from "@/lib/server_actions/productActions";
 import { ItemsListBox } from "./iemsListBox";
 import { ProductItem } from "./productItem";
-import { getProducts } from "@/api/productApi";
 
 export async function NewProductsList() {
-  const productResult = await getProducts();
+  const productResult = await getProductsAction();
   if (productResult.status == "failed") {
     return (
       <div>
@@ -13,11 +13,11 @@ export async function NewProductsList() {
     );
   }
 
-  const products = productResult.data;
+  const products = productResult.data.items;
   return (
     <ItemsListBox label="New Products" linkLabel="view all">
       <div className="flex *:flex-1 gap-4 my-4">
-        {products.items.slice(0, 4).map((prod) => (
+        {products.slice(0, 4).map((prod) => (
           <ProductItem product={prod} key={prod.productId} />
         ))}
       </div>

@@ -1,6 +1,7 @@
 import { Product } from "@/core/models/product";
 import { ItemsListBox } from "./iemsListBox";
 import { ProductItem } from "./productItem";
+import { ProductModel } from "@/core/models/productModel";
 
 const BEST_SELLERS_PRODUCT: Product[] = [
   {
@@ -110,7 +111,10 @@ export function BestSellersList() {
     <ItemsListBox label="Best Sellers" linkLabel="View all >">
       <div className="flex *:flex-1 gap-4 my-4">
         {BEST_SELLERS_PRODUCT.map((prod) => (
-          <ProductItem product={prod} key={prod.productId} />
+          <ProductItem
+            product={ProductModel.CreateWith(prod)}
+            key={prod.productId}
+          />
         ))}
       </div>
     </ItemsListBox>

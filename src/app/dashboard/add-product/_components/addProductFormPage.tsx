@@ -5,6 +5,7 @@ import { ProductForm } from "./productForm";
 import { ProductDto } from "@/core/Dtos/ProductDto";
 import { useState } from "react";
 import { flatMapBasedOn } from "@/lib/utils/arrayHelpers";
+import { ProductModel } from "@/core/models/productModel";
 
 export function AddProductFormPage() {
   const [succeedProductCreation, setSucceedProductCreation] =
@@ -22,7 +23,9 @@ export function AddProductFormPage() {
       <h3 className="text-white text-center font-semibold text-xl bg-green-600 p-2 rounded">
         Product created successfully
       </h3>
-      <ProductItem product={succeedProductCreation} />
+      <ProductItem
+        product={ProductModel.CreateWithDto(succeedProductCreation)}
+      />
       <div>
         <button
           onClick={(e) => {

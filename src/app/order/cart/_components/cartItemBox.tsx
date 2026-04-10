@@ -1,5 +1,4 @@
 import { CartItem } from "@/core/models/cartItem";
-import { getMainMedia } from "@/core/models/helpers/productHelpers";
 import { useCart } from "@/ui/contexts/cart/cartContext";
 import { priceFormatter } from "@/ui/helpers/priceFormatter";
 import Icon from "@/ui/icons/icon";
@@ -14,7 +13,8 @@ export function CartItemBox({
 }) {
   const { actions } = useCart();
   const { product, amount, variation } = cartItem;
-  const coverImage = getMainMedia(cartItem.product, variation)?.url;
+  const coverImage =
+    cartItem.productVariationModel.getCandidateImageMedia()?.url;
 
   let titleClassName: string;
   switch (variant) {

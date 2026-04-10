@@ -5,6 +5,7 @@ import { Product } from "../../core/models/product";
 import { Slider } from "../../ui/slider";
 import Icon from "../../ui/icons/icon";
 import { SafeImage } from "../../ui/image/safeImage";
+import { DiscountLabel } from "./discountLabel";
 
 const ON_SALE_PRODUCTS: Product[] = [
   {
@@ -136,12 +137,12 @@ function ProductItem({ product }: { product: Product }) {
   const coverImage = product.media?.find((m) => m.isMain)?.url;
   return (
     <div className="w-full relative bg-white h-full p-2 rounded-md flex flex-col gap-y-2 aspect-[0.78]">
-      <span className="absolute left-0 text-xs bg-orange-200 text-orange-500 z-10 rounded-r-lg px-1 py-0.5">{`-${product.discount}%`}</span>
+      <DiscountLabel discount={product.discount!} />
       <SafeImage aspectRatio={1.15} src={coverImage} alt={product.title} />
       <h3 className="text-sm line-clamp-2">{product.title}</h3>
       <div className="flex justify-between items-center">
         <span className="text-gray-600 line-through text-xs">{`$${product.price.toFixed(
-          2
+          2,
         )}`}</span>
         <span className="text-sm">{`$${acualPrice.toFixed(2)}`}</span>
       </div>

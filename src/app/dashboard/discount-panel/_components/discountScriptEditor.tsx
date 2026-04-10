@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductItem } from "@/app/_components/productItem";
-import { Product } from "@/core/models/product";
+import { ProductModel } from "@/core/models/productModel";
 import { checkDiscountScriptAction } from "@/lib/server_actions/discountActions";
 import { FilledButton } from "@/ui/form/AppButtons";
 import Icon from "@/ui/icons/icon";
@@ -104,7 +104,7 @@ function DiscountScriptResultPreview({
   onClose: VoidFunction;
 }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [scriptResult, setScriptResult] = useState<Product[]>();
+  const [scriptResult, setScriptResult] = useState<ProductModel[]>();
 
   useEffect(() => {
     setIsLoading(true);

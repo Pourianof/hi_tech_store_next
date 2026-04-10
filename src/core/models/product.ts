@@ -21,6 +21,7 @@ export interface ProductVariation {
   inventory: number;
   media: ProductMedia[];
   price: number;
+  discount?: number;
 }
 
 export interface ProductColor {

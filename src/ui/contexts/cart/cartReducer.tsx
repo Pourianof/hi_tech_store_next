@@ -23,12 +23,12 @@ interface CartActionPayloads {
 export interface CartItemState extends CartProductItemSpecifier {
   amount: number;
 }
-export interface CartItemsState {
-  items: CartItemState[];
+export interface CartItemsState<TCartItem = CartItemState> {
+  items: TCartItem[];
 }
 
-export type CartState = {
-  cart: CartItemsState;
+export type CartState<TCartItem = CartItemState> = {
+  cart: CartItemsState<TCartItem>;
   isLoading: boolean;
 };
 
