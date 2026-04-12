@@ -15,9 +15,6 @@ import {
   DiscountCreationDto,
 } from "@/core/Dtos/discountCodeDto";
 import { workWithSession } from "../helpers/sessionHelper";
-import { DiscountConditionScriptCheckDto } from "@/core/Dtos/discountDto";
-import { ProductModel } from "@/core/models/productModel";
-import { ResultModel } from "@/core/models/resultModel";
 
 export async function getDiscountEntitiesAction() {
   return getDiscountEntities();
@@ -48,14 +45,4 @@ export async function getAllDiscountsAction(query?: DiscountCodeQuery) {
 }
 
 export const updateDiscountAction = updateDiscountApi;
-export const checkDiscountScriptAction = async (
-  scriptDto: DiscountConditionScriptCheckDto,
-) => {
-  const result = await checkDiscountScriptApi(scriptDto);
-
-  if (result.status == "success") {
-    result.data = result.data.map((p) => ProductModel.CreateWith(p));
-  }
-
-  return result as ResultModel<ProductModel[]>;
-};
+export const checkDiscountScriptAction = checkDiscountScriptApi;
