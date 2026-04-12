@@ -1,10 +1,10 @@
-import { getProductsAction } from "@/lib/server_actions/productActions";
 import Icon from "@/ui/icons/icon";
 import Link from "next/link";
 import { ProductItem } from "../_components/productItem";
 import { CategoryList } from "./_components/categoryList";
 import { FilterFeeder } from "./_components/filterFeeder";
 import { SortProductSelect } from "./_components/sortProductSelect";
+import { productActions } from "@/ui/server_actions_wrapper/productActions";
 
 export default async function ProductListPage({
   searchParams,
@@ -12,7 +12,7 @@ export default async function ProductListPage({
   searchParams: Record<string, string>;
 }) {
   const params = await searchParams;
-  const productsResult = await getProductsAction(params);
+  const productsResult = await productActions.getProducts(params);
   if (productsResult.status == "failed") {
     return <div>Something went wrong on fetching products...</div>;
   }

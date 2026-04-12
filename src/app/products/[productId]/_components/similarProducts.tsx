@@ -1,9 +1,9 @@
 import { ProductItem } from "@/app/_components/productItem";
-import { getProductsAction } from "@/lib/server_actions/productActions";
+import { productActions } from "@/ui/server_actions_wrapper/productActions";
 import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
 
 export async function SimilarProducts() {
-  const productsResult = await getProductsAction();
+  const productsResult = await productActions.getProducts();
   if (productsResult.status == "failed") {
     return <div>Something went wrong</div>;
   }

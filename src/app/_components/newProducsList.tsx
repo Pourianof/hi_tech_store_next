@@ -1,9 +1,9 @@
-import { getProductsAction } from "@/lib/server_actions/productActions";
 import { ItemsListBox } from "./iemsListBox";
 import { ProductItem } from "./productItem";
+import { productActions } from "@/ui/server_actions_wrapper/productActions";
 
 export async function NewProductsList() {
-  const productResult = await getProductsAction();
+  const productResult = await productActions.getProducts();
   if (productResult.status == "failed") {
     return (
       <div>
