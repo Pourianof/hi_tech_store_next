@@ -3,15 +3,15 @@
 import { useAppContext } from "@/ui/contexts/useAppContext";
 import { createContext, ReactNode } from "react";
 
-const DiscountFormContext = createContext({
+const DiscountTypeContext = createContext({
   isDiscountCodeForm: false,
 });
 
-export function useDiscountFormContext() {
-  return useAppContext(DiscountFormContext);
+export function useDiscountTypeContext() {
+  return useAppContext(DiscountTypeContext);
 }
 
-export function DiscountFormProvider({
+export function DiscountTypeProvider({
   children,
   isDiscountCode,
 }: {
@@ -19,12 +19,12 @@ export function DiscountFormProvider({
   isDiscountCode?: boolean;
 }) {
   return (
-    <DiscountFormContext.Provider
+    <DiscountTypeContext.Provider
       value={{
         isDiscountCodeForm: !!isDiscountCode,
       }}
     >
       {children}
-    </DiscountFormContext.Provider>
+    </DiscountTypeContext.Provider>
   );
 }

@@ -15,7 +15,7 @@ import {
   discountCodeSchema,
   discountSchema,
 } from "@/core/schemas/discountCodeSchema";
-import { DiscountFormProvider } from "./context/discountFormContext";
+import { DiscountTypeProvider } from "../../../_components/context/discountTypeContext";
 import { DiscountCreationDto } from "@/core/Dtos/discountCodeDto";
 
 export function NewDiscountForm({
@@ -45,7 +45,7 @@ export function NewDiscountForm({
   }
 
   return (
-    <DiscountFormProvider isDiscountCode={isDiscountCode}>
+    <DiscountTypeProvider isDiscountCode={isDiscountCode}>
       <StatefulForm
         onSubmit={submitDiscount}
         onSubmitionSuccessful={() => {
@@ -73,6 +73,6 @@ export function NewDiscountForm({
         {children}
         <SubmitButton />
       </StatefulForm>
-    </DiscountFormProvider>
+    </DiscountTypeProvider>
   );
 }

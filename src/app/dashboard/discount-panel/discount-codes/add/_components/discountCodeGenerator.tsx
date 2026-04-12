@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { DateObject } from "react-multi-date-picker";
-import { useDiscountFormContext } from "./context/discountFormContext";
+import { useDiscountTypeContext } from "../../../_components/context/discountTypeContext";
 
 enum CodeType {
   CUSTOM,
@@ -20,7 +20,7 @@ enum CodeType {
 }
 
 export function DiscountCodeGenerator() {
-  const { isDiscountCodeForm } = useDiscountFormContext();
+  const { isDiscountCodeForm } = useDiscountTypeContext();
   const [codeType, setCodeType] = useState(CodeType.CUSTOM);
 
   if (!isDiscountCodeForm) {
