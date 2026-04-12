@@ -21,17 +21,12 @@ export async function createNewProduct(product: FormData, accessToken: string) {
 export async function getProducts(
   searchQueries?: Record<string, string>,
 ): Promise<ResultModel<PagedResults<ProductDto>>> {
-  const url = new URL(apiRoutes.products.base);
-  if (searchQueries) {
-    Object.keys(searchQueries).forEach((key) => {
-      if (!!searchQueries[key]?.trim()) {
-        url.searchParams.append(key, searchQueries[key]);
-      }
-    });
-  }
-  const respond = await fetch(url);
+  const respond = (await fetchWrapper.get(
+    apiRoutes.products.base,
+    searchQueries,
+  )) as ResultModel<PagedResults<ProductDto>>;
 
-  return generateResultModelFromResponse(respond);
+  return respond;
 }
 
 export async function getSingleProduct(
