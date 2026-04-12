@@ -1,6 +1,6 @@
 import { NoContextDefinedError } from "@/ui/errors/NoContextDefinedError";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import React, { createContext, useContext } from "react";
+import React, { createContext, ReactNode, useContext } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 interface ICheckboxContext {
@@ -9,7 +9,7 @@ interface ICheckboxContext {
 }
 
 const CheckboxContext = createContext<ICheckboxContext>(
-  {} as unknown as ICheckboxContext
+  {} as unknown as ICheckboxContext,
 );
 
 function CheckboxContextProvider({
@@ -40,12 +40,27 @@ export function CheckboxList({
   fieldName,
   children,
   initialSelectedItems,
+  valueControl,
 }: {
-  fieldName: string;
+  fieldName?: string;
   children: React.ReactNode;
   initialSelectedItems?: string[];
+  valueControl?: {
+    value: string[];
+    onChange(items: string[]): void;
+  };
 }) {
   const { control } = useFormContext();
+
+  if (valueControl) {
+    return <CheckboxListRaw {...valueControl}>{children}</CheckboxListRaw>;
+  }
+
+  if (!fieldName) {
+    throw new Error(
+      "If no valueControl prop specified so it considered as react-hook-form control so you must specify fieldname prop",
+    );
+  }
 
   return (
     <Controller
@@ -54,29 +69,42 @@ export function CheckboxList({
       defaultValue={initialSelectedItems}
       render={({ field }) => {
         const { value, onChange } = field;
-
-        const handleCheck = (item: string) => {
-          if (!value) {
-            onChange([item]);
-            return;
-          }
-          if (value.includes(item)) {
-            // delete if already exists
-            onChange(value.filter((i: string) => i !== item));
-          } else {
-            // add it
-            onChange([...value, item]);
-          }
-        };
         return (
-          <CheckboxContextProvider
-            context={{ handleCheck, values: value ?? [] }}
-          >
-            <FormGroup>{children}</FormGroup>
-          </CheckboxContextProvider>
+          <CheckboxListRaw onChange={onChange} value={value}>
+            {children}
+          </CheckboxListRaw>
         );
       }}
     />
+  );
+}
+
+function CheckboxListRaw({
+  value,
+  onChange,
+  children,
+}: {
+  value: string[];
+  onChange(items: string[]): void;
+  children: ReactNode;
+}) {
+  const handleCheck = (item: string) => {
+    if (!value) {
+      onChange([item]);
+      return;
+    }
+    if (value.includes(item)) {
+      // delete if already exists
+      onChange(value.filter((i: string) => i !== item));
+    } else {
+      // add it
+      onChange([...value, item]);
+    }
+  };
+  return (
+    <CheckboxContextProvider context={{ handleCheck, values: value ?? [] }}>
+      <FormGroup>{children}</FormGroup>
+    </CheckboxContextProvider>
   );
 }
 
