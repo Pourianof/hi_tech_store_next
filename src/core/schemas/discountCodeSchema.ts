@@ -69,12 +69,18 @@ export const discountConditionGroupSchema = z.object({
   conditions: z.array(discountConditionSchema),
 });
 
-export const discountRuleSchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  discountAction: discountActionSchema,
-  script: z.string(),
-});
+export const discountRuleSchema = z
+  .object({
+    name: z.string(),
+    description: z.string(),
+    discountAction: discountActionSchema,
+    productScript: z.string().optional(),
+    userScript: z.string().optional(),
+  })
+  .refine((rule) => !!rule.userScript?.trim() && !!rule.productScript?.trim(), {
+    error: "either productScript or userScript must defined",
+    path: ["productScript"],
+  });
 
 export const discountSchema = z.object({
   description: z.string(),

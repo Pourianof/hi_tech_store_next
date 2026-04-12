@@ -1,4 +1,4 @@
-import { DiscountScriptEditor } from "@/app/dashboard/discount-panel/_components/discountScriptEditor";
+import { CheckboxItem, CheckboxList } from "@/ui/form/checkboxList";
 import {
   FieldnamePathProvider,
   useFieldPath,
@@ -6,11 +6,15 @@ import {
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { LabeldInput } from "@/ui/form/inputs";
 import Icon from "@/ui/icons/icon";
+import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
-import { H4 } from "@/ui/theme/headers";
 import { IconButton } from "@mui/material";
+import { useState } from "react";
 import { DISCOUNT_RULE_ACTION } from "./fieldNames";
 import { RuleDiscountTypeAndValueInputs } from "./ruleDiscountTypeInputs";
+import { DiscountScriptEditor } from "@/app/dashboard/discount-panel/_components/discountScriptEditor";
+import { H4 } from "@/ui/theme/headers";
+import { captalize } from "@/lib/utils/stringHelpers";
 
 export function RuleItem({
   index,
@@ -20,7 +24,6 @@ export function RuleItem({
   onDelete(index: number): void;
 }) {
   const ruleNameFieldName = useFieldPath(index, "name");
-  const ruleScriptFieldName = useFieldPath(index, "script");
   const ruleDescriptionFieldName = useFieldPath(index, "description");
 
   return (
@@ -59,9 +62,59 @@ export function RuleItem({
         <FieldnamePathProvider name={DISCOUNT_RULE_ACTION}>
           <RuleDiscountTypeAndValueInputs />
         </FieldnamePathProvider>
-        <H4>Discount script:</H4>
-        <DiscountScriptEditor fieldname={ruleScriptFieldName} />
+        <RuleScriptTabBox />
       </div>
     </FieldnamePathProvider>
+  );
+}
+
+enum ScriptType {
+  Product = "product",
+  User = "user",
+}
+
+function RuleScriptTabBox() {
+  const [includedScripts, setIncludedScripts] = useState<ScriptType[]>([]);
+  const productScriptFieldName = useFieldPath("productScript");
+  const userScriptFieldName = useFieldPath("userScript");
+
+  const fieldNames = {
+    [ScriptType.Product]: productScriptFieldName,
+    [ScriptType.User]: userScriptFieldName,
+  };
+
+  return (
+    <Column>
+      <CheckboxList
+        valueControl={{
+          onChange(items) {
+            setIncludedScripts(items as ScriptType[]);
+          },
+          value: includedScripts,
+        }}
+      >
+        <Row>
+          <CheckboxItem
+            label={<span>Product script</span>}
+            checkedValue={ScriptType.Product}
+          />
+          <CheckboxItem
+            label={<span>User script</span>}
+            checkedValue={ScriptType.User}
+          />
+        </Row>
+      </CheckboxList>
+      <Column className="gap-2">
+        {includedScripts.map((script) => (
+          <div key={script}>
+            <H4>{captalize(script)} script</H4>
+            <DiscountScriptEditor
+              fieldname={fieldNames[script]}
+              noPreview={script == ScriptType.User}
+            />
+          </div>
+        ))}
+      </Column>
+    </Column>
   );
 }

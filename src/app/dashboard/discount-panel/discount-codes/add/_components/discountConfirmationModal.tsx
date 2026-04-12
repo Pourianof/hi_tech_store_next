@@ -9,10 +9,11 @@ import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Modal } from "@/ui/modal/modal";
 import { CircularProgress } from "@mui/material";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { DateObject } from "react-multi-date-picker";
 import { DiscountScriptEditor } from "../../../_components/discountScriptEditor";
 import { DiscountCodeGenerator } from "./discountCodeGenerator";
+import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
 
 type Props = {
   onCancel: () => void;
@@ -117,7 +118,37 @@ function RuleItemOverview({
           </span>
         </Row>
       </Row>
-      <DiscountScriptEditor fieldname={`rules.${index}.script`} readOnly />
+      <RuleScriptsOverview index={index} />
+    </Column>
+  );
+}
+
+function RuleScriptsOverview({ index }: { index: number }) {
+  const productScriptFieldName = useFieldPath("rules", index, "productScript");
+  const userScriptFieldName = useFieldPath("rules", index, "userScript");
+
+  const [userScript, productScript] = useWatch({
+    name: [userScriptFieldName, productScriptFieldName],
+  });
+
+  return (
+    <Column className="gap-2">
+      {!!productScript?.trim() && (
+        <Column className="p-2 border border-gray-600 rounded">
+          <span className="font-semibold">Product script</span>
+          <DiscountScriptEditor fieldname={productScriptFieldName} readOnly />
+        </Column>
+      )}
+      {!!userScript?.trim() && (
+        <Column className="p-2 border border-gray-600 rounded">
+          <span className="font-semibold">user script</span>
+          <DiscountScriptEditor
+            fieldname={userScriptFieldName}
+            readOnly
+            noPreview
+          />
+        </Column>
+      )}
     </Column>
   );
 }
