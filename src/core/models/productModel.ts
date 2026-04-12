@@ -138,6 +138,6 @@ export class ProductVariationModel implements ProductVariation {
   }
 
   get discountPercentage() {
-    return (100 * this.finalPrice) / this.price;
+    return (100 * (this.discount ?? 0)) / this.price;
   }
 }
