@@ -77,7 +77,7 @@ export const discountRuleSchema = z
     productScript: z.string().optional(),
     userScript: z.string().optional(),
   })
-  .refine((rule) => !!rule.userScript?.trim() && !!rule.productScript?.trim(), {
+  .refine((rule) => !!rule.userScript?.trim() || !!rule.productScript?.trim(), {
     error: "either productScript or userScript must defined",
     path: ["productScript"],
   });
