@@ -11,9 +11,16 @@ export interface DiscountUpdateDto {
   description?: string;
 }
 
+export enum DiscountType {
+  All = "All",
+  Codes = "Codes",
+  Products = "Products",
+}
+
 export interface DiscountCodeQuery {
   page?: number;
   limit?: number;
+  discountType?: DiscountType;
 }
 
 export type DiscountCreationDto = z.infer<typeof discountSchema>;

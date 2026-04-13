@@ -19,7 +19,7 @@ export function DiscountCodeRow({ discount }: { discount: DiscountCode }) {
   return (
     <>
       <TableRow>
-        <TableCell>{dc.code}</TableCell>
+        <TableCell>{dc.code ?? `#${dc.discountCodeId}`}</TableCell>
         <TableCell>{formatDate(dc.startTime)}</TableCell>
         <TableCell>{formatDate(dc.endTime)}</TableCell>
         <TableCell>{dc.description}</TableCell>

@@ -1,9 +1,13 @@
 import { FailedBox } from "@/app/_components/failedBox";
+import { DiscountType } from "@/core/Dtos/discountCodeDto";
 import { getAllDiscountsAction } from "@/lib/server_actions/discountActions";
 import { DiscountListTable } from "./discountListTable";
+import { DiscountTypeProvider } from "../../_components/context/discountTypeContext";
 
-export async function DiscountsList() {
-  const discountCodeResult = await getAllDiscountsAction();
+export async function DiscountsList({ category }: { category?: DiscountType }) {
+  const discountCodeResult = await getAllDiscountsAction({
+    discountType: category,
+  });
 
   if (discountCodeResult.status == "failed") {
     return (
@@ -16,5 +20,9 @@ export async function DiscountsList() {
 
   const discountCodes = discountCodeResult.data;
 
-  return <DiscountListTable pagedDiscounts={discountCodes} />;
+  return (
+    <DiscountTypeProvider category={category}>
+      <DiscountListTable pagedDiscounts={discountCodes} />
+    </DiscountTypeProvider>
+  );
 }

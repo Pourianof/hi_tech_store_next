@@ -4,18 +4,18 @@ import { getAllDiscountsAction } from "@/lib/server_actions/discountActions";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-export const QUERY_KEY_DISCOUNT_CODE_PAGED = "discount-codes";
-
 export function usePagedDiscountCodes({
   initialData,
+  key,
 }: {
   initialData?: PagedResults<DiscountCode>;
+  key: string;
 }) {
   const [page, setPage] = useState(initialData?.pageNumber ?? 1);
   const [limit, setLimit] = useState(initialData?.pageSize ?? 10);
 
   const query = useQuery<PagedResults<DiscountCode>>({
-    queryKey: [QUERY_KEY_DISCOUNT_CODE_PAGED, page, limit],
+    queryKey: [key, page, limit],
     staleTime: 60 * 60 * 1000,
     queryFn: async () => {
       const result = await getAllDiscountsAction({ page, limit });

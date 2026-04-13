@@ -17,12 +17,18 @@ import { PagedResults } from "@/core/Dtos/pagedResult";
 import { DiscountCode } from "@/core/models/discount";
 import { usePagedDiscountCodes } from "./hooks/usePagedDiscountCodes";
 import { FailedBox } from "@/app/_components/failedBox";
+import { useDiscountTypeContext } from "../../_components/context/discountTypeContext";
+import { DiscountType } from "@/core/Dtos/discountCodeDto";
+
+export const QUERY_KEY_DISCOUNT_CODE_PAGED = "discount-codes";
+export const QUERY_KEY_DISCOUNT_PAGED = "discount";
 
 export function DiscountListTable({
   pagedDiscounts,
 }: {
   pagedDiscounts: PagedResults<DiscountCode>;
 }) {
+  const { isDiscountCodeForm } = useDiscountTypeContext();
   const {
     query: { data: discountCodes, isLoading },
     page,
@@ -30,7 +36,12 @@ export function DiscountListTable({
     previousPage,
   } = usePagedDiscountCodes({
     initialData: pagedDiscounts,
+    key: isDiscountCodeForm
+      ? QUERY_KEY_DISCOUNT_CODE_PAGED
+      : QUERY_KEY_DISCOUNT_PAGED,
   });
+
+  const { category } = useDiscountTypeContext();
 
   if (!discountCodes && !isLoading) {
     return (
@@ -46,7 +57,9 @@ export function DiscountListTable({
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Code</TableCell>
+            <TableCell>
+              {category == DiscountType.Codes ? "Code" : "Id"}
+            </TableCell>
             <TableCell>Start time</TableCell>
             <TableCell>End Time</TableCell>
             <TableCell>Description</TableCell>

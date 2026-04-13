@@ -63,7 +63,7 @@ export async function submitDiscountCodeApi(
 
 export async function getAllDiscountsApi(query?: DiscountCodeQuery) {
   return fetchWrapper.get<PagedResults<DiscountCode>>(
-    apiRoutes.discounts.codes,
+    apiRoutes.discounts.base,
     query,
   );
 }
