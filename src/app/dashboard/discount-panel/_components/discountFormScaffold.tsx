@@ -3,7 +3,7 @@ import { StatefulForm } from "@/ui/form/statefulForm";
 import { H4 } from "@/ui/theme/headers";
 import { ReactNode } from "react";
 
-export function ProductDiscountForm({ children }: { children: ReactNode }) {
+export function DiscountFormScaffold({ children }: { children: ReactNode }) {
   return (
     <StatefulForm
       onSubmit={StatefulForm.SuccessSubmit}

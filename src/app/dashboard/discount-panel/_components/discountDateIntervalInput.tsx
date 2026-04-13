@@ -1,8 +1,9 @@
 "use client";
 import { AppDatePicker } from "@/ui/form/datePicker";
 import { LabeldInput } from "@/ui/form/inputs";
-import { DISCOUNT_START_DATE, DISCOUNT_END_DATE } from "./ruleForm/fieldNames";
+
 import { useWatch } from "react-hook-form";
+import { DISCOUNT_END_DATE, DISCOUNT_START_DATE } from "./ruleForm/fieldNames";
 
 export function DiscountDateIntervalInput() {
   const [startDate, endDate] = useWatch({

@@ -11,7 +11,7 @@ import { Modal } from "@/ui/modal/modal";
 import { CircularProgress } from "@mui/material";
 import { useFormContext, useWatch } from "react-hook-form";
 import { DateObject } from "react-multi-date-picker";
-import { DiscountScriptEditor } from "../../../_components/discountScriptEditor";
+import { DiscountScriptEditor } from "./discountScriptEditor";
 import { DiscountCodeGenerator } from "./discountCodeGenerator";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
 

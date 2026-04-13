@@ -15,8 +15,8 @@ import {
   discountCodeSchema,
   discountSchema,
 } from "@/core/schemas/discountCodeSchema";
-import { DiscountTypeProvider } from "../../../_components/context/discountTypeContext";
 import { DiscountCreationDto } from "@/core/Dtos/discountCodeDto";
+import { DiscountTypeProvider } from "./context/discountTypeContext";
 
 export function NewDiscountForm({
   children,
@@ -50,7 +50,7 @@ export function NewDiscountForm({
         onSubmit={submitDiscount}
         onSubmitionSuccessful={() => {
           const delay = 2500;
-          toast.success("Discount code registered successfully", {
+          toast.success("Discount registered successfully", {
             duration: delay,
           });
 

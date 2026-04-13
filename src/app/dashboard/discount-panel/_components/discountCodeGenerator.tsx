@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { DateObject } from "react-multi-date-picker";
-import { useDiscountTypeContext } from "../../../_components/context/discountTypeContext";
+import { useDiscountTypeContext } from "./context/discountTypeContext";
 
 enum CodeType {
   CUSTOM,
@@ -83,37 +83,48 @@ function CustomCodeInput({
         onClick={() => {
           setIsLoading(true);
           getDiscountCodeByNameOrIdAction(discountCode!)
-            .then((code) => {
-              if (code.status == "failed") {
-                if (code.statusCode == 404) {
+            .then((result) => {
+              if (result.status == "failed") {
+                if (result.statusCode == 404) {
                   // code is valid
                   toast.success("Code is usable");
                 } else {
-                  toast.error(code.data.title);
+                  toast.error(result.data.title);
                 }
                 return;
               }
-              // code existed
 
-              // we check the usability of code here
-              // but maybe it is better to delegate the
-              // business rules of usability to server side
-              // #just_for_simplicity
-              const { startTime: _st, endTime: _et } = code.data;
-              const st = new DateObject(_st).toUnix() * 1000;
-              const et = new DateObject(_et).toUnix() * 1000;
+              const codes = result.data;
 
-              if (startTime > et || ednTime < st) {
-                // not ovelapping
+              if (!codes.length) {
                 toast.success("Code is usable");
                 clearErrors(DISCOUNT_CODE_FIELDNAME);
                 return;
               }
 
-              setError(DISCOUNT_CODE_FIELDNAME, {
-                message: `code ${code.data.code} has existed and not usable`,
-                type: "value",
-              });
+              for (const code of codes) {
+                // we check the usability of code here
+                // but maybe it is better to delegate the
+                // business rules of usability to server side
+                // #just_for_simplicity
+                const { startTime: _st, endTime: _et } = code;
+                const st = new DateObject(_st).toUnix() * 1000;
+                const et = new DateObject(_et).toUnix() * 1000;
+
+                if (startTime > et || ednTime < st) {
+                  // not ovelapping
+                  continue;
+                }
+
+                setError(DISCOUNT_CODE_FIELDNAME, {
+                  message: `code ${code.code} has existed and not usable`,
+                  type: "value",
+                });
+                return;
+              }
+
+              toast.success("Code is usable");
+              clearErrors(DISCOUNT_CODE_FIELDNAME);
             })
             .finally(() => setIsLoading(false));
         }}

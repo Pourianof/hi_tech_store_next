@@ -24,7 +24,7 @@ export async function getDiscountEntities(): Promise<
 export async function getDiscountCodeByNameOrId(
   apiToken: string,
   name: string | number,
-): Promise<ResultModel<DiscountCode>> {
+): Promise<ResultModel<DiscountCode[]>> {
   return generateResultModelFromResponse(
     await fetch(apiRoutes.discounts.forCode(name), {
       headers: {
