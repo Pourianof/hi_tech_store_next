@@ -13,7 +13,9 @@ export function ProductItem({ product }: { product: ProductModel }) {
   return (
     <div className="shadow-md rounded-md flex flex-col p-2 gap-1 relative">
       {mainVariation.hasDiscount && (
-        <DiscountLabel discount={mainVariation.discountPercentage} />
+        <DiscountLabel
+          discount={+mainVariation.discountPercentage.toFixed(1)}
+        />
       )}
       <Link href={`/products/${product.productId}`}>
         <ApiImage
