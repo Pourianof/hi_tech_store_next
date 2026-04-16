@@ -30,6 +30,7 @@ declare module "next-auth" {
     expires_in: string;
     error?: Record<string, string>;
     apiToken: string;
+    refreshToken: string;
   }
 }
 
@@ -37,5 +38,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     expiresAt: number;
     apiToken: string;
+    refToken: string;
   }
 }

@@ -9,6 +9,12 @@ export const apiRoutes = {
     get register() {
       return `${this.base}/register`;
     },
+    get refresh() {
+      return `${this.base}/refresh`;
+    },
+    get logout() {
+      return `${this.base}/logout`;
+    },
   },
   brands: {
     base: `${server}/brands`,
