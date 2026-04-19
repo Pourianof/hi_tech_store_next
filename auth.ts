@@ -34,6 +34,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           },
           credentials.password as string,
         );
+
+        console.log("TOKEN: ", data);
+
         if (data) {
           const { token: apiToken, user, expiresAt, refreshToken } = data;
           return {
@@ -43,7 +46,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             lastName: user.lastName,
             apiToken,
             id: user.userName,
-            role: user.role,
+            roles: user.roles,
             expiresAt,
           };
         }

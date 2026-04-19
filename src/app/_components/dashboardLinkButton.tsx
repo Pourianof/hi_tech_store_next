@@ -11,8 +11,8 @@ export function DashboardLinkButton() {
   const pathname = usePathname();
 
   if (
-    !session?.user.role ||
-    isNormalUser(session.user.role) ||
+    !session?.user.roles?.length ||
+    isNormalUser(session.user.roles) ||
     pathname.toLowerCase().includes("dashboard")
   ) {
     return null;

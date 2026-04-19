@@ -1,11 +1,16 @@
-export function isManager(role: string | undefined | null) {
-  return role?.toLowerCase() === "manager";
+type Roles = (string | undefined | null)[];
+export function isManager(roles: Roles) {
+  return findRole(roles, "manager");
 }
 
-export function isAdmin(role: string | undefined | null) {
-  return role?.toLowerCase() === "admin";
+export function isAdmin(roles: Roles) {
+  return findRole(roles, "admin");
 }
 
-export function isNormalUser(role: string | undefined | null) {
-  return role?.toLowerCase() === "user";
+export function isNormalUser(roles: Roles) {
+  return findRole(roles, "user");
+}
+
+function findRole(roles: Roles, targetRole: string) {
+  return roles?.find((r) => r?.toLowerCase() == targetRole);
 }
