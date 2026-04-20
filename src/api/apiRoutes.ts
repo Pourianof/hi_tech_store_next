@@ -42,6 +42,9 @@ export const apiRoutes = {
     forProduct(productId: number) {
       return `${this.base}/${productId}`;
     },
+    get onSales() {
+      return `${this.base}/on-sales`;
+    },
   },
   colors: {
     base: `${server}/colors`,

@@ -1,7 +1,10 @@
 import { PagedResults } from "@/core/Dtos/pagedResult";
 import { ProductModel } from "@/core/models/productModel";
 import { ResultModel } from "@/core/models/resultModel";
-import { getProductsAction } from "@/lib/server_actions/productActions";
+import {
+  getOnSaleProductsAction,
+  getProductsAction,
+} from "@/lib/server_actions/productActions";
 
 async function getProducts(
   searchQueries?: Record<string, string>,
@@ -15,4 +18,14 @@ async function getProducts(
   return result as ResultModel<PagedResults<ProductModel>>;
 }
 
-export const productActions = { getProducts };
+async function getOnSaleProducts() {
+  const result = await getOnSaleProductsAction();
+
+  if (result.status == "success") {
+    result.data = result.data.map((p) => ProductModel.CreateWithDto(p));
+  }
+
+  return result as ResultModel<ProductModel[]>;
+}
+
+export const productActions = { getProducts, getOnSaleProducts };

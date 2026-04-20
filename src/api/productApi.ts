@@ -40,3 +40,7 @@ export async function getSingleProduct(
 export function getColors() {
   return fetchWrapper.get<ProductColor[]>(apiRoutes.colors.base);
 }
+
+export function getOnSaleProductsApi() {
+  return fetchWrapper.get<ProductDto[]>(apiRoutes.products.onSales);
+}

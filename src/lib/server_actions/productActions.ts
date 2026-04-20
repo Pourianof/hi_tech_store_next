@@ -1,5 +1,10 @@
 "use server";
-import { createNewProduct, getColors, getProducts } from "@/api/productApi";
+import {
+  createNewProduct,
+  getColors,
+  getOnSaleProductsApi,
+  getProducts,
+} from "@/api/productApi";
 import { ResultModel } from "@/core/models/resultModel";
 import { workWithSession } from "../helpers/sessionHelper";
 
@@ -14,3 +19,4 @@ export async function getProductColorsAction() {
 }
 
 export const getProductsAction = getProducts;
+export const getOnSaleProductsAction = getOnSaleProductsApi;
