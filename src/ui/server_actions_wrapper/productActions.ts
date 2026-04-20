@@ -22,10 +22,12 @@ async function getOnSaleProducts() {
   const result = await getOnSaleProductsAction();
 
   if (result.status == "success") {
-    result.data = result.data.map((p) => ProductModel.CreateWithDto(p));
+    result.data.items = result.data.items.map((p) =>
+      ProductModel.CreateWithDto(p),
+    );
   }
 
-  return result as ResultModel<ProductModel[]>;
+  return result as ResultModel<PagedResults<ProductModel>>;
 }
 
 export const productActions = { getProducts, getOnSaleProducts };

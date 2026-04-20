@@ -42,5 +42,5 @@ export function getColors() {
 }
 
 export function getOnSaleProductsApi() {
-  return fetchWrapper.get<ProductDto[]>(apiRoutes.products.onSales);
+  return fetchWrapper.get<PagedResults<ProductDto>>(apiRoutes.products.onSales);
 }

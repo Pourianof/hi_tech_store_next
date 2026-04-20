@@ -28,7 +28,7 @@ export async function OnSaleProductList() {
 
   const products = result.data;
 
-  if (!products.length) {
+  if (!products.items.length) {
     return null;
   }
 
@@ -49,7 +49,7 @@ export async function OnSaleProductList() {
       </div>
       <Slider>
         <SliderContainer className="gap-5 items-stretch last:me-5">
-          {products.map((prod) => (
+          {products.items.map((prod) => (
             <SliderItem
               key={prod.productId}
               className="shrink-0 basis-[30%] max-w-[200px]"
