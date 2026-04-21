@@ -1,9 +1,9 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { signIn as apiSignIn, refreshTheTokenApi } from "@/api/authApi";
+import { signIn as apiSignIn } from "@/api/authApi";
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
 import { User } from "@/core/models/user";
-import { JWT } from "next-auth/jwt";
+import "next-auth/jwt";
 import { AdapterUser } from "next-auth/adapters";
 import { encryptHelper } from "@/lib/utils/encryptor";
 
@@ -34,8 +34,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           },
           credentials.password as string,
         );
-
-        console.log("TOKEN: ", data);
 
         if (data) {
           const { token: apiToken, user, expiresAt, refreshToken } = data;
@@ -70,37 +68,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           (user as { expiresAt: string })?.expiresAt,
         ).getTime();
 
-        const encryptedRefToken = encryptHelper.encrypt(userModel.refreshToken);
+        const encryptedRefToken = await encryptHelper.encrypt(
+          userModel.refreshToken,
+        );
 
         token.refToken = encryptedRefToken;
         token.user = user;
-      }
-
-      const oneMinuteAnd30SecondsMs = 90000;
-      const tkn: JWT = token as JWT;
-
-      if (
-        tkn.expiresAt &&
-        Date.now() >= token.expiresAt - oneMinuteAnd30SecondsMs
-      ) {
-        if (tkn.refToken) {
-          try {
-            const refToken = encryptHelper.decrypt(tkn.refToken);
-            const result = await refreshTheTokenApi(refToken);
-
-            if (result.status == "success") {
-              tkn.apiToken = result.data.token;
-              tkn.expiresAt = tkn.exp = new Date(
-                result.data.expiresAt,
-              ).getTime();
-
-              return tkn;
-            }
-          } catch (err) {
-            console.error(err);
-          }
-        }
-        return null;
       }
 
       return token;

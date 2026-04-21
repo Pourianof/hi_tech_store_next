@@ -59,6 +59,10 @@ export async function refreshTheTokenApi(refToken: string) {
     headers: {
       "Content-Type": "application/json",
     },
+    cache: "no-cache",
+    next: {
+      revalidate: 0,
+    },
   });
 
   const result =
