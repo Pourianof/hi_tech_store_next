@@ -1,6 +1,7 @@
 const server = `${process.env.API_SERVER_ADDRESS!}/api`;
 
 export const apiRoutes = {
+  healthCheck: `${server}/_health`,
   auth: {
     base: `${server}/auth`,
     get login() {
