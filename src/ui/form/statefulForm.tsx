@@ -1,3 +1,4 @@
+"use client";
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
 import { ResultModel } from "@/core/models/resultModel";
 import { handleProblemDetailErrors } from "@/lib/helpers/problemDetailsHelper";
