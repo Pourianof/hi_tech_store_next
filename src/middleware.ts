@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getToken, encode, type JWT } from "next-auth/jwt";
 import { refreshTheTokenApi } from "@/api/authApi";
 import { encryptHelper } from "@/lib/utils/encryptor";
+import { isHealthyApi } from "./api/apiServerMisc";
 
 export const runtime = "nodejs";
 
@@ -67,6 +68,13 @@ function updateCookie(
 }
 
 export async function middleware(request: NextRequest) {
+  const isHealthy = await isHealthyApi();
+
+  // move on and display fail handling view
+  if (!isHealthy) {
+    return NextResponse.next();
+  }
+
   // Skip static and auth paths
   if (
     request.nextUrl.pathname.startsWith("/_next") ||
