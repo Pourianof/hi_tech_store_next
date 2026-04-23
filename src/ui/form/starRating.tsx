@@ -77,6 +77,7 @@ export const StarRating = ({
           return (
             <button
               key={index}
+              type="button"
               onClick={(e) => {
                 e.preventDefault();
                 handleClick(starValue);
