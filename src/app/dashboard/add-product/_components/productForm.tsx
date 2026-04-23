@@ -11,6 +11,7 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 import { BrandSelectorInput } from "./brandSelectorInput";
 import { ProductCategorySelector } from "./ProductCategorySelector";
 import { ProductVariationsList } from "./productVariationsList";
+import { zodToRhsError } from "@/ui/form/rhf/zodToRhsError";
 
 export function ProductForm(props: {
   onFormSubmitted: (submittedProduct: ProductDto) => void;
@@ -24,8 +25,8 @@ export function ProductForm(props: {
     const parsedData = productCreationSchema.safeParse(data);
 
     if (!parsedData.success) {
-      parsedData.error.issues.forEach((issue) =>
-        setError(issue.path.join("."), { message: issue.message }),
+      zodToRhsError(parsedData.error).forEach((err) =>
+        setError(err.path, { message: err.message }),
       );
       return;
     }
