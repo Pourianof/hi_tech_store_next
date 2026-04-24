@@ -93,8 +93,7 @@ export async function middleware(request: NextRequest) {
 
   // No token - redirect to login
   if (!token) {
-    const loginUrl = new URL("/login", request.url);
-    return NextResponse.redirect(loginUrl);
+    return NextResponse.next();
   }
 
   const needsRefresh = shouldRefreshToken(token);
