@@ -62,6 +62,7 @@ export function DiscountListTable({
             </TableCell>
             <TableCell>Start time</TableCell>
             <TableCell>End Time</TableCell>
+            <TableCell>Created at</TableCell>
             <TableCell>Description</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Rules</TableCell>
@@ -73,8 +74,8 @@ export function DiscountListTable({
         ) : (
           <>
             <TableBody>
-              {discountCodes!.items.map((dc, i) => (
-                <DiscountCodeRow key={dc.discountCodeId + i} discount={dc} />
+              {discountCodes!.items.map((dc) => (
+                <DiscountCodeRow key={dc.discountId} discount={dc} />
               ))}
             </TableBody>
             <TableFooter>

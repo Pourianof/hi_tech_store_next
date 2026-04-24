@@ -4,7 +4,7 @@ import {
 } from "../schemas/discountCodeSchema";
 
 export interface Discount {
-  discountCodeId: number;
+  discountId: number;
   description?: string;
   startTime: string;
   endTime: string;

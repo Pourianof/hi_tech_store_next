@@ -9,7 +9,7 @@ import { DiscountRulesCollapse } from "./discountRuleCollapse";
 import { useDiscountCode } from "./hooks/useDiscountCode";
 
 export function DiscountCodeRow({ discount }: { discount: DiscountCode }) {
-  const { data: dc } = useDiscountCode(discount.discountCodeId, discount);
+  const { data: dc } = useDiscountCode(discount.discountId, discount);
   const [isRuleOpen, setIsRuleOpen] = useState(false);
 
   if (!dc) {
@@ -19,9 +19,10 @@ export function DiscountCodeRow({ discount }: { discount: DiscountCode }) {
   return (
     <>
       <TableRow>
-        <TableCell>{dc.code ?? `#${dc.discountCodeId}`}</TableCell>
+        <TableCell>{dc.code ?? `#${dc.discountId}`}</TableCell>
         <TableCell>{formatDate(dc.startTime)}</TableCell>
         <TableCell>{formatDate(dc.endTime)}</TableCell>
+        <TableCell>{formatDate(dc.createdAt)}</TableCell>
         <TableCell>{dc.description}</TableCell>
         <TableCell>
           {dc.isDeactivated
