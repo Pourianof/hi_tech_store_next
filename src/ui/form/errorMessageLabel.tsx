@@ -13,7 +13,6 @@ export function ErrorMessageLabel({
     formState: { errors },
   } = useFormContext();
 
-  console.log(errors);
   const errorMessage = getMessageFromErrors(fieldName, errors, name);
 
   if (!errorMessage) {
