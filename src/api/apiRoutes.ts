@@ -46,7 +46,11 @@ export const apiRoutes = {
     get onSales() {
       return `${this.base}/on-sales`;
     },
+    commentForProdut(productId: number) {
+      return `${this.forProduct(productId)}/comments`;
+    },
   },
+  comments: {},
   colors: {
     base: `${server}/colors`,
   },

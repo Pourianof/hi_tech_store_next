@@ -5,6 +5,8 @@ import { ProductDto } from "@/core/Dtos/ProductDto";
 import { apiRoutes } from "./apiRoutes";
 import { PagedResults } from "@/core/Dtos/pagedResult";
 import { fetchWrapper } from "./fetchWrapper";
+import { ProductCommentCreationDto } from "@/core/Dtos/commentDto";
+import { Comment } from "@/core/models/comment";
 
 export async function createNewProduct(product: FormData, accessToken: string) {
   const respond = await fetch(apiRoutes.products.base, {
@@ -43,4 +45,20 @@ export function getColors() {
 
 export function getOnSaleProductsApi() {
   return fetchWrapper.get<PagedResults<ProductDto>>(apiRoutes.products.onSales);
+}
+
+export function commentForProductApi(
+  productId: number,
+  comment: ProductCommentCreationDto,
+) {
+  return fetchWrapper.post(
+    apiRoutes.products.commentForProdut(productId),
+    comment,
+  );
+}
+
+export function getCommentsOfProductApi(productId: number) {
+  return fetchWrapper.get<PagedResults<Comment>>(
+    apiRoutes.products.commentForProdut(productId),
+  );
 }

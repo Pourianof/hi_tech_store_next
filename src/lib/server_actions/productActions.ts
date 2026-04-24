@@ -1,7 +1,9 @@
 "use server";
 import {
+  commentForProductApi,
   createNewProduct,
   getColors,
+  getCommentsOfProductApi,
   getOnSaleProductsApi,
   getProducts,
 } from "@/api/productApi";
@@ -20,3 +22,5 @@ export async function getProductColorsAction() {
 
 export const getProductsAction = getProducts;
 export const getOnSaleProductsAction = getOnSaleProductsApi;
+export const commentForProductAction = commentForProductApi;
+export const getCommentsOfProductAction = getCommentsOfProductApi;

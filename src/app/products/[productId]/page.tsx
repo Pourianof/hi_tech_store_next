@@ -36,8 +36,8 @@ export default async function ProductItemPage({
             </div>
             <PaymentBox />
           </div>
+          <ProductPageParts product={product} />
         </ProductProvider>
-        <ProductPageParts product={product} />
       </div>
     </VariationProvider>
   );
