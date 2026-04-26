@@ -12,9 +12,15 @@ const captionStyle: ClassNamesBySizes = {
 export function Caption({
   children,
   size,
+  className,
 }: {
   children: ReactNode;
   size: Sizes;
+  className?: string;
 }) {
-  return <div className={captionStyle[size]}>{children}</div>;
+  return (
+    <div className={[captionStyle[size], className ?? ""].join(" ")}>
+      {children}
+    </div>
+  );
 }

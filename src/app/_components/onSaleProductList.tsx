@@ -13,6 +13,9 @@ import { FailedBox } from "./failedBox";
 import { ProductModel } from "@/core/models/productModel";
 import { ApiImage } from "@/ui/image/ApiImage";
 import { Column } from "@/ui/layouts/column";
+import { Card } from "@/ui/theme/card";
+import { Body } from "@/ui/theme/text/body";
+import { Row } from "@/ui/layouts/row";
 
 export async function OnSaleProductList() {
   const result = await productActions.getOnSaleProducts();
@@ -76,18 +79,23 @@ function ProductItem({ product }: { product: ProductModel }) {
   const acualPrice = mainVariation?.price;
   const coverImage = mainVariation?.getCandidateImageMedia()?.url;
   return (
-    <Column className="w-full relative bg-white h-full p-2 rounded-md gap-y-2 aspect-[0.78]">
-      <DiscountLabel discount={mainVariation?.discountPercentage ?? 0} />
-      <div className="w-ful">
-        <ApiImage aspectRatio={1.15} src={coverImage} alt={product.title} />
-      </div>
-      <h3 className="text-sm line-clamp-2">{product.title}</h3>
-      <div className="flex justify-between items-center">
-        <span className="text-gray-600 line-through text-xs">{`$${acualPrice?.toFixed(2)}`}</span>
-        <span className="text-sm">{`$${mainVariation?.finalPrice.toFixed(
-          2,
-        )}`}</span>
-      </div>
-    </Column>
+    <Card variant="small" clasName="relative">
+      <Column className="w-full h-full rounded-md gap-y-8px aspect-[0.78]">
+        <DiscountLabel discount={mainVariation?.discountPercentage ?? 0} />
+        <div className="w-ful">
+          <ApiImage aspectRatio={1.15} src={coverImage} alt={product.title} />
+        </div>
+        <Body size="sm" className="line-clamp-2">
+          {product.title}
+        </Body>
+        <Row centerV className="justify-between mt-auto">
+          <Body
+            size="sm"
+            className="line-through text-xs text-gray-neutral-71"
+          >{`$${acualPrice?.toFixed(2)}`}</Body>
+          <Body size="sm">{`$${mainVariation?.finalPrice.toFixed(2)}`}</Body>
+        </Row>
+      </Column>
+    </Card>
   );
 }

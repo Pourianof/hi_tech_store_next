@@ -3,6 +3,15 @@ import { Button, CircularProgress, SxProps } from "@mui/material";
 import { ReactNode } from "react";
 import { StatefulForm } from "./statefulForm";
 import { Theme } from "@emotion/react";
+import { ButtonLabel } from "../theme/text/buttonLabel";
+
+const ACTIVE_PRIMARY_COLOR = "var(--color-primary-blue-0c)";
+const HOVER_PRIMARY_COLOR = "var(--color-primary-blue-05)";
+const DISABLED_PRIMARY_COLOR = "var(--color-primary-blue-ae)";
+
+const ACTIVE_SECONDARY_COLOR = "var(--color-secondary-f4)";
+const HOVER_SECONDARY_COLOR = "var(--color-secondary-be)";
+const DISABLED_SECONDARY_COLOR = "var(--color-secondary-fd)";
 
 interface ButtonProps {
   disabled?: boolean;
@@ -12,6 +21,22 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
   styles?: SxProps<Theme>;
   isActive?: boolean;
+  variant?: "primary" | "secondary";
+}
+
+function getVariantColors(variant: ButtonProps["variant"]) {
+  const isSecondary = variant == "secondary";
+  return !isSecondary
+    ? {
+        active: ACTIVE_PRIMARY_COLOR,
+        hover: HOVER_PRIMARY_COLOR,
+        disabled: DISABLED_PRIMARY_COLOR,
+      }
+    : {
+        active: ACTIVE_SECONDARY_COLOR,
+        hover: HOVER_SECONDARY_COLOR,
+        disabled: DISABLED_SECONDARY_COLOR,
+      };
 }
 
 export function FilledButton({
@@ -21,19 +46,28 @@ export function FilledButton({
   disabled,
   type,
   styles,
+  variant,
   ...props
 }: ButtonProps & {
   noFullWidth?: boolean;
 }) {
+  const colors = getVariantColors(variant);
   return (
     <Button
       disabled={disabled}
       variant="contained"
       sx={{
-        bgcolor: "var(--color-primary-blue-0c)",
+        bgcolor: colors.active,
         textTransform: "none",
-        borderRadius: "6px",
-        fontSize: "16px",
+        borderRadius: "var(--radius-md)",
+        paddingY: "var(--spacing-8px)",
+        paddingX: "var(--spacing-16px)",
+        ":hover": {
+          bgcolor: colors.hover,
+        },
+        ":disabled": {
+          bgcolor: colors.disabled,
+        },
         ...styles,
       }}
       onClick={
@@ -48,7 +82,7 @@ export function FilledButton({
       className={className}
       type={type}
     >
-      {children}
+      <ButtonLabel size="lg">{children}</ButtonLabel>
     </Button>
   );
 }
@@ -72,7 +106,10 @@ export function OutlinedButton({
   disabled,
   type,
   styles,
+  variant,
 }: ButtonProps) {
+  const colors = getVariantColors(variant);
+
   return (
     <Button
       disabled={disabled}
@@ -87,7 +124,22 @@ export function OutlinedButton({
       }
       className={className}
       type={type}
-      sx={styles}
+      sx={{
+        border: `1px solid ${colors.active}`,
+        color: colors.active,
+        borderRadius: "var(--radius-md)",
+        paddingY: "var(--spacing-8px)",
+        paddingX: "var(--spacing-16px)",
+        ":hover": {
+          border: `1px solid ${colors.hover}`,
+          color: colors.hover,
+        },
+        ":disabled": {
+          border: `1px solid ${colors.disabled}`,
+          color: colors.disabled,
+        },
+        ...styles,
+      }}
     >
       {children}
     </Button>

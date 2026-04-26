@@ -9,6 +9,12 @@ const bodyStyle: ClassNamesBySizes = {
   xs: "text-body-xs font-light",
 };
 
-export function Body({ children, size }: { children: ReactNode; size: Sizes }) {
-  return <div className={bodyStyle[size]}>{children}</div>;
+type Props = { children: ReactNode; size: Sizes; className?: string };
+
+export function Body({ children, size, className }: Props) {
+  return (
+    <div className={[bodyStyle[size], className ?? ""].join(" ")}>
+      {children}
+    </div>
+  );
 }

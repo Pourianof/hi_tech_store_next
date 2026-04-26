@@ -1,5 +1,10 @@
+import { Body } from "@/ui/theme/text/body";
+
 export function DiscountLabel({ discount }: { discount: number }) {
   return (
-    <span className="absolute left-0 text-xs bg-orange-200 text-orange-500 z-10 rounded-r-lg px-1 py-0.5">{`-${discount.toFixed(1)}%`}</span>
+    <Body
+      size="md"
+      className="absolute left-0 bg-secondary-fd text-secondary-f4 z-10 rounded-r-lg px-[6px] py-4px"
+    >{`-${discount.toFixed(1)}%`}</Body>
   );
 }

@@ -1,9 +1,13 @@
-import { ApiImage } from "@/ui/image/ApiImage";
-import Link from "next/link";
-import { ProductScore } from "./productScore";
-import { Row } from "@/ui/layouts/row";
-import { DiscountLabel } from "./discountLabel";
 import { ProductModel } from "@/core/models/productModel";
+import { ApiImage } from "@/ui/image/ApiImage";
+import { Column } from "@/ui/layouts/column";
+import { Card } from "@/ui/theme/card";
+import { Caption } from "@/ui/theme/text/caption";
+import Link from "next/link";
+import { DiscountLabel } from "./discountLabel";
+import { ProductScore } from "./productScore";
+import { ProductVariation } from "@/core/models/product";
+import { Body } from "@/ui/theme/text/body";
 
 export function ProductItem({ product }: { product: ProductModel }) {
   const mainVariation = product.mainVariation!;
@@ -11,33 +15,66 @@ export function ProductItem({ product }: { product: ProductModel }) {
   const coverImage = mainVariation.getCandidateImageMedia();
 
   return (
-    <div className="shadow-md rounded-md flex flex-col p-2 gap-1 relative">
-      {mainVariation.hasDiscount && (
-        <DiscountLabel
-          discount={+mainVariation.discountPercentage.toFixed(1)}
-        />
-      )}
-      <Link href={`/products/${product.productId}`}>
-        <ApiImage
-          aspectRatio={256 / 190}
-          src={coverImage?.url}
-          alt={product.title}
-        />
-
-        <div className="h-px bg-linear-to-r from-transparent via-black opacity-40 to-transparent my-2"></div>
-        <h3 className="line-clamp-2 text-sm flex-1">{product.title}</h3>
-      </Link>
-      <div className="flex justify-between my-2 mt-auto">
-        {mainVariation.hasDiscount ? (
-          <Row centerV>
-            <span className="line-through text-xs">{`$${mainVariation.price}`}</span>
-            <span>{`$${mainVariation.finalPrice}`}</span>
-          </Row>
-        ) : (
-          <span>{`$${mainVariation.price}`}</span>
+    <Card scaleTransition clasName="relative">
+      <Column className="gap-16px group">
+        {mainVariation.hasDiscount && (
+          <DiscountLabel
+            discount={+mainVariation.discountPercentage.toFixed(1)}
+          />
         )}
-        <ProductScore score={product.averageScore} />
-      </div>
-    </div>
+        <Link href={`/products/${product.productId}`}>
+          <Column className="gap-16px">
+            <div className="relative">
+              <ApiImage
+                aspectRatio={256 / 190}
+                src={coverImage?.url}
+                alt={product.title}
+              />
+              <ProductVariationColorsPallete variations={product.variations} />
+            </div>
+
+            <div className="h-px bg-linear-to-r from-transparent via-black opacity-40 to-transparent"></div>
+            <Body
+              size="md"
+              className="line-clamp-1 group-hover:text-primary-blue-06"
+            >
+              {product.title}
+            </Body>
+          </Column>
+        </Link>
+        <div className="flex justify-between my-2 mt-auto">
+          {mainVariation.hasDiscount ? (
+            <Column>
+              <Caption
+                size="md"
+                className="text-gray-neutral-71 line-through"
+              >{`$${mainVariation.price}`}</Caption>
+              <span>{`$${mainVariation.finalPrice}`}</span>
+            </Column>
+          ) : (
+            <span>{`$${mainVariation.price}`}</span>
+          )}
+          <ProductScore score={product.averageScore} />
+        </div>
+      </Column>
+    </Card>
+  );
+}
+
+function ProductVariationColorsPallete({
+  variations,
+}: {
+  variations: ProductVariation[];
+}) {
+  return (
+    <Column className="absolute gap-2 z-10 top-1/2 right-1 -translate-y-1/2">
+      {variations.map((pv) => (
+        <div
+          key={pv.productVariationId}
+          className="border border-gray-neutral-44 w-12px h-3 rounded-full"
+          style={{ backgroundColor: `#${pv.color.code}` }}
+        ></div>
+      ))}
+    </Column>
   );
 }

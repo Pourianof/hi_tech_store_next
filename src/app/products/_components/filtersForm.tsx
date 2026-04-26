@@ -3,7 +3,6 @@ import { ComponentFilter, Filters } from "@/core/models/filter";
 import { CupertinoSwitch } from "@/ui/form/cupertinoSwitch";
 import { StatefulForm } from "@/ui/form/statefulForm";
 import { RangeSlider } from "@/ui/form/twoWaySlider";
-import { Button } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { ExpandableBox } from "./expandableBox";
@@ -15,6 +14,7 @@ import {
   QueryOperator,
 } from "@/lib/helpers/searchParamHelper";
 import { parseNumberOrUndefined } from "@/lib/utils/converter";
+import { FilledButton } from "@/ui/form/AppButtons";
 
 export function FilterSection({ filterStats }: { filterStats: Filters }) {
   const filters = filterStats;
@@ -130,17 +130,7 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
           <ComponentFilters components={filterStats.components} />
         )}
       </div>
-      <Button
-        type="submit"
-        variant="contained"
-        sx={{
-          borderRadius: "10px",
-          boxShadow: "none",
-          marginTop: "5px",
-        }}
-      >
-        Apply Filters
-      </Button>
+      <FilledButton type="submit">Apply Filters</FilledButton>
     </StatefulForm>
   );
 }
