@@ -1,15 +1,18 @@
-import { Wrapper } from "@/app/_shared/wrapper";
 import { routes } from "@/app/routes";
 import { SHIPPING_METHOD_FIELD_NAME } from "@/lib/helpers/consts";
 import { protectRoute } from "@/lib/helpers/protectRoute";
+import { RowOnDesktopColumnOnMobile } from "@/ui/layouts/rownOnDesktopColumnOnMobile";
+import { H5 } from "@/ui/theme/text/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CartPaymentDetails } from "../cart/_components/cartPaymentDetails";
+import { CartDetails } from "../_components/cartDetail";
 import { ShippinhMethodInput } from "../checkout/_components/shippingMethodInput";
 import { DiscountField } from "./_components/discountField";
 import { PaymentLink } from "./_components/paymentLink";
 import { DiscountCodeContextProvider } from "./_contexts/discountCodeContext";
-import { H5 } from "@/ui/theme/text/headers";
+import { Column } from "@/ui/layouts/column";
+import { ResponsiveCartView } from "../_components/cartPreview";
+import { Card } from "@/ui/theme/card";
 
 export default async function PaymentDefaultPage({
   searchParams: sp,
@@ -25,27 +28,31 @@ export default async function PaymentDefaultPage({
   }
 
   return (
-    <Wrapper>
-      <DiscountCodeContextProvider>
-        <div>
-          <div>
+    <DiscountCodeContextProvider>
+      <RowOnDesktopColumnOnMobile className="gap-24px">
+        <Column className="grow gap-2">
+          <Card noShadow noHoverReaction border>
             <H5>Shipping address</H5>
             <ShippinhMethodInput />
-            <Link
-              href={{ pathname: routes.order.checkout }}
-              className="text-primary-blue-0c text-sm"
-            >
-              Return to Checkout
-            </Link>
-          </div>
-          <div>
-            <H5>Your Order</H5>
-            <DiscountField />
-            <CartPaymentDetails />
-          </div>
-          <PaymentLink />
-        </div>
-      </DiscountCodeContextProvider>
-    </Wrapper>
+          </Card>
+          <Link
+            href={{ pathname: routes.order.checkout }}
+            className="text-primary-blue-0c text-sm"
+          >
+            Return to Checkout
+          </Link>
+        </Column>
+        <CartDetails
+          title="Your Order"
+          button={<PaymentLink />}
+          main={
+            <Column>
+              <ResponsiveCartView />
+              <DiscountField />
+            </Column>
+          }
+        />
+      </RowOnDesktopColumnOnMobile>
+    </DiscountCodeContextProvider>
   );
 }
