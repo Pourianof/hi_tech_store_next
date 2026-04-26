@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useProduct } from "../_contexts/productContext";
 import { Row } from "@/ui/layouts/row";
 import Icon from "@/ui/icons/icon";
-import { H4 } from "@/ui/theme/headers";
+import { H4 } from "@/ui/theme/text/headers";
 
 export function ProductCommentList() {
   const product = useProduct();

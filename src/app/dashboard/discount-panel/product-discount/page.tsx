@@ -1,6 +1,6 @@
 import { OutlinedButton } from "@/ui/form/AppButtons";
 import { Column } from "@/ui/layouts/column";
-import { H3 } from "@/ui/theme/headers";
+import { H3 } from "@/ui/theme/text/headers";
 import Link from "next/link";
 import { DiscountsList } from "../discount-codes/_components/discountList";
 import { DiscountType } from "@/core/Dtos/discountCodeDto";

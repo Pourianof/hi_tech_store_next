@@ -13,7 +13,7 @@ import { useState } from "react";
 import { DISCOUNT_RULE_ACTION } from "./fieldNames";
 import { RuleDiscountTypeAndValueInputs } from "./ruleDiscountTypeInputs";
 import { DiscountScriptEditor } from "@/app/dashboard/discount-panel/_components/discountScriptEditor";
-import { H4 } from "@/ui/theme/headers";
+import { H4 } from "@/ui/theme/text/headers";
 import { captalize } from "@/lib/utils/stringHelpers";
 
 export function RuleItem({

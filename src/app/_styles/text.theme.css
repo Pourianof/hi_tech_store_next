@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  /* Display */
+  --text-display1: 64px;
+  --text-display2: 56px;
+
+  /* Headline */
+  --text-h1: 44px;
+  --text-h2: 40px;
+  --text-h3: 32px;
+  --text-h4: 24px;
+  --text-h5: 20px;
+  --text-h6: 16px;
+
+  /* Mobile Headline */
+  --text-h1-mobile: 24px;
+  --text-h2-mobile: 20px;
+  --text-h3-mobile: 16px;
+  --text-h4-mobile: 14px;
+
+  /* Body */
+  --text-body-xl: 20px;
+  --text-body-lg: 18px;
+  --text-body-md: 16px;
+  --text-body-sm: 14px;
+  --text-body-xs: 12px;
+
+  /* Mobile Body */
+  --text-body-mobile-lg: 16px;
+  --text-body-mobile-md: 14px;
+  --text-body-mobile-sm: 12px;
+
+  /* Caption */
+  --text-caption-lg: 14px;
+  --text-caption-md: 12px;
+  --text-caption-sm: 10px;
+
+  /* Mobile Caption */
+  --text-caption-mobile: 12px;
+
+  /* Button */
+  --text-button-lg: 16px;
+  --text-button-sm: 14px;
+
+  /* Mobile Button */
+  --text-button-lg-mobile: 14px;
+  --text-button-sm-mobile: 12px;
+
+  /* Overline */
+  --text-overline-lg: 16px;
+  --text-overline-sm: 12px;
+
+  /* Mobile Overline */
+  --text-overline-mobile: 10px;
+}

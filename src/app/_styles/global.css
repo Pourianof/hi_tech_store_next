@@ -1,6 +1,10 @@
 @import "tailwindcss";
-@import "./textTheme.css";
-@import "./colorTheme.css";
+@import "./text.theme.css";
+@import "./color.theme.css";
+@import "./breakpoint.theme.css";
+@import "./padding.theme.css";
+@import "./shadow.theme.css";
+@import "./spacing.theme.css";
 
 @theme {
   --color-background: var(--background);
