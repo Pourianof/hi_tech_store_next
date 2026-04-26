@@ -1,18 +1,15 @@
 import { routes } from "@/app/routes";
 import { SHIPPING_METHOD_FIELD_NAME } from "@/lib/helpers/consts";
 import { protectRoute } from "@/lib/helpers/protectRoute";
+import { Column } from "@/ui/layouts/column";
 import { RowOnDesktopColumnOnMobile } from "@/ui/layouts/rownOnDesktopColumnOnMobile";
+import { Card } from "@/ui/theme/card";
 import { H5 } from "@/ui/theme/text/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CartDetails } from "../_components/cartDetail";
 import { ShippinhMethodInput } from "../checkout/_components/shippingMethodInput";
-import { DiscountField } from "./_components/discountField";
-import { PaymentLink } from "./_components/paymentLink";
+import { CartPreviewWithShipment } from "./_components/cartPreviewWithShipment";
 import { DiscountCodeContextProvider } from "./_contexts/discountCodeContext";
-import { Column } from "@/ui/layouts/column";
-import { ResponsiveCartView } from "../_components/cartPreview";
-import { Card } from "@/ui/theme/card";
 
 export default async function PaymentDefaultPage({
   searchParams: sp,
@@ -42,15 +39,8 @@ export default async function PaymentDefaultPage({
             Return to Checkout
           </Link>
         </Column>
-        <CartDetails
-          title="Your Order"
-          button={<PaymentLink />}
-          main={
-            <Column>
-              <ResponsiveCartView />
-              <DiscountField />
-            </Column>
-          }
+        <CartPreviewWithShipment
+          shipment={searchParams[SHIPPING_METHOD_FIELD_NAME]}
         />
       </RowOnDesktopColumnOnMobile>
     </DiscountCodeContextProvider>

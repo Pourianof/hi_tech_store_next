@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
-import { PaymentStagesPath } from "./_components/paymentStagesPath";
 import { Wrapper } from "../_shared/wrapper";
+import { PaymentStagesPath } from "./_components/paymentStagesPath";
+import { ShipmentDataInjector } from "./_components/shipmentDataInjector";
 
 export default async function OrderPageLayout({
   children,
@@ -10,7 +11,7 @@ export default async function OrderPageLayout({
   return (
     <Wrapper>
       <PaymentStagesPath />
-      {children}
+      <ShipmentDataInjector>{children}</ShipmentDataInjector>
     </Wrapper>
   );
 }

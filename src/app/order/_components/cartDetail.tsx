@@ -8,10 +8,12 @@ export function CartDetails({
   main,
   button,
   title,
+  shipmentCost,
 }: {
   title: string;
   main?: ReactNode;
   button?: ReactNode;
+  shipmentCost?: number;
 }) {
   return (
     <Card
@@ -22,7 +24,7 @@ export function CartDetails({
       <Column className="gap-16px">
         <H4>{title}</H4>
         {main}
-        <CartPaymentDetails />
+        <CartPaymentDetails shipmentCost={shipmentCost} />
         {button}
       </Column>
     </Card>

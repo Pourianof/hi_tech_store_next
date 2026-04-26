@@ -8,10 +8,15 @@ import { Row } from "@/ui/layouts/row";
 import { Body } from "@/ui/theme/text/body";
 import { useDiscountCodeContext } from "../../payment/_contexts/discountCodeContext";
 
-export function CartPaymentDetails() {
+export function CartPaymentDetails({
+  shipmentCost,
+}: {
+  shipmentCost?: number;
+}) {
   const {
     cart: { items },
   } = useCart();
+
   const cartItems = items.map(
     (item) => new CartItem(item.product, item.variation, item.amount),
   );
@@ -56,7 +61,7 @@ export function CartPaymentDetails() {
         )}
         <Row className="justify-between">
           <Body size="sm">Shipment cost</Body>
-          <Body size="sm">-</Body>
+          <Body size="sm">${shipmentCost ?? "-"}</Body>
         </Row>
       </Column>
 
@@ -68,7 +73,9 @@ export function CartPaymentDetails() {
               ${cartPrice}
             </span>
           )}
-          ${(hasAppliedDiscount ? discountedCartPrice : cartPrice) + 22.5}
+          $
+          {(hasAppliedDiscount ? discountedCartPrice : cartPrice) +
+            (shipmentCost ?? 0)}
         </span>
       </div>
     </Column>

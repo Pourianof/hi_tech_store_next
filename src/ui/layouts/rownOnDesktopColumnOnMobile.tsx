@@ -14,6 +14,6 @@ type Props = {
 
 export function RowOnDesktopColumnOnMobile(props: Props) {
   const isDesktopScreen = useIsDesktopScreen();
-  console.log(isDesktopScreen);
+
   return isDesktopScreen ? <Row {...props} /> : <Column {...props} />;
 }
