@@ -5,11 +5,11 @@ import { protectRoute } from "@/lib/helpers/protectRoute";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CartPaymentDetails } from "../cart/_components/cartPaymentDetails";
-import { CheckoutSectionHeader } from "../checkout/_components/checkoutSectionHeader";
 import { ShippinhMethodInput } from "../checkout/_components/shippingMethodInput";
 import { DiscountField } from "./_components/discountField";
 import { PaymentLink } from "./_components/paymentLink";
 import { DiscountCodeContextProvider } from "./_contexts/discountCodeContext";
+import { H5 } from "@/ui/theme/text/headers";
 
 export default async function PaymentDefaultPage({
   searchParams: sp,
@@ -29,7 +29,7 @@ export default async function PaymentDefaultPage({
       <DiscountCodeContextProvider>
         <div>
           <div>
-            <CheckoutSectionHeader text="Shipping address" />
+            <H5>Shipping address</H5>
             <ShippinhMethodInput />
             <Link
               href={{ pathname: routes.order.checkout }}
@@ -39,7 +39,7 @@ export default async function PaymentDefaultPage({
             </Link>
           </div>
           <div>
-            <CheckoutSectionHeader text="Your Order" />
+            <H5>Your Order</H5>
             <DiscountField />
             <CartPaymentDetails />
           </div>

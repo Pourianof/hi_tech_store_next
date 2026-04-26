@@ -81,7 +81,7 @@ function RadioButtonInput({
 }
 
 export function ControlledRadioButton(
-  props: Omit<RadioButtonProps, "onChange">
+  props: Omit<RadioButtonProps, "onChange">,
 ) {
   return (
     <Controller

@@ -1,7 +1,6 @@
 "use client";
 import { routes } from "@/app/routes";
 import { SHIPPING_METHOD_FIELD_NAME } from "@/lib/helpers/consts";
-import { FilledButton } from "@/ui/form/AppButtons";
 import { StatefulForm } from "@/ui/form/statefulForm";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
@@ -21,8 +20,6 @@ export function CheckoutForm({ children }: { children: ReactNode }) {
       onSubmit={StatefulForm.SuccessSubmit}
     >
       {children}
-
-      <FilledButton type="submit">Continue to pay</FilledButton>
     </StatefulForm>
   );
 }
