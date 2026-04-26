@@ -1,9 +1,12 @@
 "use client";
 import { CartItem } from "@/core/models/cartItem";
-import { useCart } from "@/ui/contexts/cart/cartContext";
-import { useDiscountCodeContext } from "../../payment/_contexts/discountCodeContext";
-import { DiscountActionType } from "@/core/schemas/discountCodeSchema";
 import { DiscountAction } from "@/core/models/discount";
+import { DiscountActionType } from "@/core/schemas/discountCodeSchema";
+import { useCart } from "@/ui/contexts/cart/cartContext";
+import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
+import { Body } from "@/ui/theme/text/body";
+import { useDiscountCodeContext } from "../../payment/_contexts/discountCodeContext";
 
 export function CartPaymentDetails() {
   const {
@@ -31,31 +34,31 @@ export function CartPaymentDetails() {
 
   const discountedCartPrice = cartPrice - discountAmount;
   return (
-    <div className="my-8">
-      <div className="text-gray-neutral-71 flex flex-col gap-2">
-        <div className="flex justify-between">
-          <span>Subtotal</span>
-          <span>${cartPrice}</span>
-        </div>
+    <Column className="gap-10px">
+      <Column className="text-gray-neutral-71 gap-8px">
+        <Row className=" justify-between">
+          <Body size="sm">Subtotal</Body>
+          <Body size="sm">${cartPrice}</Body>
+        </Row>
         {hasAppliedDiscount && (
           <div className="flex justify-between font-bold">
             <span>Discount: </span>
 
-            <div className="flex items-center gap-1">
+            <Row centerV>
               <span className="text-yellow-600">
                 {discountValue}
                 {discountType == DiscountActionType.FIXED ? "$" : "%"}
               </span>
               <span>→</span>
               <span className="text-sm font-normal">{discountAmount}$</span>
-            </div>
+            </Row>
           </div>
         )}
-        <div className="flex justify-between">
-          <span>Shipment cost</span>
-          <span>$22.50</span>
-        </div>
-      </div>
+        <Row className="justify-between">
+          <Body size="sm">Shipment cost</Body>
+          <Body size="sm">-</Body>
+        </Row>
+      </Column>
 
       <div className="border-t-1 py-2 mt-2 border-t-gray-neutral-b4 flex justify-between font-semibold">
         <span className="">Grand total</span>
@@ -68,7 +71,7 @@ export function CartPaymentDetails() {
           ${(hasAppliedDiscount ? discountedCartPrice : cartPrice) + 22.5}
         </span>
       </div>
-    </div>
+    </Column>
   );
 }
 

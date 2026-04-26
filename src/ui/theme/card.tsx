@@ -4,15 +4,17 @@ import { twMerge } from "tailwind-merge";
 export function Card({
   children,
   scaleTransition,
-  clasName,
+  className,
   noShadow,
   variant,
+  noHoverReaction,
 }: {
   children: ReactNode;
   scaleTransition?: boolean;
-  clasName?: string;
+  className?: string;
   noShadow?: boolean;
   variant?: "large" | "small";
+  noHoverReaction?: boolean;
 }) {
   const spacingStyles =
     variant == "small" ? "p-8px rounded-sm" : "p-16px rounded-md";
@@ -21,10 +23,10 @@ export function Card({
     <div
       className={twMerge(
         "transition bg-white",
-        !noShadow ? "shadow-1 hover:shadow-2" : "",
+        !noShadow ? `shadow-1 ${noHoverReaction ? "" : "hover:shadow-2"}` : "",
         spacingStyles,
         scaleTransition ? "hover:scale-105" : "",
-        clasName ?? "",
+        className ?? "",
       )}
     >
       {children}

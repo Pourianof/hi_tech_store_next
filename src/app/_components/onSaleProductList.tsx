@@ -79,7 +79,7 @@ function ProductItem({ product }: { product: ProductModel }) {
   const acualPrice = mainVariation?.price;
   const coverImage = mainVariation?.getCandidateImageMedia()?.url;
   return (
-    <Card variant="small" clasName="relative">
+    <Card variant="small" className="relative">
       <Column className="w-full h-full rounded-md gap-y-8px aspect-[0.78]">
         <DiscountLabel discount={mainVariation?.discountPercentage ?? 0} />
         <div className="w-ful">

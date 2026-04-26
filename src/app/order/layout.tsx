@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { PaymentStagesPath } from "./_components/paymentStagesPath";
+import { Wrapper } from "../_shared/wrapper";
 
 export default async function OrderPageLayout({
   children,
@@ -7,9 +8,9 @@ export default async function OrderPageLayout({
   children: ReactNode;
 }) {
   return (
-    <div>
+    <Wrapper>
       <PaymentStagesPath />
       {children}
-    </div>
+    </Wrapper>
   );
 }

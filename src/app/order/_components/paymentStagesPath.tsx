@@ -10,7 +10,7 @@ export function PaymentStagesPath() {
   const isPaymentPage = pathname.endsWith("payment");
 
   return (
-    <div className="flex  mb-8 items-center px-4 gap-[4px]">
+    <div className="flex mb-8 items-center px-4 gap-[4px] desktop:w-1/2 mx-auto">
       <CheckoutStageIcon
         iconName="order_basket"
         label="Cart"

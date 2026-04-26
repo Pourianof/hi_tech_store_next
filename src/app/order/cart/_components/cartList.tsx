@@ -4,8 +4,8 @@ import { CartItem as CI } from "@/core/models/cartItem";
 import { useCart } from "@/ui/contexts/cart/cartContext";
 import { CartItemBox } from "./cartItemBox";
 import Link from "next/link";
-import { CartPaymentDetails } from "./cartPaymentDetails";
-import { FilledButton } from "@/ui/form/AppButtons";
+import { Column } from "@/ui/layouts/column";
+import { H4 } from "@/ui/theme/text/headers";
 
 export function CartList() {
   const {
@@ -17,11 +17,11 @@ export function CartList() {
 
   if (!items.length) {
     return (
-      <div className="my-10 bg-slate-300 rounded-lg p-8 flex flex-col gap-4 justify-center items-center">
-        <h4 className="text-2xl font-semibold text-orange-500">
+      <Column className="my-10 bg-slate-300 rounded-lg p-8 gap-4 justify-center items-center">
+        <H4 className="text-2xl font-semibold text-orange-500">
           Cart is empty
-        </h4>
-        <p className="">
+        </H4>
+        <p>
           Go to{" "}
           <Link
             className="font-bold text-primary-blue-0c underline"
@@ -31,20 +31,14 @@ export function CartList() {
           </Link>{" "}
           page to add some items to your cart
         </p>
-      </div>
+      </Column>
     );
   }
   return (
-    <div className="mt-12">
+    <Column className="gap-24px">
       {cartItems.map((item, index) => (
-        <div key={index} className="shadow-light rounded-2xl">
-          <CartItemBox cartItem={item} variant="large" />
-        </div>
+        <CartItemBox key={index} cartItem={item} variant="large" />
       ))}
-      <CartPaymentDetails />
-      <Link href={{ pathname: "/order/checkout" }}>
-        <FilledButton>Procced to checkout</FilledButton>
-      </Link>
-    </div>
+    </Column>
   );
 }
