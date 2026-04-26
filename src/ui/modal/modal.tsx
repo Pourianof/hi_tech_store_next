@@ -13,6 +13,7 @@ import {
 import { createPortal } from "react-dom";
 import { useBackBtnHandler } from "../hooks/useBackBtnHandler";
 import { MODAL_CONTAINER_ID } from "./modalContainer";
+import { twMerge } from "tailwind-merge";
 
 interface IModalContextState {
   isBackBtnHandled: boolean;
@@ -126,12 +127,11 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
   return createPortal(
     <ModalContext.Provider value={{ isBackBtnHandled: isBackBtnHandled }}>
       <div
-        className={
-          "fixed inset-0 bg-black/50 flex z-50 " +
-          overlayClassName +
-          " " +
-          (className ?? "")
-        }
+        className={twMerge(
+          "fixed inset-0 bg-black/50 flex z-50 ",
+          overlayClassName,
+          className ?? "",
+        )}
       >
         <div
           className="absolute top-0 left-0 right-0 bottom-0 z-10"
@@ -142,13 +142,12 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
         ></div>
         <div
           ref={containerRef}
-          className={
-            "bg-white z-20 " +
-            (!noPadding ? " p-6 " : "") +
-            _containerClassName +
-            " " +
-            (containerClassName ?? "")
-          }
+          className={twMerge(
+            "bg-white z-20",
+            !noPadding ? "p-6 " : "",
+            _containerClassName,
+            containerClassName ?? "",
+          )}
           style={
             hasOverflowed
               ? {
