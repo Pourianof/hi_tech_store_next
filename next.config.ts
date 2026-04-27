@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10MB",
+    },
+  },
   turbopack: {
     rules: {
       "./src/assets/**/*.svg": {
