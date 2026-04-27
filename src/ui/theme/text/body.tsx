@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
+import React, { HTMLElementType, ReactNode } from "react";
 import { ClassNamesBySizes, Sizes } from "../helpers/size";
+import { twMerge } from "tailwind-merge";
 
 const bodyStyle: ClassNamesBySizes = {
   xl: "text-body-xl font-light",
@@ -9,12 +10,21 @@ const bodyStyle: ClassNamesBySizes = {
   xs: "text-body-xs font-light",
 };
 
-type Props = { children: ReactNode; size: Sizes; className?: string };
+type Props = {
+  children: ReactNode;
+  size: Sizes;
+  className?: string;
+  as?: HTMLElementType;
+};
 
-export function Body({ children, size, className }: Props) {
-  return (
-    <div className={[bodyStyle[size], className ?? ""].join(" ")}>
-      {children}
-    </div>
+export function Body({ children, size, className, as }: Props) {
+  const cn = twMerge(bodyStyle[size], className ?? "");
+
+  return React.createElement(
+    as ?? "div",
+    {
+      className: cn,
+    },
+    children,
   );
 }
