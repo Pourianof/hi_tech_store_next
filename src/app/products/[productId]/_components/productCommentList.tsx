@@ -3,12 +3,15 @@ import { ProductScore } from "@/app/_components/productScore";
 import { Comment } from "@/core/models/comment";
 import { formatDate } from "@/lib/helpers/formatDate";
 import { getCommentsOfProductAction } from "@/lib/server_actions/productActions";
+import { OutlinedButton } from "@/ui/form/AppButtons";
+import Icon from "@/ui/icons/icon";
 import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
+import { Body } from "@/ui/theme/text/body";
+import { Caption } from "@/ui/theme/text/caption";
+import { H4, H6 } from "@/ui/theme/text/headers";
 import { useQuery } from "@tanstack/react-query";
 import { useProduct } from "../_contexts/productContext";
-import { Row } from "@/ui/layouts/row";
-import Icon from "@/ui/icons/icon";
-import { H4 } from "@/ui/theme/text/headers";
 
 export function ProductCommentList() {
   const product = useProduct();
@@ -32,15 +35,7 @@ export function ProductCommentList() {
       <Column center className="grow">
         <Column className="p-4 border-gray-neutral-ed bg-gray-neutral-f9">
           <H4>Problem to loading</H4>
-          <button
-            className="border rounded-lg px-2 py-1"
-            onClick={(e) => {
-              e.preventDefault();
-              refetch();
-            }}
-          >
-            Try again
-          </button>
+          <OutlinedButton onClick={refetch}>Try again</OutlinedButton>
         </Column>
       </Column>
     );
@@ -98,21 +93,25 @@ function CommentItem({ comment }: { comment: Comment }) {
       key={comment.rate}
       className="border border-gray-neutral-ed bg-gray-neutral-f9 p-3 rounded-lg space-y-2"
     >
-      <div className="flex gap-2 items-center">
-        <div className="rounded-full w-10 h-10 bg-gray-700"></div>
-        <div className="flex flex-col">
-          <span className="font-semibold">
+      <Row className="gap-4px" centerV>
+        <div className="rounded-full w-40px h-40px bg-gray-700"></div>
+        <Column>
+          <H6>
             {comment.user.firstName} {comment.user.lastName}
-          </span>
-          <span className="text-xs text-gray-neutral-9e">{formattedDate}</span>
-        </div>
+          </H6>
+          <Caption size="md" className="text-gray-neutral-9e">
+            {formattedDate}
+          </Caption>
+        </Column>
         <div className="text-white ms-auto bg-blue-900 rounded-lg py-1 px-1">
           {!!comment.rate && (
             <ProductScore score={comment.rate} className="fill-white" />
           )}
         </div>
-      </div>
-      <p>{comment.text}</p>
+      </Row>
+      <Body as="p" size="md">
+        {comment.text}
+      </Body>
     </div>
   );
 }

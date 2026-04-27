@@ -2,6 +2,7 @@ import { BrandModel } from "./brand";
 
 export interface Product {
   productId: number;
+  brandModel: BrandModel;
   title: string;
   discount?: number;
   averageScore: number;

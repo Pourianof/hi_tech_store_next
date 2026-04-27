@@ -1,6 +1,7 @@
 "use client";
 import { ReactNode } from "react";
 import { Controller } from "react-hook-form";
+import { twMerge } from "tailwind-merge";
 
 interface RadioButtonInputProps {
   name: string;
@@ -8,6 +9,7 @@ interface RadioButtonInputProps {
   onSelect?: (options: { name: string; value: unknown }) => void;
   onChange?: (state: boolean) => void;
   size?: "big" | "normal";
+  disabled?: boolean;
 }
 
 interface RadioButtonProps extends RadioButtonInputProps {
@@ -21,7 +23,13 @@ export function RadioButton({
   ...props
 }: RadioButtonProps) {
   return (
-    <label className={"flex " + (containerClassName ?? "")}>
+    <label
+      className={twMerge(
+        "flex",
+        props.disabled ? "text-neutral-500" : "",
+        containerClassName ?? "",
+      )}
+    >
       <div className="self-baseline">
         <RadioButtonInput {...props} />
       </div>
@@ -35,10 +43,12 @@ function RadioButtonInput({
   onSelect,
   size,
   value,
+  disabled,
 }: RadioButtonInputProps) {
   return (
     <>
       <input
+        disabled={disabled}
         hidden
         className="
                 [&:checked+span]:border-primary-blue-400 [&:checked+span]:before:block 
@@ -50,7 +60,8 @@ function RadioButtonInput({
         }}
       />
       <span
-        className={`
+        className={twMerge(
+          `
                 align-middle me-1 inline-block relative items-center border-[2px] ${
                   size == "normal" ? "w-[16px] " : "w-[20px] "
                 }
@@ -74,7 +85,9 @@ function RadioButtonInput({
                 after:animate-ping
                 after:[animation-iteration-count:1]
                 after:[animation-fill-mode:forwards]
-                `}
+                `,
+          disabled ? "border-neutral-500" : "",
+        )}
       ></span>
     </>
   );

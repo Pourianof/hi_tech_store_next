@@ -9,6 +9,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { twMerge } from "tailwind-merge";
 
 type ISliderContext = {
   containerRef: EmblaViewportRefType;
@@ -17,11 +18,22 @@ type ISliderContext = {
 
 const SliderContext = createContext<ISliderContext>({} as ISliderContext);
 
-function Slider(props: { children: ReactNode }) {
-  const [sliderRef, emblaApi] = useEmblaCarousel();
+function Slider(props: {
+  children: ReactNode;
+  disableElasticSliding?: boolean;
+}) {
+  const [emblaRef, emblaApi] = useEmblaCarousel();
+
+  // useEffect(() => {
+  //   const engine = emblaApi?.internalEngine();
+
+  //   engine?.options;
+  //   engine?.scrollBounds.constrain(true);
+  // }, [emblaApi]);
+
   return (
     <section className="flex-1 overflow-hidden">
-      <SliderContext.Provider value={{ emblaApi, containerRef: sliderRef }}>
+      <SliderContext.Provider value={{ emblaApi, containerRef: emblaRef }}>
         {props.children}
       </SliderContext.Provider>
     </section>
@@ -61,7 +73,7 @@ function sliderButtonProvider({ isForward }: { isForward: boolean }) {
     const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
       setBtnDisabled(
         (isForward && !emblaApi.canScrollNext()) ||
-          (!isForward && !emblaApi.canScrollPrev())
+          (!isForward && !emblaApi.canScrollPrev()),
       );
     }, []);
 
@@ -74,9 +86,12 @@ function sliderButtonProvider({ isForward }: { isForward: boolean }) {
 
     return (
       <div
-        className={`${props.className} ${
-          btnDisabled ? "text-gray-400 " + (props.inActiveClassName ?? "") : ""
-        }`}
+        className={twMerge(
+          props.className,
+          btnDisabled
+            ? twMerge("text-gray-400", props.inActiveClassName ?? "")
+            : "",
+        )}
         onClick={onButtonClick}
       >
         {props.children}

@@ -5,29 +5,35 @@ import { ProductCommentForm } from "./productCommentForm";
 import { ProductCommentList } from "./productCommentList";
 import { auth } from "../../../../../auth";
 import Link from "next/link";
+import { H5 } from "@/ui/theme/text/headers";
+import { Body } from "@/ui/theme/text/body";
+import { OutlinedButton } from "@/ui/form/AppButtons";
+import { Row } from "@/ui/layouts/row";
 
 export async function ProductComments() {
   const session = await auth();
 
   return (
     <div id="comments">
-      <h3 className="text-2xl font-semibold">Comments</h3>
-      <div className="flex gap-4">
+      <H5>Comments</H5>
+      <Row className="gap-16px">
         {!!session ? (
-          <ProductCommentForm>
-            <Column className="gap-2.5 min-w-[30%]">
-              <p>leave your comments here for other customers</p>
-              <ControlledStarRating fieldName="rate" />
-              <ErrorLabeledInput
-                filedName="text"
-                placeholder="Comment about product..."
-                type="text"
-              />
-              <button className="border border-blue-600 text-blue-500 py-2 w-full text-center">
-                Comment
-              </button>
-            </Column>
-          </ProductCommentForm>
+          <div className="w-1/4">
+            <ProductCommentForm>
+              <Column className="gap-2.5">
+                <Body size="lg" as="p">
+                  leave your comments here for other customers
+                </Body>
+                <ControlledStarRating fieldName="rate" />
+                <ErrorLabeledInput
+                  filedName="text"
+                  placeholder="Comment about product..."
+                  type="text"
+                />
+                <OutlinedButton>Comment</OutlinedButton>
+              </Column>
+            </ProductCommentForm>
+          </div>
         ) : (
           <Column
             centerH
@@ -46,7 +52,7 @@ export async function ProductComments() {
         )}
 
         <ProductCommentList />
-      </div>
+      </Row>
     </div>
   );
 }

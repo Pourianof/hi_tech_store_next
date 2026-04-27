@@ -15,15 +15,17 @@ type Props = {
   size: Sizes;
   className?: string;
   as?: HTMLElementType;
+  style?: React.HTMLAttributes<HTMLDivElement>["style"];
 };
 
-export function Body({ children, size, className, as }: Props) {
+export function Body({ children, size, className, as, style }: Props) {
   const cn = twMerge(bodyStyle[size], className ?? "");
 
   return React.createElement(
     as ?? "div",
     {
       className: cn,
+      style,
     },
     children,
   );

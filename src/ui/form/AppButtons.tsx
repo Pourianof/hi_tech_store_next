@@ -125,23 +125,24 @@ export function OutlinedButton({
       className={className}
       type={type}
       sx={{
-        border: `1px solid ${colors.active}`,
+        textTransform: "none",
+        border: `2px solid ${colors.active} `,
         color: colors.active,
         borderRadius: "var(--radius-md)",
         paddingY: "var(--spacing-8px)",
         paddingX: "var(--spacing-16px)",
         ":hover": {
-          border: `1px solid ${colors.hover}`,
+          border: `2px solid ${colors.hover}`,
           color: colors.hover,
         },
         ":disabled": {
-          border: `1px solid ${colors.disabled}`,
+          border: `2px solid ${colors.disabled}`,
           color: colors.disabled,
         },
         ...styles,
       }}
     >
-      {children}
+      <span className=" text-button-lg">{children}</span>
     </Button>
   );
 }

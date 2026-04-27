@@ -1,4 +1,5 @@
 import { ProductDto } from "../Dtos/ProductDto";
+import { BrandModel } from "./brand";
 import {
   Product,
   ProductColor,
@@ -16,6 +17,7 @@ export class ProductModel implements Product {
     const productModel = new ProductModel(
       productData.productId,
       productData.title,
+      productData.brandModel,
       productData.properties,
       productData.averageScore,
       productData.scoreCounts,
@@ -39,6 +41,7 @@ export class ProductModel implements Product {
     const productModel = new ProductModel(
       productData.productId,
       productData.title,
+      productData.brandModel,
       productData.properties ?? [],
       productData.averageScore,
       productData.scoreCounts,
@@ -58,6 +61,7 @@ export class ProductModel implements Product {
   private constructor(
     public productId: number,
     public title: string,
+    public brandModel: BrandModel,
     public properties: ProductProperty[],
     public averageScore: number,
     public scoreCounts: number,

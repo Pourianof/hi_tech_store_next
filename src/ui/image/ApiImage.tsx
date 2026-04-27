@@ -1,25 +1,11 @@
 import { CustomImage } from "./customImage";
+import { getApiImageSrc } from "./getApiImageSrc";
 import { SafeImage } from "./safeImage";
 export function ApiImage({
   src,
   ...props
 }: Parameters<typeof SafeImage>[0] & { serverMode?: boolean }) {
-  let _src: string | undefined;
-  if (src) {
-    try {
-      new URL(src);
-      _src = src;
-    } catch {
-      const apiOrigin = "http://localhost:5108";
-      const [main, id] = src.split("?");
-      const url = new URL(apiOrigin);
-      url.pathname = main;
-      if (id) {
-        url.search = id;
-      }
-      _src = url.href;
-    }
-  }
+  const _src = getApiImageSrc(src);
 
   return props.serverMode ? (
     <CustomImage src={_src!} {...props} />

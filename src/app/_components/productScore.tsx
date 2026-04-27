@@ -1,5 +1,6 @@
 import Icon from "@/ui/icons/icon";
-import { H6 } from "@/ui/theme/text/headers";
+import { Row } from "@/ui/layouts/row";
+import { Caption } from "@/ui/theme/text/caption";
 
 export function ProductScore({
   score,
@@ -9,12 +10,12 @@ export function ProductScore({
   className?: string;
 }) {
   return (
-    <span className="space-x-1 flex items-center">
-      <Icon
-        className={`fill-primary-blue-06 ${className ?? ""}`}
-        name="filled_star"
-      />
-      <H6 className="text-primary-blue-06">{`${score.toFixed(1)}`}</H6>
-    </span>
+    <Row
+      className="gap-4px bg-primary-blue-06 text-white px-8px py-4px rounded-sm"
+      centerV
+    >
+      <Icon className={`${className ?? "fill-white"}`} name="filled_star" />
+      <Caption size="md">{`${score.toFixed(1)}`}</Caption>
+    </Row>
   );
 }

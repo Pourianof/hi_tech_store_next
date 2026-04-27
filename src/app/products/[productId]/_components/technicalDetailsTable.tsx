@@ -3,12 +3,13 @@ import {
   ProductComponent,
   ProductProperty,
 } from "@/core/models/product";
+import { Body } from "@/ui/theme/text/body";
 import React from "react";
 
 export function TechnicalDetailsTable({ product }: { product: Product }) {
   return (
     <table className="w-full" id="details">
-      <caption className=" font-semibold text-2xl text-left">
+      <caption className=" font-semibold text-2xl text-left mb-12px">
         Technical Details
       </caption>
 
@@ -27,7 +28,9 @@ function ProductComponentsList({
     return (
       <tbody key={component.componentTypeId} className="text-gray-neutral-71">
         <tr>
-          <th className="text-start">{component.name}</th>
+          <th className="text-start text-h6 font-semibold text-gray-neutral-50">
+            {component.name}
+          </th>
         </tr>
         {component.models.map((model) => (
           <ProductPropertiesList
@@ -67,8 +70,10 @@ function ProductPropertiesList({
 function ProductProeprtyRow({ property }: { property: ProductProperty }) {
   return (
     <tr className="odd:bg-gray-neutral-f9 " key={property.propertyId}>
-      <td className="p-2">{property.name}</td>
-      <td className="p-2">{property.value}</td>
+      <td className="p-2 text-h6">{property.name}</td>
+      <td className="p-2">
+        <Body size="md">{property.value}</Body>
+      </td>
     </tr>
   );
 }

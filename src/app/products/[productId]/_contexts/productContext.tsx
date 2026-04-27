@@ -1,6 +1,7 @@
 "use client";
 
 import { Product } from "@/core/models/product";
+import { ProductModel } from "@/core/models/productModel";
 import { createContext, ReactNode, useContext } from "react";
 
 const ProductContext = createContext<Product>({} as Product);
@@ -12,7 +13,7 @@ export function useProduct() {
     throw new Error("No product exposed by context at upper tree");
   }
 
-  return product;
+  return ProductModel.CreateWith(product);
 }
 
 export function ProductProvider({

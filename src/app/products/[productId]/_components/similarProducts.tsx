@@ -1,6 +1,7 @@
 import { ProductItem } from "@/app/_components/productItem";
 import { productActions } from "@/ui/server_actions_wrapper/productActions";
 import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
+import { H5 } from "@/ui/theme/text/headers";
 
 export async function SimilarProducts() {
   const productsResult = await productActions.getProducts();
@@ -15,7 +16,7 @@ export async function SimilarProducts() {
 
   return (
     <div id="similar-products">
-      <h3 className="my-2 font-semibold text-xl">Similar Products</h3>
+      <H5>Similar Products</H5>
       <Slider>
         <SliderContainer className="gap-2 items-stretch last:me-5">
           {products.map((product) => (

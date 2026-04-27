@@ -1,3 +1,4 @@
+import { BrandModel } from "../models/brand";
 import {
   ProductComponent,
   ProductMedia,
@@ -17,6 +18,7 @@ export type ProductMediaDto = ProductMedia;
 export interface ProductDto {
   productId: number;
   title: string;
+  brandModel: BrandModel;
   description?: string;
   authorId?: string | number;
   properties?: ProductProperty[];

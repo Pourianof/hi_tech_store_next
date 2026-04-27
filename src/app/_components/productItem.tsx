@@ -8,6 +8,7 @@ import { DiscountLabel } from "./discountLabel";
 import { ProductScore } from "./productScore";
 import { ProductVariation } from "@/core/models/product";
 import { Body } from "@/ui/theme/text/body";
+import { Row } from "@/ui/layouts/row";
 
 export function ProductItem({ product }: { product: ProductModel }) {
   const mainVariation = product.mainVariation!;
@@ -42,20 +43,20 @@ export function ProductItem({ product }: { product: ProductModel }) {
             </Body>
           </Column>
         </Link>
-        <div className="flex justify-between my-2 mt-auto">
+        <Row className="justify-between my-2 mt-auto" centerV>
           {mainVariation.hasDiscount ? (
             <Column>
               <Caption
                 size="md"
                 className="text-gray-neutral-71 line-through"
               >{`$${mainVariation.price}`}</Caption>
-              <span>{`$${mainVariation.finalPrice}`}</span>
+              <Body size="lg">{`$${mainVariation.finalPrice}`}</Body>
             </Column>
           ) : (
-            <span>{`$${mainVariation.price}`}</span>
+            <Body size="lg">{`$${mainVariation.price}`}</Body>
           )}
           <ProductScore score={product.averageScore} />
-        </div>
+        </Row>
       </Column>
     </Card>
   );

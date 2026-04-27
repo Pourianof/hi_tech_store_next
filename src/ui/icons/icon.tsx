@@ -52,6 +52,7 @@ import CircularLeftArrow from "@/assets/tech_heim/arrow-left.svg";
 import EllipsisVertical from "@/assets/tech_heim/ellipsis-vertical.svg";
 import Power from "@/assets/tech_heim/power.svg";
 import Eye from "@/assets/tech_heim/eye.svg";
+import VideoPlay from "@/assets/tech_heim/video_play.svg";
 
 import { createContext, useContext } from "react";
 
@@ -110,6 +111,7 @@ const ICONS = {
   dotten_menu: EllipsisVertical,
   turn_off: Power,
   eye: Eye,
+  video_play: VideoPlay,
 };
 
 export type IconNames = keyof typeof ICONS;

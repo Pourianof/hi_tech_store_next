@@ -11,24 +11,35 @@ import { useEffect, useState } from "react";
 import { useProduct } from "../_contexts/productContext";
 import { useCart } from "@/ui/contexts/cart/cartContext";
 import { useActiveVariation } from "../_contexts/variationContext";
+import { Card } from "@/ui/theme/card";
+import { H5, H6 } from "@/ui/theme/text/headers";
+import { ProductVariationModel } from "@/core/models/productModel";
+import { priceFormatter } from "@/ui/helpers/priceFormatter";
+import { Body } from "@/ui/theme/text/body";
+import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
+import { OutlinedButton } from "@/ui/form/AppButtons";
+import { Overline } from "@/ui/theme/text/overline";
 
 const PAYMENT_CHANNEL = "payment-channel";
 export function PaymentBox() {
   return (
-    <div
+    <Card
+      noHoverReaction
       className="
         fixed bottom-0 left-0 right-0
-        md:w-1/2 md:static
-        shadow-light space-y-2 md:bg-white bg-gray-neutral-f6 z-10
+        desktop:w-[25%]
+        shadow-light space-y-2 desktop:bg-white bg-gray-neutral-f6 z-10
         p-5
         md:rounded-xl rounded-t-xl
+        desktop:sticky desktop:top-20
         "
     >
       <ChannelProvider channelIdentifier={PAYMENT_CHANNEL}>
         <MainPayment />
         <PaymentOptionsBox />
       </ChannelProvider>
-    </div>
+    </Card>
   );
 }
 
@@ -53,7 +64,7 @@ function MainPayment() {
   }, [channel]);
 
   return (
-    <div>
+    <Column>
       <div
         className={
           "fixed w-full h-full left-0 top-0 md:hidden bg-black/40 " +
@@ -64,48 +75,54 @@ function MainPayment() {
           setShowMode(false);
         }}
       ></div>
-      <div
-        className={`md:translate-0 md:static rounded-none transition-transform fixed left-0 right-0 bottom-0 z-20 md:bg-transparent md:p-0 p-8 bg-gray-neutral-f6 ${
+      <Column
+        className={`gap-16px md:translate-0 md:static rounded-none transition-transform fixed left-0 right-0 bottom-0 z-20 md:bg-transparent md:p-0 p-8 bg-gray-neutral-f6 ${
           showMode ? "translate-y-0 rounded-t-2xl" : "translate-y-full"
         }`}
       >
         <PaymentPrice />
-        <div className="flex flex-col">
-          <RadioButton name="payment" label="Pay now" />
-          <RadioButton
-            name="payment"
-            label={
-              <div className="flex flex-col">
-                <span>Buy in installments</span>
-                <span className="text-sm">choose your installments period</span>
-              </div>
-            }
-          />
+        <Column className="gap-8px">
+          <Column>
+            <RadioButton
+              disabled
+              name="payment"
+              label={<Body size="md">Buy in installments</Body>}
+            />
+            <RadioButton
+              disabled
+              name="payment"
+              label={
+                <Column>
+                  <Body size="md">Buy in installments</Body>
+                  <Body size="xs" className="text-gray-neutral-44">
+                    choose your installments period
+                  </Body>
+                </Column>
+              }
+            />
+          </Column>
 
-          <div className="flex justify-evenly cursor-default">
+          <Row className="justify-evenly cursor-default">
             {[3, 6, 12, 18].map((index) => {
               return (
-                <span
+                <Column
                   key={index}
-                  className="flex text-center flex-col border p-1 text-gray-neutral-9e border-gray-neutral-9e rounded"
+                  className="text-center w-[60px] border p-1 border-gray-neutral-ed rounded"
                 >
-                  <span>{index}</span>
-                  <span>Months</span>
-                </span>
+                  <Body size="lg" className="text-gray-neutral-44">
+                    {index}
+                  </Body>
+                  <Overline size="sm" className="text-gray-neutral-71">
+                    Months
+                  </Overline>
+                </Column>
               );
             })}
-          </div>
-        </div>
+          </Row>
+        </Column>
         <div className="flex md:flex-col gap-4 items-stretch ">
-          <Button
-            variant="outlined"
-            className="grow py-2"
-            sx={{
-              textTransform: "none",
-              paddingY: "0.7rem",
-            }}
-            onClick={(e) => {
-              e.preventDefault();
+          <OutlinedButton
+            onClick={() => {
               addProductToCart({
                 amount: 1,
                 product,
@@ -114,35 +131,22 @@ function MainPayment() {
             }}
           >
             Add to cart
-          </Button>
-          <Button
-            variant="contained"
-            className="grow"
-            sx={{
-              textTransform: "none",
-              backgroundColor: "var(--color-primary-blue-0c)",
-              paddingY: "0.7rem",
-            }}
-          >
-            Buy now
-          </Button>
+          </OutlinedButton>
         </div>
-      </div>
-    </div>
+      </Column>
+    </Column>
   );
 }
 
 function PaymentPrice({ mode = "row" }: { mode?: "row" | "col" }) {
-  const product = useProduct();
-  const {
-    activeVariation: { price },
-  } = useActiveVariation();
-  product.discount = 12;
-  const hasDiscount = !!product.discount;
-  const paymenyPrice = price - (price * (product.discount ?? 0)) / 100;
+  const { activeVariation } = useActiveVariation();
+  const variation = activeVariation as ProductVariationModel;
 
-  const formattedPaymentPrice = paymenyPrice.toFixed(2);
-  const formmatedMainPrice = price.toFixed(2);
+  const hasDiscount = !!variation.hasDiscount;
+  const paymenyPrice = variation.finalPrice;
+
+  const formattedPaymentPrice = priceFormatter(paymenyPrice);
+  const formmatedMainPrice = priceFormatter(variation.price);
 
   return (
     <div
@@ -150,24 +154,26 @@ function PaymentPrice({ mode = "row" }: { mode?: "row" | "col" }) {
         mode == "col" ? "flex-col-reverse" : ""
       }`}
     >
-      <div className="flex flex-col">
-        <span className="font-semibold text-2xl">
-          $ {formattedPaymentPrice}
-        </span>
+      <Column>
+        <H5>$ {formattedPaymentPrice}</H5>
         {hasDiscount && (
-          <span className="text-sm hidden md:visible text-gray-neutral-71">
+          <Body size="sm" className="hidden md:visible text-gray-neutral-71">
             last price ${formmatedMainPrice}
-          </span>
+          </Body>
         )}
-      </div>
+      </Column>
       {hasDiscount && (
-        <div className="font-semibold text-orange-600 text-xl">
-          <span className="text-sm me-2 text-gray-neutral-71 line-through">
+        <Column className="font-semibold text-xl">
+          <Body size="xs" className="me-2 text-gray-neutral-71 line-through">
             $ {formmatedMainPrice}
-          </span>
-          <Icon className="text-2xl" name="discount" />
-          <span>-{product.discount}%</span>
-        </div>
+          </Body>
+          <Row>
+            <Icon className="text-2xl text-orange-600" name="discount" />
+            <H6 className="text-secondary-f4">
+              -{priceFormatter(variation.discountPercentage ?? 0)}%
+            </H6>
+          </Row>
+        </Column>
       )}
     </div>
   );
