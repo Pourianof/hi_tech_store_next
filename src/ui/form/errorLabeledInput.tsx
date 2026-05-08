@@ -27,13 +27,9 @@ export function ErrorLabeledInput(props: {
     useFormContext();
 
   useEffect(() => {
-    if (props.initValue) {
+    if (props.initValue != undefined) {
       setValue(props.filedName, props.initValue);
     }
-
-    return () => {
-      resetField(props.filedName);
-    };
   }, [setValue, props.filedName, props.initValue, resetField]);
 
   useEffect(
@@ -70,7 +66,6 @@ export function ErrorLabeledInput(props: {
             ? {}
             : { required: `${captalize(props.filedName)} field is required` }),
           ...props.validationOptions,
-          onChange: (event) => props.onChange?.(event.target.value as string),
         } as RegisterOpts)}
       />
       <ErrorMessageLabel fieldName={props.filedName} name={props.name} />
