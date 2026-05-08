@@ -20,7 +20,7 @@ import {
 } from "react-hook-form";
 import toast from "react-hot-toast";
 import { NoContextDefinedError } from "../errors/NoContextDefinedError";
-import { FormHelper } from "./rhf/formHelper";
+import { useRhfDevTool } from "rhf-devtools";
 
 interface IFormSubmitterContext {
   submit: VoidFunction;
@@ -53,6 +53,7 @@ export type FormHandlers = {
 export function StatefulForm(
   props: {
     children: ReactNode;
+    formName?: string;
     shouldUnregister?: boolean;
     defaultValues?: Record<string, unknown>;
     className?: string;
@@ -63,6 +64,8 @@ export function StatefulForm(
     defaultValues: props.defaultValues,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useRhfDevTool(methods, props.formName);
 
   async function submitHandler(
     data: FieldValues,
@@ -110,7 +113,6 @@ export function StatefulForm(
       <FormSubmitterContext.Provider
         value={{ submit: submitter, isSubmitting }}
       >
-        {process.env.NODE_ENV == "development" && <FormHelper />}
         <form
           className={["flex flex-col gap-2.5", props.className ?? ""].join(" ")}
           onSubmit={submitter}

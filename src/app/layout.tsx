@@ -15,6 +15,7 @@ import { RoutePath } from "./_components/routePath";
 import { Wrapper } from "./_shared/wrapper";
 import "./_styles/global.css";
 import { CCQueryClientProvider } from "./dashboard/categories/_components/queryClientProvider";
+import { RhfDevToolsClient } from "./_components/rhfDevToolsClient";
 
 export default async function MainLayout(props: {
   children: ReactNode;
@@ -28,33 +29,35 @@ export default async function MainLayout(props: {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <body>
-        {isServerHealthy ? (
-          <>
-            <SessionProvider session={await auth()}>
-              <CCQueryClientProvider>
-                <CartHandlerProvider>
-                  <CategorySSInjector>
-                    <Header />
-                    <Wrapper>
-                      <RoutePath />
-                    </Wrapper>
-                    {props.children}
-                    {props.auth}
-                    <DashboardLinkButton />
-                  </CategorySSInjector>
-                  <Footer />
-                </CartHandlerProvider>
-              </CCQueryClientProvider>
-            </SessionProvider>
-            <ModalContainer />
-            <Toaster position="bottom-center" gutter={10} />
-          </>
-        ) : (
-          <FailedBox
-            title="We are down"
-            message="Server is not accessible for now. We will happy to see you soon some later"
-          />
-        )}
+        <RhfDevToolsClient>
+          {isServerHealthy ? (
+            <>
+              <SessionProvider session={await auth()}>
+                <CCQueryClientProvider>
+                  <CartHandlerProvider>
+                    <CategorySSInjector>
+                      <Header />
+                      <Wrapper>
+                        <RoutePath />
+                      </Wrapper>
+                      {props.children}
+                      {props.auth}
+                      <DashboardLinkButton />
+                    </CategorySSInjector>
+                    <Footer />
+                  </CartHandlerProvider>
+                </CCQueryClientProvider>
+              </SessionProvider>
+              <ModalContainer />
+              <Toaster position="bottom-center" gutter={10} />
+            </>
+          ) : (
+            <FailedBox
+              title="We are down"
+              message="Server is not accessible for now. We will happy to see you soon some later"
+            />
+          )}
+        </RhfDevToolsClient>
       </body>
     </html>
   );

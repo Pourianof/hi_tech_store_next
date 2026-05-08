@@ -12,6 +12,7 @@ import { BrandSelectorInput } from "./brandSelectorInput";
 import { ProductCategorySelector } from "./ProductCategorySelector";
 import { ProductVariationsList } from "./productVariationsList";
 import { zodToRhsError } from "@/ui/form/rhf/zodToRhsError";
+import { LabeldInput } from "@/ui/form/inputs";
 
 export function ProductForm(props: {
   onFormSubmitted: (submittedProduct: ProductDto) => void;
@@ -60,18 +61,21 @@ export function ProductForm(props: {
         Register new product
       </h3>
       <StatefulForm
+        formName="product-form"
         onSubmit={handleSubmission}
         onSubmitionSuccessful={(res) => {
           props.onFormSubmitted(res as unknown as ProductDto);
         }}
         defaultValues={{ variations: [{}] }}
       >
-        <label>Title</label>
-        <ErrorLabeledInput
-          filedName="title"
-          placeholder="Product title"
-          type="text"
-        />
+        <LabeldInput label="Title">
+          <ErrorLabeledInput
+            filedName="title"
+            placeholder="Product title"
+            type="text"
+          />
+        </LabeldInput>
+
         <label>Description</label>
         <ErrorLabeledInput
           filedName="description"
