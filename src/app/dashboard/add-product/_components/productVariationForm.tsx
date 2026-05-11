@@ -1,5 +1,4 @@
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
-import { FilePreviewList } from "./productMediaSelector";
 import { useColors } from "./_hooks/useColors";
 import { ColorInput } from "@/ui/form/colorInput";
 import { Controller } from "react-hook-form";
@@ -9,6 +8,7 @@ import { Row } from "@/ui/layouts/row";
 import { Column } from "@/ui/layouts/column";
 import { LabeldInput } from "@/ui/form/inputs";
 import { useFieldPath } from "@/ui/form/contexts/FieldnamePathContext";
+import { FilePreviewList } from "./mediaSelector/FilePreviewList";
 
 export function ProductVariationForm({
   index,

@@ -1,5 +1,5 @@
 import { getSingleProduct } from "@/api/productApi";
-import { ProductMediaSlider } from "./_components/productMediaSlider";
+import { ProductMediaFixedList } from "./_components/productMediaFixedList";
 import { ProductOverview } from "./_components/productOverview";
 import { ProductProvider } from "./_contexts/productContext";
 import { ProductPageParts } from "./_components/productPageParts";
@@ -30,7 +30,7 @@ export default async function ProductItemPage({
         <ProductProvider product={product}>
           <Row className="items-start gap-24px">
             <div className="w-[40%]">
-              <ProductMediaSlider />
+              <ProductMediaFixedList />
             </div>
             <div className="grow">
               <ProductOverview />

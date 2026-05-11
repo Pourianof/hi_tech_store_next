@@ -1,4 +1,4 @@
-export function getApiImageSrc(src?: string) {
+export function getApiSrc(src?: string) {
   let _src: string | undefined;
   if (src) {
     try {
