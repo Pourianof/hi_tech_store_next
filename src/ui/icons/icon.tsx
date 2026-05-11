@@ -1,124 +1,88 @@
 "use client";
-import SearchIcon from "@/assets/tech_heim/search.svg";
-import OrderBasketIcon from "@/assets/tech_heim/empty_cart.svg";
-import UserIcon from "@/assets/tech_heim/user.svg";
-import UserEditIcon from "@/assets/tech_heim/user-edit.svg";
-import Profile from "@/assets/tech_heim/profile-circle.svg";
-import Dollor from "@/assets/tech_heim/dollar-circle.svg";
-import HeartOutline from "@/assets/tech_heim/heart_outline.svg";
-import Gift from "@/assets/tech_heim/gift.svg";
-import Security from "@/assets/tech_heim/security-safe.svg";
-import Bell from "@/assets/tech_heim/notification.svg";
-import Support24 from "@/assets/tech_heim/24-support.svg";
-import Exit from "@/assets/tech_heim/logout.svg";
-import Edit from "@/assets/tech_heim/edit.svg";
-import Phone from "@/assets/tech_heim/call.svg";
-import Direct from "@/assets/tech_heim/direct.svg";
-import Key from "@/assets/tech_heim/key.svg";
-import Home from "@/assets/tech_heim/home-2.svg";
-import Postal from "@/assets/tech_heim/postal.svg";
-import Visa from "@/assets/tech_heim/visa.svg";
-import AmericanExpress from "@/assets/tech_heim/american express.svg";
-import MasterCard from "@/assets/tech_heim/master card.svg";
-import Paypal from "@/assets/tech_heim/paypal.svg";
-import ArrowRight from "@/assets/tech_heim/arrow-right.svg";
-import MessageQuestion from "@/assets/tech_heim/message-question.svg";
-import Copyright from "@/assets/tech_heim/copyright.svg";
-import ArrowRightCircular from "@/assets/tech_heim/right_arrow.svg";
-import LeftArrow from "@/assets/tech_heim/left_arrow.svg";
-import FilledStart from "@/assets/tech_heim/star_outline.svg";
-import CMS from "@/assets/tech_heim/cms.svg";
-import Product from "@/assets/tech_heim/product.svg";
-import Category from "@/assets/tech_heim/category.svg";
-import Trash from "@/assets/tech_heim/trash.svg";
-import Image from "@/assets/tech_heim/image.svg";
-import Stock from "@/assets/tech_heim/shop.svg";
-import Verify from "@/assets/tech_heim/verify.svg";
-import Truck from "@/assets/tech_heim/truck.svg";
-import Discount from "@/assets/tech_heim/discount-shape.svg";
-import Checklist from "@/assets/tech_heim/checklist.svg";
-import Component from "@/assets/tech_heim/component.svg";
-import Close from "@/assets/tech_heim/close.svg";
-import Filter from "@/assets/tech_heim/filter.svg";
-import Back from "@/assets/tech_heim/back.svg";
-import Menu from "@/assets/tech_heim/menu.svg";
-import CircleClose from "@/assets/tech_heim/close-circle.svg";
-import ArrowForward from "@/assets/tech_heim/arrow-forward.svg";
-import Add from "@/assets/tech_heim/add-outline.svg";
-import Remove from "@/assets/tech_heim/remove-outline.svg";
-import Cart from "@/assets/tech_heim/cart-outline.svg";
-import Card from "@/assets/tech_heim/card.svg";
-import CircularLeftArrow from "@/assets/tech_heim/arrow-left.svg";
-import EllipsisVertical from "@/assets/tech_heim/ellipsis-vertical.svg";
-import Power from "@/assets/tech_heim/power.svg";
-import Eye from "@/assets/tech_heim/eye.svg";
-import VideoPlay from "@/assets/tech_heim/video_play.svg";
 
+import dynamic from "next/dynamic";
 import { createContext, useContext } from "react";
 
 const ICONS = {
-  search: SearchIcon,
-  order_basket: OrderBasketIcon,
-  user: UserIcon,
-  user_edit: UserEditIcon,
-  profile: Profile,
-  dollar: Dollor,
-  heart_outline: HeartOutline,
-  gift: Gift,
-  security: Security,
-  bell: Bell,
-  support24: Support24,
-  exit: Exit,
-  edit: Edit,
-  phone: Phone,
-  email: Direct,
-  key: Key,
-  home: Home,
-  postal: Postal,
-  visa: Visa,
-  master_card: MasterCard,
-  american_express: AmericanExpress,
-  paypal: Paypal,
-  arrow_right: ArrowRight,
-  message_question: MessageQuestion,
-  copyright: Copyright,
-  right_arrow_circular: ArrowRightCircular,
-  left_arrow: LeftArrow,
-  filled_star: FilledStart,
-  cms: CMS,
-  product: Product,
-  category: Category,
-  trash: Trash,
-  image: Image,
-  stock: Stock,
-  verify: Verify,
-  guarantee: Verify,
-  truck: Truck,
-  discount: Discount,
-  checklist: Checklist,
-  component: Component,
-  close: Close,
-  filter: Filter,
-  back: Back,
-  menu: Menu,
-  circular_close: CircleClose,
-  arrow_forward: ArrowForward,
-  add: Add,
-  remove: Remove,
-  cart: Cart,
-  card: Card,
-  circular_left_arrow: CircularLeftArrow,
-  dotten_menu: EllipsisVertical,
-  turn_off: Power,
-  eye: Eye,
-  video_play: VideoPlay,
-};
+  search: dynamic(() => import("@/assets/tech_heim/search.svg")),
+  order_basket: dynamic(() => import("@/assets/tech_heim/empty_cart.svg")),
+  user: dynamic(() => import("@/assets/tech_heim/user.svg")),
+  user_edit: dynamic(() => import("@/assets/tech_heim/user-edit.svg")),
+  profile: dynamic(() => import("@/assets/tech_heim/profile-circle.svg")),
+  dollar: dynamic(() => import("@/assets/tech_heim/dollar-circle.svg")),
+  heart_outline: dynamic(() => import("@/assets/tech_heim/heart_outline.svg")),
+  gift: dynamic(() => import("@/assets/tech_heim/gift.svg")),
+  security: dynamic(() => import("@/assets/tech_heim/security-safe.svg")),
+  bell: dynamic(() => import("@/assets/tech_heim/notification.svg")),
+  support24: dynamic(() => import("@/assets/tech_heim/24-support.svg")),
+  exit: dynamic(() => import("@/assets/tech_heim/logout.svg")),
+  edit: dynamic(() => import("@/assets/tech_heim/edit.svg")),
+  phone: dynamic(() => import("@/assets/tech_heim/call.svg")),
+  email: dynamic(() => import("@/assets/tech_heim/direct.svg")),
+  key: dynamic(() => import("@/assets/tech_heim/key.svg")),
+  home: dynamic(() => import("@/assets/tech_heim/home-2.svg")),
+  postal: dynamic(() => import("@/assets/tech_heim/postal.svg")),
+  visa: dynamic(() => import("@/assets/tech_heim/visa.svg")),
+  master_card: dynamic(() => import("@/assets/tech_heim/master card.svg")),
+  american_express: dynamic(
+    () => import("@/assets/tech_heim/american express.svg"),
+  ),
+  paypal: dynamic(() => import("@/assets/tech_heim/paypal.svg")),
+  arrow_right: dynamic(() => import("@/assets/tech_heim/arrow-right.svg")),
+  message_question: dynamic(
+    () => import("@/assets/tech_heim/message-question.svg"),
+  ),
+  copyright: dynamic(() => import("@/assets/tech_heim/copyright.svg")),
+  right_arrow_circular: dynamic(
+    () => import("@/assets/tech_heim/right_arrow.svg"),
+  ),
+  left_arrow: dynamic(() => import("@/assets/tech_heim/left_arrow.svg")),
+  filled_star: dynamic(() => import("@/assets/tech_heim/star_outline.svg")),
+  cms: dynamic(() => import("@/assets/tech_heim/cms.svg")),
+  product: dynamic(() => import("@/assets/tech_heim/product.svg")),
+  category: dynamic(() => import("@/assets/tech_heim/category.svg")),
+  trash: dynamic(() => import("@/assets/tech_heim/trash.svg")),
+  image: dynamic(() => import("@/assets/tech_heim/image.svg")),
+  stock: dynamic(() => import("@/assets/tech_heim/shop.svg")),
+  verify: dynamic(() => import("@/assets/tech_heim/verify.svg")),
+  guarantee: dynamic(() => import("@/assets/tech_heim/verify.svg")),
+  truck: dynamic(() => import("@/assets/tech_heim/truck.svg")),
+  discount: dynamic(() => import("@/assets/tech_heim/discount-shape.svg")),
+  checklist: dynamic(() => import("@/assets/tech_heim/checklist.svg")),
+  component: dynamic(() => import("@/assets/tech_heim/component.svg")),
+  close: dynamic(() => import("@/assets/tech_heim/close.svg")),
+  filter: dynamic(() => import("@/assets/tech_heim/filter.svg")),
+  back: dynamic(() => import("@/assets/tech_heim/back.svg")),
+  menu: dynamic(() => import("@/assets/tech_heim/menu.svg")),
+  circular_close: dynamic(() => import("@/assets/tech_heim/close-circle.svg")),
+  arrow_forward: dynamic(() => import("@/assets/tech_heim/arrow-forward.svg")),
+  add: dynamic(() => import("@/assets/tech_heim/add-outline.svg")),
+  remove: dynamic(() => import("@/assets/tech_heim/remove-outline.svg")),
+  cart: dynamic(() => import("@/assets/tech_heim/cart-outline.svg")),
+  card: dynamic(() => import("@/assets/tech_heim/card.svg")),
+  circular_left_arrow: dynamic(
+    () => import("@/assets/tech_heim/arrow-left.svg"),
+  ),
+  dotten_menu: dynamic(
+    () => import("@/assets/tech_heim/ellipsis-vertical.svg"),
+  ),
+  turn_off: dynamic(() => import("@/assets/tech_heim/power.svg")),
+  eye: dynamic(() => import("@/assets/tech_heim/eye.svg")),
+  video_play: dynamic(() => import("@/assets/tech_heim/video_play.svg")),
+  info_circle: dynamic(() => import("@/assets/tech_heim/info.svg")),
+  camera: dynamic(() => import("@/assets/tech_heim/camera.svg")),
+  loading: dynamic(() => import("@/assets/tech_heim/loading.svg")),
+  arrow: dynamic(() => import("@/assets/tech_heim/arrow.svg")),
+  video: dynamic(() => import("@/assets/tech_heim/video.svg")),
+  play: dynamic(() => import("@/assets/tech_heim/play.svg")),
+} as const;
 
 export type IconNames = keyof typeof ICONS;
 
 export default function Icon(props: { className?: string; name: IconNames }) {
   const iconTheme = useIconTheme();
   const IconComponent = ICONS[props.name];
+
   return (
     <i
       style={{ fontSize: iconTheme.size ? `${iconTheme.size}px` : undefined }}

@@ -43,6 +43,7 @@ export interface ProductMedia {
   productMediaId: number;
   type: "Video" | "Image";
   url: string;
+  thumbnailUrl?: string;
 }
 
 export interface ProductComponent {

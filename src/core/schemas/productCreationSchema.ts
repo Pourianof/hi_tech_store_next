@@ -14,10 +14,20 @@ export const productCreationSchema = z
           inventory: z.coerce.number(),
           media: z
             .array(
-              z.object({
-                file: z.file(),
-                type: z.enum(["image", "video"]),
-              }),
+              z
+                .object({
+                  file: z.file(),
+                  type: z.enum(["image", "video"]),
+                  thumbnail: z.file().optional(),
+                })
+                .refine(
+                  (data) =>
+                    data.type == "image" ||
+                    (data.type == "video" && !!data.thumbnail),
+                  {
+                    error: "you must specify a thumbnail for video media",
+                  },
+                ),
             )
             .min(1),
         }),
@@ -37,17 +47,39 @@ export const productCreationSchema = z
   .transform((base) => {
     // associate variation media metadata based on when medias aggregated in one array
     // to address them by index
-    const variationsMetadata: { isMain: boolean; index: number }[][] = [];
+    const variationsMetadata: {
+      isMain: boolean;
+      index: number;
+      thumbNailIndex?: number;
+    }[][] = [];
+
     const medias = [];
+    const thumbnails: File[] = [];
+
+    let numberOfThumbnails = 0;
     for (let i = 0; i < base.variations.length; i++) {
       const variation = base.variations[i];
 
       const isMainSpecified = false;
+
       variationsMetadata.push(
         variation.media.map((media, idx) => {
+          const isImage = media.type == "image";
+          const currentIndexInTotalMedias = medias.length + idx;
+          const hasThumbnail = !isImage && !!media.thumbnail;
+
+          if (hasThumbnail) {
+            thumbnails.push(media.thumbnail!);
+          }
+
           return {
-            isMain: !isMainSpecified && media.type == "image",
-            index: medias.length + idx,
+            isMain: !isMainSpecified && isImage,
+            index: currentIndexInTotalMedias,
+            ...(hasThumbnail
+              ? {
+                  thumbnailIndex: numberOfThumbnails++,
+                }
+              : {}),
           };
         }),
       );
@@ -65,7 +97,13 @@ export const productCreationSchema = z
       })),
     });
 
-    medias.forEach((media) => formData.append("media", media.file));
+    medias.forEach((media) => {
+      formData.append("media", media.file);
+    });
+
+    thumbnails.forEach((thumb) => {
+      formData.append("thumbnails", thumb);
+    });
 
     return formData;
   });
