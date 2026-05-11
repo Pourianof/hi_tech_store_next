@@ -16,7 +16,7 @@ export function ProductItem({ product }: { product: ProductModel }) {
   const coverImage = mainVariation.getCandidateImageMedia();
 
   return (
-    <Card scaleTransition className="relative">
+    <Card scaleTransition className="relative grow">
       <Column className="gap-16px group">
         {mainVariation.hasDiscount && (
           <DiscountLabel
@@ -34,7 +34,7 @@ export function ProductItem({ product }: { product: ProductModel }) {
               <ProductVariationColorsPallete variations={product.variations} />
             </div>
 
-            <div className="h-px bg-linear-to-r from-transparent via-black opacity-40 to-transparent"></div>
+            <div className="h-px bg-linear-to-r from-transparent via-black group-hover:via-primary-blue-0c opacity-40 to-transparent"></div>
             <Body
               size="md"
               className="line-clamp-1 group-hover:text-primary-blue-06"

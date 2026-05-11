@@ -39,7 +39,7 @@ export default async function ProductListPage({
             </Link>
             <SortProductSelect />
           </div>
-          <div className="p-2 grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
+          <div className="p-2 grid desktop:grid-cols-3 grid-cols-2 gap-5">
             {products.map((product) => (
               <ProductItem key={product.productId} product={product} />
             ))}
