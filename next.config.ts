@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const API_URL = new URL(process.env.API_SERVER_ADDRESS!);
+
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
@@ -23,13 +25,7 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "localhost",
-        pathname: "/images/**",
-      },
-    ],
+    remotePatterns: [API_URL],
     unoptimized: true,
   },
 };
