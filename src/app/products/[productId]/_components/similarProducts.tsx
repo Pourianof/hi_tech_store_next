@@ -3,13 +3,15 @@ import { productActions } from "@/ui/server_actions_wrapper/productActions";
 import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
 import { H5 } from "@/ui/theme/text/headers";
 
-export async function SimilarProducts() {
-  const productsResult = await productActions.getProducts();
+export async function SimilarProducts({ productId }: { productId: number }) {
+  const productsResult = await productActions.getSimilarProductsOf(productId);
+  console.log(productsResult);
   if (productsResult.status == "failed") {
     return <div>Something went wrong</div>;
   }
 
-  const products = productsResult.data.items;
+  const products = productsResult.data;
+
   if (!products.length) {
     return <div>No product exist</div>;
   }

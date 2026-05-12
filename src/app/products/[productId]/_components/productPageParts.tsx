@@ -10,7 +10,7 @@ export function ProductPageParts({ product }: { product: Product }) {
     <Column className="gap-16px">
       <ProductPagePartsTabs />
       <TechnicalDetailsTable product={product} />
-      <SimilarProducts />
+      <SimilarProducts productId={product.productId} />
       <ProductComments />
     </Column>
   );

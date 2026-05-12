@@ -1,3 +1,4 @@
+import { getSimilarProductsOfApi } from "@/api/productApi";
 import { PagedResults } from "@/core/Dtos/pagedResult";
 import { ProductModel } from "@/core/models/productModel";
 import { ResultModel } from "@/core/models/resultModel";
@@ -30,4 +31,18 @@ async function getOnSaleProducts() {
   return result as ResultModel<PagedResults<ProductModel>>;
 }
 
-export const productActions = { getProducts, getOnSaleProducts };
+async function getSimilarProductsOf(productId: number) {
+  const result = await getSimilarProductsOfApi(productId);
+
+  if (result.status == "success") {
+    result.data = result.data.map((p) => ProductModel.CreateWithDto(p));
+  }
+
+  return result as ResultModel<ProductModel[]>;
+}
+
+export const productActions = {
+  getProducts,
+  getOnSaleProducts,
+  getSimilarProductsOf,
+};

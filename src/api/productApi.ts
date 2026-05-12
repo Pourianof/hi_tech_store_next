@@ -62,3 +62,9 @@ export function getCommentsOfProductApi(productId: number) {
     apiRoutes.products.commentForProdut(productId),
   );
 }
+
+export function getSimilarProductsOfApi(productId: number) {
+  return fetchWrapper.get<ProductDto[]>(
+    apiRoutes.products.similarProductsOf(productId),
+  );
+}
