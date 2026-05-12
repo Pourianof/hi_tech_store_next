@@ -4,6 +4,7 @@ import DashboardSidebar from "./_components/dashboardSidebar";
 import { auth } from "../../../auth";
 import { isAdmin, isManager } from "@/lib/helpers/roleHelpers";
 import { redirect } from "next/navigation";
+import { Row } from "@/ui/layouts/row";
 
 export default async function DashboardLayout({
   children,
@@ -22,10 +23,10 @@ export default async function DashboardLayout({
 
   return (
     <Wrapper>
-      <div className="flex">
+      <Row className="flex gap-24px">
         <DashboardSidebar />
         <div className="grow">{children}</div>
-      </div>
+      </Row>
     </Wrapper>
   );
 }
