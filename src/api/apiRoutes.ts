@@ -81,6 +81,9 @@ export const apiRoutes = {
     get me() {
       return `${this.base}/me`;
     },
+    get myProducts() {
+      return `${this.me}/products`;
+    },
   },
   discounts: {
     base: `${server}/discounts`,

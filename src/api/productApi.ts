@@ -68,3 +68,10 @@ export function getSimilarProductsOfApi(productId: number) {
     apiRoutes.products.similarProductsOf(productId),
   );
 }
+
+export async function getMyProductsApi(searchQueries?: Record<string, string>) {
+  return fetchWrapper.get<PagedResults<ProductDto>>(
+    apiRoutes.users.myProducts,
+    searchQueries,
+  );
+}
