@@ -5,7 +5,7 @@ import { H5 } from "@/ui/theme/text/headers";
 
 export async function SimilarProducts({ productId }: { productId: number }) {
   const productsResult = await productActions.getSimilarProductsOf(productId);
-  console.log(productsResult);
+
   if (productsResult.status == "failed") {
     return <div>Something went wrong</div>;
   }
