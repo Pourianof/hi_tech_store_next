@@ -1,6 +1,7 @@
 import { FailedBox } from "@/app/_components/failedBox";
 import { ProductItem } from "@/app/_components/productItem";
 import { FilledButton } from "@/ui/form/AppButtons";
+import Icon from "@/ui/icons/icon";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { productActions } from "@/ui/server_actions_wrapper/productActions";
@@ -32,7 +33,14 @@ export default async function Page({
     <Column>
       <div className="grid grid-cols-3 gap-4">
         {products.map((product) => (
-          <ProductItem key={product.productId} product={product} />
+          <div key={product.productId} className="relative">
+            <Link href={{ pathname: `/products/${product.productId}/edit` }}>
+              <div className="absolute right-20px top-20px p-4px aspect-square bg-white hover:bg-primary-blue-50 hover:text-primary-blue-04 rounded-lg z-10">
+                <Icon name="edit" />
+              </div>
+            </Link>
+            <ProductItem product={product} />
+          </div>
         ))}
       </div>
       <Row>

@@ -1,12 +1,13 @@
-import { ResultModel } from "@/core/models/resultModel";
-import { generateResultModelFromResponse } from "./apiHelper";
-import { Product, ProductColor } from "@/core/models/product";
-import { ProductDto } from "@/core/Dtos/ProductDto";
-import { apiRoutes } from "./apiRoutes";
-import { PagedResults } from "@/core/Dtos/pagedResult";
-import { fetchWrapper } from "./fetchWrapper";
 import { ProductCommentCreationDto } from "@/core/Dtos/commentDto";
+import { PagedResults } from "@/core/Dtos/pagedResult";
+import { ProductDto } from "@/core/Dtos/ProductDto";
 import { Comment } from "@/core/models/comment";
+import { Product, ProductColor } from "@/core/models/product";
+import { ResultModel } from "@/core/models/resultModel";
+import { ProductVariationDetailsUpdateDto } from "@/core/schemas/productVariationDetailsUpdateSchema";
+import { generateResultModelFromResponse } from "./apiHelper";
+import { apiRoutes } from "./apiRoutes";
+import { fetchWrapper } from "./fetchWrapper";
 
 export async function createNewProduct(product: FormData, accessToken: string) {
   const respond = await fetch(apiRoutes.products.base, {
@@ -73,5 +74,34 @@ export async function getMyProductsApi(searchQueries?: Record<string, string>) {
   return fetchWrapper.get<PagedResults<ProductDto>>(
     apiRoutes.users.myProducts,
     searchQueries,
+  );
+}
+
+export async function updateProductVariationDetailsApi(
+  variationId: number,
+  updateDto: ProductVariationDetailsUpdateDto,
+) {
+  return fetchWrapper.patch(
+    apiRoutes.variations.forVariation(variationId),
+    updateDto,
+  );
+}
+
+export async function addMediaToVariationApi(
+  variationId: number,
+  newMediaDto: FormData,
+) {
+  return fetchWrapper.post(
+    apiRoutes.variations.mediaFor(variationId),
+    newMediaDto,
+  );
+}
+
+export async function removeVariationsMediaApi(
+  variationId: number,
+  mediaId: number,
+) {
+  return fetchWrapper.delete(
+    apiRoutes.variations.variationMedia(variationId, mediaId),
   );
 }

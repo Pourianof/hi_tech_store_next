@@ -1,11 +1,14 @@
 "use server";
 import {
+  addMediaToVariationApi,
   commentForProductApi,
   createNewProduct,
   getColors,
   getCommentsOfProductApi,
   getOnSaleProductsApi,
   getProducts,
+  removeVariationsMediaApi,
+  updateProductVariationDetailsApi,
 } from "@/api/productApi";
 import { ResultModel } from "@/core/models/resultModel";
 import { workWithSession } from "../helpers/sessionHelper";
@@ -24,3 +27,7 @@ export const getProductsAction = getProducts;
 export const getOnSaleProductsAction = getOnSaleProductsApi;
 export const commentForProductAction = commentForProductApi;
 export const getCommentsOfProductAction = getCommentsOfProductApi;
+export const updateProductVariationDetailsAction =
+  updateProductVariationDetailsApi;
+export const addMediaToVariationAction = addMediaToVariationApi;
+export const removeVariationsMediaAction = removeVariationsMediaApi;

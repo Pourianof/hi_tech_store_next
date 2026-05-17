@@ -53,6 +53,18 @@ export const apiRoutes = {
       return `${this.forProduct(productId)}/comments`;
     },
   },
+  variations: {
+    base: `${server}/productVariations`,
+    forVariation(id: number) {
+      return `${this.base}/${id}`;
+    },
+    mediaFor(id: number) {
+      return `${this.forVariation(id)}/media`;
+    },
+    variationMedia(variationId: number, mediaId: number) {
+      return `${this.mediaFor(variationId)}/${mediaId}`;
+    },
+  },
   comments: {},
   colors: {
     base: `${server}/colors`,

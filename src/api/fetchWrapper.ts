@@ -42,7 +42,7 @@ async function post<T>(url: string, data: object) {
   return handleResponse<T>(
     await fetch(url, {
       method: "POST",
-      headers: await getHeaders(),
+      headers: await getHeaders(isFormData),
       body: isFormData ? data : JSON.stringify(data),
     }),
   );
@@ -53,7 +53,7 @@ async function put<T>(url: string, data: object) {
   return handleResponse<T>(
     await fetch(url, {
       method: "PUT",
-      headers: await getHeaders(),
+      headers: await getHeaders(isFormData),
       body: isFormData ? data : JSON.stringify(data),
     }),
   );
@@ -64,7 +64,7 @@ async function patch<T>(url: string, data: object) {
   return handleResponse<T>(
     await fetch(url, {
       method: "PATCH",
-      headers: await getHeaders(),
+      headers: await getHeaders(isFormData),
       body: isFormData ? data : JSON.stringify(data),
     }),
   );
