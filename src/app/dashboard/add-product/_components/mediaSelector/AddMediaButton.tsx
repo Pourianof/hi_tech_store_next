@@ -1,31 +1,17 @@
-import React, { ChangeEvent, useRef } from "react";
-
 interface AddMediaButtonProps {
-  onFileSelect: (file: File) => void;
+  onClick: VoidFunction;
   disabled?: boolean;
 }
 
-export function AddMediaButton({
-  onFileSelect,
-  disabled,
-}: AddMediaButtonProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      onFileSelect(file);
-    }
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
-  };
-
+export function AddMediaButton({ onClick, disabled }: AddMediaButtonProps) {
   return (
     <>
       <button
         type="button"
-        onClick={() => inputRef.current?.click()}
+        onClick={(e) => {
+          e.preventDefault();
+          onClick();
+        }}
         disabled={disabled}
         className="group relative w-28 h-28 flex flex-col items-center justify-center gap-2 bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
@@ -45,7 +31,6 @@ export function AddMediaButton({
           </svg>
         </div>
 
-        {/* متن */}
         <div className="text-center">
           <span className="text-xs font-medium text-gray-600 group-hover:text-blue-600 transition-colors duration-200">
             Add Media
@@ -55,14 +40,6 @@ export function AddMediaButton({
           </span>
         </div>
       </button>
-
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*,video/*"
-        onChange={handleChange}
-        className="hidden"
-      />
     </>
   );
 }

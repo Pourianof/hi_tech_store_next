@@ -3,16 +3,14 @@ import { ProductDto } from "@/core/Dtos/ProductDto";
 import { productCreationSchema } from "@/core/schemas/productCreationSchema";
 import { createProduct } from "@/lib/server_actions/productActions";
 import { useCategories } from "@/ui/contexts/categoriesContext";
-import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
+import { zodToRhsError } from "@/ui/form/rhf/zodToRhsError";
 import { StatefulForm } from "@/ui/form/statefulForm";
 import { Column } from "@/ui/layouts/column";
 import Link from "next/link";
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { BrandSelectorInput } from "./brandSelectorInput";
 import { ProductCategorySelector } from "./ProductCategorySelector";
 import { ProductVariationsList } from "./productVariationsList";
-import { zodToRhsError } from "@/ui/form/rhf/zodToRhsError";
-import { LabeldInput } from "@/ui/form/inputs";
+import { ProductBasicInfo } from "./sections/productBasicInfo";
 
 export function ProductForm(props: {
   onFormSubmitted: (submittedProduct: ProductDto) => void;
@@ -68,21 +66,7 @@ export function ProductForm(props: {
         }}
         defaultValues={{ variations: [{}] }}
       >
-        <LabeldInput label="Title">
-          <ErrorLabeledInput
-            filedName="title"
-            placeholder="Product title"
-            type="text"
-          />
-        </LabeldInput>
-
-        <label>Description</label>
-        <ErrorLabeledInput
-          filedName="description"
-          placeholder="Product description"
-          type="text"
-        />
-        <BrandSelectorInput fieldname="brandId" setIdAsValue />
+        <ProductBasicInfo />
         <ProductCategorySelector categories={categories} />
         <ProductVariationsList />
         <div className="flex gap-4">

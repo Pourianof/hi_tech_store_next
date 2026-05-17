@@ -1,118 +1,61 @@
-import React, { useState, useEffect } from "react";
-import { useFormContext, Controller, useWatch } from "react-hook-form";
 import { ErrorMessageLabel } from "@/ui/form/errorMessageLabel";
-import { FormProductMedia } from "./types";
-import { VideoThumbnailPicker } from "./VideoThumbnailPicker";
+import { useEffect, useState } from "react";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
+import { FormProductVideoThumbnailPicker } from "./formProductVideoThumbnailPicker";
 import { MediaPreviewItem } from "./MediaPreviewItem";
-import { AddMediaButton } from "./AddMediaButton";
+import { FormProductMedia } from "./types";
+import { MediaSelectInput } from "./mediaSelectInput";
 
 export function FilePreviewList({ fieldname }: { fieldname: string }) {
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
   const formContext = useFormContext();
   const files = useWatch({
     name: fieldname,
     defaultValue: [],
   }) as FormProductMedia[];
 
-  const [showVideoPicker, setShowVideoPicker] = useState(false);
-  const [pendingVideo, setPendingVideo] = useState<{
-    file: File;
-    url: string;
-    index?: number;
-    oldThumbnailUrl?: string;
-  } | null>(null);
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  function handleEditing(thumbnailFile: File, thumbnailUrl: string) {
+    if (editingIndex == null) return;
 
-  const handleFileSelect = async (file: File) => {
-    if (file.type.startsWith("image")) {
-      const newMedia: FormProductMedia = {
-        file,
-        url: URL.createObjectURL(file),
-        type: "image",
-      };
-      setFiles([...files, newMedia]);
-      formContext.clearErrors(fieldname);
-      return;
-    }
+    setFiles(
+      ((prev) => {
+        const newFiles = [...prev];
+        const oldMedia = newFiles[editingIndex];
 
-    if (file.type.startsWith("video")) {
-      const videoUrl = URL.createObjectURL(file);
-      setPendingVideo({ file, url: videoUrl });
-      setEditingIndex(null);
-      setShowVideoPicker(true);
-    }
-  };
+        if (oldMedia.thumbnailUrl) {
+          URL.revokeObjectURL(oldMedia.thumbnailUrl);
+        }
+
+        newFiles[editingIndex] = {
+          ...oldMedia,
+          thumbnailUrl: thumbnailUrl,
+          thumbnail: thumbnailFile,
+        };
+
+        return newFiles;
+      })(files),
+    );
+
+    setEditingIndex(null);
+  }
+
+  function handleCloseThumbnailPicker() {
+    setEditingIndex(null);
+  }
 
   const handleEditVideo = (index: number) => {
     const videoToEdit = files[index];
     if (videoToEdit.type !== "video") return;
 
-    const oldThumbnailUrl = videoToEdit.thumbnailUrl;
-
-    const videoUrl = URL.createObjectURL(videoToEdit.file);
-
-    setPendingVideo({
-      file: videoToEdit.file,
-      url: videoUrl,
-      index,
-      oldThumbnailUrl,
-    });
     setEditingIndex(index);
-    setShowVideoPicker(true);
-  };
-
-  const handleVideoCapture = (thumbnailFile: File, thumbnailUrl: string) => {
-    if (!pendingVideo) return;
-
-    if (editingIndex !== null) {
-      setFiles(
-        ((prev) => {
-          const newFiles = [...prev];
-          const oldMedia = newFiles[editingIndex];
-
-          if (oldMedia.thumbnailUrl) {
-            URL.revokeObjectURL(oldMedia.thumbnailUrl);
-          }
-
-          newFiles[editingIndex] = {
-            ...oldMedia,
-            thumbnailUrl: thumbnailUrl,
-          };
-
-          return newFiles;
-        })(files),
-      );
-    } else {
-      const newMedia: FormProductMedia = {
-        file: pendingVideo.file,
-        url: pendingVideo.url,
-        type: "video",
-        thumbnailUrl,
-        thumbnail: thumbnailFile,
-      };
-      setFiles([...files, newMedia]);
-    }
-
-    handleCloseVideoPicker();
-    formContext.clearErrors(fieldname);
-  };
-
-  const handleCloseVideoPicker = () => {
-    if (editingIndex !== null && pendingVideo?.oldThumbnailUrl) {
-      console.log("Edit cancelled, keeping old thumbnail");
-    }
-
-    if (pendingVideo?.url) {
-      URL.revokeObjectURL(pendingVideo.url);
-    }
-
-    setShowVideoPicker(false);
-    setPendingVideo(null);
-    setEditingIndex(null);
   };
 
   const handleRemoveMedia = (index: number) => {
     const removed = files[index];
-    URL.revokeObjectURL(removed.url);
+    if (removed.url) {
+      URL.revokeObjectURL(removed.url);
+    }
     if (removed.thumbnailUrl) {
       URL.revokeObjectURL(removed.thumbnailUrl);
     }
@@ -129,11 +72,18 @@ export function FilePreviewList({ fieldname }: { fieldname: string }) {
   useEffect(() => {
     return () => {
       files.forEach((file) => {
-        URL.revokeObjectURL(file.url);
+        if (file.url) {
+          URL.revokeObjectURL(file.url);
+        }
         if (file.thumbnailUrl) URL.revokeObjectURL(file.thumbnailUrl);
       });
     };
   }, [files]);
+
+  function handleNewMediaSelected(media: FormProductMedia) {
+    setFiles([...files, media]);
+    formContext.clearErrors(fieldname);
+  }
 
   return (
     <>
@@ -169,18 +119,18 @@ export function FilePreviewList({ fieldname }: { fieldname: string }) {
                   />
                 </div>
               ))}
-              <AddMediaButton onFileSelect={handleFileSelect} />
+              <MediaSelectInput onNewMedia={handleNewMediaSelected} />
             </div>
           </div>
         )}
       />
 
-      {showVideoPicker && pendingVideo && (
-        <VideoThumbnailPicker
-          videoUrl={pendingVideo.url}
-          onCapture={handleVideoCapture}
-          onClose={handleCloseVideoPicker}
-          isEditMode={editingIndex !== null}
+      {editingIndex != null && (
+        <FormProductVideoThumbnailPicker
+          video={files[editingIndex]}
+          onCapture={handleEditing}
+          onClose={handleCloseThumbnailPicker}
+          isEditMode={true}
         />
       )}
     </>

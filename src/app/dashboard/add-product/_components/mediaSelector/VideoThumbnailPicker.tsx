@@ -1,10 +1,16 @@
 import Icon from "@/ui/icons/icon";
+import { MODAL_CONTAINER_ID } from "@/ui/modal/modalContainer";
 import React, { useRef, useState, useEffect } from "react";
-interface VideoThumbnailPickerProps {
+import { createPortal } from "react-dom";
+export interface VideoThumbnailPickerProps {
   videoUrl: string;
   onCapture: (thumbnailFile: File, thumbnailUrl: string) => void;
   onClose: () => void;
   isEditMode?: boolean;
+  size?: {
+    width: number;
+    height: number;
+  };
 }
 
 export function VideoThumbnailPicker({
@@ -12,6 +18,7 @@ export function VideoThumbnailPicker({
   onCapture,
   onClose,
   isEditMode = false,
+  size = { width: 400, height: 400 },
 }: VideoThumbnailPickerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -69,8 +76,8 @@ export function VideoThumbnailPicker({
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
 
-      const targetWidth = 400;
-      const targetHeight = 400;
+      const targetWidth = size.width;
+      const targetHeight = size.height;
 
       canvas.width = targetWidth;
       canvas.height = targetHeight;
@@ -151,9 +158,9 @@ export function VideoThumbnailPicker({
     }
   };
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 overflow-y-auto overflow-x-hidden"
+      className="fixed inset-0 z-100 overflow-y-auto overflow-x-hidden"
       style={{
         background:
           "linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 100%)",
@@ -303,6 +310,7 @@ export function VideoThumbnailPicker({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.getElementById(MODAL_CONTAINER_ID) || document.body,
   );
 }

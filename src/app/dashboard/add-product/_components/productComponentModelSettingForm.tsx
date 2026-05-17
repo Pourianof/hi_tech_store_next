@@ -1,11 +1,10 @@
 import { CategoryComponent } from "@/core/models/category";
 import { ProductComponentModel } from "@/core/models/product";
-import { getAllComponentModelsAction } from "@/lib/server_actions/componentActions";
-import { Modal } from "@/ui/modal/modal";
-import { useEffect, useState } from "react";
-import AsyncSelect from "react-select/async";
-import { ComponentModelForm } from "./componentModelForm";
+import { ProductComponentControlledAsyncSelect } from "@/ui/form/controlledAsyncSelect";
 import Icon from "@/ui/icons/icon";
+import { Modal } from "@/ui/modal/modal";
+import { useState } from "react";
+import { ComponentModelForm } from "./componentModelForm";
 import { useFormContext } from "react-hook-form";
 
 export function ProductComponentsFormSection({
@@ -19,14 +18,7 @@ export function ProductComponentsFormSection({
     ProductComponentModel[]
   >([]);
 
-  const { setValue } = useFormContext();
-
-  useEffect(() => {
-    setValue(
-      `categoryValues.componentModels`,
-      addedComponents.map((cmpnt) => cmpnt.componentModelId),
-    );
-  }, [addedComponents, setValue]);
+  const { setValue, getValues } = useFormContext();
 
   return (
     <div className="flex flex-col gap-2">
@@ -36,12 +28,9 @@ export function ProductComponentsFormSection({
             baseComponent={baseComponentToCreateModel}
             onCancel={() => setBaseComponentToCreateModel(undefined)}
             onSubmit={(model) => {
-              setAddedComponents((cms) => [
-                ...cms,
-                {
-                  ...model,
-                  componentTypeId: baseComponentToCreateModel.componentTypeId,
-                },
+              setValue(`categoryValues.componentModels`, [
+                ...getValues("categoryValues.componentModels"),
+                model,
               ]);
               setBaseComponentToCreateModel(undefined);
             }}
@@ -61,87 +50,11 @@ export function ProductComponentsFormSection({
             <p className="text-xs bg-stone-300 p-1 rounded">
               {component.description}
             </p>
-            <AsyncSelect
-              isMulti
-              defaultOptions
-              cacheOptions
-              placeholder="Select from available component models"
-              components={{
-                Option: ({ data: { value }, innerProps }) => {
-                  const model = value as ProductComponentModel;
-                  const hasName = model.brandModel;
-                  const name = hasName
-                    ? `${model.brandModel.brandName} - ${model.brandModel.modelName}`
-                    : "<No-Name>";
-                  return (
-                    <div
-                      className="m-2 bg-stone-200 rounded p-2 cursor-pointer hover:bg-stone-400"
-                      {...innerProps}
-                    >
-                      <h4 className="font-semibold bg-gray-500 text-gray-200 rounded py-0.5 px-1">
-                        {name}
-                      </h4>
-                      {!!model.properties?.length && (
-                        <div className="text-sm flex flex-wrap gap-2 my-2">
-                          {model.properties.map((m) => (
-                            <span
-                              key={m.propertyId}
-                              className="inline-block bg-gray-300 py-1 px-2 rounded"
-                            >
-                              {m.name} : {m.value}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                },
-              }}
-              onChange={(changes, { action, option, removedValue }) => {
-                const cmpnt = (
-                  (option ?? removedValue) as
-                    | { value: ProductComponentModel }
-                    | undefined
-                )?.value;
-                switch (action) {
-                  case "select-option":
-                    setAddedComponents((old) => [...old, cmpnt!]);
-                    break;
-                  case "pop-value":
-                  case "remove-value":
-                    setAddedComponents((old) =>
-                      old.filter(
-                        (c) => c.componentModelId != cmpnt!.componentModelId,
-                      ),
-                    );
-                    break;
-                  case "clear":
-                    setAddedComponents([]);
-                }
-              }}
-              loadOptions={async function () {
-                const result = await getAllComponentModelsAction(
-                  component.componentTypeId,
-                );
-
-                if (result.status == "failed") {
-                  return [];
-                }
-
-                return result.data.map((m) => ({
-                  label: `${m.brandModel?.brandName} - ${m.brandModel?.modelName}`,
-                  value: m,
-                }));
-              }}
-              value={associatedModels.map((cmpnt) => ({
-                label: cmpnt.brandModel
-                  ? `${cmpnt.brandModel.brandName} - ${cmpnt.brandModel.modelName}`
-                  : cmpnt.description
-                    ? `${cmpnt.description}`
-                    : "<No-Name>",
-                value: cmpnt,
-              }))}
+            <ProductComponentControlledAsyncSelect
+              fieldName="categoryValues.componentModels"
+              componentTypeId={component.componentTypeId}
             />
+
             <div className="flex flex-col gap-2">
               {associatedModels.map((component, index) => (
                 <div
