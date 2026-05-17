@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 interface RedirectorProps {
   timeout: number;
   push?: boolean;
-  destinationPath: string;
+  destinationPath?: string;
 }
 
 export function useRedirect({
@@ -16,6 +16,11 @@ export function useRedirect({
   const router = useRouter();
 
   setTimeout(() => {
+    if (!destinationPath) {
+      router.back();
+      return;
+    }
+
     if (push) {
       router.push(destinationPath);
     } else {
