@@ -132,7 +132,6 @@ export function VariationDetails({
       {displayEditingModal && (
         <VariationDetailsEditingForm
           onClose={() => setDisplayEditingModal(false)}
-          variation={variation}
         />
       )}
 

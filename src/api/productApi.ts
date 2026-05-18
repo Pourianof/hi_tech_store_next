@@ -1,8 +1,8 @@
 import { ProductCommentCreationDto } from "@/core/Dtos/commentDto";
 import { PagedResults } from "@/core/Dtos/pagedResult";
-import { ProductDto } from "@/core/Dtos/ProductDto";
+import { ProductDto, ProductMediaDto } from "@/core/Dtos/ProductDto";
 import { Comment } from "@/core/models/comment";
-import { Product, ProductColor } from "@/core/models/product";
+import { Product, ProductColor, ProductVariation } from "@/core/models/product";
 import { ResultModel } from "@/core/models/resultModel";
 import { ProductVariationDetailsUpdateDto } from "@/core/schemas/productVariationDetailsUpdateSchema";
 import { generateResultModelFromResponse } from "./apiHelper";
@@ -81,7 +81,7 @@ export async function updateProductVariationDetailsApi(
   variationId: number,
   updateDto: ProductVariationDetailsUpdateDto,
 ) {
-  return fetchWrapper.patch(
+  return fetchWrapper.patch<ProductVariation>(
     apiRoutes.variations.forVariation(variationId),
     updateDto,
   );
@@ -91,7 +91,7 @@ export async function addMediaToVariationApi(
   variationId: number,
   newMediaDto: FormData,
 ) {
-  return fetchWrapper.post(
+  return fetchWrapper.post<ProductMediaDto>(
     apiRoutes.variations.mediaFor(variationId),
     newMediaDto,
   );

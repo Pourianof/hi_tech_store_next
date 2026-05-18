@@ -1,17 +1,15 @@
-import { ProductVariation } from "@/core/models/product";
+import { useChangeConsumer } from "@/ui/changeNotifiers/consumer";
+import { ProductVariationChangeNotifier } from "@/ui/changeNotifiers/productVariationChangeNotifier";
 import { BsGrid3X3 } from "react-icons/bs";
 import { FiEye } from "react-icons/fi";
 import { MediaSection } from "./mediaSection";
 import { VariationDetails } from "./variationDetailsSection";
 
 // Main Preview Component
-export const ProductVariationPreview = ({
-  variation,
-  // index,
-}: {
-  variation: ProductVariation;
-  index: number;
-}) => {
+export const ProductVariationPreview = ({}: { index: number }) => {
+  const productVariation = useChangeConsumer(ProductVariationChangeNotifier);
+  const variation = productVariation.productVariation;
+
   return (
     <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm max-w-2xl mx-auto">
       {/* Header */}

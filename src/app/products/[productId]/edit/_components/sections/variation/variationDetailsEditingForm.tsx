@@ -1,7 +1,7 @@
 import { useColors } from "@/app/dashboard/add-product/_components/_hooks/useColors";
-import { ProductVariation } from "@/core/models/product";
 import { productVariationDetailsUpdateSchema } from "@/core/schemas/productVariationDetailsUpdateSchema";
-import { updateProductVariationDetailsAction } from "@/lib/server_actions/productActions";
+import { useChangeConsumer } from "@/ui/changeNotifiers/consumer";
+import { ProductVariationChangeNotifier } from "@/ui/changeNotifiers/productVariationChangeNotifier";
 import { OutlinedButton } from "@/ui/form/AppButtons";
 import { ColorInput } from "@/ui/form/colorInput";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
@@ -19,20 +19,16 @@ import { IconButton } from "@mui/material";
 import { Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 
-export function VariationDetailsEditingForm({
-  variation,
-  onClose,
-}: {
-  variation: ProductVariation;
-  onClose(): void;
-}) {
+export function VariationDetailsEditingForm({ onClose }: { onClose(): void }) {
+  const productVariation = useChangeConsumer(ProductVariationChangeNotifier);
+  const variation = productVariation.productVariation;
+
   return (
     <Modal containerClassName="w-1/2">
       <StatefulForm
         onSubmit={async (data, { setError }) => {
           const parsedData =
             productVariationDetailsUpdateSchema.safeParse(data);
-          console.log(parsedData);
 
           if (!parsedData.success) {
             zodToRhsError(parsedData.error).forEach((err) =>
@@ -41,22 +37,19 @@ export function VariationDetailsEditingForm({
             return;
           }
 
-          const result = await updateProductVariationDetailsAction(
-            variation.productVariationId,
-            data,
-          );
+          const result = await productVariation.updateDetails(data);
 
-          console.log(result);
           return result;
         }}
         onSubmitionSuccessful={() => {
           toast.success("Variation updated succussfully");
+          onClose();
         }}
         formName={`variation-edit-#${variation.productVariationId}`}
         defaultValues={{
           price: variation.price,
           inventory: variation.inventory,
-          color: variation.color.colorId,
+          colorId: variation.color.colorId,
         }}
       >
         <Column>
@@ -153,7 +146,7 @@ function VariationColorInput() {
   return (
     <Row>
       <Controller
-        name="color"
+        name="colorId"
         render={({ field: { onChange, value } }) => (
           <>
             {colors.map((c) => (
