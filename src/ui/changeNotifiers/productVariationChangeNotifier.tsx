@@ -74,6 +74,8 @@ export class ProductVariationChangeNotifier extends ChangeNotifierIml {
 
     this._isMediaUpdating = false;
     this.notifyListeners();
+
+    return result;
   }
 }
 

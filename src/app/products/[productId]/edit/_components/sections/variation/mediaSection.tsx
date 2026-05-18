@@ -1,7 +1,17 @@
+import { FormProductVideoThumbnailPicker } from "@/app/dashboard/add-product/_components/mediaSelector/formProductVideoThumbnailPicker";
+import { MediaSelectInput } from "@/app/dashboard/add-product/_components/mediaSelector/mediaSelectInput";
+import { FormProductMedia } from "@/app/dashboard/add-product/_components/mediaSelector/types";
 import { ProductMedia } from "@/core/models/product";
+import { ResultModel } from "@/core/models/resultModel";
+import { productVariationNewMediaSchema } from "@/core/schemas/productVariationNewMediaSchema";
+import { removeVariationsMediaAction } from "@/lib/server_actions/productActions";
+import { useChangeConsumer } from "@/ui/changeNotifiers/consumer";
+import { ProductVariationChangeNotifier } from "@/ui/changeNotifiers/productVariationChangeNotifier";
 import { FilledButton, OutlinedButton } from "@/ui/form/AppButtons";
 import Icon from "@/ui/icons/icon";
 import { ApiImage } from "@/ui/image/ApiImage";
+import { FileImage } from "@/ui/image/fileImage";
+import { FileVideo } from "@/ui/image/fileVideo";
 import { getApiSrc } from "@/ui/image/getApiImageSrc";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
@@ -10,20 +20,9 @@ import { Body } from "@/ui/theme/text/body";
 import { Caption } from "@/ui/theme/text/caption";
 import { H3, H5 } from "@/ui/theme/text/headers";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { FiCamera } from "react-icons/fi";
 import { MediaThumbnail } from "./mediaThumbnail";
-import { MediaSelectInput } from "@/app/dashboard/add-product/_components/mediaSelector/mediaSelectInput";
-import {
-  addMediaToVariationAction,
-  removeVariationsMediaAction,
-} from "@/lib/server_actions/productActions";
-import { productVariationNewMediaSchema } from "@/core/schemas/productVariationNewMediaSchema";
-import toast from "react-hot-toast";
-import { FormProductMedia } from "@/app/dashboard/add-product/_components/mediaSelector/types";
-import { FileImage } from "@/ui/image/fileImage";
-import { FileVideo } from "@/ui/image/fileVideo";
-import { FormProductVideoThumbnailPicker } from "@/app/dashboard/add-product/_components/mediaSelector/formProductVideoThumbnailPicker";
-import { ResultModel } from "@/core/models/resultModel";
 
 export function MediaSection({
   media,
@@ -32,6 +31,7 @@ export function MediaSection({
   media: ProductMedia[];
   variationId: number;
 }) {
+  const productVariation = useChangeConsumer(ProductVariationChangeNotifier);
   const [selectedMedia, setSelectedMedia] = useState<ProductMedia>(
     media.find((m) => m.isMain) || media[0],
   );
@@ -70,10 +70,8 @@ export function MediaSection({
       return;
     }
 
-    const result = await addMediaToVariationAction(
-      variationId,
-      newMediaFormData.data,
-    );
+    const result = await productVariation.addNewMedia(newMediaFormData.data);
+
     toastResult(result, "Adding new media failed", "Media added successfully");
 
     setPendingAddedMedia(null);

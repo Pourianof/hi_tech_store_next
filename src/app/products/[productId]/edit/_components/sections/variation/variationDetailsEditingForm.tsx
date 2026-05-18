@@ -144,7 +144,7 @@ function VariationColorInput() {
   const colors = useColors();
 
   return (
-    <Row>
+    <Row className="flex-wrap gap-2">
       <Controller
         name="colorId"
         render={({ field: { onChange, value } }) => (
