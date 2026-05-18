@@ -38,6 +38,9 @@ export class ProductVariationChangeNotifier extends ChangeNotifierIml {
   }
 
   async updateDetails(updateDetails: ProductVariationDetailsUpdateDto) {
+    this._isVariationUpdating = true;
+    this.notifyListeners();
+
     const result = await updateProductVariationDetailsAction(
       this._productVariation.productVariationId,
       updateDetails,
@@ -53,6 +56,7 @@ export class ProductVariationChangeNotifier extends ChangeNotifierIml {
       this._productVariation.price = newPv.price;
     }
 
+    this._isVariationUpdating = false;
     this.notifyListeners();
     return result;
   }

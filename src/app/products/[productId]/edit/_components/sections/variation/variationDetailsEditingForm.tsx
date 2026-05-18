@@ -15,7 +15,7 @@ import { Row } from "@/ui/layouts/row";
 import { Modal } from "@/ui/modal/modal";
 import { Caption } from "@/ui/theme/text/caption";
 import { H4 } from "@/ui/theme/text/headers";
-import { IconButton } from "@mui/material";
+import { CircularProgress, IconButton } from "@mui/material";
 import { Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -122,10 +122,16 @@ export function VariationDetailsEditingForm({ onClose }: { onClose(): void }) {
                       values.color != variation.color.colorId;
                     return (
                       <OutlinedButton
-                        disabled={!hasChanged}
+                        disabled={
+                          !hasChanged || productVariation.isVariationUpdating
+                        }
                         onClick={() => submitter()}
                       >
-                        Update
+                        {productVariation.isVariationUpdating ? (
+                          <CircularProgress />
+                        ) : (
+                          "Update"
+                        )}
                         {!hasChanged && <span>(No changes)</span>}
                       </OutlinedButton>
                     );
