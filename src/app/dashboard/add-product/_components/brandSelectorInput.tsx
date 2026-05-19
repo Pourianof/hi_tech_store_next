@@ -21,7 +21,7 @@ export function BrandSelectorInput({
 }) {
   const { data: brands, isLoading, error, isFetching } = useBrands();
   const [newBrandModelMode, setNewBrandModelMode] = useState(false);
-  const [selectedBrandModel, setSelectedBrandModel] = useState<BrandModel>();
+  const brandModels = brands!.flatMap((b) => b.brandModels);
 
   function handleNewBrandFormCancel() {
     setNewBrandModelMode(false);
@@ -65,53 +65,57 @@ export function BrandSelectorInput({
           ) : (
             <Controller
               name="brandModel"
-              render={({ field: { value, onChange } }) => (
-                <Select
-                  className="flex-5/6"
-                  isClearable
-                  components={{
-                    SingleValue: (props) => (
-                      <span
-                        {...props.innerProps}
-                        style={
-                          props.getStyles(
-                            "singleValue",
-                            props,
-                          ) as unknown as React.CSSProperties
-                        }
-                      >
-                        {props.data.label}
-                      </span>
-                    ),
-                  }}
-                  options={brands
-                    ?.filter((brand) => !!brand.brandModels?.length)
-                    .map((b) => ({
-                      label: b.name,
-                      options: b.brandModels.map((bm) => ({
-                        label: bm.modelName,
-                        value: { ...bm, brandId: b.brandId },
-                      })),
-                    }))}
-                  onChange={(opt) => {
-                    const brandModel = (
-                      opt as { value: BrandModel } | undefined
-                    )?.value;
-                    onChange(setIdAsValue ? brandModel?.modelId : brandModel);
-                    setSelectedBrandModel(brandModel);
-                  }}
-                  value={
-                    value
-                      ? {
-                          label: selectedBrandModel
-                            ? generateFullBrandModelName(selectedBrandModel)
-                            : "",
-                          value: value,
-                        }
-                      : undefined
-                  }
-                />
-              )}
+              render={({ field: { value, onChange } }) => {
+                const selectedBrandModel = brandModels.find(
+                  (bm) => bm.modelId == value,
+                );
+                return (
+                  <Select
+                    className="flex-5/6"
+                    isClearable
+                    components={{
+                      SingleValue: (props) => (
+                        <span
+                          {...props.innerProps}
+                          style={
+                            props.getStyles(
+                              "singleValue",
+                              props,
+                            ) as unknown as React.CSSProperties
+                          }
+                        >
+                          {props.data.label}
+                        </span>
+                      ),
+                    }}
+                    options={brands
+                      ?.filter((brand) => !!brand.brandModels?.length)
+                      .map((b) => ({
+                        label: b.name,
+                        options: b.brandModels.map((bm) => ({
+                          label: bm.modelName,
+                          value: { ...bm, brandId: b.brandId },
+                        })),
+                      }))}
+                    onChange={(opt) => {
+                      const brandModel = (
+                        opt as { value: BrandModel } | undefined
+                      )?.value;
+                      onChange(setIdAsValue ? brandModel?.modelId : brandModel);
+                    }}
+                    value={
+                      value
+                        ? {
+                            label: selectedBrandModel
+                              ? generateFullBrandModelName(selectedBrandModel)
+                              : "",
+                            value: value,
+                          }
+                        : undefined
+                    }
+                  />
+                );
+              }}
             />
           )}
 
