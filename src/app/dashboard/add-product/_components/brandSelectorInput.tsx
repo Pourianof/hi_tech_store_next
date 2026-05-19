@@ -64,7 +64,7 @@ export function BrandSelectorInput({
             <CircularProgress size={40} />
           ) : (
             <Controller
-              name="brandModel"
+              name={fieldname}
               render={({ field: { value, onChange } }) => {
                 const selectedBrandModel = brandModels.find(
                   (bm) => bm.modelId == value,

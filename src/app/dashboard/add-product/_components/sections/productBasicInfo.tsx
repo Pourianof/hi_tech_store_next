@@ -19,7 +19,7 @@ export function ProductBasicInfo() {
         placeholder="Product description"
         type="text"
       />
-      <BrandSelectorInput fieldname="brandId" setIdAsValue />
+      <BrandSelectorInput fieldname="brandModelId" setIdAsValue />
     </>
   );
 }
