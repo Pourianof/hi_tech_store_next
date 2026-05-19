@@ -1,3 +1,4 @@
+import { BrandModel } from "./brand";
 import { ProductVariation } from "./product";
 
 export interface Cart {
@@ -9,6 +10,14 @@ export interface Cart {
 
 export interface CartWithProduct {
   items: MinimalProductDto[];
+}
+
+export interface ProductBasicInfoDto {
+  productId: number;
+  authorId: string;
+  title: string;
+  description?: string;
+  brandModel: BrandModel;
 }
 
 export interface MinimalProductDto {

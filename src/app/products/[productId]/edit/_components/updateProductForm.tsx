@@ -3,7 +3,7 @@ import { ProductDto } from "@/core/Dtos/ProductDto";
 import { Column } from "@/ui/layouts/column";
 import { Caption } from "@/ui/theme/text/caption";
 import { H3 } from "@/ui/theme/text/headers";
-import { ProductBasicInfoForm } from "./sections/productBasicInfoForm";
+import { ProductBasicInfoForm } from "./sections/product/productBasicInfoForm";
 
 export function UpdateProductForm({ product }: { product: ProductDto }) {
   return (

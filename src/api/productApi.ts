@@ -1,9 +1,11 @@
 import { ProductCommentCreationDto } from "@/core/Dtos/commentDto";
 import { PagedResults } from "@/core/Dtos/pagedResult";
 import { ProductDto, ProductMediaDto } from "@/core/Dtos/ProductDto";
+import { ProductBasicInfoDto } from "@/core/models/cart";
 import { Comment } from "@/core/models/comment";
 import { Product, ProductColor, ProductVariation } from "@/core/models/product";
 import { ResultModel } from "@/core/models/resultModel";
+import { ProductUpdateFormDto } from "@/core/schemas/productUpdateSchema";
 import { ProductVariationDetailsUpdateDto } from "@/core/schemas/productVariationDetailsUpdateSchema";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { apiRoutes } from "./apiRoutes";
@@ -103,5 +105,15 @@ export async function removeVariationsMediaApi(
 ) {
   return fetchWrapper.delete(
     apiRoutes.variations.variationMedia(variationId, mediaId),
+  );
+}
+
+export async function updateProductApi(
+  productId: number,
+  updateDto: ProductUpdateFormDto,
+) {
+  return fetchWrapper.patch<ProductBasicInfoDto>(
+    apiRoutes.products.forProduct(productId),
+    updateDto,
   );
 }

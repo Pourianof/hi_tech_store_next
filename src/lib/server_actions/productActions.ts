@@ -8,6 +8,7 @@ import {
   getOnSaleProductsApi,
   getProducts,
   removeVariationsMediaApi,
+  updateProductApi,
   updateProductVariationDetailsApi,
 } from "@/api/productApi";
 import { ResultModel } from "@/core/models/resultModel";
@@ -31,3 +32,4 @@ export const updateProductVariationDetailsAction =
   updateProductVariationDetailsApi;
 export const addMediaToVariationAction = addMediaToVariationApi;
 export const removeVariationsMediaAction = removeVariationsMediaApi;
+export const updateProductAction = updateProductApi;

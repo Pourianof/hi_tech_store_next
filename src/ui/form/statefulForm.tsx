@@ -36,28 +36,39 @@ StatefulForm.SuccessSubmit = async function (
   return { data, status: "success", statusCode: 200 };
 };
 
-export type FormSubmitter = (
-  data: FieldValues,
+export type FormSubmitter<T = FieldValues> = (
+  data: T,
   form: UseFormReturn,
 ) => Promise<ResultModel | undefined>;
+
+export type FormError = {
+  message: string;
+  path: string;
+};
+
+type ValidationResult<T> = { validData?: T; errors?: FormError[] } | undefined;
+export type FormValidator<T> = (
+  data: FieldValues,
+) => Promise<ValidationResult<T>> | ValidationResult<T>;
 
 export type FormSuccessSubmitHandler = (
   result: Record<string, unknown>,
 ) => void;
 
-export type FormHandlers = {
-  onSubmit: FormSubmitter;
+export type FormHandlers<T> = {
+  onSubmit: FormSubmitter<T>;
   onSubmitionSuccessful: FormSuccessSubmitHandler;
+  onValidation?: FormValidator<T>;
 };
 
-export function StatefulForm(
+export function StatefulForm<T>(
   props: {
     children: ReactNode;
     formName?: string;
     shouldUnregister?: boolean;
     defaultValues?: Record<string, unknown>;
     className?: string;
-  } & FormHandlers,
+  } & FormHandlers<T>,
 ) {
   const methods = useForm({
     shouldUnregister: props.shouldUnregister,
@@ -74,7 +85,26 @@ export function StatefulForm(
   ) {
     event?.stopPropagation();
     setIsSubmitting(true);
-    const result = await props.onSubmit(data, methods);
+
+    let submittingData = data;
+
+    if (props.onValidation) {
+      const validationResult = await props.onValidation(data);
+
+      if (validationResult?.errors) {
+        const errors = validationResult?.errors;
+        if (errors.length) {
+          errors.forEach((err) =>
+            methods.setError(err.path, { message: err.message }),
+          );
+          return;
+        }
+      }
+
+      submittingData = validationResult?.validData ?? submittingData;
+    }
+
+    const result = await props.onSubmit(submittingData as T, methods);
     if (!result) {
       return;
     }
