@@ -6,6 +6,7 @@ import { Modal } from "@/ui/modal/modal";
 import { useState } from "react";
 import { ComponentModelForm } from "./componentModelForm";
 import { useFormContext } from "react-hook-form";
+import { CATEGORY_VALUES_FIELD_NAME } from "./ProductCategorySelector";
 
 export function ProductComponentsFormSection({
   components,
@@ -14,11 +15,12 @@ export function ProductComponentsFormSection({
 }) {
   const [baseComponentToCreateModel, setBaseComponentToCreateModel] =
     useState<CategoryComponent>();
-  const [addedComponents, setAddedComponents] = useState<
-    ProductComponentModel[]
-  >([]);
 
-  const { setValue, getValues } = useFormContext();
+  const { setValue, getValues, watch } = useFormContext();
+
+  const fieldName = "categoryValues.componentModels";
+
+  const addedComponents = watch(fieldName) as ProductComponentModel[];
 
   return (
     <div className="flex flex-col gap-2">
@@ -28,10 +30,7 @@ export function ProductComponentsFormSection({
             baseComponent={baseComponentToCreateModel}
             onCancel={() => setBaseComponentToCreateModel(undefined)}
             onSubmit={(model) => {
-              setValue(`categoryValues.componentModels`, [
-                ...getValues("categoryValues.componentModels"),
-                model,
-              ]);
+              setValue(fieldName, [...getValues(fieldName), model]);
               setBaseComponentToCreateModel(undefined);
             }}
           />
@@ -51,7 +50,7 @@ export function ProductComponentsFormSection({
               {component.description}
             </p>
             <ProductComponentControlledAsyncSelect
-              fieldName="categoryValues.componentModels"
+              fieldName={`${CATEGORY_VALUES_FIELD_NAME}.componentModels`}
               componentTypeId={component.componentTypeId}
             />
 
@@ -66,20 +65,22 @@ export function ProductComponentsFormSection({
                       {component.brandModel?.brandName} -{" "}
                       {component.brandModel?.modelName}
                     </span>
-                    <span
+                    <button
                       onClick={(e) => {
                         e.preventDefault();
-                        setAddedComponents((old) =>
-                          old.filter(
-                            (c) =>
-                              c.componentModelId != component.componentModelId,
+                        setValue(
+                          fieldName,
+                          addedComponents.filter(
+                            (cmpnt) =>
+                              cmpnt.componentModelId !=
+                              component.componentModelId,
                           ),
                         );
                       }}
                       className="p-0.5 px-1 rounded hover:bg-slate-400 hover:text-red-100 hover:cursor-pointer hover:duration-200"
                     >
                       <Icon name="trash" />
-                    </span>
+                    </button>
                   </h4>
                   {!!component.description && (
                     <div className="text-sm py-1">{component.description}</div>

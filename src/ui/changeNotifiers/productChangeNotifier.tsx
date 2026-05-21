@@ -5,8 +5,12 @@ import { ReactNode } from "react";
 import { NotifierProvider, useNotifier } from "./notifierProvider";
 import { ProductVariationChangeNotifier } from "./productVariationChangeNotifier";
 import { ProductUpdateFormDto } from "@/core/schemas/productUpdateSchema";
-import { updateProductAction } from "@/lib/server_actions/productActions";
+import {
+  updateProductAction,
+  updateProductCategoryAction,
+} from "@/lib/server_actions/productActions";
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
+import { ProductCategoryValues } from "@/core/schemas/productCreationSchema";
 
 export class ProductChangeNotifier extends ChangeNotifierIml {
   private readonly _product: Omit<ProductDto, "variations"> & {
@@ -14,7 +18,10 @@ export class ProductChangeNotifier extends ChangeNotifierIml {
   };
 
   private _isProductUpdating = false;
+  private _isCategoryUpdating = false;
+
   private _updatingError?: ProblemDetails;
+  private _categoryUpdatingError?: ProblemDetails;
 
   constructor(product: ProductDto) {
     super();
@@ -35,6 +42,10 @@ export class ProductChangeNotifier extends ChangeNotifierIml {
     return this._isProductUpdating;
   }
 
+  get updatingError() {
+    return this._updatingError;
+  }
+
   async updateBasicInfos(data: ProductUpdateFormDto) {
     this._isProductUpdating = true;
     this.notifyListeners();
@@ -51,6 +62,41 @@ export class ProductChangeNotifier extends ChangeNotifierIml {
     }
 
     this._isProductUpdating = false;
+    this._updatingError = undefined;
+
+    this.notifyListeners();
+
+    return result;
+  }
+
+  get isCategoryUpdating() {
+    return this._isCategoryUpdating;
+  }
+
+  get categoryUpdatingError() {
+    return this._categoryUpdatingError;
+  }
+
+  async updateCategory(data: ProductCategoryValues) {
+    this._isCategoryUpdating = true;
+    this.notifyListeners();
+
+    const result = await updateProductCategoryAction(
+      this.product.productId,
+      data,
+    );
+
+    if (result.status == "failed") {
+      this._categoryUpdatingError = result.data;
+    } else {
+      this._product.categoryId = result.data.categoryId;
+      this._product.properties = result.data.properties;
+      this._product.components = result.data.components;
+    }
+
+    this._isCategoryUpdating = false;
+    this._categoryUpdatingError = undefined;
+
     this.notifyListeners();
 
     return result;

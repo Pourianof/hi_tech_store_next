@@ -1,10 +1,44 @@
 import { convertFieldValuesToFormData } from "@/lib/helpers/convertFieldValuesToFormData";
 import z from "zod";
 
+export const productCategoryValuesSchema = z
+  .object({
+    categoryId: z.coerce.number(),
+    category: z
+      .object({ components: z.array(z.object({ componentTypeId: z.int() })) })
+      .optional(),
+    componentModels: z.array(
+      z.object({ componentModelId: z.int(), componentTypeId: z.int() }),
+    ),
+    properties: z.array(
+      z.object({
+        propertyId: z.coerce.number(),
+        propertyValue: z.string(),
+      }),
+    ),
+  })
+  .transform(({ category, ...base }) => {
+    // filter-out component models which not belong to category
+    const baseComponents = category
+      ? base.componentModels.filter((cm) =>
+          category.components.some(
+            (c) => c.componentTypeId == cm.componentTypeId,
+          ),
+        )
+      : base.componentModels;
+
+    return {
+      ...base,
+      componentModels: baseComponents.map((cm) => cm.componentModelId),
+    };
+  });
+
+export type ProductCategoryValues = z.infer<typeof productCategoryValuesSchema>;
+
 export const productCreationSchema = z
   .object({
     title: z.string(),
-    brandModel: z.number(),
+    brandModelId: z.number(),
     description: z.string().optional(),
     variations: z
       .array(
@@ -33,16 +67,7 @@ export const productCreationSchema = z
         }),
       )
       .min(1),
-    categoryValues: z.object({
-      categoryId: z.coerce.number(),
-      componentModels: z.array(z.coerce.number()),
-      properties: z.array(
-        z.object({
-          propertyId: z.coerce.number(),
-          propertyValue: z.string(),
-        }),
-      ),
-    }),
+    categoryValues: productCategoryValuesSchema,
   })
   .transform((base) => {
     // associate variation media metadata based on when medias aggregated in one array
@@ -89,6 +114,7 @@ export const productCreationSchema = z
 
     const formData = convertFieldValuesToFormData({
       ...base,
+      brandModel: base.brandModelId,
       variations: base.variations.map((v, i) => ({
         color: v.color,
         inventory: v.inventory,

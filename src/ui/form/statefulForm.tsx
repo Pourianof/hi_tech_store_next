@@ -111,6 +111,7 @@ export function StatefulForm<T>(
     if (result.status === "failed") {
       const error = result.data as ProblemDetails;
       const problemErrors = error.errors;
+      console.error(problemErrors);
       if (problemErrors && Object.keys(problemErrors).length) {
         handleProblemDetailErrors({
           errors: problemErrors,

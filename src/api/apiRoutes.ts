@@ -43,6 +43,9 @@ export const apiRoutes = {
     forProduct(productId: number) {
       return `${this.base}/${productId}`;
     },
+    categoryFor(productId: number) {
+      return `${this.forProduct(productId)}/category`;
+    },
     similarProductsOf(productId: number) {
       return `${this.forProduct(productId)}/similars`;
     },

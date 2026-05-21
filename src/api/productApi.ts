@@ -10,6 +10,7 @@ import { ProductVariationDetailsUpdateDto } from "@/core/schemas/productVariatio
 import { generateResultModelFromResponse } from "./apiHelper";
 import { apiRoutes } from "./apiRoutes";
 import { fetchWrapper } from "./fetchWrapper";
+import { ProductCategoryValues } from "@/core/schemas/productCreationSchema";
 
 export async function createNewProduct(product: FormData, accessToken: string) {
   const respond = await fetch(apiRoutes.products.base, {
@@ -114,6 +115,16 @@ export async function updateProductApi(
 ) {
   return fetchWrapper.patch<ProductBasicInfoDto>(
     apiRoutes.products.forProduct(productId),
+    updateDto,
+  );
+}
+
+export async function updateProductCategoryApi(
+  productId: number,
+  updateDto: ProductCategoryValues,
+) {
+  return fetchWrapper.put<ProductDto>(
+    apiRoutes.products.categoryFor(productId),
     updateDto,
   );
 }

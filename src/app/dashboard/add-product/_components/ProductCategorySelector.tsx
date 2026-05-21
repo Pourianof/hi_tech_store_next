@@ -2,46 +2,31 @@ import { ExpandableBox } from "@/app/products/_components/expandableBox";
 import { Category } from "@/core/models/category";
 import Icon from "@/ui/icons/icon";
 import { ApiImage } from "@/ui/image/ApiImage";
-import { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { Fragment } from "react";
+import { Controller, useWatch } from "react-hook-form";
 import Select from "react-select";
 import { ProductComponentsFormSection } from "./productComponentModelSettingForm";
 import { CategoryPropertiesForm } from "./propertiesForm";
+
+export const CATEGORY_VALUES_FIELD_NAME = "categoryValues";
 
 export function ProductCategorySelector({
   categories,
 }: {
   categories: Category[];
 }) {
-  const form = useFormContext();
-  const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const selectedCategoryId = useWatch({ name: CATEGORY_ID_FIELD_NAME });
 
-  const categoryValuesFieldName = "categoryValues";
-  function handleSelectionChange(val: unknown) {
-    const { value: selectedCategory } = val as {
-      label: string;
-      value: Category;
-    };
-
-    form.setValue(
-      `${categoryValuesFieldName}.categoryId`,
-      selectedCategory.categoryId
-    );
-    setSelectedCategory(selectedCategory);
-  }
+  const selectedCategory = categories.find(
+    (c) => c.categoryId == selectedCategoryId,
+  );
 
   return (
     <div className="flex flex-col gap-2">
       <label>Select category:</label>
-      <Select
-        onChange={handleSelectionChange}
-        options={categories.map((c) => ({
-          value: c,
-          label: <CategoryOption category={c} />,
-        }))}
-      />
+      <CategorySelect categories={categories} />
       {!!selectedCategory && (
-        <>
+        <Fragment key={selectedCategoryId}>
           <ExpandableBox
             className="border p-3"
             titleClassName="font-semibold border-b pb-2 mb-2"
@@ -53,7 +38,7 @@ export function ProductCategorySelector({
             }
           >
             <CategoryPropertiesForm
-              baseFieldName={categoryValuesFieldName}
+              baseFieldName={CATEGORY_VALUES_FIELD_NAME}
               properties={selectedCategory.properties}
             />
           </ExpandableBox>
@@ -71,7 +56,7 @@ export function ProductCategorySelector({
               components={selectedCategory.components}
             />
           </ExpandableBox>
-        </>
+        </Fragment>
       )}
     </div>
   );
@@ -85,5 +70,41 @@ function CategoryOption({ category }: { category: Category }) {
       </div>
       <span className="font-semibold">{category.name}</span>
     </div>
+  );
+}
+
+const CATEGORY_ID_FIELD_NAME = `${CATEGORY_VALUES_FIELD_NAME}.categoryId`;
+function CategorySelect({ categories }: { categories: Category[] }) {
+  return (
+    <Controller
+      name={CATEGORY_ID_FIELD_NAME}
+      render={({ field: { onChange, value } }) => {
+        const selectedCategory = categories.find((c) => c.categoryId == value);
+        return (
+          <Select
+            value={
+              selectedCategory
+                ? {
+                    value,
+                    label: <CategoryOption category={selectedCategory} />,
+                  }
+                : undefined
+            }
+            onChange={(val: unknown) => {
+              const { value: selectedCategory } = val as {
+                label: string;
+                value: Category;
+              };
+
+              onChange(selectedCategory.categoryId);
+            }}
+            options={categories.map((c) => ({
+              value: c,
+              label: <CategoryOption category={c} />,
+            }))}
+          />
+        );
+      }}
+    />
   );
 }
