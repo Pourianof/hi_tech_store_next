@@ -14,6 +14,7 @@ import { Caption } from "@/ui/theme/text/caption";
 import { H4 } from "@/ui/theme/text/headers";
 import toast from "react-hot-toast";
 import { FormBox } from "./formBox";
+import { CircularProgress } from "@mui/material";
 
 export function ProductCategoryForm() {
   const productNc = useChangeConsumer(ProductChangeNotifier);
@@ -71,7 +72,18 @@ export function ProductCategoryForm() {
         <ProductCategorySelector categories={categories} />
         <StatefulForm.Submitter
           render={(submitter) => {
-            return <FilledButton onClick={submitter}>Save</FilledButton>;
+            return (
+              <FilledButton
+                disabled={productNc.isCategoryUpdating}
+                onClick={submitter}
+              >
+                {productNc.isCategoryUpdating ? (
+                  <CircularProgress size={12} />
+                ) : (
+                  "Save"
+                )}
+              </FilledButton>
+            );
           }}
         />
       </StatefulForm>
