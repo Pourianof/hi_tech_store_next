@@ -3,14 +3,14 @@ import { PagedResults } from "@/core/Dtos/pagedResult";
 import { ProductDto, ProductMediaDto } from "@/core/Dtos/ProductDto";
 import { ProductBasicInfoDto } from "@/core/models/cart";
 import { Comment } from "@/core/models/comment";
-import { Product, ProductColor, ProductVariation } from "@/core/models/product";
+import { ProductColor, ProductVariation } from "@/core/models/product";
 import { ResultModel } from "@/core/models/resultModel";
+import { ProductCategoryValues } from "@/core/schemas/productCreationSchema";
 import { ProductUpdateFormDto } from "@/core/schemas/productUpdateSchema";
 import { ProductVariationDetailsUpdateDto } from "@/core/schemas/productVariationDetailsUpdateSchema";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { apiRoutes } from "./apiRoutes";
 import { fetchWrapper } from "./fetchWrapper";
-import { ProductCategoryValues } from "@/core/schemas/productCreationSchema";
 
 export async function createNewProduct(product: FormData, accessToken: string) {
   const respond = await fetch(apiRoutes.products.base, {
@@ -27,20 +27,21 @@ export async function createNewProduct(product: FormData, accessToken: string) {
 export async function getProducts(
   searchQueries?: Record<string, string>,
 ): Promise<ResultModel<PagedResults<ProductDto>>> {
-  const respond = (await fetchWrapper.get(
-    apiRoutes.products.base,
-    searchQueries,
-  )) as ResultModel<PagedResults<ProductDto>>;
+  const respond = (await fetchWrapper.get(apiRoutes.products.base, {
+    ...searchQueries,
+    include: "variations",
+  })) as ResultModel<PagedResults<ProductDto>>;
 
   return respond;
 }
 
-export async function getSingleProduct(
-  productId: number,
-): Promise<ResultModel<Product>> {
-  const respond = await fetch(apiRoutes.products.forProduct(productId));
-
-  return generateResultModelFromResponse(respond);
+export async function getSingleProduct(productId: number) {
+  return fetchWrapper.get<ProductDto>(
+    apiRoutes.products.forProduct(productId),
+    {
+      include: "variations,components",
+    },
+  );
 }
 
 export function getColors() {
@@ -70,13 +71,16 @@ export function getCommentsOfProductApi(productId: number) {
 export function getSimilarProductsOfApi(productId: number) {
   return fetchWrapper.get<ProductDto[]>(
     apiRoutes.products.similarProductsOf(productId),
+    {
+      include: "variations",
+    },
   );
 }
 
 export async function getMyProductsApi(searchQueries?: Record<string, string>) {
   return fetchWrapper.get<PagedResults<ProductDto>>(
     apiRoutes.users.myProducts,
-    searchQueries,
+    { ...searchQueries, include: "variations" },
   );
 }
 

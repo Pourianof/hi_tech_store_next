@@ -6,6 +6,7 @@ import { ProductPageParts } from "./_components/productPageParts";
 import { PaymentBox } from "./_components/paymentBox";
 import { VariationProvider } from "./_contexts/variationContext";
 import { Row } from "@/ui/layouts/row";
+import { Product } from "@/core/models/product";
 
 export default async function ProductItemPage({
   params,
@@ -27,7 +28,7 @@ export default async function ProductItemPage({
   return (
     <VariationProvider variation={prodVariation}>
       <div>
-        <ProductProvider product={product}>
+        <ProductProvider product={product as Product}>
           <Row className="items-start gap-24px">
             <div className="w-[40%]">
               <ProductMediaFixedList />
@@ -37,7 +38,7 @@ export default async function ProductItemPage({
             </div>
             <PaymentBox />
           </Row>
-          <ProductPageParts product={product} />
+          <ProductPageParts product={product as Product} />
         </ProductProvider>
       </div>
     </VariationProvider>
