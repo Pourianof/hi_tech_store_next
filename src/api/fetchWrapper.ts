@@ -20,6 +20,19 @@ async function get<T>(url: string, queryParams?: Record<string, any>) {
   return handleResponse<T>(response);
 }
 
+enum BodyType {
+  Json,
+  FormData,
+}
+
+function getType(data: object) {
+  return data instanceof FormData ? BodyType.FormData : BodyType.Json;
+}
+
+function isJson(data: object) {
+  return getType(data) == BodyType.Json;
+}
+
 async function handleResponse<T>(response: Response) {
   let json: unknown;
   try {
@@ -37,37 +50,47 @@ async function handleResponse<T>(response: Response) {
   } as ResultModel<T>;
 }
 
-async function post<T>(url: string, data: object) {
-  const isFormData = data instanceof FormData;
+async function getHeaders(isJson: boolean = false) {
+  const session = await auth();
+  const headers = new Headers();
+
+  if (isJson) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  if (session) {
+    headers.set("Authorization", `Bearer ${session.apiToken}`);
+  }
+
+  return headers;
+}
+
+async function sendData<T>(
+  url: string,
+  method: "POST" | "PUT" | "PATCH",
+  body: object,
+) {
+  const isJsonData = isJson(body);
+
   return handleResponse<T>(
     await fetch(url, {
-      method: "POST",
-      headers: await getHeaders(isFormData),
-      body: isFormData ? data : JSON.stringify(data),
+      method,
+      headers: await getHeaders(isJsonData),
+      body: isJsonData ? JSON.stringify(body) : (body as FormData),
     }),
   );
+}
+
+async function post<T>(url: string, data: object) {
+  return sendData<T>(url, "POST", data);
 }
 
 async function put<T>(url: string, data: object) {
-  const isFormData = data instanceof FormData;
-  return handleResponse<T>(
-    await fetch(url, {
-      method: "PUT",
-      headers: await getHeaders(isFormData),
-      body: isFormData ? data : JSON.stringify(data),
-    }),
-  );
+  return sendData<T>(url, "PUT", data);
 }
 
 async function patch<T>(url: string, data: object) {
-  const isFormData = data instanceof FormData;
-  return handleResponse<T>(
-    await fetch(url, {
-      method: "PATCH",
-      headers: await getHeaders(isFormData),
-      body: isFormData ? data : JSON.stringify(data),
-    }),
-  );
+  return sendData<T>(url, "PATCH", data);
 }
 
 async function _delete<T>(url: string) {
@@ -77,21 +100,6 @@ async function _delete<T>(url: string) {
       headers: await getHeaders(),
     }),
   );
-}
-
-async function getHeaders(isFormData: boolean = false) {
-  const session = await auth();
-  const headers = new Headers();
-
-  if (!isFormData) {
-    headers.set("Content-Type", "application/json");
-  }
-
-  if (session) {
-    headers.set("Authorization", `Bearer ${session.apiToken}`);
-  }
-
-  return headers;
 }
 
 export const fetchWrapper = { get, post, put, delete: _delete, patch };

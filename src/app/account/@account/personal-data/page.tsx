@@ -2,10 +2,13 @@ import { PageTitle } from "../../_components/pageTitle";
 import { EditableInput } from "../../_components/EditableInput";
 import { FullNameInput } from "./_components/FullNameInput";
 import { EditableEmailInput } from "./_components/EmailInput";
+import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
+import { ProfileInput } from "./_components/profileInput";
 
 export default async function AccountPersonalDataPage() {
   return (
-    <div>
+    <Column>
       <PageTitle title="Identification" description="Verify your identitys" />
       <div className="grid grid-cols-2 gap-2">
         <FullNameInput />
@@ -27,6 +30,9 @@ export default async function AccountPersonalDataPage() {
           value={"No-Postal"}
         />
       </div>
-    </div>
+      <Row>
+        <ProfileInput />
+      </Row>
+    </Column>
   );
 }

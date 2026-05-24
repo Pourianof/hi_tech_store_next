@@ -96,6 +96,9 @@ export const apiRoutes = {
     get me() {
       return `${this.base}/me`;
     },
+    get avatar() {
+      return `${this.me}/avatar`;
+    },
     get myProducts() {
       return `${this.me}/products`;
     },

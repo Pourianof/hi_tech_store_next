@@ -8,5 +8,6 @@ export interface LoginDto {
     firstName: string;
     lastName: string;
     roles: string[];
+    avatarUrl?: string;
   };
 }
