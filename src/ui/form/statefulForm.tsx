@@ -97,6 +97,7 @@ export function StatefulForm<T>(
           errors.forEach((err) =>
             methods.setError(err.path, { message: err.message }),
           );
+          setIsSubmitting(false);
           return;
         }
       }
@@ -105,6 +106,8 @@ export function StatefulForm<T>(
     }
 
     const result = await props.onSubmit(submittingData as T, methods);
+    setIsSubmitting(false);
+
     if (!result) {
       return;
     }
@@ -133,7 +136,6 @@ export function StatefulForm<T>(
     }
 
     await props.onSubmitionSuccessful(result.data as Record<string, unknown>);
-    setIsSubmitting(true);
   }
 
   const submitter = methods.handleSubmit(submitHandler, (e) =>
