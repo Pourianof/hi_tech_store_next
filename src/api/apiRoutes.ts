@@ -16,6 +16,9 @@ export const apiRoutes = {
     get logout() {
       return `${this.base}/logout`;
     },
+    get changePassword() {
+      return `${this.base}/change-password`;
+    },
   },
   brands: {
     base: `${server}/brands`,

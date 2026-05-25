@@ -4,6 +4,8 @@ import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationErro
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { apiRoutes } from "./apiRoutes";
+import { ChangePasswordDto } from "@/core/schemas/passwordChangeSchema";
+import { fetchWrapper } from "./fetchWrapper";
 
 export async function signIn(
   id: {
@@ -86,4 +88,8 @@ export async function logoutApi(refToken: string) {
   const result = await generateResultModelFromResponse<void>(response);
 
   return result;
+}
+
+export async function changePasswordApi(changeDto: ChangePasswordDto) {
+  return fetchWrapper.patch(apiRoutes.auth.changePassword, changeDto);
 }

@@ -5,6 +5,7 @@ import { EditableEmailInput } from "./_components/EmailInput";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { ProfileInput } from "./_components/profileInput";
+import { PasswordInput } from "./_components/passwordInput";
 
 export default async function AccountPersonalDataPage() {
   return (
@@ -18,11 +19,7 @@ export default async function AccountPersonalDataPage() {
           label="Phone number"
           value={"No-Number"}
         />
-        <EditableInput
-          iconName="key"
-          label="Password"
-          value={"***************"}
-        />
+        <PasswordInput />
         <EditableInput iconName="home" label="Address" value={"No-Address"} />
         <EditableInput
           iconName="postal"
