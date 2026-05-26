@@ -4,7 +4,10 @@ import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationErro
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { apiRoutes } from "./apiRoutes";
-import { ChangePasswordDto } from "@/core/schemas/passwordChangeSchema";
+import {
+  ChangePasswordDto,
+  ResetPasswordDto,
+} from "@/core/schemas/passwordChangeSchema";
 import { fetchWrapper } from "./fetchWrapper";
 
 export async function signIn(
@@ -92,4 +95,18 @@ export async function logoutApi(refToken: string) {
 
 export async function changePasswordApi(changeDto: ChangePasswordDto) {
   return fetchWrapper.patch(apiRoutes.auth.changePassword, changeDto);
+}
+
+export async function forgotPasswordApi(forgotDto: {
+  email: string;
+  returnUrl: string;
+}) {
+  return fetchWrapper.post<{ message: string }>(
+    apiRoutes.auth.forgotPassword,
+    forgotDto,
+  );
+}
+
+export async function resetPasswordApi(resetPasswordDto: ResetPasswordDto) {
+  return fetchWrapper.post(apiRoutes.auth.resetPassword, resetPasswordDto);
 }

@@ -19,6 +19,12 @@ export const apiRoutes = {
     get changePassword() {
       return `${this.base}/change-password`;
     },
+    get forgotPassword() {
+      return `${this.base}/forgot-password`;
+    },
+    get resetPassword() {
+      return `${this.base}/reset-password`;
+    },
   },
   brands: {
     base: `${server}/brands`,

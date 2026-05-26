@@ -8,25 +8,30 @@ interface RedirectorProps {
   destinationPath?: string;
 }
 
-export function useRedirect({
+export function useDelayedRedirect({
   timeout = 1000,
   push,
   destinationPath,
 }: RedirectorProps) {
   const router = useRouter();
 
-  setTimeout(() => {
-    if (!destinationPath) {
-      router.back();
-      return;
-    }
+  return () =>
+    setTimeout(() => {
+      if (!destinationPath) {
+        router.back();
+        return;
+      }
 
-    if (push) {
-      router.push(destinationPath);
-    } else {
-      router.replace(destinationPath);
-    }
-  }, timeout);
+      if (push) {
+        router.push(destinationPath);
+      } else {
+        router.replace(destinationPath);
+      }
+    }, timeout);
+}
+
+export function useRedirect(props: RedirectorProps) {
+  useDelayedRedirect(props)();
 }
 
 export function Redirector(props: RedirectorProps) {
