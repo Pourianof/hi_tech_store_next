@@ -7,7 +7,7 @@ import { ItemsListBox } from "./iemsListBox";
 import { ProductItem } from "./productItem";
 
 export async function BestSellersList() {
-  const result = await productActions.getMyProductsAction({
+  const result = await productActions.getProducts({
     bestSeller: "month",
     sortBy: "best_sellers",
     sortDir: "des",
@@ -22,6 +22,10 @@ export async function BestSellersList() {
         >
           <H4>Failed to load</H4>
           <Caption size="lg">What happened? let us check it...</Caption>
+          <Caption size="sm">{result.data.title}</Caption>
+          {!!result.data.detail && (
+            <Caption size="sm">{result.data.detail}</Caption>
+          )}
         </Column>
       </Column>
     );
@@ -30,7 +34,7 @@ export async function BestSellersList() {
   const products = result.data.items;
 
   return (
-    <ItemsListBox label="Best Sellers" linkLabel="View all >">
+    <ItemsListBox label="Best Sellers" linkLabel="View all">
       <div className="flex *:flex-1 gap-4 my-4">
         {products.slice(0, 4).map((prod) => (
           <ProductItem
