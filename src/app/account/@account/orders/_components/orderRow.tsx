@@ -1,11 +1,11 @@
 import { routes } from "@/app/routes";
-import { getMainMedia } from "@/core/models/helpers/productHelpers";
 import {
   OrderItemWithProduct,
   OrderPaymentState,
   OrderWithProduct,
 } from "@/core/models/order";
-import { Product } from "@/core/models/product";
+import { ProductVariation } from "@/core/models/product";
+import { ProductVariationModel } from "@/core/models/productModel";
 import { formatDateToYYYYDDMM } from "@/lib/helpers/dateHelper";
 import { ApiImage } from "@/ui/image/ApiImage";
 import Link from "next/link";
@@ -97,7 +97,11 @@ function OrderItemsListItem({
     <div className="max-w-1/6 min-w-1/6 relative hover:[&_.product-info]:opacity-100">
       <ApiImage
         alt={`${product.title} - ${variation.color.name}`}
-        src={getMainMedia(product as Product, variation)?.url}
+        src={
+          ProductVariationModel.CreateWith(
+            variation as ProductVariation,
+          ).getCandidateImageMedia()?.url
+        }
         className="w-full"
       />
       <div className="product-info space-y-2 top-0 left-0 w-full h-full text-slate-100 p-2 rounded absolute opacity-0 bg-black/60">
