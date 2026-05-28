@@ -16,6 +16,12 @@ import { Wrapper } from "./_shared/wrapper";
 import "./_styles/global.css";
 import { CCQueryClientProvider } from "./dashboard/categories/_components/queryClientProvider";
 import { RhfDevToolsClient } from "./_components/rhfDevToolsClient";
+import { Inter } from "next/font/google";
+
+const interFont = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default async function MainLayout(props: {
   children: ReactNode;
@@ -28,7 +34,7 @@ export default async function MainLayout(props: {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <body>
+      <body className={interFont.className}>
         <RhfDevToolsClient>
           {isServerHealthy ? (
             <>
