@@ -1,14 +1,15 @@
+import { ProductVariation } from "@/core/models/product";
 import { ProductModel } from "@/core/models/productModel";
 import { ApiImage } from "@/ui/image/ApiImage";
 import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
 import { Card } from "@/ui/theme/card";
+import { Body } from "@/ui/theme/text/body";
 import { Caption } from "@/ui/theme/text/caption";
 import Link from "next/link";
+import { AddToCartButton } from "./addToCartButton";
 import { DiscountLabel } from "./discountLabel";
 import { ProductScore } from "./productScore";
-import { ProductVariation } from "@/core/models/product";
-import { Body } from "@/ui/theme/text/body";
-import { Row } from "@/ui/layouts/row";
 
 export function ProductItem({ product }: { product: ProductModel }) {
   const mainVariation = product.mainVariation!;
@@ -16,7 +17,7 @@ export function ProductItem({ product }: { product: ProductModel }) {
   const coverImage = mainVariation.getCandidateImageMedia();
 
   return (
-    <Card scaleTransition className="relative grow">
+    <Card scaleTransition className="relative grow group">
       <Column className="gap-16px group">
         {mainVariation.hasDiscount && (
           <DiscountLabel
@@ -43,18 +44,24 @@ export function ProductItem({ product }: { product: ProductModel }) {
             </Body>
           </Column>
         </Link>
-        <Row className="justify-between my-2 mt-auto" centerV>
-          {mainVariation.hasDiscount ? (
-            <Column>
-              <Caption
-                size="md"
-                className="text-gray-neutral-71 line-through"
-              >{`$${mainVariation.price}`}</Caption>
-              <Body size="lg">{`$${mainVariation.finalPrice}`}</Body>
-            </Column>
-          ) : (
-            <Body size="lg">{`$${mainVariation.price}`}</Body>
-          )}
+        <Row className="justify-between my-2 mt-auto h-[55px]" centerV>
+          <AddToCartButton
+            product={product.toRawProduct()}
+            variation={mainVariation.toRawVariation()}
+          />
+          <Column className="group-hover:hidden">
+            {mainVariation.hasDiscount ? (
+              <>
+                <Caption
+                  size="md"
+                  className="text-gray-neutral-71 line-through"
+                >{`$${mainVariation.price}`}</Caption>
+                <Body size="lg">{`$${mainVariation.finalPrice}`}</Body>
+              </>
+            ) : (
+              <Body size="lg">{`$${mainVariation.price}`}</Body>
+            )}
+          </Column>
           <ProductScore score={product.averageScore} />
         </Row>
       </Column>

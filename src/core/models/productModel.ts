@@ -93,6 +93,24 @@ export class ProductModel implements Product {
       return productVariation.getCandidateImageMedia();
     }
   }
+
+  toRawProduct(): Product {
+    return {
+      averageScore: this.averageScore,
+      brandModel: this.brandModel,
+      categoryId: this.categoryId,
+      components: this.components,
+      productId: this.productId,
+      properties: this.properties,
+      scoreCounts: this.scoreCounts,
+      title: this.title,
+      variations: this.variations.map((pv) => pv.toRawVariation()),
+      authorId: this.authorId,
+      description: this.description,
+      discount: this.discount,
+      myScore: this.myScore,
+    };
+  }
 }
 
 export class ProductVariationModel implements ProductVariation {
@@ -143,5 +161,16 @@ export class ProductVariationModel implements ProductVariation {
 
   get discountPercentage() {
     return (100 * (this.discount ?? 0)) / this.price;
+  }
+
+  toRawVariation(): ProductVariation {
+    return {
+      color: this.color,
+      inventory: this.inventory,
+      media: this.media,
+      price: this.price,
+      productVariationId: this.productVariationId,
+      discount: this.discount,
+    };
   }
 }
