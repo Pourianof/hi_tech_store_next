@@ -8,7 +8,7 @@ export function FormBox(props: Props) {
     <div
       {...props}
       className={twMerge(
-        "border border-gray-200 p-8 rounded-lg",
+        "border border-gray-200 p-4 desktop:p-8 rounded-lg",
         props.className ?? "",
       )}
     />

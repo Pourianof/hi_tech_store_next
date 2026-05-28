@@ -128,7 +128,7 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
     <ModalContext.Provider value={{ isBackBtnHandled: isBackBtnHandled }}>
       <div
         className={twMerge(
-          "fixed inset-0 bg-black/50 flex z-50 ",
+          "fixed inset-0 bg-black/50 flex z-50 w-[100dvw] h-[100dvh]",
           overlayClassName,
           className ?? "",
         )}

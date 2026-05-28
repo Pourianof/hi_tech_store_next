@@ -10,7 +10,7 @@ import { ProductCategoryForm } from "./productCategoryForm";
 export function ProductBasicInfoForm({ product }: { product: ProductDto }) {
   return (
     <ProductChangeNotifierProvider product={product}>
-      <div className="grid grid-cols-2 gap-8">
+      <div className="md:grid md:grid-cols-2 gap-8">
         <Column className="gap-2">
           <H4 className="font-bold text-center text-gray-800">
             Product basic details

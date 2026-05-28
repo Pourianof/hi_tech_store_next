@@ -9,7 +9,7 @@ export function Wrapper({
 }) {
   return (
     <div
-      className={`max-w-[1440px] xl:w-[80%] md:w-[90%] w-[90%]  mx-auto ${
+      className={`max-w-[min(100%, 1440px)] xl:w-[80%] md:w-[90%] w-[90%] overflow-hidden  mx-auto ${
         className ?? ""
       }`}
     >

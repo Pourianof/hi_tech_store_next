@@ -21,7 +21,7 @@ export const VariationsPreviewList = () => {
   const variations = product!.product.variations.map((p) => p.productVariation);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto py-8">
       {/* Header */}
       <div className="mb-8 text-center">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">
