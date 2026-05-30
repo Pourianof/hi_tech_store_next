@@ -5,6 +5,8 @@ import { CategoryList } from "./_components/categoryList";
 import { FilterFeeder } from "./_components/filterFeeder";
 import { SortProductSelect } from "./_components/sortProductSelect";
 import { productActions } from "@/ui/server_actions_wrapper/productActions";
+import { Row } from "@/ui/layouts/row";
+import { OutlinedButton } from "@/ui/form/AppButtons";
 
 export default async function ProductListPage({
   searchParams,
@@ -12,14 +14,20 @@ export default async function ProductListPage({
   searchParams: Record<string, string>;
 }) {
   const params = await searchParams;
-  const productsResult = await productActions.getProducts(params);
+  const productsResult = await productActions.getProducts({
+    ...params,
+    limit: "12",
+  });
   if (productsResult.status == "failed") {
     return <div>Something went wrong on fetching products...</div>;
   }
 
   const searchString = new URLSearchParams(params).toString();
 
-  const products = productsResult.data.items;
+  const productPage = productsResult.data;
+  const products = productPage.items;
+  const page = searchParams.page ? +searchParams.page : 1;
+
   return (
     <div>
       <CategoryList />
@@ -44,6 +52,22 @@ export default async function ProductListPage({
               <ProductItem key={product.productId} product={product} />
             ))}
           </div>
+          <Row className="justify-between">
+            {page > 1 ? (
+              <Link href={{ query: { page: page - 1 } }}>
+                <OutlinedButton>Previous Page</OutlinedButton>
+              </Link>
+            ) : (
+              <div></div>
+            )}
+            {productPage.hasNext ? (
+              <Link href={{ query: { page: page + 1 } }}>
+                <OutlinedButton>Next Page</OutlinedButton>
+              </Link>
+            ) : (
+              <div></div>
+            )}
+          </Row>
         </div>
       </div>
     </div>
