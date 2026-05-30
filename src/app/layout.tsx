@@ -10,7 +10,7 @@ import { CategorySSInjector } from "./_components/categorySSInjector";
 import { DashboardLinkButton } from "./_components/dashboardLinkButton";
 import { FailedBox } from "./_components/failedBox";
 import { Footer } from "./_components/footer";
-import { Header } from "./_components/header";
+import { Header } from "./_components/header/header";
 import { RoutePath } from "./_components/routePath";
 import { Wrapper } from "./_shared/wrapper";
 import "./_styles/global.css";
