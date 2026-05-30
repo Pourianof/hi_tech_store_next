@@ -1,3 +1,4 @@
+import { Column } from "@/ui/layouts/column";
 import { Banner } from "./_components/banner";
 import { BestSellersList } from "./_components/bestSellersList";
 import { CategoriesMiniCardList } from "./_components/categoriesMiniCardList";
@@ -12,14 +13,16 @@ export default function MainPage() {
   return (
     <div>
       <Wrapper>
-        <Banner />
-        <CategoriesMiniCardList />
-        <OnSaleProductList />
-        <NewProductsList />
-        <HighlightedItems />
-        <BestSellersList />
-        <TopBrandsList />
-        <CategoryHighlight />
+        <Column className="gap-24px">
+          <Banner />
+          <CategoriesMiniCardList />
+          <OnSaleProductList />
+          <NewProductsList />
+          <HighlightedItems />
+          <BestSellersList />
+          <TopBrandsList />
+          <CategoryHighlight />
+        </Column>
       </Wrapper>
     </div>
   );

@@ -42,7 +42,7 @@ export function CartItemBox({
     >
       <Row className="gap-24px">
         <ApiImage
-          className="min-w-[40%] w-[40%] desktop:min-w-[30%] desktop:w-[30%]"
+          className="rounded overflow-clip object-cover min-w-[40%] w-[40%] aspect-square desktop:w-[30%]"
           square
           alt={product.title}
           src={coverImage}

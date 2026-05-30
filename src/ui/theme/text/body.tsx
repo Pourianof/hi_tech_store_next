@@ -25,7 +25,10 @@ export function Body({ children, size, className, as, style }: Props) {
     as ?? "div",
     {
       className: cn,
-      style,
+      style: {
+        display: "inline-block",
+        ...style,
+      },
     },
     children,
   );

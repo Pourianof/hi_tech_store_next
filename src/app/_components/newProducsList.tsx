@@ -15,7 +15,11 @@ export async function NewProductsList() {
 
   const products = productResult.data.items;
   return (
-    <ItemsListBox label="New Products" linkLabel="view all">
+    <ItemsListBox
+      label="New Products"
+      linkLabel="View all"
+      linkHref="/products"
+    >
       <div className="flex *:flex-1 gap-4 my-4">
         {products.slice(0, 4).map((prod) => (
           <ProductItem product={prod} key={prod.productId} />

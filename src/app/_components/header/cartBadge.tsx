@@ -2,9 +2,14 @@
 import { CartItemBox } from "@/app/order/cart/_components/cartItemBox";
 import { CartItem } from "@/core/models/cartItem";
 import { useCart } from "@/ui/contexts/cart/cartContext";
+import { FilledButton } from "@/ui/form/AppButtons";
 import Icon from "@/ui/icons/icon";
+import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
 import { Card } from "@/ui/theme/card";
-import { Badge, Button } from "@mui/material";
+import { Body } from "@/ui/theme/text/body";
+import { H6 } from "@/ui/theme/text/headers";
+import { Badge } from "@mui/material";
 import Link from "next/link";
 import { HeaderModalHoverZone } from "./headerModal";
 
@@ -51,33 +56,36 @@ function CartModal() {
   return (
     <Card
       noHoverReaction
-      className="w-[512px] p-4 text-sm rounded-none rounded-b-md bg-white translate-y-[1px]"
-      noShadow
+      className="w-[512px] p-4 text-sm max-h-[calc(100dvh_-_75px_-_100px)] flex rounded-none rounded-b-md bg-white translate-y-[1px]"
     >
-      <h4 className="text-lg border-b pb-2">
-        <Icon name="cart" />
-        Your cart
-      </h4>
       {!!cartItems.length ? (
-        <div className="flex flex-col gap-4 py-2 divide-y">
-          {cartItems.map((cartItem) => (
-            <CartItemBox key={cartItem.product.productId} cartItem={cartItem} />
-          ))}
-          <div className="flex items-center justify-between pt-2">
-            <div>
-              <span>Total price: </span>
-              <span className="font-semibold">
+        <div className="grid grid-rows-[auto_1fr_auto] gap-4 py-2 flex-[1]">
+          <Body size="lg">
+            {cartItems.length} Item{cartItems.length > 1 ? "s" : ""}
+          </Body>
+          <Column className="overflow-auto">
+            {cartItems.map((cartItem) => (
+              <CartItemBox
+                key={cartItem.product.productId}
+                cartItem={cartItem}
+              />
+            ))}
+          </Column>
+          <Row className="items-center justify-between pt-2">
+            <Column centerH className="px-6 gap-1">
+              <Body size="sm">Total price: </Body>
+              <H6 className="font-semibold">
                 {cartItems
                   .reduce((prev, cur) => prev + cur.finalPrice, 0)
                   .toFixed(2)}
-              </span>
-            </div>
-            <Link href={{ pathname: "/order/cart" }}>
-              <Button variant="outlined" size="small">
-                Order now
-              </Button>
+              </H6>
+            </Column>
+            <Link href={{ pathname: "/order/cart" }} className="grow">
+              <FilledButton>
+                Proceed to cart <Icon name="cart" className="text-2xl" />
+              </FilledButton>
             </Link>
-          </div>
+          </Row>
         </div>
       ) : (
         <div className="w-max relative py-8 mx-auto">

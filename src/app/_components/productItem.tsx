@@ -17,7 +17,7 @@ export function ProductItem({ product }: { product: ProductModel }) {
   const coverImage = mainVariation.getCandidateImageMedia();
 
   return (
-    <Card scaleTransition className="relative grow group">
+    <Card scaleTransition className="relative grow group min-w-[230px]">
       <Column className="gap-16px group">
         {mainVariation.hasDiscount && (
           <DiscountLabel
