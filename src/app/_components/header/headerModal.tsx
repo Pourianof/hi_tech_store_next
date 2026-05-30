@@ -102,9 +102,7 @@ export function HeaderModalRenderContainer({
   }
 
   const display = useCallback((node: ModalContentBuilder, name: string) => {
-    if (cancellingIdRef.current == name && cancellingTimeoutRef.current) {
-      resetTimer();
-    }
+    resetTimer();
     displayingNodeBuilder.current = node;
     setDisplayingId(name);
   }, []);
