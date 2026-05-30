@@ -19,7 +19,7 @@ export function Card({
   border?: boolean;
 }) {
   const spacingStyles =
-    variant == "small" ? "p-8px rounded-sm" : "p-16px rounded-md";
+    variant == "small" ? "p-2 rounded-sm" : "p-4 rounded-md";
 
   return (
     <div

@@ -8,7 +8,11 @@ import { HeaderDrawerButton } from "../headerDrawerButton";
 import { UserLink } from "./userLink";
 import { Row } from "@/ui/layouts/row";
 import { Body } from "@/ui/theme/text/body";
-import { HeaderModalRenderContainer } from "./headerModal";
+import {
+  HeaderModalHoverZone,
+  HeaderModalRenderContainer,
+} from "./headerModal";
+import { ProductsMenu } from "./productsMenu";
 
 export async function Header() {
   return (
@@ -43,19 +47,30 @@ function LargeHeader() {
     <div className="items-center hidden md:flex">
       <Image alt={APP_TITLE} src={"/icons/logo.svg"} width={50} height={50} />
       <div className="mx-auto space-x-14">
-        <Link href={"/"}>
+        <Link href={"/"} className="hover:text-primary-blue-0c">
           <Body size="lg">Home</Body>
         </Link>
         <Link href={"/products"}>
-          <Body size="lg">Products</Body>
+          <HeaderModalHoverZone
+            name="products"
+            modalContent={<ProductsMenu />}
+            zoneClassName="w-full"
+          >
+            <Body
+              size="lg"
+              className="relative hover:text-primary-blue-0c px-2 py-1 hover:after:block after:hidden after:absolute after:left-0 after:bottom-0 after:w-full after:h-[1px] after:bg-linear-to-r after:from-transparent after:via-primary-blue-0c after:to-transparent"
+            >
+              Products
+            </Body>
+          </HeaderModalHoverZone>
         </Link>
-        <Link href={"/"}>
+        <Link href={"/"} className="hover:text-primary-blue-0c">
           <Body size="lg">Blog</Body>
         </Link>
-        <Link href={"/"}>
+        <Link href={"/"} className="hover:text-primary-blue-0c">
           <Body size="lg">FAQ</Body>
         </Link>
-        <Link href={"/"}>
+        <Link href={"/"} className="hover:text-primary-blue-0c">
           <Body size="lg">Contact Us</Body>
         </Link>
       </div>

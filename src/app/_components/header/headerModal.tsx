@@ -17,10 +17,12 @@ export function HeaderModalHoverZone({
   children,
   modalContent,
   name,
+  zoneClassName,
 }: {
   children: ReactElement<HTMLElement>;
   modalContent: ReactElement<HTMLElement>;
   name: string;
+  zoneClassName?: string;
 }) {
   const { cancel, display } = useHeaderModalContext(name);
 
@@ -32,7 +34,7 @@ export function HeaderModalHoverZone({
   }
 
   const modalContentBuilder: ModalContentBuilder = (reset, cancel) => (
-    <div onMouseEnter={reset} onMouseLeave={cancel}>
+    <div onMouseEnter={reset} onMouseLeave={cancel} className={zoneClassName}>
       {modalContent}
     </div>
   );
@@ -141,7 +143,7 @@ export function HeaderModalRenderContainer({
           >
             {null}
           </Modal>
-          <div className="absolute w-full top-full left-0 flex justify-end mx-auto">
+          <div className="absolute w-full top-full left-0 flex justify-end mx-auto translate-y-[1px]">
             {node}
           </div>
         </>

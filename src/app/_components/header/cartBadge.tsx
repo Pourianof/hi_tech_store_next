@@ -56,7 +56,7 @@ function CartModal() {
   return (
     <Card
       noHoverReaction
-      className="w-[512px] p-4 text-sm max-h-[calc(100dvh_-_75px_-_100px)] flex rounded-none rounded-b-md bg-white translate-y-[1px]"
+      className="w-[512px] p-4 text-sm max-h-[calc(100dvh_-_75px_-_100px)] flex rounded-none rounded-b-md bg-white"
     >
       {!!cartItems.length ? (
         <div className="grid grid-rows-[auto_1fr_auto] gap-4 py-2 flex-[1]">
