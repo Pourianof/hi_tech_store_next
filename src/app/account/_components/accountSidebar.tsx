@@ -22,7 +22,7 @@ export async function AccountSideBar() {
   }
 
   return (
-    <div className="bg-gray-100 w-fit">
+    <div className="bg-gray-100 min-w-[290px] self-start">
       <IconThemeProvider theme={{ className: "pe-2" }}>
         <div className="cursor-default py-2 border-b border-gray-400">
           <Icon className="text-4xl" name="profile" />

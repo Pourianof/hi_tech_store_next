@@ -55,7 +55,7 @@ function UserMenu() {
     <Card className="rounded-none rounded-b-md w-[290px] p-16px" noShadow>
       <Column className="gap-24px">
         <UserMenuItem
-          iconName="user"
+          iconName="profile"
           mainText={`${data?.user.firstName} ${data?.user.lastName}`}
           subTitle={data?.user.email}
           link="/account"

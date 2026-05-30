@@ -1,6 +1,7 @@
 import { getUserOrdersAction } from "@/lib/server_actions/orderActions";
 import { PageTitle } from "../../_components/pageTitle";
 import { OrderRow } from "./_components/orderRow";
+import { Column } from "@/ui/layouts/column";
 
 export default async function DashboardOrdersPage() {
   const ordersResult = await getUserOrdersAction();
@@ -25,11 +26,11 @@ export default async function DashboardOrdersPage() {
         title="Order History"
         description="Track, return or purchase items"
       />
-      <div>
+      <Column className="gap-24px">
         {orders.map((order) => (
           <OrderRow key={order.orderId} order={order} />
         ))}
-      </div>
+      </Column>
     </div>
   );
 }

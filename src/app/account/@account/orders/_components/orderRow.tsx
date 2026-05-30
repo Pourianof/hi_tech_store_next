@@ -8,6 +8,9 @@ import { ProductVariation } from "@/core/models/product";
 import { ProductVariationModel } from "@/core/models/productModel";
 import { formatDateToYYYYDDMM } from "@/lib/helpers/dateHelper";
 import { ApiImage } from "@/ui/image/ApiImage";
+import { Column } from "@/ui/layouts/column";
+import { Body } from "@/ui/theme/text/body";
+import { H6 } from "@/ui/theme/text/headers";
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -26,8 +29,8 @@ export function OrderRow({ order }: { order: OrderWithProduct }) {
   const createdDate = new Date(order.createdAt);
   const maxDisplayItemsCount = 5;
   return (
-    <div className="flex flex-col">
-      <div className="bg-gray-neutral-f6 flex text-center justify-between p-2 px-5">
+    <Column className="gap-16px">
+      <div className="bg-gray-neutral-f6 flex text-center justify-between p-16px px-5">
         <OrderInfoSlot title={"Order code"} subtitle={`#${order.orderId}`} />
         <OrderInfoSlot
           title={"Placed on"}
@@ -65,7 +68,7 @@ export function OrderRow({ order }: { order: OrderWithProduct }) {
           </span>
         )}
       </div>
-    </div>
+    </Column>
   );
 }
 
@@ -77,10 +80,10 @@ function OrderInfoSlot({
   subtitle: ReactNode;
 }) {
   return (
-    <div>
-      <h3 className="font-semibold mb-4">{title}</h3>
-      <span>{subtitle}</span>
-    </div>
+    <Column className="gap-24px">
+      <H6>{title}</H6>
+      <Body size="lg">{subtitle}</Body>
+    </Column>
   );
 }
 
@@ -95,15 +98,17 @@ function OrderItemsListItem({
 }) {
   return (
     <div className="max-w-1/6 min-w-1/6 relative hover:[&_.product-info]:opacity-100">
-      <ApiImage
-        alt={`${product.title} - ${variation.color.name}`}
-        src={
-          ProductVariationModel.CreateWith(
-            variation as ProductVariation,
-          ).getCandidateImageMedia()?.url
-        }
-        className="w-full"
-      />
+      <div className="h-full aspect-square rounded-lg overflow-clip">
+        <ApiImage
+          alt={`${product.title} - ${variation.color.name}`}
+          src={
+            ProductVariationModel.CreateWith(
+              variation as ProductVariation,
+            ).getCandidateImageMedia()?.url
+          }
+          className="w-full object-cover h-full"
+        />
+      </div>
       <div className="product-info space-y-2 top-0 left-0 w-full h-full text-slate-100 p-2 rounded absolute opacity-0 bg-black/60">
         <h3
           className="text-sm font-semibold line-clamp-2 border-b border-b-white/40"
