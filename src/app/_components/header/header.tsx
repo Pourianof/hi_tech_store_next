@@ -1,18 +1,18 @@
-import Icon from "@/ui/icons/icon";
+import { Row } from "@/ui/layouts/row";
+import { Body } from "@/ui/theme/text/body";
 import Image from "next/image";
 import Link from "next/link";
 import { Wrapper } from "../../_shared/wrapper";
 import { APP_TITLE } from "../../consts";
-import { CartBadge } from "./cartBadge";
 import { HeaderDrawerButton } from "../headerDrawerButton";
-import { UserLink } from "./userLink";
-import { Row } from "@/ui/layouts/row";
-import { Body } from "@/ui/theme/text/body";
+import { CartBadge } from "./cartBadge";
 import {
   HeaderModalHoverZone,
   HeaderModalRenderContainer,
 } from "./headerModal";
 import { ProductsMenu } from "./productsMenu";
+import { SearchButton } from "./searchBox";
+import { UserLink } from "./userLink";
 
 export async function Header() {
   return (
@@ -75,7 +75,7 @@ function LargeHeader() {
         </Link>
       </div>
       <Row className="gap-x-2" centerV>
-        <Icon name="search" />
+        <SearchButton />
         <CartBadge />
         <UserLink />
       </Row>

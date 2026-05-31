@@ -5,8 +5,10 @@ import {
   createNewProduct,
   getColors,
   getCommentsOfProductApi,
+  getMyProductsApi,
   getOnSaleProductsApi,
   getProducts,
+  getSimilarProductsOfApi,
   removeVariationsMediaApi,
   updateProductApi,
   updateProductCategoryApi,
@@ -35,3 +37,5 @@ export const addMediaToVariationAction = addMediaToVariationApi;
 export const removeVariationsMediaAction = removeVariationsMediaApi;
 export const updateProductAction = updateProductApi;
 export const updateProductCategoryAction = updateProductCategoryApi;
+export const getSimilarProductsOfAction = getSimilarProductsOfApi;
+export const getMyProductsAction = getMyProductsApi;
