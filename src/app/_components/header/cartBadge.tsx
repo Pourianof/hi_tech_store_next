@@ -9,36 +9,49 @@ import { Row } from "@/ui/layouts/row";
 import { Card } from "@/ui/theme/card";
 import { Body } from "@/ui/theme/text/body";
 import { H6 } from "@/ui/theme/text/headers";
-import { Badge } from "@mui/material";
+import { Badge, CircularProgress } from "@mui/material";
 import Link from "next/link";
 import { HeaderModalHoverZone } from "./headerModal";
 
 export function CartBadge() {
   const {
     cart: { items: products },
+    isLoading,
   } = useCart();
 
   return (
     <HeaderModalHoverZone name="cart" modalContent={<CartModal />}>
       <Link href={{ pathname: "/order/cart" }}>
-        <Badge
-          badgeContent={products.length}
-          anchorOrigin={{
-            vertical: "bottom",
-          }}
-          max={99}
-          color="primary"
-          sx={{
-            "& .MuiBadge-badge": {
-              minWidth: "15px",
-              width: "15px",
-              height: "15px",
-              fontSize: "10px",
-            },
-          }}
-        >
-          <Icon name="order_basket" />
-        </Badge>
+        {isLoading ? (
+          <div className="relative">
+            <Icon name="order_basket" />
+            <Row
+              className="absolute right-0 bottom-0 translate-1/2 rounded-full bg-stone-300 w-[14px] h-[14px]"
+              center
+            >
+              <CircularProgress size={10} />
+            </Row>
+          </div>
+        ) : (
+          <Badge
+            badgeContent={products.length}
+            anchorOrigin={{
+              vertical: "bottom",
+            }}
+            max={99}
+            color="primary"
+            sx={{
+              "& .MuiBadge-badge": {
+                minWidth: "15px",
+                width: "15px",
+                height: "15px",
+                fontSize: "10px",
+              },
+            }}
+          >
+            <Icon name="order_basket" />
+          </Badge>
+        )}
       </Link>
     </HeaderModalHoverZone>
   );
