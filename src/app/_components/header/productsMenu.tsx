@@ -56,35 +56,58 @@ export function ProductsMenu() {
             </Link>
           ))}
         </Column>
-        <Column className="p-24px">
-          <Row centerV className="gap-16px">
-            <div className="w-[200px] aspect-square">
-              <ApiImage
-                alt={hoveredCategory.name}
-                src={hoveredCategory.image}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <Column className="gap-8px">
-              <H4>{hoveredCategory.name}</H4>
-              <Caption size="md">{hoveredCategory.description}</Caption>
-              <Column className="gap-1">
-                <H6>Components</H6>
-                <Row className="flex-wrap gap-1">
-                  {hoveredCategory.components.map((c) => (
-                    <Row
-                      key={c.componentTypeId}
-                      className="rounded-lg border border-primary-blue-27 px-2 py-1"
-                    >
-                      <Body size="sm">{c.name}</Body>
-                    </Row>
-                  ))}
-                </Row>
-              </Column>
-            </Column>
-          </Row>
-        </Column>
+        <CategoryDetailView category={hoveredCategory} />
       </Row>
     </Card>
+  );
+}
+
+function CategoryDetailView({ category }: { category: Category }) {
+  return (
+    <Column className="p-24px">
+      <Row centerV className="gap-16px">
+        <div className="w-[200px] aspect-square">
+          <ApiImage
+            alt={category.name}
+            src={category.image}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <Column className="gap-8px">
+          <H4>{category.name}</H4>
+          <Caption size="md">{category.description}</Caption>
+          {!!category.properties.length && (
+            <Column className="gap-1">
+              <H6>Properties</H6>
+              <Row className="flex-wrap gap-1">
+                {category.properties.map((p) => (
+                  <Row
+                    key={p.propertyId}
+                    className="rounded-lg border border-primary-blue-27 px-2 py-1"
+                  >
+                    <Body size="sm">{p.name}</Body>
+                  </Row>
+                ))}
+              </Row>
+            </Column>
+          )}
+          {!!category.components.length && (
+            <Column className="gap-1">
+              <H6>Components</H6>
+              <Row className="flex-wrap gap-1">
+                {category.components.map((c) => (
+                  <Row
+                    key={c.componentTypeId}
+                    className="rounded-lg border border-primary-blue-27 px-2 py-1"
+                  >
+                    <Body size="sm">{c.name}</Body>
+                  </Row>
+                ))}
+              </Row>
+            </Column>
+          )}
+        </Column>
+      </Row>
+    </Column>
   );
 }
