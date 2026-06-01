@@ -3,6 +3,7 @@
 import { PagedResults } from "@/core/Dtos/pagedResult";
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
 import { ProductModel } from "@/core/models/productModel";
+import { OutlinedButton } from "@/ui/form/AppButtons";
 import { TextInput } from "@/ui/form/textInput";
 import Icon from "@/ui/icons/icon";
 import { ApiImage } from "@/ui/image/ApiImage";
@@ -28,6 +29,7 @@ export function SearchButton() {
         <Modal
           containerClassName="absolute p-0 flex bg-transparent w-3/4 top-[10dvh] bottom-none max-h-[85dvh]"
           variants="center-x"
+          backBtnHandling={false}
         >
           <ProductSearch onClose={() => setDisplaySearchModal(false)} />
         </Modal>
@@ -99,7 +101,7 @@ function ProductSearch({ onClose }: { onClose(): void }) {
   const products = data?.items;
 
   return (
-    <Card className="grid grid-rows-[auto_1fr] gap-16px flex-1">
+    <Card className="grid grid-rows-[auto_1fr_auto] gap-16px flex-1">
       <Row>
         <Row centerH className="relative grow">
           <TextInput
@@ -133,34 +135,7 @@ function ProductSearch({ onClose }: { onClose(): void }) {
           <Caption size="md">{error.detail}</Caption>
         </Column>
       ) : !!products?.length ? (
-        <div className="grid grid-cols-2 gap-4 overflow-auto p-4px">
-          {products.map((p) => (
-            <Link
-              key={p.productId}
-              href={{ pathname: `/products/${p.productId}` }}
-              className="block grow"
-            >
-              <Row
-                centerV
-                className="border border-gray-neutral-cb rounded p-8px gap-16px"
-              >
-                <div className="w-[50px] h-[50px] rounded overflow-clip shrink-0">
-                  <ApiImage
-                    className="w-full h-full object-cover"
-                    alt={p.title}
-                    src={p.mainVariation?.getCandidateImageMedia()?.url}
-                  />
-                </div>
-                <Column>
-                  <H5>{p.title}</H5>
-                  <Caption size="md" className="line-clamp-1">
-                    {p.description}
-                  </Caption>
-                </Column>
-              </Row>
-            </Link>
-          ))}
-        </div>
+        <SearchedProductResultList products={products} />
       ) : !searchTerm.trim().length ? (
         <Column center className="p-16px">
           <H6>
@@ -172,6 +147,53 @@ function ProductSearch({ onClose }: { onClose(): void }) {
       ) : (
         <H4>No result found</H4>
       )}
+      {!!products?.length && (
+        <Row center>
+          <Link
+            href={{
+              pathname: "/products",
+              query: {
+                searchTerm,
+              },
+            }}
+          >
+            <OutlinedButton>Show all results</OutlinedButton>
+          </Link>
+        </Row>
+      )}
     </Card>
+  );
+}
+
+function SearchedProductResultList({ products }: { products: ProductModel[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-4 overflow-auto p-4px">
+      {products.map((p) => (
+        <Link
+          key={p.productId}
+          href={{ pathname: `/products/${p.productId}` }}
+          className="block grow"
+        >
+          <Row
+            centerV
+            className="border border-gray-neutral-cb rounded p-8px gap-16px"
+          >
+            <div className="w-[50px] h-[50px] rounded overflow-clip shrink-0">
+              <ApiImage
+                className="w-full h-full object-cover"
+                alt={p.title}
+                src={p.mainVariation?.getCandidateImageMedia()?.url}
+              />
+            </div>
+            <Column>
+              <H5>{p.title}</H5>
+              <Caption size="md" className="line-clamp-1">
+                {p.description}
+              </Caption>
+            </Column>
+          </Row>
+        </Link>
+      ))}
+    </div>
   );
 }
