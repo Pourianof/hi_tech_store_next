@@ -1,3 +1,4 @@
+import { captalize } from "@/lib/utils/stringHelpers";
 import { CheckboxItem, CheckboxList } from "@/ui/form/checkboxList";
 import {
   FieldnamePathProvider,
@@ -8,13 +9,18 @@ import { LabeldInput } from "@/ui/form/inputs";
 import Icon from "@/ui/icons/icon";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
+import { H4 } from "@/ui/theme/text/headers";
 import { IconButton } from "@mui/material";
 import { useState } from "react";
+import RuleEditor from "../RuleEditor";
 import { DISCOUNT_RULE_ACTION } from "./fieldNames";
 import { RuleDiscountTypeAndValueInputs } from "./ruleDiscountTypeInputs";
-import { DiscountScriptEditor } from "@/app/dashboard/discount-panel/_components/discountScriptEditor";
-import { H4 } from "@/ui/theme/text/headers";
-import { captalize } from "@/lib/utils/stringHelpers";
+import { FormInputBasedScriptResultPreviewButton } from "./scriptResultPreviewButton";
+import {
+  ProductEditorContext,
+  UserEditorContext,
+} from "@/lib/rule-lang/contextModel";
+import { RowOnDesktopColumnOnMobile } from "@/ui/layouts/rownOnDesktopColumnOnMobile";
 
 export function RuleItem({
   index,
@@ -105,15 +111,36 @@ function RuleScriptTabBox() {
         </Row>
       </CheckboxList>
       <Column className="gap-2">
-        {includedScripts.map((script) => (
-          <div key={script}>
-            <H4>{captalize(script)} script</H4>
-            <DiscountScriptEditor
-              fieldname={fieldNames[script]}
-              noPreview={script == ScriptType.User}
-            />
-          </div>
-        ))}
+        {includedScripts.sort().map((script) => {
+          const isUserMode = script == ScriptType.User;
+          return (
+            <Column key={script}>
+              <H4>{captalize(script)} script</H4>
+              <RowOnDesktopColumnOnMobile>
+                <div className="grow h-[200px]">
+                  <RuleEditor
+                    fieldname={fieldNames[script]}
+                    noPreview={isUserMode}
+                    context={
+                      isUserMode
+                        ? {
+                            User: UserEditorContext,
+                          }
+                        : {
+                            Product: ProductEditorContext,
+                          }
+                    }
+                  />
+                </div>
+                {!isUserMode && (
+                  <FormInputBasedScriptResultPreviewButton
+                    fieldName={fieldNames[script]}
+                  />
+                )}
+              </RowOnDesktopColumnOnMobile>
+            </Column>
+          );
+        })}
       </Column>
     </Column>
   );

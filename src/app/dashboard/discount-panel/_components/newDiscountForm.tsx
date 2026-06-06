@@ -21,9 +21,11 @@ import { DiscountTypeProvider } from "./context/discountTypeContext";
 export function NewDiscountForm({
   children,
   isDiscountCode,
+  name,
 }: {
   children: ReactNode;
   isDiscountCode?: boolean;
+  name?: string;
 }) {
   const router = useRouter();
 
@@ -47,6 +49,7 @@ export function NewDiscountForm({
   return (
     <DiscountTypeProvider isDiscountCode={isDiscountCode}>
       <StatefulForm
+        formName={name}
         onSubmit={submitDiscount}
         onSubmitionSuccessful={() => {
           const delay = 2500;

@@ -7,12 +7,14 @@ import { RuleForm } from "./ruleForm/ruleForm";
 
 export function DiscountForm({
   discountCodeForm,
+  formName,
 }: {
   discountCodeForm?: boolean;
+  formName?: string;
 }) {
   return (
     <RuleMakerEntitiesInjector>
-      <NewDiscountForm isDiscountCode={discountCodeForm}>
+      <NewDiscountForm isDiscountCode={discountCodeForm} name={formName}>
         <LabeldInput label="Discount description">
           <ErrorLabeledInput
             filedName="description"
