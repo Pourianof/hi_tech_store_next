@@ -1,3 +1,4 @@
+import { H4 } from "@/ui/theme/text/headers";
 import { CustomImage } from "../../ui/image/customImage";
 
 export function HighlightedItems() {
@@ -41,33 +42,35 @@ function SquareBoxHighlight() {
 
 function BigHighlight() {
   return (
-    <div className="flex flex-1 *:w-[50%] p-8 rounded-2xl bg-linear-to-br from-gradient-start-blue via-gradient-middle-blue to-gradient-end-blue">
+    <div className="relative overflow-clip flex flex-1 *:w-[50%] p-2 md:p-8 rounded-lg md:rounded-2xl bg-linear-to-br from-gradient-start-blue via-gradient-middle-blue to-gradient-end-blue">
       <div className="flex flex-col flex-1">
-        <h3 className="font-semibold text-xl">
+        <H4 className="font-semibold">
           Iphone <span className="text-white">15 Series</span>
-        </h3>
+        </H4>
         <CustomImage
           aspectRatio={1.34}
-          className="mt-auto"
+          className="mt-auto w-full -bottom-8 left-0 absolute md:scale-100 md:static"
           src="/images/highlight/iphone_15.png"
           alt="iphone 15 series"
         />
       </div>
       <div className="flex flex-col">
-        <div className="flex gap-4 text-sm">
+        <div className="flex gap-1 md:gap-4 text-sm">
           <TimeLabel timeNumber={8} label="Days" />
           <TimeLabel timeNumber={16} label="Hours" />
           <TimeLabel timeNumber={12} label="Minutes" />
           <TimeLabel timeNumber={46} label="Seconds" />
         </div>
         <div className="mt-4">
-          <h3 className="font-semibold">It feels good to be the first</h3>
-          <p className="ml-4 text-sm text-slate-600">
+          <h3 className="font-semibold text-[12px] ">
+            It feels good to be the first
+          </h3>
+          <p className="ml-4 text-[8px] md:text-sm text-slate-600">
             Get ready for the future of smartphones.Experience innovation like
             never before. Stay tuned for the big iPhone 15 pre-sale.
           </p>
         </div>
-        <button className="bg-blue-600 text-white py-1.5 px-6 w-fit rounded-md mx-auto mt-4">
+        <button className="bg-blue-600 text-button-sm md:text-button-lg text-white py-1.5 px-6 w-fit rounded-md mx-auto mt-4">
           Register Now
         </button>
       </div>
@@ -77,7 +80,7 @@ function BigHighlight() {
 
 function TimeLabel(props: { timeNumber: number; label: string }) {
   return (
-    <div className="flex flex-col justify-center flex-1 items-center border border-black aspect-square rounded-xl p-0.5">
+    <div className="text-[8px] md:text-[12px] flex flex-col justify-center flex-1 items-center border border-black aspect-square rounded-lg md:rounded-xl p-0.5">
       <span>{props.timeNumber}</span>
       <span>{props.label}</span>
     </div>

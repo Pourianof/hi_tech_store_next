@@ -1,10 +1,11 @@
 import { getCategories } from "@/api/categoryApi";
 import { Category } from "@/core/models/category";
 import { ApiImage } from "@/ui/image/ApiImage";
+import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
 
 function CategoryMiniCard(props: { category: Category }) {
   return (
-    <div className="flex-col items-center text-center w-1/5 relative shadow-md p-4 rounded-sm">
+    <div className="flex-col h-full items-center text-center relative shadow-md p-4 rounded-sm">
       <ApiImage
         serverMode
         className="w-full aspect-square"
@@ -24,10 +25,14 @@ export async function CategoriesMiniCardList() {
 
   const categories = categoriesResult.data;
   return (
-    <div className="flex gap-4 my-4">
-      {categories.items.map((cat) => (
-        <CategoryMiniCard category={cat} key={cat.categoryId} />
-      ))}
-    </div>
+    <Slider>
+      <SliderContainer className="gap-2 md:gap-4 my-4 items-stretch">
+        {categories.items.map((cat) => (
+          <SliderItem key={cat.categoryId} className="shrink-0 w-1/4 md:w-1/6">
+            <CategoryMiniCard category={cat} key={cat.categoryId} />
+          </SliderItem>
+        ))}
+      </SliderContainer>
+    </Slider>
   );
 }
