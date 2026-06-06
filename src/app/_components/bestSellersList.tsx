@@ -1,10 +1,9 @@
-import { ProductModel } from "@/core/models/productModel";
 import { Column } from "@/ui/layouts/column";
 import { productActions } from "@/ui/server_actions_wrapper/productActions";
 import { Caption } from "@/ui/theme/text/caption";
 import { H4 } from "@/ui/theme/text/headers";
 import { ItemsListBox } from "./iemsListBox";
-import { ProductItem } from "./productItem";
+import { ProductList } from "./productList";
 
 export async function BestSellersList() {
   const result = await productActions.getProducts({
@@ -35,14 +34,7 @@ export async function BestSellersList() {
 
   return (
     <ItemsListBox label="Best Sellers" linkLabel="View all">
-      <div className="flex *:flex-1 gap-4 my-4">
-        {products.slice(0, 4).map((prod) => (
-          <ProductItem
-            product={ProductModel.CreateWith(prod)}
-            key={prod.productId}
-          />
-        ))}
-      </div>
+      <ProductList products={products} />
     </ItemsListBox>
   );
 }

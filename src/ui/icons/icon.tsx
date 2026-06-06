@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { createContext, useContext } from "react";
+import { twMerge } from "tailwind-merge";
 
 const ICONS = {
   search: dynamic(() => import("@/assets/tech_heim/search.svg")),
@@ -86,9 +87,12 @@ export default function Icon(props: { className?: string; name: IconNames }) {
   return (
     <i
       style={{ fontSize: iconTheme.size ? `${iconTheme.size}px` : undefined }}
-      className={`icon ${
-        iconTheme.className ?? ""
-      } not-italic align-middle inline-block ${props.className ?? ""}`}
+      className={twMerge(
+        "icon",
+        iconTheme.className ?? "",
+        "not-italic align-middle inline-block",
+        props.className ?? "",
+      )}
     >
       <IconComponent />
     </i>

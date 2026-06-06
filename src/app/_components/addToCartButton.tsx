@@ -16,7 +16,7 @@ export function AddToCartButton({
   const cartContext = useCart();
 
   return (
-    <Column className="hidden group-hover:block relative">
+    <Column className="hidden md:group-hover:block relative">
       <OutlinedButton
         onClick={() => {
           cartContext.actions.addProductToCart({ product, variation });
