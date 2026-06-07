@@ -145,18 +145,10 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
           className={twMerge(
             "bg-white z-20",
             !noPadding ? "p-6 " : "",
+            hasOverflowed ? "absolute top-[10dvh] bottom-[5dvh]" : "",
             _containerClassName,
             containerClassName ?? "",
           )}
-          style={
-            hasOverflowed
-              ? {
-                  position: "absolute",
-                  top: "10dvh",
-                  bottom: "5dvh",
-                }
-              : undefined
-          }
         >
           {children}
         </div>

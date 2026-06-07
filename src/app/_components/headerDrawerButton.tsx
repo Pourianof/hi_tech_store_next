@@ -11,6 +11,10 @@ import { useCategories } from "@/ui/contexts/categoriesContext";
 import { ApiImage } from "@/ui/image/ApiImage";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { twMerge } from "tailwind-merge";
+import { Row } from "@/ui/layouts/row";
+import { Body } from "@/ui/theme/text/body";
+import { Column } from "@/ui/layouts/column";
 
 export function HeaderDrawerButton() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -48,14 +52,14 @@ function Drawer({ onClose }: { onClose: VoidFunction }) {
   return createPortal(
     <Modal
       variants="raw"
-      containerClassName={
-        "w-3/5 transition-transform duration-200 " +
-        (isOpen ? "translate-x-0" : "-translate-x-full")
-      }
+      containerClassName={twMerge(
+        "w-3/5 transition-transform duration-200 top-0 bottom-0",
+        isOpen ? "translate-x-0" : "-translate-x-full",
+      )}
       onClose={handleClose}
     >
-      <div className={"flex flex-col gap-2 text-gray-neutral-44"}>
-        <div className="flex justify-between">
+      <Column className={"gap-4 text-gray-neutral-44"}>
+        <Row className="justify-between mb-24px">
           <Image
             alt={APP_TITLE}
             src={"/icons/logo.svg"}
@@ -65,7 +69,7 @@ function Drawer({ onClose }: { onClose: VoidFunction }) {
           <button className="text-2xl cursor-pointer" onClick={handleClose}>
             <Icon name="circular_close" />
           </button>
-        </div>
+        </Row>
         <ExpandableBox
           title={
             <button
@@ -76,30 +80,44 @@ function Drawer({ onClose }: { onClose: VoidFunction }) {
                 handleClose();
               }}
             >
-              Products
+              <Body size="lg">Products</Body>
             </button>
           }
         >
           {!!categories && (
-            <div className="flex flex-col gap-2 ps-4 text-gray-neutral-50">
+            <Column className="gap-3 ps-4 py-2 text-gray-neutral-50">
               {categories.map((cat) => (
-                <div key={cat.categoryId} className="flex gap-1 items-center">
-                  <ApiImage
-                    alt={cat.description}
-                    src={cat.icon}
-                    className="w-[20px]"
-                  />
-                  <span>{cat.name}</span>
-                </div>
+                <Link
+                  key={cat.categoryId}
+                  href={{
+                    pathname: "/products",
+                    query: { category: cat.categoryId },
+                  }}
+                >
+                  <Row className="gap-1" centerV>
+                    <ApiImage
+                      alt={cat.description}
+                      src={cat.icon}
+                      className="w-[20px] h-[20px] overflow-clip"
+                    />
+                    <Body size="md">{cat.name}</Body>
+                  </Row>
+                </Link>
               ))}
-            </div>
+            </Column>
           )}
         </ExpandableBox>
-        <Link href={"/blog"}>Blog</Link>
-        <Link href={"/faq"}>FAQ</Link>
-        <Link href={"/contact-us"}>Contact us</Link>
-      </div>
+        <Link href={"/blog"}>
+          <Body size="lg">Blog</Body>
+        </Link>
+        <Link href={"/faq"}>
+          <Body size="lg">FAQ</Body>
+        </Link>
+        <Link href={"/contact-us"}>
+          <Body size="lg">Contact us</Body>
+        </Link>
+      </Column>
     </Modal>,
-    window.document.body
+    window.document.body,
   );
 }
