@@ -109,7 +109,7 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
       break;
     case "full-page":
       overlayClassName = "items-stretch";
-      _containerClassName = "w-full";
+      _containerClassName = "w-full top-0 bottom-0";
       break;
 
     case "standard":

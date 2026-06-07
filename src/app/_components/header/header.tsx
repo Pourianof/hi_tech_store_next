@@ -13,23 +13,25 @@ import {
 import { ProductsMenu } from "./productsMenu";
 import { SearchButton } from "./searchBox";
 import { UserLink } from "./userLink";
+import { Column } from "@/ui/layouts/column";
+import { MobileSearchInput } from "./mobileSearch";
 
 export async function Header() {
   return (
-    <header className="sticky top-0 bg-white z-50 border-b">
+    <header className="sticky top-0 bg-white z-50 desktop:border-b">
       <Wrapper className="relative py-2">
         <HeaderModalRenderContainer>
           <LargeHeader />
-          <MobileHeader />
         </HeaderModalRenderContainer>
+        <MobileHeader />
       </Wrapper>
     </header>
   );
 }
 
-function MobileHeader() {
+export function MobileHeaderTop() {
   return (
-    <div className="md:hidden flex justify-between gap-2 text-xl font-medium">
+    <Row className="flex justify-between gap-2 text-xl font-medium">
       <HeaderDrawerButton />
       <Link href={{ pathname: "/" }}>
         <h4 className="font-semibold text-primary-blue-400">HiTech Store</h4>
@@ -38,7 +40,16 @@ function MobileHeader() {
         <CartBadge />
         <UserLink />
       </div>
-    </div>
+    </Row>
+  );
+}
+
+function MobileHeader() {
+  return (
+    <Column className="desktop:hidden gap-16px">
+      <MobileHeaderTop />
+      <MobileSearchInput />
+    </Column>
   );
 }
 
