@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface CustomImageProps {
   src: string;
@@ -73,9 +74,11 @@ function ImageBox(props: {
 }) {
   return (
     <div
-      className={`relative ${props.className ?? "w-full"} ${
-        props.isSquare ? "aspect-square" : ""
-      }`}
+      className={twMerge(
+        `relative w-full`,
+        props.isSquare ? "aspect-square" : "",
+        props.className,
+      )}
       style={{
         ...(props.aspectRatio ? { aspectRatio: props.aspectRatio } : {}),
         ...(props.width
