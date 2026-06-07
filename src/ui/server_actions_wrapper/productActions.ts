@@ -13,7 +13,6 @@ async function getProducts(
 ): Promise<ResultModel<PagedResults<ProductModel>>> {
   const result = await getProductsAction(searchQueries);
   if (searchQueries?.searchTerm) {
-    console.log(" ⭕⭕ ", result);
   }
   if (result.status == "success") {
     result.data.items = result.data.items.map((p) =>
