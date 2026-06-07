@@ -1,6 +1,7 @@
 "use client";
 
 import { Modal } from "@/ui/modal/modal";
+import { useIsDesktopScreen } from "@/ui/theme/helpers/isDesktopMode";
 import {
   cloneElement,
   createContext,
@@ -82,6 +83,7 @@ export function HeaderModalRenderContainer({
 }: {
   children: ReactNode;
 }) {
+  const isDesktopMode = useIsDesktopScreen();
   const [displayingId, setDisplayingId] = useState<string>();
   const displayingNodeBuilder = useRef<ModalContentBuilder>(null);
   const cancellingTimeoutRef = useRef<number>(null);
@@ -133,7 +135,7 @@ export function HeaderModalRenderContainer({
     <HeaderModalContext.Provider value={{ display, cancel }}>
       {children}
 
-      {!!node && (
+      {!!node && isDesktopMode && (
         <>
           <Modal
             containerClassName="hidden"

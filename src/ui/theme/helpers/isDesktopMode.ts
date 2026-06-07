@@ -12,5 +12,5 @@ export function useIsDesktopScreen() {
   //   setBpSm(bpSm);
   // }, []);
 
-  return useMediaQuery(`(min-width: 360px)`);
+  return useMediaQuery(`(min-width: 680px)`);
 }
