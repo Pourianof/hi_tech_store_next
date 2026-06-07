@@ -54,14 +54,14 @@ export default async function ProductListPage({
           </div>
           <Row className="justify-between">
             {page > 1 ? (
-              <Link href={{ query: { page: page - 1 } }}>
+              <Link href={{ query: { ...searchParams, page: page - 1 } }}>
                 <OutlinedButton>Previous Page</OutlinedButton>
               </Link>
             ) : (
               <div></div>
             )}
             {productPage.hasNext ? (
-              <Link href={{ query: { page: page + 1 } }}>
+              <Link href={{ query: { ...searchParams, page: page + 1 } }}>
                 <OutlinedButton>Next Page</OutlinedButton>
               </Link>
             ) : (
