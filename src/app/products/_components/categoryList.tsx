@@ -1,10 +1,16 @@
 "use client";
 
 import { useCategories } from "@/ui/contexts/categoriesContext";
+import { FillerBox } from "@/ui/fillerBox";
 import { ApiImage } from "@/ui/image/ApiImage";
+import { Column } from "@/ui/layouts/column";
+import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
+import { useIsDesktopScreen } from "@/ui/theme/helpers/isDesktopMode";
+import { Caption } from "@/ui/theme/text/caption";
 import Link from "next/link";
 
 export function CategoryList() {
+  const isDesktop = useIsDesktopScreen();
   const { categories } = useCategories();
   if (!categories?.length) {
     return (
@@ -16,23 +22,30 @@ export function CategoryList() {
 
   return (
     <ul className="flex gap-8 w-full justify-center text-gray-neutral-44">
-      {categories.map((category) => (
-        <li
-          key={category.categoryId}
-          className="cursor-pointer hover:bg-gray-neutral-ed p-2 rounded-xl"
-        >
-          <Link
-            href={{
-              query: {
-                category: category.categoryId,
-              },
-            }}
-          >
-            <ApiImage alt={category.name} src={category.icon} />
-            <span>{category.name}</span>
-          </Link>
-        </li>
-      ))}
+      <FillerBox>
+        <Slider disable={isDesktop}>
+          <SliderContainer className="gap-2">
+            {categories.map((category) => (
+              <SliderItem key={category.categoryId} className="min-w-1/5 w-1/5">
+                <li className="cursor-pointer hover:bg-gray-neutral-ed p-2 rounded-xl">
+                  <Link
+                    href={{
+                      query: {
+                        category: category.categoryId,
+                      },
+                    }}
+                  >
+                    <Column className="gap-1" center>
+                      <ApiImage alt={category.name} src={category.icon} />
+                      <Caption size="md">{category.name}</Caption>
+                    </Column>
+                  </Link>
+                </li>
+              </SliderItem>
+            ))}
+          </SliderContainer>
+        </Slider>
+      </FillerBox>
     </ul>
   );
 }

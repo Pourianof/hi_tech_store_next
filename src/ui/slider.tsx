@@ -21,8 +21,9 @@ const SliderContext = createContext<ISliderContext>({} as ISliderContext);
 function Slider(props: {
   children: ReactNode;
   disableElasticSliding?: boolean;
+  disable?: boolean;
 }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel();
+  const [emblaRef, emblaApi] = useEmblaCarousel({ active: !props.disable });
 
   // useEffect(() => {
   //   const engine = emblaApi?.internalEngine();
