@@ -25,7 +25,13 @@ export function HeaderModalHoverZone({
   name: string;
   zoneClassName?: string;
 }) {
-  const { cancel, display } = useHeaderModalContext(name);
+  const ctx = useHeaderModalContext(name);
+
+  if (!ctx) {
+    return children;
+  }
+
+  const { cancel, display } = ctx;
 
   function handleMouseEnter() {
     display(modalContentBuilder);
