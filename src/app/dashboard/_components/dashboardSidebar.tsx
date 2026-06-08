@@ -4,7 +4,7 @@ import { auth } from "../../../../auth";
 
 export default async function DashboardSidebar() {
   return (
-    <div className="min-w-1/5 w-1/5">
+    <div className="w-full desktop:min-w-1/5 desktop:w-1/5">
       <SidebarHeader />
       <ul className="bg-gray-300 p-4 [&_li]:my-1.5 rounded">
         <li className="font-semibold">

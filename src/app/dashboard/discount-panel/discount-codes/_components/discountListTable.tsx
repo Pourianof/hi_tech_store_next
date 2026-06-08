@@ -1,24 +1,24 @@
 "use client";
 
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableFooter,
-  TablePagination,
-  TablePaginationActions,
-  CircularProgress,
-} from "@mui/material";
-import { DiscountCodeRow } from "./discountCodeRow";
+import { FailedBox } from "@/app/_components/failedBox";
+import { DiscountType } from "@/core/Dtos/discountCodeDto";
 import { PagedResults } from "@/core/Dtos/pagedResult";
 import { DiscountCode } from "@/core/models/discount";
-import { usePagedDiscountCodes } from "./hooks/usePagedDiscountCodes";
-import { FailedBox } from "@/app/_components/failedBox";
+import {
+  CircularProgress,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TablePagination,
+  TablePaginationActions,
+  TableRow,
+} from "@mui/material";
 import { useDiscountTypeContext } from "../../_components/context/discountTypeContext";
-import { DiscountType } from "@/core/Dtos/discountCodeDto";
+import { DiscountCodeRow } from "./discountCodeRow";
+import { usePagedDiscountCodes } from "./hooks/usePagedDiscountCodes";
 
 export const QUERY_KEY_DISCOUNT_CODE_PAGED = "discount-codes";
 export const QUERY_KEY_DISCOUNT_PAGED = "discount";
@@ -54,7 +54,7 @@ export function DiscountListTable({
 
   return (
     <TableContainer>
-      <Table>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>

@@ -7,7 +7,7 @@ import { DiscountType } from "@/core/Dtos/discountCodeDto";
 
 export default function Page() {
   return (
-    <Column className="px-4">
+    <Column className="px-4 w-full">
       <H3>Product Discount Management</H3>
       <DiscountsList
         key={DiscountType.Products}

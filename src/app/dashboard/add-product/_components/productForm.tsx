@@ -54,7 +54,7 @@ export function ProductForm(props: {
   }
 
   return (
-    <div className="p-6 border m-4">
+    <div className="p-6 border desktop:m-4">
       <h3 className="mb-2 font-semibold text-2xl border-b border-b-gray-500 pb-2">
         Register new product
       </h3>

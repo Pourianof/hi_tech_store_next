@@ -5,6 +5,7 @@ import { auth } from "../../../auth";
 import { isAdmin, isManager } from "@/lib/helpers/roleHelpers";
 import { redirect } from "next/navigation";
 import { Row } from "@/ui/layouts/row";
+import { DisplayOnRoute } from "@/ui/displayOnRoute";
 
 export default async function DashboardLayout({
   children,
@@ -24,8 +25,12 @@ export default async function DashboardLayout({
   return (
     <Wrapper>
       <Row className="flex gap-24px">
-        <DashboardSidebar />
-        <div className="grow">{children}</div>
+        <DisplayOnRoute root endsWith="dashboard">
+          <DashboardSidebar />
+        </DisplayOnRoute>
+        <DisplayOnRoute endsWith="dashboard">
+          <div className="grow w-full">{children}</div>
+        </DisplayOnRoute>
       </Row>
     </Wrapper>
   );

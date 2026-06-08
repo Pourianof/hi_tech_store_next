@@ -6,7 +6,7 @@ import { DiscountType } from "@/core/Dtos/discountCodeDto";
 
 export default async function Page() {
   return (
-    <Column className="p-2 gap-2">
+    <Column className="p-2 gap-2 w-full">
       <h3 className="font-semibold text-2xl my-2">Discount Panel</h3>
       <DiscountsList category={DiscountType.Codes} />
       <Link href={{ pathname: "/dashboard/discount-panel/discount-codes/add" }}>
