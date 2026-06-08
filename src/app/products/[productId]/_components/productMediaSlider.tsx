@@ -42,7 +42,7 @@ export function ProductMediaSlider({
   }, [mediaListType]);
 
   return (
-    <Modal containerClassName="w-1/2 overflow-auto">
+    <Modal containerClassName="w-[90%] desktop:w-1/2 overflow-auto">
       <Column className="gap-4">
         <Row className="justify-between border-b border-gray-neutral-b4">
           <Row>
