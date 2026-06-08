@@ -32,7 +32,7 @@ export function ShippinhMethodInput() {
           className="text-gray-neutral-50"
           readOnly
           disabled
-          value={`${captalize(data?.user.name)} ${data?.user.lastName}`}
+          value={`${captalize(data?.user.firstName)} ${data?.user.lastName}`}
         />
         <button
           className="cursor-pointer"

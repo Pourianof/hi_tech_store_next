@@ -43,7 +43,7 @@ async function CheckoutConfirmation() {
               className="text-gray-neutral-50"
               readOnly
               disabled
-              value={`${captalize(user.name)} ${user.lastName}`}
+              value={`${captalize(user.firstName)} ${user.lastName}`}
             />
             <button className="cursor-pointer">
               <Icon name="edit" className="text-2xl" />
