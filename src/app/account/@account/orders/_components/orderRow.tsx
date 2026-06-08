@@ -9,6 +9,8 @@ import { ProductVariationModel } from "@/core/models/productModel";
 import { formatDateToYYYYDDMM } from "@/lib/helpers/dateHelper";
 import { ApiImage } from "@/ui/image/ApiImage";
 import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
+import { RowOnDesktopColumnOnMobile } from "@/ui/layouts/rownOnDesktopColumnOnMobile";
 import { Body } from "@/ui/theme/text/body";
 import { H6 } from "@/ui/theme/text/headers";
 import Link from "next/link";
@@ -30,7 +32,7 @@ export function OrderRow({ order }: { order: OrderWithProduct }) {
   const maxDisplayItemsCount = 5;
   return (
     <Column className="gap-16px">
-      <div className="bg-gray-neutral-f6 flex text-center justify-between p-16px px-5">
+      <RowOnDesktopColumnOnMobile className="desktop:bg-gray-neutral-f6 text-center justify-between p-16px px-5">
         <OrderInfoSlot title={"Order code"} subtitle={`#${order.orderId}`} />
         <OrderInfoSlot
           title={"Placed on"}
@@ -40,7 +42,7 @@ export function OrderRow({ order }: { order: OrderWithProduct }) {
           title={"Total"}
           subtitle={
             stat.discount > 0 ? (
-              <div className="flex flex-col">
+              <div className="flex flex-row-reverse desktop:flex-col justify-center ">
                 <span className="line-through text-xs">{stat.total}$</span>
                 <span className="font-semibold">
                   {stat.total - stat.discount}$
@@ -54,10 +56,24 @@ export function OrderRow({ order }: { order: OrderWithProduct }) {
         <OrderInfoSlot
           title={"Status"}
           subtitle={
-            order.paymentState == OrderPaymentState.Paid ? "Paid" : "Failed"
+            order.paymentState == OrderPaymentState.Paid ? (
+              <Body
+                size="sm"
+                className="rounded text-success bg-success-light border border-success px-2 py-0.5"
+              >
+                Paid
+              </Body>
+            ) : (
+              <Body
+                size="sm"
+                className="rounded text-error bg-error-light border border-error px-2 py-0.5"
+              >
+                Failed
+              </Body>
+            )
           }
         />
-      </div>
+      </RowOnDesktopColumnOnMobile>
       <div className="flex gap-2">
         {order.items.slice(0, maxDisplayItemsCount).map((item) => (
           <OrderItemsListItem key={item.id} orderItem={item} />
@@ -80,10 +96,12 @@ function OrderInfoSlot({
   subtitle: ReactNode;
 }) {
   return (
-    <Column className="gap-24px">
-      <H6>{title}</H6>
+    <Row className="gap-24px desktop:flex-col">
+      <H6 className="bg-gray-neutral-f6 px-2 py-1 desktop:bg-transparent w-[120px] desktop:w-auto text-left">
+        {title}
+      </H6>
       <Body size="lg">{subtitle}</Body>
-    </Column>
+    </Row>
   );
 }
 

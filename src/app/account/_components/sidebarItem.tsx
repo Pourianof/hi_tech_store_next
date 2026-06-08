@@ -5,6 +5,7 @@ import { Row } from "@/ui/layouts/row";
 import { Body } from "@/ui/theme/text/body";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 export function SidebarItem({
   iconName,
@@ -23,25 +24,44 @@ export function SidebarItem({
     pathname.endsWith(href);
 
   const content = (
-    <Row className="gap-16px" centerV>
-      <Icon name={iconName} />
-      <span className={iconName == "exit" ? "text-red-600" : ""}>{title}</span>
+    <Row centerV className="justify-between">
+      <Row className="gap-16px" centerV>
+        <Body size="xl">
+          <Icon name={iconName} />
+        </Body>
+        <Body size="xl" className={iconName == "exit" ? "text-red-600" : ""}>
+          {title}
+        </Body>
+      </Row>
+      <Icon
+        name="arrow"
+        className="rotate-180 text-gray-neutral-b4 desktop:hidden"
+      />
     </Row>
   );
+
   const actualHref = `${!notPrependHref ? "/account" : ""}${href}`;
   return (
-    <div className={`p-4 ${isActivated ? "border-s-2 border-s-blue-500" : ""}`}>
+    <div
+      className={`p-4 border-b border-gray-neutral-ed ${isActivated ? "desktop:border-s-2 desktop:border-s-blue-500" : ""}`}
+    >
       {notPrependHref ? (
-        <a href={actualHref} className={isActivated ? "text-blue-500" : ""}>
-          <Body size="xl">{content}</Body>
+        <a
+          href={actualHref}
+          className={isActivated ? "desktop:text-blue-500" : ""}
+        >
+          {content}
         </a>
       ) : (
         <Link
           replace={true}
           href={actualHref}
-          className={isActivated ? "text-blue-500" : ""}
+          className={twMerge(
+            "w-full",
+            isActivated ? "desktop:text-blue-500" : "",
+          )}
         >
-          <Body size="xl">{content}</Body>
+          {content}
         </Link>
       )}
     </div>
