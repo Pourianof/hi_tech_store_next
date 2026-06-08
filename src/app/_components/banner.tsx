@@ -9,7 +9,9 @@ export function Banner() {
     <div className="flex align-top h-[300px] mt-4">
       <Column className="flex flex-col justify-around items-start">
         <Column>
-          <H1 className="text-blue-950 font-semibold">Tech Store</H1>
+          <H1 className="text-blue-950 font-semibold text-nowrap">
+            Tech Store
+          </H1>
           <Caption size="lg" className="text-blue-950 text-nowrap">
             {'"'}Join the{" "}
             <span className="text-orange-600">digital revoloution</span>

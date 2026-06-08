@@ -1,9 +1,11 @@
 import { H4 } from "@/ui/theme/text/headers";
 import { CustomImage } from "../../ui/image/customImage";
+import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
 
 export function HighlightedItems() {
   return (
-    <div className="flex lg:flex-row flex-col items-stretch lg:aspect-[2.9] md:aspect-auto gap-4">
+    <div className="flex lg:flex-row flex-col items-stretch lg:aspect-[2.9] sm:*:bg-amber-50 md:aspect-auto gap-4">
       <BigHighlight />
       <SquareBoxHighlight />
     </div>
@@ -15,7 +17,7 @@ function SquareBoxHighlight() {
     <div className="relative overflow-hidden rounded-2xl lg:h-full bg-highlight-box-blue lg:aspect-square md:aspect-auto md:h-[200px]">
       <div className="absolute bottom-0 rounded-[50%] left-[50%] translate-y-1/2 -translate-x-1/2 w-[140%] h-full bg-highlight-yellow "></div>
       <div className="absolute bg-highlight-yellow h-[60%] left-0 top-0 -translate-x-1/2 -translate-y-1/2 aspect-square rounded-full"></div>
-      <div className="relative flex flex-col h-full">
+      <Column className="relative h-full">
         <h4 className="lg:static absolute left-16 text-xl my-8 text-center text-highlight-yellow">
           Play Station 5
         </h4>
@@ -35,15 +37,15 @@ function SquareBoxHighlight() {
             square
           />
         </div>
-      </div>
+      </Column>
     </div>
   );
 }
 
 function BigHighlight() {
   return (
-    <div className="relative overflow-clip flex flex-1 *:w-[50%] p-2 md:p-8 rounded-lg md:rounded-2xl bg-linear-to-br from-gradient-start-blue via-gradient-middle-blue to-gradient-end-blue">
-      <div className="flex flex-col flex-1">
+    <Row className="relative overflow-clip flex-1 min-[530px]:max-[768px]:gap-[10%] *:w-[50%] p-2 md:p-8 rounded-lg md:rounded-2xl bg-linear-to-br from-gradient-start-blue via-gradient-middle-blue to-gradient-end-blue">
+      <Column className="relative flex-1">
         <H4 className="font-semibold">
           Iphone <span className="text-white">15 Series</span>
         </H4>
@@ -53,14 +55,14 @@ function BigHighlight() {
           src="/images/highlight/iphone_15.png"
           alt="iphone 15 series"
         />
-      </div>
-      <div className="flex flex-col">
-        <div className="flex gap-1 md:gap-4 text-sm">
+      </Column>
+      <Column>
+        <Row className="gap-1 md:gap-4 text-sm">
           <TimeLabel timeNumber={8} label="Days" />
           <TimeLabel timeNumber={16} label="Hours" />
           <TimeLabel timeNumber={12} label="Minutes" />
           <TimeLabel timeNumber={46} label="Seconds" />
-        </div>
+        </Row>
         <div className="mt-4">
           <h3 className="font-semibold text-[12px] ">
             It feels good to be the first
@@ -73,8 +75,8 @@ function BigHighlight() {
         <button className="bg-blue-600 text-button-sm md:text-button-lg text-white py-1.5 px-6 w-fit rounded-md mx-auto mt-4">
           Register Now
         </button>
-      </div>
-    </div>
+      </Column>
+    </Row>
   );
 }
 
