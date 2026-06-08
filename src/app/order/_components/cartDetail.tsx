@@ -17,7 +17,7 @@ export function CartDetails({
 }) {
   return (
     <Card
-      className="border border-gray-neutral-ed desktop:min-w-1/3 desktop:w-1/3 desktop:sticky desktop:top-20 self-start"
+      className="desktop:border w-full border-gray-neutral-ed desktop:min-w-1/3 desktop:w-1/3 desktop:sticky desktop:top-20 self-start"
       noShadow
       noHoverReaction
     >

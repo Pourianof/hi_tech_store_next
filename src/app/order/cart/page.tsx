@@ -2,10 +2,11 @@ import Link from "next/link";
 import { CartDetails } from "../_components/cartDetail";
 import { CartList } from "./_components/cartList";
 import { FilledButton } from "@/ui/form/AppButtons";
+import { Column } from "@/ui/layouts/column";
 
 export default function DefaultCartPage() {
   return (
-    <div className="flex flex-col desktop:flex-row items-start desktop:gap-20 relative">
+    <Column className="desktop:flex-row items-start gap-10 desktop:gap-20 relative">
       <CartList />
       <CartDetails
         title="Payment details"
@@ -15,6 +16,6 @@ export default function DefaultCartPage() {
           </Link>
         }
       />
-    </div>
+    </Column>
   );
 }

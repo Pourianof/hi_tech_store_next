@@ -2,35 +2,44 @@
 
 import { CartItem as CI } from "@/core/models/cartItem";
 import { useCart } from "@/ui/contexts/cart/cartContext";
-import { CartItemBox } from "./cartItemBox";
-import Link from "next/link";
+import Icon from "@/ui/icons/icon";
 import { Column } from "@/ui/layouts/column";
-import { H4 } from "@/ui/theme/text/headers";
+import { Row } from "@/ui/layouts/row";
+import { Card } from "@/ui/theme/card";
+import { CartItemBox } from "./cartItemBox";
 
 export function CartList() {
   const {
+    isLoading,
     cart: { items },
   } = useCart();
   const cartItems = items.map(
     (item) => new CI(item.product, item.variation, item.amount),
   );
 
-  if (!items.length) {
+  if (isLoading) {
     return (
-      <Column className="my-10 bg-slate-300 rounded-lg p-8 gap-4 justify-center items-center">
-        <H4 className="text-2xl font-semibold text-orange-500">
-          Cart is empty
-        </H4>
-        <p>
-          Go to{" "}
-          <Link
-            className="font-bold text-primary-blue-0c underline"
-            href={{ pathname: "/products" }}
-          >
-            Products
-          </Link>{" "}
-          page to add some items to your cart
-        </p>
+      <Column center className="w-full gap-2">
+        {Array.from({ length: 3 }, (_, i) => (
+          <Card key={i} className="w-full">
+            <Row className="gap-4">
+              <Column
+                center
+                className="w-1/4 aspect-square bg-gray-200 rounded"
+              >
+                <Icon name="image" className="text-6xl text-gray-600" />
+              </Column>
+              <Column className="grow gap-6">
+                <div className="w-full h-4 bg-gray-200 rounded-lg"></div>
+                <Column className="gap-2">
+                  <div className="w-20 h-4 bg-gray-200 rounded-lg"></div>
+                  <div className="w-32 h-4 bg-gray-200 rounded-lg"></div>
+                  <div className="w-24 h-4 bg-gray-200 rounded-lg"></div>
+                </Column>
+              </Column>
+            </Row>
+          </Card>
+        ))}
       </Column>
     );
   }
