@@ -38,7 +38,7 @@ export function ProductItem({ product }: { product: ProductModel }) {
             <div className="h-px bg-linear-to-r from-transparent via-black group-hover:via-primary-blue-0c opacity-40 to-transparent"></div>
             <Body
               size="md"
-              className="line-clamp-1 group-hover:text-primary-blue-06"
+              className="line-clamp-1 whitespace-nowrap text-ellipsis overflow-hidden group-hover:text-primary-blue-06"
             >
               {product.title}
             </Body>

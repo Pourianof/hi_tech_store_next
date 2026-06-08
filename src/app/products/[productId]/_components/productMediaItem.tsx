@@ -23,7 +23,7 @@ export function ProductMediaItem({
     <div
       key={media.productMediaId}
       className={[
-        "h-20 aspect-[80/70] rounded-lg hover:cursor-pointer overflow-clip relative outline-1 outline-gray-neutral-b4",
+        "h-16 desktop:h-20 aspect-[80/70] rounded-lg hover:cursor-pointer overflow-clip relative outline-1 outline-gray-neutral-b4",
         isSelected ? "outline-2 outline-primary-blue-0c " : "",
       ].join(" ")}
       onClick={(e) => {

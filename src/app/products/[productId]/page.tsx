@@ -1,12 +1,12 @@
 import { getSingleProduct } from "@/api/productApi";
+import { Product } from "@/core/models/product";
+import { RowOnDesktopColumnOnMobile } from "@/ui/layouts/rownOnDesktopColumnOnMobile";
+import { PaymentBox } from "./_components/paymentBox";
 import { ProductMediaFixedList } from "./_components/productMediaFixedList";
 import { ProductOverview } from "./_components/productOverview";
-import { ProductProvider } from "./_contexts/productContext";
 import { ProductPageParts } from "./_components/productPageParts";
-import { PaymentBox } from "./_components/paymentBox";
+import { ProductProvider } from "./_contexts/productContext";
 import { VariationProvider } from "./_contexts/variationContext";
-import { Row } from "@/ui/layouts/row";
-import { Product } from "@/core/models/product";
 
 export default async function ProductItemPage({
   params,
@@ -29,15 +29,15 @@ export default async function ProductItemPage({
     <VariationProvider variation={prodVariation}>
       <div>
         <ProductProvider product={product as Product}>
-          <Row className="items-start gap-24px">
-            <div className="w-[40%]">
+          <RowOnDesktopColumnOnMobile className="items-start gap-12px desktop:gap-24px">
+            <div className="desktop:w-[40%]">
               <ProductMediaFixedList />
             </div>
             <div className="grow">
               <ProductOverview />
             </div>
             <PaymentBox />
-          </Row>
+          </RowOnDesktopColumnOnMobile>
           <ProductPageParts product={product as Product} />
         </ProductProvider>
       </div>

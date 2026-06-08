@@ -25,7 +25,9 @@ export function ProductPagePartsTabs() {
           key={link.hash}
           href={`#${link.hash}`}
         >
-          <Body size="lg">{link.label}</Body>
+          <Body size="sm" className="desktop:text-body-lg">
+            {link.label}
+          </Body>
         </a>
       ))}
     </Row>

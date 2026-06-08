@@ -2,7 +2,7 @@ import { Product } from "@/core/models/product";
 import { TechnicalDetailsTable } from "./technicalDetailsTable";
 import { SimilarProducts } from "./similarProducts";
 import { ProductPagePartsTabs } from "./productPagePartsTabs";
-import { ProductComments } from "./productComments";
+import { ProductComments } from "./comment/productComments";
 import { Column } from "@/ui/layouts/column";
 
 export function ProductPageParts({ product }: { product: Product }) {
@@ -11,7 +11,7 @@ export function ProductPageParts({ product }: { product: Product }) {
       <ProductPagePartsTabs />
       <TechnicalDetailsTable product={product} />
       <SimilarProducts productId={product.productId} />
-      <ProductComments />
+      <ProductComments productId={product.productId} />
     </Column>
   );
 }

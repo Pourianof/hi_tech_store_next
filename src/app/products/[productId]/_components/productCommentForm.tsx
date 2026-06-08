@@ -1,6 +1,7 @@
 "use client";
 import { PagedResults } from "@/core/Dtos/pagedResult";
 import { Comment } from "@/core/models/comment";
+import { Product } from "@/core/models/product";
 import { commentForProductSchema } from "@/core/schemas/commenSchema";
 import { commentForProductAction } from "@/lib/server_actions/productActions";
 import { zodToRhsError } from "@/ui/form/rhf/zodToRhsError";
@@ -9,10 +10,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useProduct } from "../_contexts/productContext";
 
-export function ProductCommentForm({ children }: { children: ReactNode }) {
-  const product = useProduct();
+export function ProductCommentForm({
+  children,
+  productId,
+}: {
+  children: ReactNode;
+  productId: Product["productId"];
+}) {
   const client = useQueryClient();
 
   async function handleSubmission(
@@ -21,10 +26,7 @@ export function ProductCommentForm({ children }: { children: ReactNode }) {
   ) {
     const result = commentForProductSchema.safeParse(data);
     if (result.success) {
-      const response = await commentForProductAction(
-        product.productId,
-        result.data,
-      );
+      const response = await commentForProductAction(productId, result.data);
       return response;
     } else {
       zodToRhsError(result.error).forEach((err) =>
@@ -38,7 +40,7 @@ export function ProductCommentForm({ children }: { children: ReactNode }) {
       onSubmit={handleSubmission}
       onSubmitionSuccessful={(comment) => {
         toast.success("Your comment submitted successfully...");
-        const key = ["product-comment", product.productId];
+        const key = ["product-comment", productId];
         const data = client.getQueryData(key) as PagedResults<Comment>;
 
         if (data) {

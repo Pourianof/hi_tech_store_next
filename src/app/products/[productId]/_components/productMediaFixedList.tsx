@@ -35,7 +35,7 @@ export function ProductMediaFixedList() {
   return (
     <Column>
       <ProductMediaLargeView media={activeMedia} />
-      <Row className="h-40 grid grid-cols-5 justify-center">
+      <Row className="desktop:h-40 grid grid-cols-4 gap-2 desktop:grid-cols-5 justify-center">
         {medias.slice(0, numberOfDisplayingMedia).map((media, index) => {
           const isLast = numberOfDisplayingMedia - 1 == index;
           const hasMore = medias.length > numberOfDisplayingMedia && isLast;

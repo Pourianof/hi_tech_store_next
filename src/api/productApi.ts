@@ -62,9 +62,13 @@ export function commentForProductApi(
   );
 }
 
-export function getCommentsOfProductApi(productId: number) {
+export function getCommentsOfProductApi(
+  productId: number,
+  query: Record<string, unknown>,
+) {
   return fetchWrapper.get<PagedResults<Comment>>(
     apiRoutes.products.commentForProdut(productId),
+    query,
   );
 }
 
