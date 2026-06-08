@@ -42,9 +42,22 @@ export function FillerBox({ children }: { children: ReactNode }) {
       calculateWidth();
     }
 
+    // this is for when initial parent height calculation get wrong because of unstable rendering
+    // for example some css get delayed and layout is different than we expect after css applied
+    function safeCalculateOnInitialRender() {
+      setTimeout(() => {
+        console.log("CALCULATE DELAY");
+        calculateWidth();
+      }, 10000);
+    }
+
+    const id = setTimeout(safeCalculateOnInitialRender, 500);
     window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(id);
+    };
   }, [calculateWidth]);
 
   useLayoutEffect(() => {
