@@ -26,7 +26,10 @@ export function CategoryList() {
         <Slider disable={isDesktop}>
           <SliderContainer className="gap-2">
             {categories.map((category) => (
-              <SliderItem key={category.categoryId} className="min-w-1/5 w-1/5">
+              <SliderItem
+                key={category.categoryId}
+                className="w-[80px] shrink-0"
+              >
                 <li className="cursor-pointer hover:bg-gray-neutral-ed p-2 rounded-xl">
                   <Link
                     href={{
