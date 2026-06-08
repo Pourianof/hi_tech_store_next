@@ -1,20 +1,19 @@
 "use client";
 
+import { useCategories } from "@/ui/contexts/categoriesContext";
 import Icon from "@/ui/icons/icon";
+import { ApiImage } from "@/ui/image/ApiImage";
+import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
 import { Modal } from "@/ui/modal/modal";
+import { Body } from "@/ui/theme/text/body";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { twMerge } from "tailwind-merge";
 import { APP_TITLE } from "../consts";
 import { ExpandableBox } from "../products/_components/expandableBox";
-import { useCategories } from "@/ui/contexts/categoriesContext";
-import { ApiImage } from "@/ui/image/ApiImage";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { twMerge } from "tailwind-merge";
-import { Row } from "@/ui/layouts/row";
-import { Body } from "@/ui/theme/text/body";
-import { Column } from "@/ui/layouts/column";
 
 export function HeaderDrawerButton() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -38,7 +37,6 @@ export function HeaderDrawerButton() {
 function Drawer({ onClose }: { onClose: VoidFunction }) {
   const { categories } = useCategories();
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     setIsOpen(true);
@@ -56,6 +54,7 @@ function Drawer({ onClose }: { onClose: VoidFunction }) {
         "w-3/5 transition-transform duration-200 top-0 bottom-0",
         isOpen ? "translate-x-0" : "-translate-x-full",
       )}
+      backBtnHandling={false}
       onClose={handleClose}
     >
       <Column className={"gap-4 text-gray-neutral-44"}>
@@ -72,16 +71,12 @@ function Drawer({ onClose }: { onClose: VoidFunction }) {
         </Row>
         <ExpandableBox
           title={
-            <button
+            <Link
               className="text-primary-blue-300 cursor-pointer"
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/products");
-                handleClose();
-              }}
+              href={{ pathname: "/products" }}
             >
               <Body size="lg">Products</Body>
-            </button>
+            </Link>
           }
         >
           {!!categories && (
