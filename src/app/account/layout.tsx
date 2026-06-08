@@ -3,7 +3,7 @@ import { Wrapper } from "../_shared/wrapper";
 import { AccountSideBar } from "./_components/accountSidebar";
 import { protectRoute } from "@/lib/helpers/protectRoute";
 import { Row } from "@/ui/layouts/row";
-import { DisplayOn } from "./layout.client";
+import { DisplayOnRoute } from "../../ui/displayOnRoute";
 
 export default async function AccountPageLayout({
   account,
@@ -16,12 +16,12 @@ export default async function AccountPageLayout({
   return (
     <Wrapper>
       <Row>
-        <DisplayOn root>
+        <DisplayOnRoute root endsWith="account">
           <AccountSideBar />
-        </DisplayOn>
-        <DisplayOn>
+        </DisplayOnRoute>
+        <DisplayOnRoute endsWith="account">
           <div className="p-4 grow">{account}</div>
-        </DisplayOn>
+        </DisplayOnRoute>
       </Row>
     </Wrapper>
   );
