@@ -12,7 +12,7 @@ const RhfDevTools =
 
 export function RhfDevToolsClient({ children }: { children: ReactNode }) {
   return (
-    process.env.NODE_ENV &&
+    process.env.NODE_ENV == "development" &&
     RhfDevTools && (
       <RhfDevTools displayOnlyIfAnyFormExists>{children}</RhfDevTools>
     )
