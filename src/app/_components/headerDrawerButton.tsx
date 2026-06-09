@@ -10,7 +10,6 @@ import { Body } from "@/ui/theme/text/body";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import { twMerge } from "tailwind-merge";
 import { APP_TITLE } from "../consts";
 import { ExpandableBox } from "../products/_components/expandableBox";
@@ -47,7 +46,7 @@ function Drawer({ onClose }: { onClose: VoidFunction }) {
     setTimeout(onClose, 210);
   }
 
-  return createPortal(
+  return (
     <Modal
       variants="raw"
       containerClassName={twMerge(
@@ -112,7 +111,6 @@ function Drawer({ onClose }: { onClose: VoidFunction }) {
           <Body size="lg">Contact us</Body>
         </Link>
       </Column>
-    </Modal>,
-    window.document.body,
+    </Modal>
   );
 }
