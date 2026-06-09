@@ -25,12 +25,14 @@ export function CustomImage(props: CustomImageProps) {
       isSquare={isSquare}
       className={props.className}
     >
-      <Image
-        src={props.src}
-        fill
-        alt="string"
-        className={props.imageClassName ?? ""}
-      />
+      {
+        <Image
+          src={props.src ?? "/images/no-image.jpg"}
+          fill
+          alt={props.alt}
+          className={props.imageClassName ?? ""}
+        />
+      }
     </ImageBox>
   );
 }
