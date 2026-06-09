@@ -1,3 +1,5 @@
+"use client";
+
 export function saveToLocalStorage(key: string, data: unknown) {
   window.localStorage.setItem(key, JSON.stringify(data));
 }

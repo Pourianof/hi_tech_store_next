@@ -20,7 +20,9 @@ export function SafeImage({ src, alt, ...props }: Props) {
   }
   const coverImageURL = isValidURL ? new URL(src!) : undefined;
   const isSameOrigin =
-    coverImageURL && window?.location.origin == coverImageURL.origin;
+    typeof window != "undefined" &&
+    coverImageURL &&
+    window.location.origin == coverImageURL.origin;
 
   const shouldUseCustom = !!src && isSameOrigin;
 

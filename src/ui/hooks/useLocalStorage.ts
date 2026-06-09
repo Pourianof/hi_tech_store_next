@@ -1,3 +1,4 @@
+"use client";
 import Notifier from "@pourianof/notifier";
 import { useEffect } from "react";
 
@@ -22,13 +23,13 @@ class StorageWatcher {
 
   watch(
     key: string,
-    onChange: (oldValue: string | null, newValue: string | null) => void
+    onChange: (oldValue: string | null, newValue: string | null) => void,
   ) {
     return this.notifier.addListener(
       key,
       ({ data: { newValue, oldValue } }) => {
         onChange(oldValue, newValue);
-      }
+      },
     );
   }
 }
