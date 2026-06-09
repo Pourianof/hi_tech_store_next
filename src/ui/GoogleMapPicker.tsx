@@ -16,7 +16,7 @@ export default function GoogleMapPicker({ className }: { className?: string }) {
     function isScriptLoaded() {
       return googleScriptLoaded || hasScriptLoaded;
     },
-    [hasScriptLoaded]
+    [hasScriptLoaded],
   );
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function GoogleMapPicker({ className }: { className?: string }) {
         actions.addressIsLoading();
         // use nominatim api for geocoding -> convert cordination to full address
         const res = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=fa`
+          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=fa`,
         );
 
         actions.addressLoaded();
@@ -70,10 +70,10 @@ export default function GoogleMapPicker({ className }: { className?: string }) {
           coordination: { lat, lng },
           address: data.display_name,
         });
-      }
+      },
     );
 
-    return () => google.maps.event.removeListener(listener);
+    return () => window.google.maps.event.removeListener(listener);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, marker, hasScriptLoaded, map]);
 

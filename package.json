@@ -2,6 +2,7 @@
   "name": "hi_tech_store_next",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "scripts": {
     "dev": "next dev --turbopack",
     "dev-port-4000": "next dev --turbopack --port 4000",
@@ -42,7 +43,7 @@
     "@eslint/eslintrc": "^3",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4.1.7",
-    "@types/google.maps": "^3.58.1",
+    "@types/google.maps": "^3.65.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
