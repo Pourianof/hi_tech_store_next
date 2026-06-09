@@ -1,12 +1,12 @@
 "use client";
-import { useWindowSize } from "@/ui/hooks/useWindowSize";
 import { useRouter } from "next/navigation";
 import { Modal } from "@/ui/modal/modal";
 import { ReactNode, useEffect } from "react";
 import Icon from "@/ui/icons/icon";
+import { useIsDesktopScreen } from "@/ui/theme/helpers/isDesktopMode";
 
 export function FilterPage({ children }: { children: ReactNode }) {
-  const { width } = useWindowSize();
+  const isDesktop = useIsDesktopScreen();
   const router = useRouter();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export function FilterPage({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  if (width > 640) {
+  if (isDesktop) {
     router.push("/products");
     return null;
   }
