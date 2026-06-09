@@ -52,7 +52,7 @@ export function UserLink() {
 }
 
 function UserMenu() {
-  const { data } = useAuth();
+  const { data, logout } = useAuth();
 
   return (
     <Card className="rounded-none rounded-b-md w-[290px] p-16px" noShadow>
@@ -68,7 +68,7 @@ function UserMenu() {
           mainText="Orders"
           link="/account/orders"
         />
-        <UserMenuItem iconName="exit" mainText="Log out" link="/logout" />
+        <UserMenuItem iconName="exit" mainText="Log out" link={logout} />
       </Column>
     </Card>
   );
@@ -83,21 +83,38 @@ function UserMenuItem({
   mainText: string;
   subTitle?: string;
   iconName: IconNames;
-  link: string;
+  link: string | VoidFunction;
 }) {
+  const content = (
+    <Row className="justify-baseline gap-2">
+      <Body size="lg">
+        <Icon name={iconName} />
+      </Body>
+      <Column>
+        <Body size="lg" className={subTitle ? "text-primary-blue-0c" : ""}>
+          {mainText}
+        </Body>
+        {!!subTitle && <Body size="sm">{subTitle}</Body>}
+      </Column>
+    </Row>
+  );
+
+  if (typeof link == "function")
+    return (
+      <div
+        className="cursor-pointer"
+        onClick={(e) => {
+          e.preventDefault();
+          link();
+        }}
+      >
+        {content}
+      </div>
+    );
+
   return (
     <Link className="block" href={{ pathname: link }}>
-      <Row className="justify-baseline gap-2">
-        <Body size="lg">
-          <Icon name={iconName} />
-        </Body>
-        <Column>
-          <Body size="lg" className={subTitle ? "text-primary-blue-0c" : ""}>
-            {mainText}
-          </Body>
-          {!!subTitle && <Body size="sm">{subTitle}</Body>}
-        </Column>
-      </Row>
+      {content}
     </Link>
   );
 }
