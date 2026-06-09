@@ -12,14 +12,18 @@ import { Row } from "@/ui/layouts/row";
 import { Body } from "@/ui/theme/text/body";
 
 export function UserLink() {
-  const { data: session, isLoading } = useAuth();
+  const { data: session, isLoading, isLoggedIn } = useAuth();
 
   if (isLoading) {
     return <CircularProgress size={15} />;
   }
 
   return (
-    <HeaderModalHoverZone name="user-link" modalContent={<UserMenu />}>
+    <HeaderModalHoverZone
+      name="user-link"
+      modalContent={<UserMenu />}
+      disabled={!isLoggedIn}
+    >
       <Link href={{ pathname: session ? "/account" : "/login" }}>
         <Row className="flex gap-2">
           {session?.user.avatarUrl ? (

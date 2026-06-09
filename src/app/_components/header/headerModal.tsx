@@ -19,13 +19,19 @@ export function HeaderModalHoverZone({
   modalContent,
   name,
   zoneClassName,
+  disabled,
 }: {
   children: ReactElement<HTMLElement>;
   modalContent: ReactElement<HTMLElement>;
   name: string;
   zoneClassName?: string;
+  disabled?: boolean;
 }) {
   const ctx = useHeaderModalContext(name);
+
+  if (disabled) {
+    return children;
+  }
 
   if (!ctx) {
     return children;
