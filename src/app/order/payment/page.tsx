@@ -10,11 +10,12 @@ import { redirect } from "next/navigation";
 import { ShippinhMethodInput } from "../checkout/_components/shippingMethodInput";
 import { CartPreviewWithShipment } from "./_components/cartPreviewWithShipment";
 import { DiscountCodeContextProvider } from "./_contexts/discountCodeContext";
+import { SearchParams } from "next/dist/server/request/search-params";
 
 export default async function PaymentDefaultPage({
   searchParams: sp,
 }: {
-  searchParams: Record<string, string>;
+  searchParams: Promise<SearchParams>;
 }) {
   await protectRoute({ callbackRoute: routes.order.cart });
 
@@ -40,7 +41,7 @@ export default async function PaymentDefaultPage({
           </Link>
         </Column>
         <CartPreviewWithShipment
-          shipment={searchParams[SHIPPING_METHOD_FIELD_NAME]}
+          shipment={searchParams[SHIPPING_METHOD_FIELD_NAME] as string}
         />
       </RowOnDesktopColumnOnMobile>
     </DiscountCodeContextProvider>

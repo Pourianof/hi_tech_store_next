@@ -15,7 +15,7 @@ export function LoginForm() {
 
   return (
     <StatefulForm
-      onSubmit={(data) => {
+      onSubmit={(data: Record<string, string>) => {
         return signinAction(data.email, data.password);
       }}
       onSubmitionSuccessful={() => {

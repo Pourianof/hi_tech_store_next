@@ -10,7 +10,7 @@ import { ResetPassowrdForm } from "./_components/resettingForm";
 export default async function Page({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
   const sp = await searchParams;
 

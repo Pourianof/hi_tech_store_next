@@ -61,7 +61,7 @@ export type FormHandlers<T> = {
   onValidation?: FormValidator<T>;
 };
 
-export function StatefulForm<T>(
+export function StatefulForm<T = Record<string, unknown>>(
   props: {
     children: ReactNode;
     formName?: string;

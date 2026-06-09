@@ -11,6 +11,7 @@ export interface IdentifierNode extends BaseNode {
 
 export interface LiteralNode extends BaseNode {
   type: "Literal";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any;
 }
 

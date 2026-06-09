@@ -11,7 +11,6 @@ export default async function DashboardLayout({
   children,
 }: {
   children: ReactNode;
-  dashboard: ReactNode;
 }) {
   const session = await auth();
 

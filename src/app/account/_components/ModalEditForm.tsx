@@ -19,11 +19,11 @@ export function ModalEditableInput({
     onSubmit: (
       data: FieldValues,
       form: UseFormReturn,
-      closeModal: VoidFunction
-    ) => ReturnType<FormHandlers["onSubmit"]>;
+      closeModal: VoidFunction,
+    ) => ReturnType<FormHandlers<Record<string, string>>["onSubmit"]>;
     onSubmitionSuccessful: (
       result: Record<string, unknown>,
-      closeModal: VoidFunction
+      closeModal: VoidFunction,
     ) => void;
   }) {
   const [displayModal, setDisplayModal] = useState(false);

@@ -5,15 +5,18 @@ import Icon from "@/ui/icons/icon";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { productActions } from "@/ui/server_actions_wrapper/productActions";
+import { SearchParams } from "next/dist/server/request/search-params";
 import Link from "next/link";
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Record<string, string>;
+  searchParams: Promise<SearchParams>;
 }) {
   const sp = await searchParams;
-  const result = await productActions.getMyProductsAction(sp);
+  const result = await productActions.getMyProductsAction(
+    sp as Record<string, string>,
+  );
 
   if (result.status == "failed") {
     return (

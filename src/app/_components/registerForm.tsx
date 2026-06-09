@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ErrorLabeledInput } from "../../ui/form/errorLabeledInput";
 import { StatefulForm } from "../../ui/form/statefulForm";

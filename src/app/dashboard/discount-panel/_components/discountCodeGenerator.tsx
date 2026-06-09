@@ -82,7 +82,7 @@ function CustomCodeInput({
         }
         onClick={() => {
           setIsLoading(true);
-          getDiscountCodeByNameOrIdAction(discountCode!)
+          getDiscountCodeByNameOrIdAction(discountCode! as string)
             .then((result) => {
               if (result.status == "failed") {
                 if (result.statusCode == 404) {

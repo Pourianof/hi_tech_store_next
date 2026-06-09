@@ -13,7 +13,7 @@ type Props = {
 
 export function DiscountActionsButton({ discount }: Props) {
   const { discountCode, isDeactivating, isLoading, toggleActivation } =
-    useDiscountMutations(discount.discountCodeId);
+    useDiscountMutations(discount.discountId);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

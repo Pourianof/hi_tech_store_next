@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ExpressionNode } from "./ast";
 
 export function evaluate(node: ExpressionNode, scope: any): any {
@@ -41,9 +42,10 @@ export function evaluate(node: ExpressionNode, scope: any): any {
 
     case "Lambda": {
       return (arg: any) => {
-        return evaluate(node.body, {
+        const n = node as { body: any; parameter: any };
+        return evaluate(n.body, {
           ...scope,
-          [node.parameter]: arg,
+          [n.parameter]: arg,
         });
       };
     }

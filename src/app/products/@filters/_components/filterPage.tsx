@@ -22,7 +22,7 @@ export function FilterPage({ children }: { children: ReactNode }) {
   }
 
   return (
-    <Modal variants="full-page">
+    <Modal variants="full-page" onClose={() => {}}>
       <div className="flex flex-col">
         <div className="pb-2 border-b mb-2">
           <button

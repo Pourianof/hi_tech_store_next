@@ -13,7 +13,7 @@ export function EditingFormFrame({
   children: ReactNode;
   title: string;
   onClose: VoidFunction;
-} & FormHandlers) {
+} & FormHandlers<Record<string, string>>) {
   return (
     <div className="p-2 rounded-2xl bg-white">
       <div className="flex justify-between items-center mb-3">

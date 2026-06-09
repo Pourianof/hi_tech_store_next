@@ -24,11 +24,7 @@ export async function getRandomDiscountCodeAction() {
   return workWithSession((session) => getRandomCode(session.apiToken));
 }
 
-export async function getDiscountCodeByNameOrIdAction(name: string | number) {
-  return workWithSession((session) =>
-    getDiscountCodeByNameOrId(session.apiToken, name),
-  );
-}
+export const getDiscountCodeByNameOrIdAction = getDiscountCodeByNameOrId;
 
 export async function submitDiscountCodeAction(
   discountCode: DiscountCodeCreationDto,

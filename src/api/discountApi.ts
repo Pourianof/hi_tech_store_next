@@ -21,18 +21,10 @@ export async function getDiscountEntities(): Promise<
   );
 }
 
-export async function getDiscountCodeByNameOrId(
-  apiToken: string,
-  name: string | number,
-): Promise<ResultModel<DiscountCode[]>> {
-  return generateResultModelFromResponse(
-    await fetch(apiRoutes.discounts.forCode(name), {
-      headers: {
-        Authorization: `Bearer ${apiToken}`,
-        "Content-Type": "application/json",
-      },
-    }),
-  );
+export async function getDiscountCodeByNameOrId<T extends string | number>(
+  name: T,
+): Promise<ResultModel<T extends number ? DiscountCode : DiscountCode[]>> {
+  return fetchWrapper.get(apiRoutes.discounts.forCode(name));
 }
 
 export async function getRandomCode(

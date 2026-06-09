@@ -4,14 +4,15 @@ import { AvailableProductColorInjector } from "@/app/dashboard/add-product/_comp
 import { getSingleProduct } from "@/api/productApi";
 import { FailedBox } from "@/app/_components/failedBox";
 import { Redirector } from "@/ui/redirector";
+import { SearchParams } from "next/dist/server/request/search-params";
 
 export default async function Page({
-  params,
+  searchParams,
 }: {
-  params: Record<string, string>;
+  searchParams: Promise<SearchParams>;
 }) {
   const productResult = await getSingleProduct(
-    parseInt((await params).productId),
+    parseInt((await searchParams).productId as string),
   );
 
   if (productResult.status == "failed") {

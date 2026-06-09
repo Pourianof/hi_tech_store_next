@@ -1,9 +1,12 @@
-import { AuthBox } from "../_components/authBox";
+import { redirect } from "next/navigation";
+import { auth } from "../../../auth";
 
-export default function LoginPage() {
-  return (
-    <div className="max-w-1/2 mx-auto outline-1 outline-gray-500 rounded-lg">
-      <AuthBox />
-    </div>
-  );
+export default async function LoginPage() {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/account");
+  }
+
+  redirect("/auth/login");
 }

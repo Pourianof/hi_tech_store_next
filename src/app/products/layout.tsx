@@ -6,7 +6,7 @@ export default function ProductLayout({
   filters,
 }: {
   children: ReactNode;
-  filters?: ReactNode;
+  filters: ReactNode;
 }) {
   return (
     <Wrapper>

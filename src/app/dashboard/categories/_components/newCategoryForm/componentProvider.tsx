@@ -14,7 +14,7 @@ interface IComponentListContext {
 }
 
 const ComponentListContext = createContext<IComponentListContext>(
-  {} as IComponentListContext
+  {} as IComponentListContext,
 );
 
 export function useCategoryComponents() {
@@ -45,7 +45,7 @@ export function ComponentContextProvider({
       }
 
       setHasLoaded(true);
-      setComponents((c) => [...(c ?? []), ...result.data]);
+      setComponents((c) => [...(c ?? []), ...result.data.items]);
     }
   }
 

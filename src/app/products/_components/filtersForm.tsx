@@ -31,16 +31,19 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
           // convert keys like a_b to a.b that compatible with api server format
           let _key = key.toLowerCase().trim().split("_").join(".");
           if (_key && value) {
-            if (typeof value == "object" && (value.upper || value.lower)) {
+            if (
+              typeof value == "object" &&
+              ("upper" in value || "lower" in value)
+            ) {
               const isNotNull = (value: unknown) =>
                 value != undefined && value != null;
-              if (isNotNull(value.upper)) {
-                url.searchParams.set(`${_key}[lte]`, value.upper);
+              if ("upper" in value && isNotNull(value.upper)) {
+                url.searchParams.set(`${_key}[lte]`, value.upper as string);
               } else {
                 url.searchParams.delete(`${_key}[lte]`);
               }
-              if (isNotNull(value.lower)) {
-                url.searchParams.set(`${_key}[gte]`, value.lower);
+              if ("lower" in value && isNotNull(value.lower)) {
+                url.searchParams.set(`${_key}[gte]`, value.lower as string);
               } else {
                 url.searchParams.delete(`${_key}[gte]`);
               }
@@ -52,7 +55,7 @@ export function FilterSection({ filterStats }: { filterStats: Filters }) {
                 url.searchParams.set(_key, value.join(","));
               }
             } else {
-              url.searchParams.set(_key, value);
+              url.searchParams.set(_key, value as string);
             }
           } else if (_key) {
             const registeredKey = findMatchedKey(searchParams, _key);
