@@ -2,6 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
+import { UseFormReturn } from "react-hook-form";
+import { useRhfDevTool } from "rhf-devtools";
 
 const RhfDevTools =
   process.env.NODE_ENV == "development"
@@ -16,4 +18,8 @@ export function RhfDevToolsClient({ children }: { children: ReactNode }) {
         <RhfDevTools displayOnlyIfAnyFormExists>{children}</RhfDevTools>
       )
     : children;
+}
+
+export function useRhfDevToolsSafely(form: UseFormReturn, name?: string) {
+  useRhfDevTool(form, name, { disable: process.env.NODE_ENV != "development" });
 }

@@ -1,4 +1,5 @@
 "use client";
+import { useRhfDevToolsSafely } from "@/app/_components/rhfDevToolsClient";
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
 import { ResultModel } from "@/core/models/resultModel";
 import { handleProblemDetailErrors } from "@/lib/helpers/problemDetailsHelper";
@@ -20,7 +21,6 @@ import {
 } from "react-hook-form";
 import toast from "react-hot-toast";
 import { NoContextDefinedError } from "../errors/NoContextDefinedError";
-import { useRhfDevTool } from "rhf-devtools";
 
 interface IFormSubmitterContext {
   submit: VoidFunction;
@@ -76,7 +76,7 @@ export function StatefulForm<T = Record<string, unknown>>(
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useRhfDevTool(methods, props.formName);
+  useRhfDevToolsSafely(methods, props.formName);
 
   async function submitHandler(
     data: FieldValues,
