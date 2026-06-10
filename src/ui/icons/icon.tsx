@@ -78,7 +78,7 @@ const ICONS = {
   play: dynamic(() => import("@/assets/tech_heim/play.svg")),
   facebook: dynamic(() => import("@/../public/icons/socials/Facebook.svg")),
   instagram: dynamic(() => import("@/../public/icons/socials/Instagram.svg")),
-  twitter: dynamic(() => import("@/../public/icons/socials/Twitter.svg")),
+  twitter: dynamic(() => import("@/../public/icons/socials/twitter.svg")),
   youtube: dynamic(() => import("@/../public/icons/socials/Youtube.svg")),
 } as const;
 
