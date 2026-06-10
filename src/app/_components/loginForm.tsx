@@ -1,12 +1,11 @@
 "use client";
 import { signinAction } from "@/lib/server_actions/signinAction";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useFormContext } from "react-hook-form";
+import toast from "react-hot-toast";
 import { ErrorLabeledInput } from "../../ui/form/errorLabeledInput";
 import { StatefulForm } from "../../ui/form/statefulForm";
-import { useFormContext } from "react-hook-form";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import toast from "react-hot-toast";
 
 export function LoginForm() {
   const router = useRouter();
@@ -42,9 +41,9 @@ export function LoginForm() {
         placeholder="Password"
         filedName="password"
       />
-      <Link href="/forgot-password" className="text-blue-500">
+      <a href="/forgot-password" className="text-blue-500">
         Forgot your password?
-      </Link>
+      </a>
       <RememberMeInput />
       <button
         type="submit"

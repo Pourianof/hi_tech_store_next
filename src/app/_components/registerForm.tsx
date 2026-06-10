@@ -1,12 +1,11 @@
 "use client";
-import Link from "next/link";
-import { ErrorLabeledInput } from "../../ui/form/errorLabeledInput";
-import { StatefulForm } from "../../ui/form/statefulForm";
-import { registerAction } from "@/lib/server_actions/registerAction";
 import { RegisterDto } from "@/core/Dtos/RegisterDto";
+import { registerAction } from "@/lib/server_actions/registerAction";
+import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { ErrorLabeledInput } from "../../ui/form/errorLabeledInput";
+import { StatefulForm } from "../../ui/form/statefulForm";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -91,9 +90,9 @@ function TermAndConditionAgreetionCheckBox() {
           })}
         />
         I agree to all
-        <Link className="text-blue-600 underline" href={"/terms"}>
+        <a className="text-blue-600 underline" href={"/terms"}>
           Terms & Conditions
-        </Link>
+        </a>
       </label>
       {!!errorMessage && (
         <span className="text-red-500 text-sm">{errorMessage}</span>

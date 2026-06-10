@@ -17,17 +17,19 @@ export function AuthBox({ mode }: { mode: "login" | "register" }) {
     <div className="bg-white rounded-2xl p-6">
       <div>
         <Link
+          replace
           href="/login"
           className={`inline-block w-[50%] text-center ${activeClassNames(
-            "/login"
+            "/login",
           )}`}
         >
           Login
         </Link>
         <Link
+          replace
           href="/register"
           className={`inline-block w-[50%] text-center ${activeClassNames(
-            "/register"
+            "/register",
           )}`}
         >
           Create Account
