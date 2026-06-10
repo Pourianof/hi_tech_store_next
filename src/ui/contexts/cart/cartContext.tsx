@@ -1,5 +1,6 @@
 "use client";
 import { Cart, CartWithProduct } from "@/core/models/cart";
+import { CartItem } from "@/core/models/cartItem";
 import {
   getCartAction,
   updateCartAction,
@@ -24,7 +25,6 @@ import toast from "react-hot-toast";
 import { useAuth } from "../authContext";
 import { CartPayloads, cartReducer, CartState } from "./cartReducer";
 import { convertCartWithProductToCartState } from "./typeHelper/convertCartDtoToCartState";
-import { CartItem } from "@/core/models/cartItem";
 
 interface ICartContext extends CartState<CartItem> {
   actions: {
@@ -63,10 +63,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     },
   });
 
-  const {
-    mutate: changeItemMutation,
-    mutateAsync: changeItemMutationAndReturnResult,
-  } = useMutation({
+  const { mutateAsync: changeItemMutationAndReturnResult } = useMutation({
     meta: {
       oldState: {
         cart: query.data,
@@ -82,7 +79,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     },
     onMutate: () => {
       dispatch({ action: "Loading", payload: true });
-      changedItemProductIds.current = [];
+      dirtyItems.current.clear();
     },
     onSettled: () => {
       dispatch({ action: "Loading", payload: false });
@@ -109,9 +106,61 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     isLoading: true,
   });
 
-  const changedItemProductIds = useRef<
-    { productId: number; variationId: number }[]
-  >([]);
+  const dirtyItems = useRef(new Set<number>());
+
+  const cartRef = useRef(state.cart.items);
+
+  useEffect(() => {
+    cartRef.current = state.cart.items;
+  }, [state.cart.items]);
+
+  const syncing = useRef(false);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+
+  const flush = async () => {
+    if (syncing.current) {
+      return;
+    }
+
+    if (!dirtyItems.current.size) {
+      return;
+    }
+
+    syncing.current = true;
+
+    const variationIds = [...dirtyItems.current];
+
+    dirtyItems.current.clear();
+
+    const payload = variationIds.map((variationId) => ({
+      productVariationId: variationId,
+      amount:
+        cartRef.current.find(
+          (x) => x.variation.productVariationId === variationId,
+        )?.amount ?? 0,
+    }));
+
+    try {
+      await changeItemMutationAndReturnResult(payload);
+    } finally {
+      syncing.current = false;
+
+      // if something change between syncing
+      if (dirtyItems.current.size) {
+        flush();
+      }
+    }
+  };
+
+  const scheduleSync = () => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      flush();
+    }, 300);
+  };
 
   useLocalStorageChange({
     storageKey: CART_KEY,
@@ -219,34 +268,6 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn, isLogginStateLoading]);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      changedItemProductIds.current = [];
-      return;
-    }
-
-    if (!changedItemProductIds.current.length) {
-      return;
-    }
-
-    const changedItems = changedItemProductIds.current.map(
-      ({ productId, variationId }) => {
-        return {
-          productVariationId: variationId,
-          amount:
-            state.cart.items.find(
-              (item) =>
-                item.product.productId == productId &&
-                item.variation.productVariationId == variationId,
-            )?.amount ?? 0,
-        };
-      },
-    );
-
-    changeItemMutation(changedItems);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, isLoggedIn]);
-
   if (_context) {
     throw new Error("Cart context must define only one time in component tree");
   }
@@ -273,20 +294,18 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
               payload,
             });
 
-            changedItemProductIds.current.push({
-              productId: payload.product.productId,
-              variationId: payload.variation.productVariationId,
-            });
+            dirtyItems.current.add(payload.variation.productVariationId);
+
+            if (isLoggedIn) scheduleSync();
           },
           removeProductFromCart(payload) {
             if (isLogginStateLoading) {
               return;
             }
             dispatch({ action: "Remove", payload });
-            changedItemProductIds.current.push({
-              productId: payload.product.productId,
-              variationId: payload.variation.productVariationId,
-            });
+            dirtyItems.current.add(payload.variation.productVariationId);
+
+            if (isLoggedIn) scheduleSync();
           },
           decreaseAmountOfProduct(payload) {
             if (isLogginStateLoading) {
@@ -298,10 +317,9 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
               payload,
             });
 
-            changedItemProductIds.current.push({
-              productId: payload.product.productId,
-              variationId: payload.variation.productVariationId,
-            });
+            dirtyItems.current.add(payload.variation.productVariationId);
+
+            if (isLoggedIn) scheduleSync();
           },
         },
       }}
