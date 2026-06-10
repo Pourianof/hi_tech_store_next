@@ -55,6 +55,10 @@ export function cartReducer<T extends CartActions>(
     ? { payload?: CartPayloads<T> }
     : { payload: CartPayloads<T> }),
 ): CartState {
+  function copyItems(items: CartState["cart"]["items"] = state.cart.items) {
+    return items.map((item) => ({ ...item }));
+  }
+
   switch (action.action) {
     case "Add":
     case "Decrease": {
@@ -74,11 +78,16 @@ export function cartReducer<T extends CartActions>(
       if (productInList) {
         productInList.amount += addedAmount;
 
-        if (productInList.amount <= 0) {
-          state.cart.items.splice(productIndexInList, 1);
-        }
-
-        return { ...state };
+        return {
+          ...state,
+          cart: {
+            ...state.cart,
+            items:
+              productInList.amount <= 0
+                ? state.cart.items.filter((_, idx) => idx != productIndexInList)
+                : state.cart.items,
+          },
+        };
       }
 
       // decrease of not existing item
@@ -86,16 +95,20 @@ export function cartReducer<T extends CartActions>(
         return state;
       }
 
-      state.cart.items = [
-        ...state.cart.items,
-        {
-          product: addedData.product,
-          amount: addedAmount,
-          variation: addedData.variation,
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          items: [
+            ...copyItems(state.cart.items.map((item) => ({ ...item }))),
+            {
+              product: addedData.product,
+              amount: addedAmount,
+              variation: addedData.variation,
+            },
+          ],
         },
-      ];
-
-      return { ...state };
+      };
     }
     case "Remove": {
       const removed = action.payload as CartProductItemSpecifier;
@@ -103,7 +116,9 @@ export function cartReducer<T extends CartActions>(
       return {
         ...state,
         cart: {
-          items: state.cart.items.filter(findProductVariation(removed, true)),
+          items: copyItems(
+            state.cart.items.filter(findProductVariation(removed, true)),
+          ),
         },
       };
     }
@@ -120,7 +135,7 @@ export function cartReducer<T extends CartActions>(
       return {
         isLoading: false,
         cart: {
-          items: [...(action.payload as CartItemsState).items],
+          items: copyItems((action.payload as CartItemsState).items),
         },
       };
     }
