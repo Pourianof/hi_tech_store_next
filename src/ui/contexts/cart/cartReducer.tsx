@@ -18,6 +18,9 @@ interface CartActionPayloads {
   Initialize: CartItemsState;
   Clear?: void | undefined;
   Loading: boolean;
+  Error?: unknown;
+  UpdateSuccession: boolean;
+  Updating: boolean;
 }
 
 export interface CartItemState extends CartProductItemSpecifier {
@@ -29,7 +32,10 @@ export interface CartItemsState<TCartItem = CartItemState> {
 
 export type CartState<TCartItem = CartItemState> = {
   cart: CartItemsState<TCartItem>;
-  isLoading: boolean;
+  isLoading: boolean; // true until first initializing and between async mutations
+  error?: unknown;
+  isUpdateSucceed: boolean;
+  isUpdating: boolean; // true along async mutations
 };
 
 export type CartActions = keyof CartActionPayloads;
@@ -87,6 +93,7 @@ export function cartReducer<T extends CartActions>(
                 ? state.cart.items.filter((_, idx) => idx != productIndexInList)
                 : state.cart.items,
           },
+          isUpdateSucceed: true,
         };
       }
 
@@ -128,6 +135,7 @@ export function cartReducer<T extends CartActions>(
         cart: {
           items: [],
         },
+        isUpdateSucceed: true,
       };
     }
 
@@ -137,11 +145,40 @@ export function cartReducer<T extends CartActions>(
         cart: {
           items: copyItems((action.payload as CartItemsState).items),
         },
+        isUpdateSucceed: true,
+        isUpdating: false,
       };
     }
 
     case "Loading": {
       return { ...state, isLoading: action.payload as boolean };
+    }
+
+    case "Error": {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+        isUpdateSucceed: false,
+        isUpdating: false,
+      };
+    }
+
+    case "UpdateSuccession": {
+      return {
+        ...state,
+        isLoading: false,
+        error: undefined,
+        isUpdateSucceed: action.payload as boolean,
+        isUpdating: false,
+      };
+    }
+
+    case "Updating": {
+      return {
+        ...state,
+        isUpdating: action.payload as boolean,
+      };
     }
   }
 }

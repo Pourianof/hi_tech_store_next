@@ -20,11 +20,17 @@ import {
   useEffect,
   useReducer,
   useRef,
+  useState,
 } from "react";
-import toast from "react-hot-toast";
 import { useAuth } from "../authContext";
 import { CartPayloads, cartReducer, CartState } from "./cartReducer";
 import { convertCartWithProductToCartState } from "./typeHelper/convertCartDtoToCartState";
+
+// Cart State
+// 1- if user is logged-out, save cart in localstorage
+// 2- if user logged-in, merge the user local cart with server cart
+// 3- after user logged-in, all state will store remotely
+// 4- if user logged-out after login, cart get empty
 
 interface ICartContext extends CartState<CartItem> {
   actions: {
@@ -44,9 +50,13 @@ const CART_QUERY_KEY = "cart_query_key";
 export function CartHandlerProvider({ children }: { children: ReactNode }) {
   const { isLoggedIn, isLoading: isLogginStateLoading } = useAuth();
 
+  const [loginSyncCompleted, setLoginSyncCompleted] = useState(false);
+
+  const loginSyncing = useRef(false); // handle first login syncing → sync local state to remote
+
   const query = useQuery({
     queryKey: [CART_QUERY_KEY],
-    enabled: isLoggedIn,
+    enabled: isLoggedIn && loginSyncCompleted,
     refetchOnWindowFocus: isLoggedIn ? "always" : false,
     queryFn: async () => {
       if (!isLoggedIn) {
@@ -79,21 +89,27 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     },
     onMutate: () => {
       dispatch({ action: "Loading", payload: true });
-      dirtyItems.current.clear();
+      dispatch({ action: "Updating", payload: true });
     },
     onSettled: () => {
       dispatch({ action: "Loading", payload: false });
+      dispatch({ action: "Updating", payload: false });
     },
     onSuccess: () => {
-      // we updated item before in reducer
-      toast.success("Product added to cart successfully");
+      dispatch({
+        action: "UpdateSuccession",
+        payload: true,
+      });
     },
     onError(err, __, ___, ctx) {
-      toast.error("Something went wrong add item to your cart");
       // undo state
       dispatch({
         action: "Initialize",
         payload: (ctx.meta!.oldState as CartState).cart,
+      });
+      dispatch({
+        action: "Error",
+        payload: err,
       });
     },
   });
@@ -104,6 +120,8 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
       items: [],
     },
     isLoading: true,
+    isUpdateSucceed: true,
+    isUpdating: false,
   });
 
   const dirtyItems = useRef(new Set<number>());
@@ -118,6 +136,10 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   const flush = async () => {
+    if (loginSyncing.current) {
+      return;
+    }
+
     if (syncing.current) {
       return;
     }
@@ -153,6 +175,8 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
   };
 
   const scheduleSync = () => {
+    if (loginSyncing.current) return;
+
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
@@ -185,6 +209,8 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
 
     if (!isLoggedIn && loggedInStateRef.current) {
       dispatch({ action: "Clear" });
+      dirtyItems.current.clear();
+      setLoginSyncCompleted(false);
     }
 
     loggedInStateRef.current = isLoggedIn;
@@ -240,18 +266,26 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     if (isLoggedIn) {
       clearLocalStorage(CART_KEY);
       // sync logout cart state with user cart
-      if (state.cart.items.length) {
+      if (cartRef.current.length) {
+        loginSyncing.current = true;
         changeItemMutationAndReturnResult(
-          state.cart.items.map((item) => ({
+          cartRef.current.map((item) => ({
             amount: item.amount,
             productVariationId: item.variation.productVariationId,
           })),
-        ).then((cart) =>
-          dispatch({
-            action: "Initialize",
-            payload: convertCartWithProductToCartState(cart),
-          }),
-        );
+        )
+          .then((cart) =>
+            dispatch({
+              action: "Initialize",
+              payload: convertCartWithProductToCartState(cart),
+            }),
+          )
+          .finally(() => {
+            loginSyncing.current = false;
+            setLoginSyncCompleted(true);
+
+            flush();
+          });
       } else {
         // if user is logged-in the always fetch from server
         // because the cart may change from other devices or sessions
@@ -261,7 +295,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
             payload: query.data,
           });
         } else {
-          query.refetch();
+          setLoginSyncCompleted(true); // make this true cause enable query
         }
       }
     }
