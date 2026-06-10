@@ -76,10 +76,10 @@ const ICONS = {
   arrow: dynamic(() => import("@/assets/tech_heim/arrow.svg")),
   video: dynamic(() => import("@/assets/tech_heim/video.svg")),
   play: dynamic(() => import("@/assets/tech_heim/play.svg")),
-  facebook: dynamic(() => import("@/../public/icons/socials/Facebook.svg")),
-  instagram: dynamic(() => import("@/../public/icons/socials/Instagram.svg")),
-  twitter: dynamic(() => import("@/../public/icons/socials/twitter.svg")),
-  youtube: dynamic(() => import("@/../public/icons/socials/Youtube.svg")),
+  facebook: dynamic(() => import("@/assets/tech_heim/socials/Facebook.svg")),
+  instagram: dynamic(() => import("@/assets/tech_heim/socials/Instagram.svg")),
+  twitter: dynamic(() => import("@/assets/tech_heim/socials/twitter.svg")),
+  youtube: dynamic(() => import("@/assets/tech_heim/socials/Youtube.svg")),
 } as const;
 
 export type IconNames = keyof typeof ICONS;
@@ -98,7 +98,7 @@ export default function Icon(props: { className?: string; name: IconNames }) {
         props.className ?? "",
       )}
     >
-      <IconComponent />
+      {IconComponent ? <IconComponent /> : "XX"}
     </i>
   );
 }
