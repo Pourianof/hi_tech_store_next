@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const API_URL = new URL(process.env.API_SERVER_ADDRESS!);
+const API_URL = process.env.API_SERVER_ADDRESS;
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -42,9 +42,11 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    remotePatterns: [API_URL],
+    remotePatterns: API_URL ? [new URL(API_URL)] : [],
     unoptimized: true,
   },
+
+  output: "standalone",
 };
 
 export default nextConfig;
