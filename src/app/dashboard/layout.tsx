@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import { Row } from "@/ui/layouts/row";
 import { DisplayOnRoute } from "@/ui/displayOnRoute";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardLayout({
   children,
 }: {
