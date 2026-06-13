@@ -6,11 +6,22 @@ import {
 } from "crypto";
 
 const ALGORITHM = "aes-256-gcm";
-const KEY = scryptSync(process.env.ENCRYPTION_KEY!, "salt", 32);
+let key: Buffer | undefined = undefined;
+
+// use getter just for avoid static page build errors which try to access env variables
+// and running scryptSync function on importing this module
+// by delay executing scriptSync on-demand
+function getKey() {
+  return (key ??= scryptSync(
+    process.env.ENCRYPTION_KEY!,
+    process.env.ENCRYPTION_SALT!,
+    32,
+  ));
+}
 
 export function encrypt(text: string): string {
   const iv = randomBytes(16);
-  const cipher = createCipheriv(ALGORITHM, KEY, iv);
+  const cipher = createCipheriv(ALGORITHM, getKey(), iv);
 
   let encrypted = cipher.update(text, "utf8", "hex");
   encrypted += cipher.final("hex");
@@ -26,7 +37,7 @@ export function decrypt(encryptedData: string): string {
   const iv = Buffer.from(ivHex, "hex");
   const authTag = Buffer.from(authTagHex, "hex");
 
-  const decipher = createDecipheriv(ALGORITHM, KEY, iv);
+  const decipher = createDecipheriv(ALGORITHM, getKey(), iv);
   decipher.setAuthTag(authTag);
 
   let decrypted = decipher.update(encrypted, "hex", "utf8");
