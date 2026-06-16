@@ -20,7 +20,7 @@ export function ProductComponentsFormSection({
 
   const fieldName = "categoryValues.componentModels";
 
-  const addedComponents = watch(fieldName) as ProductComponentModel[];
+  const addedComponents = (watch(fieldName) ?? []) as ProductComponentModel[];
 
   return (
     <div className="flex flex-col gap-2">
@@ -37,7 +37,7 @@ export function ProductComponentsFormSection({
         </Modal>
       )}
       {components.map((component) => {
-        const associatedModels = addedComponents.filter(
+        const associatedModels = addedComponents?.filter(
           (cmpnt) => cmpnt.componentTypeId == component.componentTypeId,
         );
         return (
@@ -70,7 +70,7 @@ export function ProductComponentsFormSection({
                         e.preventDefault();
                         setValue(
                           fieldName,
-                          addedComponents.filter(
+                          addedComponents?.filter(
                             (cmpnt) =>
                               cmpnt.componentModelId !=
                               component.componentModelId,

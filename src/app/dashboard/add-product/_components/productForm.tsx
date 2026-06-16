@@ -30,8 +30,8 @@ export function ProductForm(props: {
       return;
     }
 
-    // return { data: {}, status: "success", statusCode: 200 } as ResultModel;
     const result = await createProduct(parsedData.data);
+
     return result;
   }
 
