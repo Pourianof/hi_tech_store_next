@@ -13,7 +13,7 @@ export function AddProductFormPage() {
 
   function handleProductSubmission(product: ProductDto) {
     flatMapBasedOn(product.variations, (v) => v.media).forEach((m) => {
-      m.url = `http://localhost:5108${m.url}`;
+      m.url = `${process.env.NEXT_PUBLIC_API_SERVER_ADDRESS}/${m.url}`;
     });
     setSucceedProductCreation(product);
   }

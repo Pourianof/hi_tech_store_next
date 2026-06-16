@@ -5,7 +5,7 @@ export function getApiSrc(src?: string) {
       new URL(src);
       _src = src;
     } catch {
-      const apiOrigin = "http://localhost:5108";
+      const apiOrigin = process.env.NEXT_PUBLIC_API_SERVER_ADDRESS!;
       const [main, id] = src.split("?");
       const url = new URL(apiOrigin);
       url.pathname = main;
