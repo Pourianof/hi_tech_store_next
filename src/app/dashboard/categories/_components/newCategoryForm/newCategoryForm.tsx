@@ -16,7 +16,7 @@ import { PreviewFile } from "../../../../../ui/form/previewFile";
 interface CategoryFormProps {
   submit: (
     categoryFormData: FormData,
-    baseCategory?: Category
+    baseCategory?: Category,
   ) => Promise<ResultModel>;
   handleSubmitSuccussfully: (category: Category) => void;
   oncancel: VoidFunction;
@@ -64,7 +64,7 @@ function CategoryForm({
 }: HidableCategoryFormProps & {}) {
   async function handleForSubmission(
     data: FieldValues,
-    { setError }: UseFormReturn
+    { setError }: UseFormReturn,
   ) {
     const isEditModeAndKeepOldImage = !data.image && !!editingCategory?.image;
     if (
@@ -93,6 +93,7 @@ function CategoryForm({
         handleSubmitSuccussfully(category as unknown as Category);
       }}
       onSubmit={handleForSubmission}
+      className="overflow-auto h-full"
     >
       <div className={hide ? "hidden" : ""} aria-hidden={hide}>
         <div className="flex justify-evenly">
