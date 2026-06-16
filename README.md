@@ -128,12 +128,13 @@ For production deployments (Docker, Kubernetes, etc.), it is recommended to prov
 | **ENCRYPTION_KEY**                     | A secure secret key used internally by the application for custom encryption operations.                                                                                                                       |
 | **ENCRYPTION_SALT**                    | Salt value used together with `ENCRYPTION_KEY` for encryption and decryption operations.                                                                                                                       |
 | **NEXT_PUBLIC_GOOGLE_CONSOLE_API_KEY** | Google Maps JavaScript API key used by the application to display maps and allow users to select a delivery location. This key must have the appropriate Google Maps APIs enabled in the Google Cloud Console. |
+| **NEXT_PUBLIC_API_SERVER_ADDRESS**     | Base URL of the backend API server that this frontend communicates with. Similar to `API_SERVER_ADDRESS`                                                                                                       |
 
 ### Example
 
 ```env
 AUTH_SECRET=your-auth-secret
-API_SERVER_ADDRESS=http://localhost:5108
+API_SERVER_ADDRESS=process.env.NEXT_PUBLIC_API_SERVER_ADDRESS
 APP_URL=http://localhost:3000
 NEXTAUTH_URL=http://localhost:3000
 ENCRYPTION_KEY=your-encryption-key
