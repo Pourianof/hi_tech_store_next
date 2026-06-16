@@ -45,7 +45,7 @@ export function ComponentContextProvider({
       }
 
       setHasLoaded(true);
-      setComponents((c) => [...(c ?? []), ...result.data.items]);
+      setComponents((c) => [...(c ?? []), ...result.data]);
     }
   }
 

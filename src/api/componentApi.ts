@@ -4,10 +4,9 @@ import { generateResultModelFromResponse } from "./apiHelper";
 import { ProductComponentModel } from "@/core/models/product";
 import { ComponentModelDto } from "@/core/Dtos/componentDto";
 import { apiRoutes } from "./apiRoutes";
-import { PagedResults } from "@/core/Dtos/pagedResult";
 
 export async function getAllComponentApi(): Promise<
-  ResultModel<PagedResults<CategoryComponent>>
+  ResultModel<CategoryComponent[]>
 > {
   return generateResultModelFromResponse(
     await fetch(apiRoutes.components.base),
