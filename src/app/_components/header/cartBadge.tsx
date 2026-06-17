@@ -1,5 +1,6 @@
 "use client";
 import { CartItemBox } from "@/app/order/cart/_components/cartItemBox";
+import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
 import { CartItem } from "@/core/models/cartItem";
 import { useCart } from "@/ui/contexts/cart/cartContext";
 import { FilledButton } from "@/ui/form/AppButtons";
@@ -8,55 +9,36 @@ import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Card } from "@/ui/theme/card";
 import { Body } from "@/ui/theme/text/body";
+import { Caption } from "@/ui/theme/text/caption";
 import { H5, H6 } from "@/ui/theme/text/headers";
 import { Badge, CircularProgress } from "@mui/material";
 import Link from "next/link";
-import { HeaderModalHoverZone } from "./headerModal";
-import { useEffect, useRef } from "react";
+import { useCallback } from "react";
 import toast from "react-hot-toast";
-import { Caption } from "@/ui/theme/text/caption";
+import { HeaderModalHoverZone } from "./headerModal";
 
 export function CartBadge() {
-  const didUpdated = useRef(false);
+  const onUpdate = useCallback(() => {
+    toast.success("Cart updated successfully");
+  }, []);
+
+  const onError = useCallback(({ data: err }: { data: ProblemDetails }) => {
+    toast.error(
+      <Column>
+        <H5>Something went wrong on updating cart</H5>
+        {!!err?.title && <Caption size="md">{err.title}</Caption>}
+        {!!err?.detail && <Caption size="sm">{err.detail}</Caption>}
+      </Column>,
+    );
+  }, []);
 
   const {
     cart: { items: products },
-    isUpdating,
-    isUpdateSucceed,
-    error,
     isLoading,
-  } = useCart();
-
-  useEffect(() => {
-    if (isUpdating) {
-      didUpdated.current = true;
-      return;
-    }
-
-    if (!didUpdated.current) {
-      return;
-    }
-
-    // if cart was updating and now finished, then some new action happened
-
-    if (isUpdateSucceed) {
-      toast.success("Cart updated succussfully");
-    } else if (error) {
-      const err = error as { title?: string; details?: string };
-
-      toast.error(
-        <Column>
-          <H5>Something went wrong on updating cart</H5>
-          {!!err?.title && <Caption size="md">{err.title}</Caption>}
-          {!!err?.details && <Caption size="sm">{err.details}</Caption>}
-        </Column>,
-      );
-    } else {
-      toast.error(<H5>Something went wrong on updating cart</H5>);
-    }
-
-    didUpdated.current = false;
-  }, [isUpdateSucceed, error, isUpdating]);
+  } = useCart({
+    onUpdate,
+    onError,
+  });
 
   return (
     <HeaderModalHoverZone name="cart" modalContent={<CartModal />}>

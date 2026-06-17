@@ -1,4 +1,5 @@
 "use client";
+import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
 import { Cart, CartWithProduct } from "@/core/models/cart";
 import { CartItem } from "@/core/models/cartItem";
 import {
@@ -12,19 +13,22 @@ import {
   saveToLocalStorage,
 } from "@/ui/helpers/storageHelper";
 import { useLocalStorageChange } from "@/ui/hooks/useLocalStorage";
+import Notifier, { Listener } from "@pourianof/notifier";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createContext,
   ReactNode,
-  useContext,
   useEffect,
   useReducer,
   useRef,
   useState,
 } from "react";
 import { useAuth } from "../authContext";
+import { useAppContext } from "../useAppContext";
 import { CartPayloads, cartReducer, CartState } from "./cartReducer";
 import { convertCartWithProductToCartState } from "./typeHelper/convertCartDtoToCartState";
+
+type ErrorHandler = (err: { data: ProblemDetails }) => void;
 
 // Cart State
 // 1- if user is logged-out, save cart in localstorage
@@ -38,16 +42,21 @@ interface ICartContext extends CartState<CartItem> {
     removeProductFromCart(payload: CartPayloads<"Remove">): void;
     decreaseAmountOfProduct(payload: CartPayloads<"Decrease">): void;
   };
+  onUpdate(callback: VoidFunction): Listener;
+  onError(callback: ErrorHandler): Listener;
 }
 
 const CartContext = createContext<ICartContext | undefined>(
   undefined as unknown as ICartContext,
 );
 
-export const CART_KEY = "local_storage_key";
+export const CART_KEY = "local_storage_cart_key";
 const CART_QUERY_KEY = "cart_query_key";
 
 export function CartHandlerProvider({ children }: { children: ReactNode }) {
+  const updateNotifier = useRef(
+    new Notifier<{ update: object; error: ProblemDetails }>(),
+  );
   const { isLoggedIn, isLoading: isLogginStateLoading } = useAuth();
 
   const [loginSyncCompleted, setLoginSyncCompleted] = useState(false);
@@ -100,6 +109,8 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
         action: "UpdateSuccession",
         payload: true,
       });
+
+      triggerUpdate();
     },
     onError(err, __, ___, ctx) {
       // undo state
@@ -111,8 +122,18 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
         action: "Error",
         payload: err,
       });
+
+      triggerError(err);
     },
   });
+
+  function triggerUpdate() {
+    updateNotifier.current.trigger("update");
+  }
+
+  function triggerError(err: object) {
+    updateNotifier.current.trigger("error", err as ProblemDetails);
+  }
 
   const _context = useCart_();
   const [state, dispatch] = useReducer(cartReducer, {
@@ -254,7 +275,10 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    saveToLocalStorage(CART_KEY, state);
+    saveToLocalStorage(CART_KEY, {
+      cart: state.cart,
+    });
+    triggerUpdate();
   }, [state, isLoggedIn, isLogginStateLoading]);
 
   // handle login state changing
@@ -356,6 +380,12 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
             if (isLoggedIn) scheduleSync();
           },
         },
+        onUpdate(callback: VoidFunction) {
+          return updateNotifier.current.addListener("update", callback);
+        },
+        onError(callback: ErrorHandler) {
+          return updateNotifier.current.addListener("error", callback);
+        },
       }}
     >
       {children}
@@ -374,12 +404,27 @@ function useCart_() {
   }
 }
 
-export function useCart() {
-  const context = useContext(CartContext);
+export function useCart({
+  onUpdate,
+  onError,
+}: { onUpdate?: VoidFunction; onError?: ErrorHandler } = {}) {
+  const context = useAppContext(CartContext);
 
-  if (!context) {
-    throw new NoContextDefinedError("Cart");
-  }
+  useEffect(() => {
+    if (onUpdate) {
+      const sub = context.onUpdate(onUpdate);
+
+      return () => sub.cancel();
+    }
+  }, [onUpdate, context]);
+
+  useEffect(() => {
+    if (onError) {
+      const sub = context.onError(onError);
+
+      return () => sub.cancel();
+    }
+  }, [onError, context]);
 
   return context;
 }
