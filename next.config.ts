@@ -1,6 +1,11 @@
 import type { NextConfig, SizeLimit } from "next";
 
 const API_URL = process.env.API_SERVER_ADDRESS;
+const SUPABASE_STORAGE = process.env.SUPABASE_STORAGE_URL;
+
+const remoteUrls = [API_URL, SUPABASE_STORAGE]
+  .filter((url) => !!url?.trim())
+  .map((url) => new URL(url!));
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -45,7 +50,7 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    remotePatterns: API_URL ? [new URL(API_URL)] : [],
+    remotePatterns: remoteUrls,
     unoptimized: true,
   },
 
