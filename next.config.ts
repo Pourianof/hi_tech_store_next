@@ -1,11 +1,14 @@
-import type { NextConfig } from "next";
+import type { NextConfig, SizeLimit } from "next";
 
 const API_URL = process.env.API_SERVER_ADDRESS;
 
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
-      bodySizeLimit: "10MB",
+      bodySizeLimit:
+        process.env.NODE_ENV == "development"
+          ? undefined
+          : (process.env.BodySizeLimit as SizeLimit),
     },
   },
   webpack(config) {
