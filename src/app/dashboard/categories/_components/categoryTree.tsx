@@ -48,7 +48,10 @@ function CategoryList({
   return (
     <>
       {newSubCategoryForm && (
-        <Modal className="items-start overflow-auto p-5">
+        <Modal
+          className="items-start overflow-auto p-5"
+          containerClassName="desktop:w-3/5"
+        >
           <NewCategoryForm
             oncancel={() => setNewSubCategoryForm(false)}
             submit={async (formData) => {

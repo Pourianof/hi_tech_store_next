@@ -12,6 +12,8 @@ import { CategoryProperties } from "./categoryProperties";
 import { ComponentContextProvider } from "./componentProvider";
 import { ComponentForm } from "./newComponentForm";
 import { PreviewFile } from "../../../../../ui/form/previewFile";
+import { Row } from "@/ui/layouts/row";
+import { Column } from "@/ui/layouts/column";
 
 interface CategoryFormProps {
   submit: (
@@ -93,61 +95,73 @@ function CategoryForm({
         handleSubmitSuccussfully(category as unknown as Category);
       }}
       onSubmit={handleForSubmission}
-      className="overflow-auto h-full"
+      className="h-full"
     >
-      <div className={hide ? "hidden" : ""} aria-hidden={hide}>
-        <div className="flex justify-evenly">
-          <div className="flex flex-col items-center gap-1">
-            <span>Image</span>
-            <PreviewFile
-              fieldname="image"
-              className="flex flex-col items-center"
-              image={editingCategory?.image}
-            />
-          </div>
-          <div className="flex flex-col gap-1 items-center">
-            <span>Icon</span>
-            <PreviewFile
-              fieldname="icon"
-              className="flex flex-col items-center"
-              image={editingCategory?.icon}
-            />
-          </div>
-        </div>
-        <ErrorLabeledInput
-          initValue={editingCategory?.name}
-          filedName="name"
-          type="text"
-          placeholder="Name"
-        />
-        <ErrorLabeledInput
-          initValue={editingCategory?.description}
-          filedName="description"
-          type="text"
-          placeholder="Description"
-        />
-        <CategoryComponents fieldname="components" />
-        <CategoryProperties
-          title="Category features"
-          defaultProperties={editingCategory?.properties}
-        />
-        <div className="flex gap-2">
-          <button
-            type="submit"
-            className="bg-green-700 rounded-md px-2 py-1 text-white"
-          >
-            Submit
-          </button>
+      <div
+        className={hide ? "hidden" : "grid grid-rows-[auto_1fr] h-full"}
+        aria-hidden={hide}
+      >
+        <Column className="overflow-auto gap-2">
+          <Row className="justify-evenly">
+            <Column className="items-center gap-1">
+              <span>Image</span>
+              <PreviewFile
+                fieldname="image"
+                className="flex flex-col items-center"
+                image={editingCategory?.image}
+              />
+            </Column>
+            <Column className="gap-1 items-center">
+              <span>Icon</span>
+              <PreviewFile
+                fieldname="icon"
+                className="flex flex-col items-center"
+                image={editingCategory?.icon}
+              />
+            </Column>
+          </Row>
+          <ErrorLabeledInput
+            initValue={editingCategory?.name}
+            filedName="name"
+            type="text"
+            placeholder="Name"
+          />
+          <ErrorLabeledInput
+            initValue={editingCategory?.description}
+            filedName="description"
+            type="text"
+            placeholder="Description"
+          />
+          <CategoryComponents fieldname="components" />
+          <CategoryProperties
+            title="Category features"
+            defaultProperties={editingCategory?.properties}
+          />
+        </Column>
+        <Row className="gap-2">
+          <StatefulForm.Submitter
+            render={(submitter, isSubmitting) => (
+              <button
+                disabled={isSubmitting}
+                type="submit"
+                className="bg-green-700 hover:bg-green-800 cursor-pointer rounded-md px-2 py-1 text-white"
+                onClick={submitter}
+              >
+                Submit
+              </button>
+            )}
+          />
           <button
             type="button"
             onClick={(e) => {
               e.preventDefault();
               oncancel();
             }}
+            className="hover:outline outline-gray-200 px-2 py-1 hover:bg-gray-100 cursor-pointer"
           >
             Cancel
           </button>
-        </div>
+        </Row>
       </div>
     </StatefulForm>
   );
