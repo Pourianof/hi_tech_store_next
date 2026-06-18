@@ -10,7 +10,7 @@ export async function sessionHandlerMiddleware(
   const token = await getToken({
     secret: process.env.AUTH_SECRET,
     req: request,
-    salt: SESSION_COOKIE,
+    cookieName: SESSION_COOKIE,
   });
 
   // No token - redirect to login
