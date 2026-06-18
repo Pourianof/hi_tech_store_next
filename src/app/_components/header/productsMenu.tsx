@@ -67,7 +67,7 @@ export function ProductsMenu() {
 
 function CategoryDetailView({ category }: { category: Category }) {
   return (
-    <Column className="p-24px">
+    <Column className="p-24px h-full overflow-auto">
       <Row centerV className="gap-16px">
         <div className="w-[200px] aspect-square">
           <CustomImage
