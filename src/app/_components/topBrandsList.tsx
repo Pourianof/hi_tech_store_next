@@ -1,4 +1,4 @@
-import { CustomImage } from "../../ui/image/CustomImage";
+import { CustomImage } from "../../ui/image/customImage";
 import { ItemsListBox } from "./iemsListBox";
 
 const BRANDS: { name: string; logo: string }[] = [

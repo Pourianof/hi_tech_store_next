@@ -2,7 +2,7 @@
 
 import { useCategories } from "@/ui/contexts/categoriesContext";
 import Icon from "@/ui/icons/icon";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Modal } from "@/ui/modal/modal";

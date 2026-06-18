@@ -1,7 +1,7 @@
 import { ExpandableBox } from "@/app/products/_components/expandableBox";
 import { Category } from "@/core/models/category";
 import Icon from "@/ui/icons/icon";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Fragment } from "react";
 import { Controller, useWatch } from "react-hook-form";
 import Select from "react-select";

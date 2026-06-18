@@ -2,7 +2,7 @@
 
 import { Category } from "@/core/models/category";
 import { useCategories } from "@/ui/contexts/categoriesContext";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Card } from "@/ui/theme/card";

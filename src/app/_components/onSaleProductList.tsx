@@ -11,7 +11,7 @@ import { DiscountLabel } from "./discountLabel";
 import { productActions } from "@/ui/server_actions_wrapper/productActions";
 import { FailedBox } from "./failedBox";
 import { ProductModel } from "@/core/models/productModel";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Card } from "@/ui/theme/card";
 import { Body } from "@/ui/theme/text/body";

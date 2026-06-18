@@ -13,7 +13,7 @@ import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { NewCategoryForm } from "./newCategoryForm/newCategoryForm";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 
 function CategoryList({
   categoryItem,

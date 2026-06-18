@@ -4,7 +4,7 @@ import { ProductModel } from "@/core/models/productModel";
 import { OutlinedButton } from "@/ui/form/AppButtons";
 import { TextInput } from "@/ui/form/textInput";
 import Icon from "@/ui/icons/icon";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { productActions } from "@/ui/server_actions_wrapper/productActions";

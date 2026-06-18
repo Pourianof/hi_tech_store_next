@@ -1,5 +1,5 @@
 import { H1 } from "@/ui/theme/text/headers";
-import { CustomImage } from "../../ui/image/CustomImage";
+import { CustomImage } from "../../ui/image/customImage";
 import { Caption } from "@/ui/theme/text/caption";
 import { Column } from "@/ui/layouts/column";
 import Link from "next/link";

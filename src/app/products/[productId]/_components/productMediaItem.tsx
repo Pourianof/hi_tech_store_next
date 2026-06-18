@@ -1,6 +1,6 @@
 import { ProductMedia } from "@/core/models/product";
 import Icon from "@/ui/icons/icon";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Body } from "@/ui/theme/text/body";
 import { twMerge } from "tailwind-merge";

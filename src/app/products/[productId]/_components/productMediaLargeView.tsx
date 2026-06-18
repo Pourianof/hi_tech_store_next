@@ -1,5 +1,5 @@
 import { ProductMedia } from "@/core/models/product";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { twMerge } from "tailwind-merge";
 
 export function ProductMediaLargeView({

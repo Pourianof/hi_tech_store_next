@@ -1,6 +1,6 @@
 import { getCategories } from "@/api/categoryApi";
 import { Category } from "@/core/models/category";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
 import Link from "next/link";
 

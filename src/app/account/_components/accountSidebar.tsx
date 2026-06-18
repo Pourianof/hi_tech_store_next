@@ -6,7 +6,7 @@ import { Row } from "@/ui/layouts/row";
 import { H4 } from "@/ui/theme/text/headers";
 import Link from "next/link";
 import { Column } from "@/ui/layouts/column";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 
 const SIDEBAR_ITEMS: { title: string; iconName: IconNames; href: string }[] = [
   { title: "Personal Data", iconName: "user_edit", href: "/personal-data" },

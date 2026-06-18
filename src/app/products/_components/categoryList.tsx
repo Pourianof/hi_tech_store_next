@@ -2,7 +2,7 @@
 
 import { useCategories } from "@/ui/contexts/categoriesContext";
 import { FillerBox } from "@/ui/fillerBox";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
 import { useIsDesktopScreen } from "@/ui/theme/helpers/isDesktopMode";

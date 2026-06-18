@@ -9,7 +9,7 @@ import { useChangeConsumer } from "@/ui/changeNotifiers/consumer";
 import { ProductVariationChangeNotifier } from "@/ui/changeNotifiers/productVariationChangeNotifier";
 import { FilledButton, OutlinedButton } from "@/ui/form/AppButtons";
 import Icon from "@/ui/icons/icon";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { FileImage } from "@/ui/image/fileImage";
 import { FileVideo } from "@/ui/image/fileVideo";
 import { Column } from "@/ui/layouts/column";

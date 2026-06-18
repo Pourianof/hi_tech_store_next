@@ -2,7 +2,7 @@ import { CartItem } from "@/core/models/cartItem";
 import { useCart } from "@/ui/contexts/cart/cartContext";
 import { priceFormatter } from "@/ui/helpers/priceFormatter";
 import Icon from "@/ui/icons/icon";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Card } from "@/ui/theme/card";

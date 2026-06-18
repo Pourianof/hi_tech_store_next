@@ -3,7 +3,7 @@
 import { useCart } from "@/ui/contexts/cart/cartContext";
 import { FillerBox } from "@/ui/fillerBox";
 import { priceFormatter } from "@/ui/helpers/priceFormatter";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Slider } from "@/ui/slider";

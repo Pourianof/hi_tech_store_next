@@ -1,6 +1,6 @@
 import { ErrorMessageLabel } from "@/ui/form/errorMessageLabel";
 import Icon from "@/ui/icons/icon";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 

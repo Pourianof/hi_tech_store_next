@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "@/ui/contexts/authContext";
 import Icon, { IconNames } from "@/ui/icons/icon";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Caption } from "@/ui/theme/text/caption";
 import { CircularProgress } from "@mui/material";

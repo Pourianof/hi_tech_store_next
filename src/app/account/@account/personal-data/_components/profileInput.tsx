@@ -3,7 +3,7 @@ import { updateUserAvatarAction } from "@/lib/server_actions/userActions";
 import { useAuth } from "@/ui/contexts/authContext";
 import { FilledButton, OutlinedButton } from "@/ui/form/AppButtons";
 import Icon from "@/ui/icons/icon";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import AvatarCropper from "@/ui/image/avatarCropper";
 import { FileImage } from "@/ui/image/fileImage";
 import { Column } from "@/ui/layouts/column";

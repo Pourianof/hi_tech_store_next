@@ -1,5 +1,5 @@
 import { ProductMedia } from "@/core/models/product";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { FiImage, FiVideo } from "react-icons/fi";
 
 export const MediaThumbnail = ({

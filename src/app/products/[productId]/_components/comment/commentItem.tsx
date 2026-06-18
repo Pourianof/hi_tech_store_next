@@ -1,7 +1,7 @@
 import { ProductScore } from "@/app/_components/productScore";
 import { Comment } from "@/core/models/comment";
 import { formatDate } from "@/lib/helpers/formatDate";
-import { CustomImage } from "@/ui/image/CustomImage";
+import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Body } from "@/ui/theme/text/body";

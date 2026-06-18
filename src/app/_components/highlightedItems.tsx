@@ -1,5 +1,5 @@
 import { H4 } from "@/ui/theme/text/headers";
-import { CustomImage } from "../../ui/image/CustomImage";
+import { CustomImage } from "../../ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 
