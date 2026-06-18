@@ -30,9 +30,9 @@ export function ProductsMenu() {
   return (
     <Card
       noShadow
-      className="rounded-none rounded-b-md w-full p-0 h-[calc(100dvh/3)] overflow-clip"
+      className="rounded-none rounded-b-md w-full p-0 h-[min(calc(100dvh/3),250px)] overflow-clip"
     >
-      <Row className="h-full">
+      <Row className="h-full flex-1">
         <Column className="overflow-auto h-full self-stretch gap-16px p-24px border-r border-r-gray-neutral-9e w-max">
           {categories.categories.map((c) => (
             <Link
