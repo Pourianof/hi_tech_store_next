@@ -307,7 +307,10 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
           .finally(() => {
             loginSyncing.current = false;
             setLoginSyncCompleted(true);
-
+            dispatch({
+              action: "Loading",
+              payload: false,
+            });
             flush();
           });
       } else {
@@ -321,6 +324,10 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
         } else {
           setLoginSyncCompleted(true); // make this true cause enable query
         }
+        dispatch({
+          action: "Loading",
+          payload: false,
+        });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
