@@ -3,7 +3,7 @@ import { updateUserAvatarAction } from "@/lib/server_actions/userActions";
 import { useAuth } from "@/ui/contexts/authContext";
 import { FilledButton, OutlinedButton } from "@/ui/form/AppButtons";
 import Icon from "@/ui/icons/icon";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import AvatarCropper from "@/ui/image/avatarCropper";
 import { FileImage } from "@/ui/image/fileImage";
 import { Column } from "@/ui/layouts/column";
@@ -49,7 +49,7 @@ export function ProfileInput() {
           <CircularProgress size={15} />
         </Column>
       ) : session.data?.user.avatarUrl ? (
-        <ApiImage
+        <CustomImage
           alt="user profile"
           src={session.data.user.avatarUrl}
           className="rounded-full overflow-clip w-full h-full"

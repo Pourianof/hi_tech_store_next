@@ -9,10 +9,9 @@ import { useChangeConsumer } from "@/ui/changeNotifiers/consumer";
 import { ProductVariationChangeNotifier } from "@/ui/changeNotifiers/productVariationChangeNotifier";
 import { FilledButton, OutlinedButton } from "@/ui/form/AppButtons";
 import Icon from "@/ui/icons/icon";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { FileImage } from "@/ui/image/fileImage";
 import { FileVideo } from "@/ui/image/fileVideo";
-import { getApiSrc } from "@/ui/image/getApiImageSrc";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Modal } from "@/ui/modal/modal";
@@ -176,17 +175,13 @@ export function MediaSection({
 
 function MediaPreview({ media }: { media: ProductMedia }) {
   return media.type === "Image" ? (
-    <ApiImage
+    <CustomImage
       src={media.url}
       alt="Preview"
       className="w-full h-full object-cover"
     />
   ) : (
-    <video
-      src={getApiSrc(media.url)}
-      controls={true}
-      className="w-full h-full"
-    />
+    <video src={media.url} controls={true} className="w-full h-full" />
     //   <div className="w-full h-full flex items-center justify-center bg-gray-900">
     //     <div className="text-center">
     //       <FiVideo className="w-12 h-12 text-white/30 mx-auto mb-2" />

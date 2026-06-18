@@ -1,6 +1,6 @@
 import { ProductVariation } from "@/core/models/product";
 import { ProductModel } from "@/core/models/productModel";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Card } from "@/ui/theme/card";
@@ -27,7 +27,7 @@ export function ProductItem({ product }: { product: ProductModel }) {
         <Link href={`/products/${product.productId}`}>
           <Column className="gap-16px">
             <div className="relative">
-              <ApiImage
+              <CustomImage
                 aspectRatio={256 / 190}
                 src={coverImage?.url}
                 alt={product.title}

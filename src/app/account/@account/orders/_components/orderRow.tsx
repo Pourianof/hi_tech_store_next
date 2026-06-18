@@ -7,7 +7,7 @@ import {
 import { ProductVariation } from "@/core/models/product";
 import { ProductVariationModel } from "@/core/models/productModel";
 import { formatDateToYYYYDDMM } from "@/lib/helpers/dateHelper";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { RowOnDesktopColumnOnMobile } from "@/ui/layouts/rownOnDesktopColumnOnMobile";
@@ -117,7 +117,7 @@ function OrderItemsListItem({
   return (
     <div className="max-w-1/6 min-w-1/6 relative hover:[&_.product-info]:opacity-100">
       <div className="h-full aspect-square rounded-lg overflow-clip">
-        <ApiImage
+        <CustomImage
           alt={`${product.title} - ${variation.color.name}`}
           src={
             ProductVariationModel.CreateWith(

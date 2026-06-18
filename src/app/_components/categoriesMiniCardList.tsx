@@ -1,14 +1,13 @@
 import { getCategories } from "@/api/categoryApi";
 import { Category } from "@/core/models/category";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
 import Link from "next/link";
 
 function CategoryMiniCard(props: { category: Category }) {
   return (
     <div className="flex-col h-full items-center text-center relative shadow-md p-4 rounded-sm">
-      <ApiImage
-        serverMode
+      <CustomImage
         className="w-full aspect-square"
         src={props.category.image}
         alt={props.category.name}

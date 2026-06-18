@@ -1,7 +1,7 @@
 import { ProductScore } from "@/app/_components/productScore";
 import { Comment } from "@/core/models/comment";
 import { formatDate } from "@/lib/helpers/formatDate";
-import { SafeImage } from "@/ui/image/safeImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Body } from "@/ui/theme/text/body";
@@ -17,7 +17,7 @@ export function CommentItem({ comment }: { comment: Comment }) {
     >
       <Row className="gap-4px" centerV>
         <div className="rounded-full w-40px h-40px overflow-clip bg-gray-700">
-          <SafeImage
+          <CustomImage
             alt={comment.user.firstName}
             src={comment.user.profileAvatar ?? "/images/user.jpg"}
             className="w-full h-full object-cover"

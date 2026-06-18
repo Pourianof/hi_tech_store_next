@@ -3,13 +3,15 @@ import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface CustomImageProps {
-  src: string;
+  src?: string;
   alt: string;
   className?: string;
   aspectRatio?: number;
   square?: boolean;
   imageClassName?: string;
   width?: number;
+  height?: number;
+  fit?: "contain" | "cover";
 }
 
 export function CustomImage(props: CustomImageProps) {
@@ -24,13 +26,18 @@ export function CustomImage(props: CustomImageProps) {
       aspectRatio={props.aspectRatio}
       isSquare={isSquare}
       className={props.className}
+      width={props.width}
+      height={props.height}
     >
       {
         <Image
           src={props.src ?? "/images/no-image.jpg"}
           fill
           alt={props.alt}
-          className={props.imageClassName ?? ""}
+          className={twMerge(
+            props.fit == "contain" ? "object-contain" : "object-cover",
+            props.imageClassName ?? "",
+          )}
         />
       }
     </ImageBox>
@@ -73,6 +80,7 @@ function ImageBox(props: {
   aspectRatio?: number;
   children: ReactNode;
   width?: number;
+  height?: number;
 }) {
   return (
     <div
@@ -85,6 +93,9 @@ function ImageBox(props: {
         ...(props.aspectRatio ? { aspectRatio: props.aspectRatio } : {}),
         ...(props.width
           ? { width: `${props.width}px`, minWidth: `${props.width}px` }
+          : {}),
+        ...(props.height
+          ? { height: `${props.height}px`, minheight: `${props.height}px` }
           : {}),
       }}
     >

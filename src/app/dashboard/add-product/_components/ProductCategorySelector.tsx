@@ -1,7 +1,7 @@
 import { ExpandableBox } from "@/app/products/_components/expandableBox";
 import { Category } from "@/core/models/category";
 import Icon from "@/ui/icons/icon";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Fragment } from "react";
 import { Controller, useWatch } from "react-hook-form";
 import Select from "react-select";
@@ -66,7 +66,7 @@ function CategoryOption({ category }: { category: Category }) {
   return (
     <div className="flex items-center">
       <div className="size-20">
-        <ApiImage alt={category.description} src={category.image} />
+        <CustomImage alt={category.description} src={category.image} />
       </div>
       <span className="font-semibold">{category.name}</span>
     </div>

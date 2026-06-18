@@ -2,7 +2,7 @@
 
 import { useCategories } from "@/ui/contexts/categoriesContext";
 import Icon from "@/ui/icons/icon";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Modal } from "@/ui/modal/modal";
@@ -89,7 +89,7 @@ function Drawer({ onClose }: { onClose: VoidFunction }) {
                   }}
                 >
                   <Row className="gap-1" centerV>
-                    <ApiImage
+                    <CustomImage
                       alt={cat.description}
                       src={cat.icon}
                       className="w-[20px] h-[20px] overflow-clip"

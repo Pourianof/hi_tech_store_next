@@ -2,7 +2,7 @@
 
 import { useCategories } from "@/ui/contexts/categoriesContext";
 import { FillerBox } from "@/ui/fillerBox";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Slider, SliderContainer, SliderItem } from "@/ui/slider";
 import { useIsDesktopScreen } from "@/ui/theme/helpers/isDesktopMode";
@@ -39,7 +39,7 @@ export function CategoryList() {
                     }}
                   >
                     <Column className="gap-1" center>
-                      <ApiImage alt={category.name} src={category.icon} />
+                      <CustomImage alt={category.name} src={category.icon} />
                       <Caption size="md">{category.name}</Caption>
                     </Column>
                   </Link>

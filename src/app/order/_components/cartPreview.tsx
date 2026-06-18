@@ -3,7 +3,7 @@
 import { useCart } from "@/ui/contexts/cart/cartContext";
 import { FillerBox } from "@/ui/fillerBox";
 import { priceFormatter } from "@/ui/helpers/priceFormatter";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Slider } from "@/ui/slider";
@@ -29,7 +29,7 @@ export function DesktopCartPreview() {
           key={item.productVariationModel.productVariationId}
           className="pb-2 gap-8px border-b border-b-gray-neutral-cb"
         >
-          <ApiImage
+          <CustomImage
             src={item.productVariationModel.getCandidateImageMedia()?.url}
             alt={item.product.title}
             square={true}
@@ -80,7 +80,7 @@ export function MobileCartPreview() {
                 key={product.productId}
               >
                 {
-                  <ApiImage
+                  <CustomImage
                     square={true}
                     alt={product.title}
                     src={variationModel.getCandidateImageMedia()?.url}

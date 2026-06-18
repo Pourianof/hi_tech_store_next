@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "@/ui/contexts/authContext";
 import Icon, { IconNames } from "@/ui/icons/icon";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Caption } from "@/ui/theme/text/caption";
 import { CircularProgress } from "@mui/material";
@@ -28,7 +28,7 @@ export function UserLink() {
         <Row className="flex gap-2">
           {session?.user.avatarUrl ? (
             <div className="w-[28px] h-[28px] rounded-full border border-gray-400 p-[1px]">
-              <ApiImage
+              <CustomImage
                 alt="user avatar"
                 src={session.user.avatarUrl}
                 className="w-full h-full object-cover rounded-full overflow-clip"

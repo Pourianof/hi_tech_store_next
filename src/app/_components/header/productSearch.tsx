@@ -4,7 +4,7 @@ import { ProductModel } from "@/core/models/productModel";
 import { OutlinedButton } from "@/ui/form/AppButtons";
 import { TextInput } from "@/ui/form/textInput";
 import Icon from "@/ui/icons/icon";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { productActions } from "@/ui/server_actions_wrapper/productActions";
@@ -158,7 +158,7 @@ function SearchedProductResultList({ products }: { products: ProductModel[] }) {
             className="border border-gray-neutral-cb rounded p-8px gap-16px"
           >
             <div className="w-[50px] h-[50px] rounded overflow-clip shrink-0">
-              <ApiImage
+              <CustomImage
                 className="w-full h-full object-cover"
                 alt={p.title}
                 src={p.mainVariation?.getCandidateImageMedia()?.url}

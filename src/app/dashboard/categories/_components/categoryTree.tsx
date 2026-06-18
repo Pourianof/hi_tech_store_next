@@ -13,7 +13,7 @@ import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { NewCategoryForm } from "./newCategoryForm/newCategoryForm";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 
 function CategoryList({
   categoryItem,
@@ -22,7 +22,7 @@ function CategoryList({
   parent?: Category;
 }) {
   const [tree, setTree] = useState<CategoryTreeType>(
-    categoryItem.subCategories ?? []
+    categoryItem.subCategories ?? [],
   );
   const [newSubCategoryForm, setNewSubCategoryForm] = useState(false);
 
@@ -55,7 +55,7 @@ function CategoryList({
               if (categoryItem.category) {
                 formData.append(
                   "parentCategoryId",
-                  `${categoryItem.category.categoryId}`
+                  `${categoryItem.category.categoryId}`,
                 );
               }
 
@@ -118,7 +118,7 @@ export function CategoryItem({
               categoryItem.category.name = category.name;
               categoryItem.category.description = category.description;
               categoryItem.category.image = `${category.image}?${Math.ceil(
-                Math.random() * 100
+                Math.random() * 100,
               )}`;
               categoryItem.category.parentCategoryId =
                 category.parentCategoryId;
@@ -226,7 +226,7 @@ function TreeItemLabel({
   return (
     <div className="flex justify-between">
       <div className="flex items-center gap-2">
-        <ApiImage
+        <CustomImage
           src={category.image}
           className="bg-gray-200 w-16 overflow-hidden rounded-full"
           square={true}

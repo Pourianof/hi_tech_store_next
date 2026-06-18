@@ -2,7 +2,7 @@ import { CartItem } from "@/core/models/cartItem";
 import { useCart } from "@/ui/contexts/cart/cartContext";
 import { priceFormatter } from "@/ui/helpers/priceFormatter";
 import Icon from "@/ui/icons/icon";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Card } from "@/ui/theme/card";
@@ -41,7 +41,7 @@ export function CartItemBox({
       className="flex px-16px py-8px"
     >
       <Row className="gap-24px">
-        <ApiImage
+        <CustomImage
           className="rounded overflow-clip object-cover min-w-[40%] w-[40%] aspect-square desktop:w-[30%]"
           square
           alt={product.title}

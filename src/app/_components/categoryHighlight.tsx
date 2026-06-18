@@ -1,4 +1,4 @@
-import { CustomImage } from "../../ui/image/customImage";
+import { CustomImage } from "../../ui/image/CustomImage";
 
 export function CategoryHighlight() {
   return (

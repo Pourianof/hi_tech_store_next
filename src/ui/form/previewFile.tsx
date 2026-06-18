@@ -1,6 +1,6 @@
 import { ErrorMessageLabel } from "@/ui/form/errorMessageLabel";
 import Icon from "@/ui/icons/icon";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -33,7 +33,7 @@ export function PreviewFile({
             src={URL.createObjectURL(file)}
           />
         ) : image ? (
-          <ApiImage alt="category image" src={image} />
+          <CustomImage alt="category image" src={image} />
         ) : (
           <Icon className="text-gray-500 text-4xl" name="image" />
         )}

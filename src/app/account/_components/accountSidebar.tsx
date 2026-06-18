@@ -1,13 +1,12 @@
 import Icon, { IconNames, IconThemeProvider } from "@/ui/icons/icon";
-import { SafeImage } from "@/ui/image/safeImage";
 import { redirect } from "next/navigation";
 import { auth } from "../../../../auth";
 import { SidebarItem } from "./sidebarItem";
 import { Row } from "@/ui/layouts/row";
 import { H4 } from "@/ui/theme/text/headers";
-import { getApiSrc } from "@/ui/image/getApiImageSrc";
 import Link from "next/link";
 import { Column } from "@/ui/layouts/column";
+import { CustomImage } from "@/ui/image/CustomImage";
 
 const SIDEBAR_ITEMS: { title: string; iconName: IconNames; href: string }[] = [
   { title: "Personal Data", iconName: "user_edit", href: "/personal-data" },
@@ -35,9 +34,9 @@ export async function AccountSideBar() {
           centerV
         >
           <Row centerV>
-            <SafeImage
+            <CustomImage
               alt="user profile"
-              src={getApiSrc(session.user.avatarUrl) ?? "/images/user.jpg"}
+              src={session.user.avatarUrl ?? "/images/user.jpg"}
               className="w-9 h-9 rounded-full overflow-clip"
             />
             <H4>

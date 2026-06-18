@@ -1,5 +1,5 @@
 import { ProductMedia } from "@/core/models/product";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { FiImage, FiVideo } from "react-icons/fi";
 
 export const MediaThumbnail = ({
@@ -20,7 +20,11 @@ export const MediaThumbnail = ({
       ${isActive ? "border-blue-500 shadow-md" : "border-transparent hover:border-gray-300"}`}
   >
     {media.type === "Image" ? (
-      <ApiImage src={media.url} alt="" className="w-full h-full object-cover" />
+      <CustomImage
+        src={media.url}
+        alt=""
+        className="w-full h-full object-cover"
+      />
     ) : (
       <div className="w-full h-full flex items-center justify-center bg-gray-800">
         <FiVideo className="w-5 h-5 text-white/50" />

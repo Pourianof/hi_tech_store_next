@@ -1,7 +1,6 @@
 import { ProductMedia } from "@/core/models/product";
 import Icon from "@/ui/icons/icon";
-import { ApiImage } from "@/ui/image/ApiImage";
-import { getApiSrc } from "@/ui/image/getApiImageSrc";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Body } from "@/ui/theme/text/body";
 import { twMerge } from "tailwind-merge";
@@ -46,7 +45,7 @@ export function ProductMediaItem({
               size="md"
               className="absolute w-full h-full text-center bg-cover bg-center bg-black/20 bg-blend-multiply"
               style={{
-                backgroundImage: `url(${getApiSrc(media.url)})`,
+                backgroundImage: `url(${media.url})`,
               }}
             >
               <Body
@@ -71,7 +70,7 @@ export function ProductMediaItem({
       {media.type == "Video" ? (
         <>
           {media.thumbnailUrl && (
-            <ApiImage
+            <CustomImage
               className={twMerge(
                 "h-full w-full",
                 !isSelected ? "rounded-lg overflow-clip" : "",
@@ -89,7 +88,7 @@ export function ProductMediaItem({
         </>
       ) : (
         !hasMore && (
-          <ApiImage
+          <CustomImage
             className={twMerge(
               "h-full w-full",
               !isSelected ? "rounded-lg overflow-clip" : "",

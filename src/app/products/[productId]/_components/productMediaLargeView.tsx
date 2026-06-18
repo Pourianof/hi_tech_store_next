@@ -1,6 +1,5 @@
 import { ProductMedia } from "@/core/models/product";
-import { ApiImage } from "@/ui/image/ApiImage";
-import { getApiSrc } from "@/ui/image/getApiImageSrc";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { twMerge } from "tailwind-merge";
 
 export function ProductMediaLargeView({
@@ -14,7 +13,7 @@ export function ProductMediaLargeView({
     <div className={twMerge("mb-4 aspect-[500/340] w-full", className)}>
       {!!media &&
         (media.type == "Image" ? (
-          <ApiImage
+          <CustomImage
             className="rounded-lg overflow-clip"
             src={media.url}
             alt={media.type}
@@ -25,7 +24,7 @@ export function ProductMediaLargeView({
             style={{
               aspectRatio: `500/340`,
             }}
-            src={getApiSrc(media.url)}
+            src={media.url}
             controls={true}
             className="w-full"
           />

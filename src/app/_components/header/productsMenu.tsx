@@ -2,7 +2,7 @@
 
 import { Category } from "@/core/models/category";
 import { useCategories } from "@/ui/contexts/categoriesContext";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Card } from "@/ui/theme/card";
@@ -53,7 +53,7 @@ export function ProductsMenu() {
                 ].join(" ")}
                 centerV
               >
-                <ApiImage alt={c.name} src={c.icon} width={24} height={24} />
+                <CustomImage alt={c.name} src={c.icon} square />
                 <Body size="lg">{c.name}</Body>
               </Row>
             </Link>
@@ -70,7 +70,7 @@ function CategoryDetailView({ category }: { category: Category }) {
     <Column className="p-24px">
       <Row centerV className="gap-16px">
         <div className="w-[200px] aspect-square">
-          <ApiImage
+          <CustomImage
             alt={category.name}
             src={category.image}
             className="w-full h-full object-cover"

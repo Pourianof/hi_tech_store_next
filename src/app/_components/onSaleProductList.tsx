@@ -11,7 +11,7 @@ import { DiscountLabel } from "./discountLabel";
 import { productActions } from "@/ui/server_actions_wrapper/productActions";
 import { FailedBox } from "./failedBox";
 import { ProductModel } from "@/core/models/productModel";
-import { ApiImage } from "@/ui/image/ApiImage";
+import { CustomImage } from "@/ui/image/CustomImage";
 import { Column } from "@/ui/layouts/column";
 import { Card } from "@/ui/theme/card";
 import { Body } from "@/ui/theme/text/body";
@@ -83,7 +83,11 @@ function ProductItem({ product }: { product: ProductModel }) {
       <Column className="w-full h-full rounded-md gap-y-8px aspect-[0.78]">
         <DiscountLabel discount={mainVariation?.discountPercentage ?? 0} />
         <div className="w-ful">
-          <ApiImage aspectRatio={1.15} src={coverImage} alt={product.title} />
+          <CustomImage
+            aspectRatio={1.15}
+            src={coverImage}
+            alt={product.title}
+          />
         </div>
         <Body size="sm" className="line-clamp-2">
           {product.title}

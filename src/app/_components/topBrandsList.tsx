@@ -1,4 +1,4 @@
-import { CustomImage } from "../../ui/image/customImage";
+import { CustomImage } from "../../ui/image/CustomImage";
 import { ItemsListBox } from "./iemsListBox";
 
 const BRANDS: { name: string; logo: string }[] = [
@@ -15,7 +15,12 @@ export function TopBrandsList() {
     <ItemsListBox label="Top Brands">
       <div className="flex h-[100px] py-8 gap-6 ">
         {BRANDS.map((brand) => (
-          <CustomImage src={brand.logo} alt={brand.name} key={brand.name} />
+          <CustomImage
+            src={brand.logo}
+            alt={brand.name}
+            fit="contain"
+            key={brand.name}
+          />
         ))}
       </div>
     </ItemsListBox>
