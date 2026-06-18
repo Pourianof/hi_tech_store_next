@@ -1,10 +1,14 @@
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
 import { StatefulForm } from "@/ui/form/statefulForm";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { NewBrandForm } from "./newBrandForm";
 import { useBrands } from "./brandsReducer";
 import { convertFieldValuesToFormData } from "@/lib/helpers/convertFieldValuesToFormData";
 import { BrandModel } from "@/core/models/brand";
+import { brandModelCreationSchema } from "@/core/schemas/brandModelCreationSchema";
+import { zodToRhsError } from "@/ui/form/rhf/zodToRhsError";
+import { Row } from "@/ui/layouts/row";
+import { Body } from "@/ui/theme/text/body";
 
 export function NewBrandModelForm({
   onCancel,
@@ -18,6 +22,15 @@ export function NewBrandModelForm({
   return (
     <div>
       <StatefulForm
+        onValidation={(data) => {
+          const result = brandModelCreationSchema.safeParse(data);
+
+          if (result.success) {
+            return { validData: result.data };
+          }
+
+          return { errors: zodToRhsError(result.error) };
+        }}
         onSubmit={
           // StatefulForm.SuccessSubmit
           async (data) => {
@@ -25,7 +38,7 @@ export function NewBrandModelForm({
           }
         }
         onSubmitionSuccessful={(data) => {
-          onNewBrandSubmitted({ ...data, modelId: 8 } as unknown as BrandModel);
+          onNewBrandSubmitted({ ...data } as unknown as BrandModel);
         }}
       >
         <h2 className="font-semibold text-stone-800 pb-2">
@@ -53,9 +66,16 @@ function Buttons({ onCancel }: { onCancel: VoidFunction }) {
   return (
     <div className="flex gap-2 pt-2">
       <StatefulForm.Submitter
-        render={(submitter) => (
-          <Button variant="contained" onClick={submitter}>
-            Resgister and contiue
+        render={(submitter, isSubmitting) => (
+          <Button
+            disabled={isSubmitting}
+            variant="contained"
+            onClick={submitter}
+          >
+            <Row center>
+              {isSubmitting && <CircularProgress size={12} />}
+              <Body size="md">Resgister and contiue</Body>
+            </Row>
           </Button>
         )}
       />
