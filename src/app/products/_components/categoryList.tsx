@@ -39,7 +39,11 @@ export function CategoryList() {
                     }}
                   >
                     <Column className="gap-1" center>
-                      <CustomImage alt={category.name} src={category.icon} />
+                      <CustomImage
+                        square
+                        alt={category.name}
+                        src={category.icon}
+                      />
                       <Caption size="md">{category.name}</Caption>
                     </Column>
                   </Link>
