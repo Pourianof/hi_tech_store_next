@@ -20,7 +20,7 @@ export function ProductSearch({ onClose }: { onClose(): void }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <Card className="grid grid-rows-[auto_1fr_auto] gap-16px flex-1">
+    <Card className="grid p-4 grid-rows-[auto_1fr_auto] gap-16px flex-1">
       <Row>
         <Row centerH className="relative grow">
           <TextInput
