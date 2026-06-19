@@ -2,19 +2,16 @@
 
 import { SHIPPING_METHOD_FIELD_NAME } from "@/lib/helpers/consts";
 import { ErrorMessageLabel } from "@/ui/form/errorMessageLabel";
-import { ControlledRadioButton } from "@/ui/form/radioButton";
+import {
+  ControlledRadioButton,
+  ControlledRadioButtonGroup,
+} from "@/ui/form/radioButton";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { Body } from "@/ui/theme/text/body";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useWatch } from "react-hook-form";
-
-enum ShippingMode {
-  FREE,
-  REGULAR,
-  EXPRESS,
-}
 
 export function ShippingRadioButtonList() {
   const searchParams = useSearchParams();
@@ -23,40 +20,38 @@ export function ShippingRadioButtonList() {
     errs?.includes(SHIPPING_METHOD_FIELD_NAME) ?? false,
   );
 
-  const [selected, setSelected] = useState<ShippingMode>();
   return (
-    <div className="space-y-4 ">
-      <ShippingRadioButton
-        onSelect={() => setSelected(ShippingMode.FREE)}
-        isSelected={selected == ShippingMode.FREE}
-        title={"Free Shipping"}
-        deliveryRange={[7, 30]}
-        price={0}
-        value="free"
-      />
-      <ShippingRadioButton
-        onSelect={() => setSelected(ShippingMode.REGULAR)}
-        isSelected={selected == ShippingMode.REGULAR}
-        title={"Regular Shipping"}
-        deliveryRange={[3, 14]}
-        price={7.5}
-        value="regular"
-      />
-      <ShippingRadioButton
-        onSelect={() => setSelected(ShippingMode.EXPRESS)}
-        isSelected={selected == ShippingMode.EXPRESS}
-        title={"Express Shipping"}
-        deliveryRange={[1, 3]}
-        price={22.5}
-        value="express"
-      />
-      {noShippingSelectionError ? (
-        <div className="text-error border border-error text-sm bg-error-light p-2 rounded">
-          You must select a shipping method
-        </div>
-      ) : null}
-      <ErrorMessageLabel fieldName={SHIPPING_METHOD_FIELD_NAME} />
-    </div>
+    <ControlledRadioButtonGroup
+      required="You must select the shipping method"
+      fieldName={SHIPPING_METHOD_FIELD_NAME}
+    >
+      <div className="space-y-4 ">
+        <ShippingRadioButton
+          title={"Free Shipping"}
+          deliveryRange={[7, 30]}
+          price={0}
+          value="free"
+        />
+        <ShippingRadioButton
+          title={"Regular Shipping"}
+          deliveryRange={[3, 14]}
+          price={7.5}
+          value="regular"
+        />
+        <ShippingRadioButton
+          title={"Express Shipping"}
+          deliveryRange={[1, 3]}
+          price={22.5}
+          value="express"
+        />
+        {noShippingSelectionError ? (
+          <div className="text-error border border-error text-sm bg-error-light p-2 rounded">
+            You must select a shipping method
+          </div>
+        ) : null}
+        <ErrorMessageLabel fieldName={SHIPPING_METHOD_FIELD_NAME} />
+      </div>
+    </ControlledRadioButtonGroup>
   );
 }
 
@@ -69,8 +64,6 @@ export function ShippingRadioButton({
   title: string;
   deliveryRange: [number, number];
   price: number;
-  isSelected?: boolean;
-  onSelect: VoidFunction;
   value: string;
 }) {
   const shipping = useWatch({ name: SHIPPING_METHOD_FIELD_NAME });
@@ -98,7 +91,6 @@ export function ShippingRadioButton({
         </Column>
       }
       value={value}
-      name={SHIPPING_METHOD_FIELD_NAME}
     />
   );
 }

@@ -11,7 +11,7 @@ import { CATEGORY_COMPONENT_FORM_CHANNEL } from "./newCategoryForm";
 
 export function ComponentForm() {
   const componentSink = useSink<CategoryComponent>(
-    CATEGORY_COMPONENT_FORM_CHANNEL
+    CATEGORY_COMPONENT_FORM_CHANNEL,
   );
   const categoryFormContext = useCategoryFormContext();
   // async function handleComponentSubmition(data: FieldValues) {
@@ -19,7 +19,7 @@ export function ComponentForm() {
   // }
 
   async function handleComponentSubmition(
-    data: FieldValues
+    data: FieldValues,
   ): Promise<ResultModel> {
     return { data: data, status: "success", statusCode: 200 };
   }
@@ -56,6 +56,10 @@ export function ComponentForm() {
             filedName="description"
             placeholder="Component description"
             type="string"
+            validationOptions={{
+              required: true,
+              minLength: 10,
+            }}
           />
           <CategoryProperties title="Component Properties" />
           <div className="flex gap-4">

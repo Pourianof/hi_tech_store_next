@@ -13,7 +13,7 @@ export const productCategoryValuesSchema = z
     properties: z.array(
       z.object({
         propertyId: z.coerce.number(),
-        propertyValue: z.string(),
+        propertyValue: z.union([z.string(), z.boolean(), z.date(), z.number()]),
       }),
     ),
   })

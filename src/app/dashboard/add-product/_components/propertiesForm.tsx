@@ -1,6 +1,12 @@
 import { CategoryProperty, PropertyType } from "@/core/models/category";
 import { ErrorLabeledInput } from "@/ui/form/errorLabeledInput";
-import { RadioButton } from "@/ui/form/radioButton";
+import { ErrorMessageLabel } from "@/ui/form/errorMessageLabel";
+import {
+  ControlledRadioButton,
+  ControlledRadioButtonGroup,
+} from "@/ui/form/radioButton";
+import { Column } from "@/ui/layouts/column";
+import { Row } from "@/ui/layouts/row";
 
 export function CategoryPropertiesForm({
   properties,
@@ -41,18 +47,20 @@ export function CategoryPropertiesForm({
         />
         <div className="bg-slate-300 p-2 rounded">
           {prop.propertyType == PropertyType.Boolean ? (
-            <div className="flex gap-4">
-              <RadioButton
-                value={true}
-                name={`${fieldNamePrefix}properties.${index}.propertyValue`}
-                label={"Yes"}
+            <Column>
+              <ControlledRadioButtonGroup
+                fieldName={`${fieldNamePrefix}properties.${index}.propertyValue`}
+              >
+                <Row className="gap-4">
+                  <ControlledRadioButton value={true} label={"Yes"} />
+                  <ControlledRadioButton value={false} label={"No"} />
+                </Row>
+              </ControlledRadioButtonGroup>
+
+              <ErrorMessageLabel
+                fieldName={`${fieldNamePrefix}properties.${index}.propertyValue`}
               />
-              <RadioButton
-                value={false}
-                name={`${fieldNamePrefix}properties.${index}.propertyValue`}
-                label={"No"}
-              />
-            </div>
+            </Column>
           ) : (
             <ErrorLabeledInput
               name={prop.name}

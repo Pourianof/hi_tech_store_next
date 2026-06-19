@@ -14,6 +14,7 @@ import { ComponentForm } from "./newComponentForm";
 import { PreviewFile } from "../../../../../ui/form/previewFile";
 import { Row } from "@/ui/layouts/row";
 import { Column } from "@/ui/layouts/column";
+import { CircularProgress } from "@mui/material";
 
 interface CategoryFormProps {
   submit: (
@@ -95,12 +96,9 @@ function CategoryForm({
         handleSubmitSuccussfully(category as unknown as Category);
       }}
       onSubmit={handleForSubmission}
-      className="h-full"
+      className={hide ? "hidden" : "h-full"}
     >
-      <div
-        className={hide ? "hidden" : "grid grid-rows-[auto_1fr] h-full"}
-        aria-hidden={hide}
-      >
+      <div className="grid grid-rows-[auto_1fr] h-full" aria-hidden={hide}>
         <Column className="overflow-auto gap-2">
           <Row className="justify-evenly">
             <Column className="items-center gap-1">
@@ -144,10 +142,10 @@ function CategoryForm({
               <button
                 disabled={isSubmitting}
                 type="submit"
-                className="bg-green-700 hover:bg-green-800 cursor-pointer rounded-md px-2 py-1 text-white"
+                className="disabled:bg-gray-200 disabled:text-gray-500 bg-green-700 hover:bg-green-800 cursor-pointer rounded-md px-2 py-1 text-white"
                 onClick={submitter}
               >
-                Submit
+                {isSubmitting ? <CircularProgress size={15} /> : "Submit"}
               </button>
             )}
           />

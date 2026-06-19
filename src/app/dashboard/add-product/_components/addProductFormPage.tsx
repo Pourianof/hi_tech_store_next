@@ -1,20 +1,16 @@
 "use client";
 
 import { ProductItem } from "@/app/_components/productItem";
-import { ProductForm } from "./productForm";
 import { ProductDto } from "@/core/Dtos/ProductDto";
-import { useState } from "react";
-import { flatMapBasedOn } from "@/lib/utils/arrayHelpers";
 import { ProductModel } from "@/core/models/productModel";
+import { useState } from "react";
+import { ProductForm } from "./productForm";
 
 export function AddProductFormPage() {
   const [succeedProductCreation, setSucceedProductCreation] =
     useState<ProductDto>();
 
   function handleProductSubmission(product: ProductDto) {
-    flatMapBasedOn(product.variations, (v) => v.media).forEach((m) => {
-      m.url = `${process.env.NEXT_PUBLIC_API_SERVER_ADDRESS}/${m.url}`;
-    });
     setSucceedProductCreation(product);
   }
 

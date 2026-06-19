@@ -67,8 +67,9 @@ export function BrandSelectorInput({
               name={fieldname}
               render={({ field: { value, onChange } }) => {
                 const selectedBrandModel = brandModels.find(
-                  (bm) => bm.modelId == value,
+                  (bm) => bm.modelId == (setIdAsValue ? value : value?.modelId),
                 );
+
                 return (
                   <Select
                     className="flex-5/6"

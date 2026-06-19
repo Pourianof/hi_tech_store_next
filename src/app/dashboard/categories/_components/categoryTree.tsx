@@ -50,7 +50,7 @@ function CategoryList({
       {newSubCategoryForm && (
         <Modal
           className="items-start overflow-auto p-5"
-          containerClassName="desktop:w-3/5"
+          containerClassName="desktop:max-w-3/5"
         >
           <NewCategoryForm
             oncancel={() => setNewSubCategoryForm(false)}

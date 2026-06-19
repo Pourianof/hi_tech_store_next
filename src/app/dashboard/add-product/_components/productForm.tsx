@@ -22,7 +22,7 @@ export function ProductForm(props: {
     { setError }: UseFormReturn,
   ) {
     const parsedData = productCreationSchema.safeParse(data);
-
+    console.log(data, parsedData);
     if (!parsedData.success) {
       zodToRhsError(parsedData.error).forEach((err) =>
         setError(err.path, { message: err.message }),

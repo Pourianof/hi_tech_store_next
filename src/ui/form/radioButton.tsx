@@ -1,7 +1,8 @@
 "use client";
-import { ReactNode } from "react";
+import { createContext, ReactNode } from "react";
 import { Controller } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
+import { useAppContext } from "../contexts/useAppContext";
 
 interface RadioButtonInputProps {
   name: string;
@@ -93,21 +94,56 @@ function RadioButtonInput({
   );
 }
 
-export function ControlledRadioButton(
-  props: Omit<RadioButtonProps, "onChange">,
-) {
+interface RadioButtonContextModel {
+  select: (value: object) => void;
+  value?: object;
+  name: string;
+}
+
+const RadioButtonContext = createContext<RadioButtonContextModel>(
+  {} as unknown as RadioButtonContextModel,
+);
+
+export function ControlledRadioButtonGroup({
+  children,
+  fieldName,
+  required,
+}: {
+  children: ReactNode;
+  fieldName: string;
+  required?: boolean | string;
+}) {
   return (
     <Controller
-      rules={{ required: "You must select the shipping method" }}
-      name={props.name}
-      render={({ field: { onChange } }) => (
-        <RadioButton
-          {...props}
-          onSelect={(val) => {
-            onChange(val.value);
+      name={fieldName}
+      rules={{
+        required,
+      }}
+      render={({ field: { value, onChange } }) => (
+        <RadioButtonContext.Provider
+          value={{
+            select: onChange,
+            value,
+            name: fieldName,
           }}
-        />
+        >
+          {children}
+        </RadioButtonContext.Provider>
       )}
+    />
+  );
+}
+
+export function ControlledRadioButton(
+  props: Omit<RadioButtonProps, "onChange" | "name">,
+) {
+  const { select, name } = useAppContext(RadioButtonContext);
+
+  return (
+    <RadioButton
+      {...props}
+      name={name}
+      onSelect={(val) => select(val.value as object)}
     />
   );
 }
