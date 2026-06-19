@@ -27,10 +27,10 @@ export async function AccountSideBar() {
   }
 
   return (
-    <div className="desktop:bg-gray-100 grow desktop:min-w-[290px] self-start text-gray-neutral-2d">
+    <div className="desktop:bg-gray-100 grow desktop:grow-0 desktop:min-w-[290px] self-start text-gray-neutral-2d">
       <IconThemeProvider theme={{ className: "pe-2" }}>
         <Row
-          className="cursor-default justify-between mb-8 py-2 desktop:border-b border-gray-400 gap-4 bg-gray-neutral-f9 desktop:bg-transparent rounded-lg"
+          className="cursor-default justify-between mb-8 p-2 desktop:border-b border-gray-400 gap-4 bg-gray-neutral-f9 desktop:bg-transparent rounded-lg desktop:rounded-none"
           centerV
         >
           <Row centerV>
