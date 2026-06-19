@@ -5,15 +5,13 @@ import {
   ReactNode,
   useCallback,
   useContext,
-  useEffect,
   useLayoutEffect,
   useRef,
-  useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { twMerge } from "tailwind-merge";
 import { useBackBtnHandler } from "../hooks/useBackBtnHandler";
 import { MODAL_CONTAINER_ID } from "./modalContainer";
-import { twMerge } from "tailwind-merge";
 
 interface IModalContextState {
   isBackBtnHandled: boolean;
@@ -49,7 +47,6 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
     : Partial<RequiredOnClose>)) {
   const isBackBtnHandled = backBtnHandling || variants == "full-page";
 
-  const [hasOverflowed, setHasOverflowed] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const backHandler = useCallback(() => {
@@ -71,33 +68,6 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
       };
     }
   }, [diableScroll]);
-
-  const checkOverflow = useCallback(function () {
-    const container = containerRef.current;
-    if (!container) return;
-    const diff = window.innerHeight - container!.scrollHeight;
-    const hasOverflow = diff < 0 || diff / window.innerHeight < 0.05;
-
-    if (hasOverflow == hasOverflowed) {
-      return;
-    }
-
-    setHasOverflowed(hasOverflow);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useLayoutEffect(() => {
-    checkOverflow();
-  }, [children, checkOverflow]);
-
-  useEffect(() => {
-    function resizeHandler() {
-      checkOverflow();
-    }
-    window.addEventListener("resize", resizeHandler);
-
-    return () => window.removeEventListener("", resizeHandler);
-  }, [checkOverflow]);
 
   let overlayClassName;
   let _containerClassName = "";
@@ -145,7 +115,6 @@ export function Modal<TBack extends boolean, TVariant extends ModalVariants>({
           className={twMerge(
             "bg-white z-20",
             !noPadding ? "p-6 " : "",
-            hasOverflowed ? "absolute top-[10dvh] bottom-[5dvh]" : "",
             _containerClassName,
             containerClassName ?? "",
           )}
