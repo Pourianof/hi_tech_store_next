@@ -8,6 +8,7 @@ import { ProductCommentForm } from "../productCommentForm";
 import { useAuth } from "@/ui/contexts/authContext";
 import { CircularProgress } from "@mui/material";
 import { Product } from "@/core/models/product";
+import { StatefulForm } from "@/ui/form/statefulForm";
 
 export function CommentForm({
   productId,
@@ -33,7 +34,14 @@ export function CommentForm({
             placeholder="Comment about product..."
             type="text"
           />
-          <OutlinedButton>Comment</OutlinedButton>
+          <StatefulForm.Submitter
+            render={(submitter, isSubmitting) => (
+              <OutlinedButton disabled={isSubmitting} onClick={submitter}>
+                {isSubmitting && <CircularProgress size={15} />}
+                <Body size="md">Comment</Body>
+              </OutlinedButton>
+            )}
+          />
         </Column>
       </ProductCommentForm>
     </div>
