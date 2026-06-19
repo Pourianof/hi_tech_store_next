@@ -6,7 +6,7 @@ import { commentForProductSchema } from "@/core/schemas/commenSchema";
 import { commentForProductAction } from "@/lib/server_actions/productActions";
 import { zodToRhsError } from "@/ui/form/rhf/zodToRhsError";
 import { StatefulForm } from "@/ui/form/statefulForm";
-import { useQueryClient } from "@tanstack/react-query";
+import { InfiniteData, useQueryClient } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -41,13 +41,25 @@ export function ProductCommentForm({
       onSubmitionSuccessful={(comment) => {
         toast.success("Your comment submitted successfully...");
         const key = ["product-comment", productId];
-        const data = client.getQueryData(key) as PagedResults<Comment>;
 
-        if (data) {
-          const newCommentData = { ...data };
-          newCommentData.items = [comment as unknown as Comment, ...data.items];
-          client.setQueryData(key, { ...newCommentData });
-        }
+        client.setQueryData(
+          key,
+          (oldData: InfiniteData<PagedResults<Comment>> | undefined) => {
+            if (!oldData) return oldData;
+
+            return {
+              ...oldData,
+              pages: oldData.pages.map((page, index) =>
+                index === 0
+                  ? {
+                      ...page,
+                      items: [comment, ...page.items],
+                    }
+                  : page,
+              ),
+            };
+          },
+        );
       }}
     >
       {children}
