@@ -35,11 +35,7 @@ export function CartItemBox({
   }
 
   return (
-    <Card
-      noHoverReaction
-      key={product.productId}
-      className="flex px-16px py-8px"
-    >
+    <Card noHoverReaction key={product.productId} className="px-16px py-8px">
       <Row className="gap-24px">
         <CustomImage
           className="rounded overflow-clip object-cover min-w-[40%] w-[40%] aspect-square desktop:w-[30%]"

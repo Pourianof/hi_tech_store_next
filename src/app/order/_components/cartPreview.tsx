@@ -33,7 +33,7 @@ export function DesktopCartPreview() {
             src={item.productVariationModel.getCandidateImageMedia()?.url}
             alt={item.product.title}
             square={true}
-            className="w-80px"
+            className="w-20 h-20 rounded overflow-clip"
           />
           <Column className="gap-8px grow">
             <Body size="xs" className="text-gray-neutral-2d">

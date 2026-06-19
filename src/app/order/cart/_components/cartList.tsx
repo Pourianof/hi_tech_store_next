@@ -44,7 +44,7 @@ export function CartList() {
     );
   }
   return (
-    <Column className="gap-24px">
+    <Column className="gap-24px desktop:grow">
       {cartItems.map((item, index) => (
         <CartItemBox key={index} cartItem={item} variant="large" />
       ))}
