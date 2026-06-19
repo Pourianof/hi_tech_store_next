@@ -11,6 +11,7 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 import { ProductCategorySelector } from "./ProductCategorySelector";
 import { ProductVariationsList } from "./productVariationsList";
 import { ProductBasicInfo } from "./sections/productBasicInfo";
+import { CircularProgress } from "@mui/material";
 
 export function ProductForm(props: {
   onFormSubmitted: (submittedProduct: ProductDto) => void;
@@ -70,12 +71,21 @@ export function ProductForm(props: {
         <ProductCategorySelector categories={categories} />
         <ProductVariationsList />
         <div className="flex gap-4">
-          <button
-            type="submit"
-            className="border py-2 px-4 cursor-pointer bg-green-200 hover:bg-green-500 hover:text-gray-200"
-          >
-            Submit
-          </button>
+          <StatefulForm.Submitter
+            render={(submitter, isSubmitting) => (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  submitter();
+                }}
+                disabled={isSubmitting}
+                type="submit"
+                className="border py-2 disabled:bg-[#b6d1b0] disabled:text-[#8a9e8a] px-4 cursor-pointer bg-green-200 hover:bg-green-500 hover:text-gray-200"
+              >
+                {isSubmitting && <CircularProgress size={15} />} Submit
+              </button>
+            )}
+          />
           <StatefulForm.ResetButton className="border py-2 px-4 cursor-pointer bg-gray-200 hover:bg-gray-300">
             Reset
           </StatefulForm.ResetButton>
