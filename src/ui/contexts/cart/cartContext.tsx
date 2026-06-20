@@ -278,7 +278,8 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     saveToLocalStorage(CART_KEY, {
       cart: state.cart,
     });
-    triggerUpdate();
+
+    if (state.isUpdating) triggerUpdate();
   }, [state, isLoggedIn, isLogginStateLoading]);
 
   // handle login state changing
@@ -288,6 +289,10 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
     }
 
     if (isLoggedIn) {
+      if (loginSyncCompleted) {
+        return;
+      }
+
       clearLocalStorage(CART_KEY);
       // sync logout cart state with user cart
       if (cartRef.current.length) {
