@@ -14,7 +14,7 @@ import {
 } from "@/ui/helpers/storageHelper";
 import { useLocalStorageChange } from "@/ui/hooks/useLocalStorage";
 import Notifier, { Listener } from "@pourianof/notifier";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createContext,
   ReactNode,
@@ -63,6 +63,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
 
   const loginSyncing = useRef(false); // handle first login syncing → sync local state to remote
 
+  const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: [CART_QUERY_KEY],
     enabled: isLoggedIn && loginSyncCompleted,
@@ -109,7 +110,7 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
         action: "UpdateSuccession",
         payload: true,
       });
-
+      queryClient.setQueryData([CART_QUERY_KEY], state.cart);
       triggerUpdate();
     },
     onError(err, __, ___, ctx) {
@@ -177,16 +178,27 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
 
     dirtyItems.current.clear();
 
-    const payload = variationIds.map((variationId) => ({
-      productVariationId: variationId,
-      amount:
-        cartRef.current.find(
-          (x) => x.variation.productVariationId === variationId,
-        )?.amount ?? 0,
-    }));
+    const payload = variationIds
+      .map((variationId) => ({
+        productVariationId: variationId,
+        amount:
+          cartRef.current.find(
+            (x) => x.variation.productVariationId === variationId,
+          )?.amount ?? 0,
+      }))
+      // filter-out cart-item if the server data is same as current data
+      .filter(
+        (x) =>
+          x.amount !=
+          (query.data?.items.find(
+            (item) => item.variation.productVariationId == x.productVariationId,
+          )?.amount ?? 0),
+      );
 
     try {
-      await changeItemMutationAndReturnResult(payload);
+      if (payload.length) {
+        await changeItemMutationAndReturnResult(payload);
+      }
     } finally {
       syncing.current = false;
 
