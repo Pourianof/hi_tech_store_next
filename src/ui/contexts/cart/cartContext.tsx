@@ -118,12 +118,14 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
         action: "Initialize",
         payload: (ctx.meta!.oldState as CartState).cart,
       });
+      const error = err as unknown as ProblemDetails;
       dispatch({
         action: "Error",
-        payload: err,
+        payload: {
+          title: error.title,
+          detail: error.detail,
+        },
       });
-
-      triggerError(err);
     },
   });
 
@@ -236,6 +238,16 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
 
     loggedInStateRef.current = isLoggedIn;
   }, [isLoggedIn, isLogginStateLoading]);
+
+  useEffect(() => {
+    if (state.isUpdateSucceed) {
+      return;
+    }
+
+    if (state.error) {
+      triggerError(state.error);
+    }
+  }, [state.isUpdateSucceed, state.error]);
 
   // Initializing state
   useEffect(() => {
