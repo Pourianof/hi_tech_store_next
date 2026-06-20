@@ -10,7 +10,7 @@ import { Row } from "@/ui/layouts/row";
 import { Card } from "@/ui/theme/card";
 import { Body } from "@/ui/theme/text/body";
 import { Caption } from "@/ui/theme/text/caption";
-import { H5, H6 } from "@/ui/theme/text/headers";
+import { H6 } from "@/ui/theme/text/headers";
 import { Badge, CircularProgress } from "@mui/material";
 import Link from "next/link";
 import { useCallback } from "react";
@@ -25,9 +25,15 @@ export function CartBadge() {
   const onError = useCallback(({ data: err }: { data: ProblemDetails }) => {
     toast.error(
       <Column>
-        <H5>Something went wrong on updating cart</H5>
-        {!!err?.title && <Caption size="md">{err.title}</Caption>}
-        {!!err?.detail && <Caption size="sm">{err.detail}</Caption>}
+        <H6>Something went wrong on updating cart</H6>
+        <Column className="gap-1 border border-slate-300 rounded p-2">
+          {!!err?.title && <Caption size="lg">{err.title}</Caption>}
+          {!!err?.detail && (
+            <Caption size="md" className="text-error">
+              {err.detail}
+            </Caption>
+          )}
+        </Column>
       </Column>,
     );
   }, []);
