@@ -18,7 +18,7 @@ interface CartActionPayloads {
   Initialize: CartItemsState;
   Clear?: void | undefined;
   Loading: boolean;
-  Error?: unknown;
+  Error?: CartError;
   UpdateSuccession: boolean;
   Updating: boolean;
 }
@@ -30,10 +30,11 @@ export interface CartItemsState<TCartItem = CartItemState> {
   items: TCartItem[];
 }
 
+type CartError = { title: string; detail?: string };
 export type CartState<TCartItem = CartItemState> = {
   cart: CartItemsState<TCartItem>;
   isLoading: boolean; // true until first initializing and between async mutations
-  error?: unknown;
+  error?: CartError;
   isUpdateSucceed: boolean;
   isUpdating: boolean; // true along async mutations
 };
@@ -53,6 +54,13 @@ function findProductVariation(
         p.variation.color.colorId == target.variation.color.colorId
       ),
     );
+}
+
+function overflowAmountErrorBuilder() {
+  return {
+    title: "Update failed",
+    detail: "Cannot add items amount more than inventory of item",
+  };
 }
 
 export function cartReducer<T extends CartActions>(
@@ -82,8 +90,17 @@ export function cartReducer<T extends CartActions>(
       const addedAmount = addedData.amount ?? 1;
 
       if (productInList) {
-        productInList.amount += addedAmount;
+        const totalAddedAmount = productInList.amount + addedAmount;
 
+        if (totalAddedAmount > productInList.variation.inventory) {
+          return {
+            ...state,
+            error: overflowAmountErrorBuilder(),
+            isUpdateSucceed: false,
+          };
+        }
+
+        productInList.amount = totalAddedAmount;
         return {
           ...state,
           cart: {
@@ -91,9 +108,10 @@ export function cartReducer<T extends CartActions>(
             items:
               productInList.amount <= 0
                 ? state.cart.items.filter((_, idx) => idx != productIndexInList)
-                : state.cart.items,
+                : copyItems(state.cart.items),
           },
           isUpdateSucceed: true,
+          error: undefined,
         };
       }
 
@@ -102,12 +120,22 @@ export function cartReducer<T extends CartActions>(
         return state;
       }
 
+      if (addedAmount > addedData.variation.inventory) {
+        return {
+          ...state,
+          error: overflowAmountErrorBuilder(),
+          isUpdateSucceed: false,
+        };
+      }
+
       return {
         ...state,
+        isUpdateSucceed: true,
+        error: undefined,
         cart: {
           ...state.cart,
           items: [
-            ...copyItems(state.cart.items.map((item) => ({ ...item }))),
+            ...copyItems(state.cart.items),
             {
               product: addedData.product,
               amount: addedAmount,
@@ -127,6 +155,8 @@ export function cartReducer<T extends CartActions>(
             state.cart.items.filter(findProductVariation(removed, true)),
           ),
         },
+        error: undefined,
+        isUpdateSucceed: true,
       };
     }
     case "Clear": {
@@ -136,6 +166,7 @@ export function cartReducer<T extends CartActions>(
           items: [],
         },
         isUpdateSucceed: true,
+        error: undefined,
       };
     }
 
@@ -147,6 +178,7 @@ export function cartReducer<T extends CartActions>(
         },
         isUpdateSucceed: true,
         isUpdating: false,
+        error: undefined,
       };
     }
 
@@ -158,7 +190,7 @@ export function cartReducer<T extends CartActions>(
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: action.payload as CartError,
         isUpdateSucceed: false,
         isUpdating: false,
       };
