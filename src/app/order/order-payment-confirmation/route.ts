@@ -20,15 +20,13 @@ export async function GET(req: Request) {
     }),
   );
 
+  const appUrl = new URL(url.origin);
+
   if (result.status === "success") {
-    return Response.redirect(
-      `http://localhost:3000${routes.order.succeedPayment}`,
-      302,
-    );
+    appUrl.pathname = routes.order.succeedPayment;
+    return Response.redirect(appUrl, 302);
   }
 
-  return Response.redirect(
-    `http://localhost:3000${routes.order.failedPayment}`,
-    302,
-  );
+  appUrl.pathname = routes.order.failedPayment;
+  return Response.redirect(appUrl, 302);
 }
