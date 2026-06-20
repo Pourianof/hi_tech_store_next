@@ -18,6 +18,7 @@ export function AddToCartButton({
   return (
     <Column className="hidden md:group-hover:block relative">
       <OutlinedButton
+        disabled={!variation.inventory}
         onClick={() => {
           cartContext.actions.addProductToCart({ product, variation });
         }}

@@ -12,9 +12,10 @@ import { DiscountLabel } from "./discountLabel";
 import { ProductScore } from "./productScore";
 
 export function ProductItem({ product }: { product: ProductModel }) {
-  const mainVariation = product.mainVariation!;
+  const mainVariation =
+    product.availableMainVariation ?? product.mainVariation!;
 
-  const coverImage = mainVariation.getCandidateImageMedia();
+  const coverImage = mainVariation?.getCandidateImageMedia();
 
   return (
     <Card

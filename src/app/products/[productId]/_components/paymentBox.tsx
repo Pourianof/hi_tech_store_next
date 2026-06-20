@@ -13,7 +13,10 @@ import { useCart } from "@/ui/contexts/cart/cartContext";
 import { useActiveVariation } from "../_contexts/variationContext";
 import { Card } from "@/ui/theme/card";
 import { H5, H6 } from "@/ui/theme/text/headers";
-import { ProductVariationModel } from "@/core/models/productModel";
+import {
+  ProductModel,
+  ProductVariationModel,
+} from "@/core/models/productModel";
 import { priceFormatter } from "@/ui/helpers/priceFormatter";
 import { Body } from "@/ui/theme/text/body";
 import { Column } from "@/ui/layouts/column";
@@ -52,6 +55,7 @@ function MainPayment() {
   const product = useProduct();
   const { activeVariation } = useActiveVariation();
   // const displayMode = "display" in props && props.display !== false;
+  const isAvailable = activeVariation.inventory > 0;
 
   useEffect(() => {
     const sub = channel.consume({
@@ -122,6 +126,7 @@ function MainPayment() {
         </Column>
         <div className="flex md:flex-col gap-4 items-stretch ">
           <OutlinedButton
+            disabled={!isAvailable}
             onClick={() => {
               addProductToCart({
                 amount: 1,
@@ -132,7 +137,7 @@ function MainPayment() {
               });
             }}
           >
-            Add to cart
+            {isAvailable ? "Add to cart" : "Un-Available"}
           </OutlinedButton>
         </div>
       </Column>

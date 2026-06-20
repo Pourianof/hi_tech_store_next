@@ -86,6 +86,18 @@ export class ProductModel implements Product {
     );
   }
 
+  get isProductAvailable() {
+    return this.availableVariations.length > 0;
+  }
+
+  get availableMainVariation() {
+    return this.availableVariations.at(0);
+  }
+
+  get availableVariations() {
+    return this.variations.filter((pv) => pv.inventory > 0);
+  }
+
   getMainMedia() {
     const productVariation = this.mainVariation;
 
