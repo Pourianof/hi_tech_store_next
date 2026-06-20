@@ -11,8 +11,6 @@ export async function protectRoute(opts?: { callbackRoute?: string }) {
       searchParams.append("redirect", opts.callbackRoute);
     }
     const hasAny = !!searchParams.size;
-    redirect(
-      `${routes.auth.login}${hasAny ? "?" : ""}${searchParams.toString()}`
-    );
+    redirect(`${routes.login}${hasAny ? "?" : ""}${searchParams.toString()}`);
   }
 }

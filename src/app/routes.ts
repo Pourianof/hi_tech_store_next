@@ -10,12 +10,12 @@ export const routes = {
   },
   auth: {
     base: "/auth",
-    get login() {
-      return `${this.base}/login`;
-    },
-    get register() {
-      return `${this.base}/register`;
-    },
+  },
+  get login() {
+    return `/login`;
+  },
+  get register() {
+    return `/register`;
   },
   order: {
     base: "/order",
