@@ -125,8 +125,10 @@ function MainPayment() {
             onClick={() => {
               addProductToCart({
                 amount: 1,
-                product,
-                variation: activeVariation,
+                product: (product as ProductModel).toRawProduct(),
+                variation: (
+                  activeVariation as ProductVariationModel
+                ).toRawVariation(),
               });
             }}
           >
