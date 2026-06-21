@@ -21,6 +21,9 @@ import {
 } from "react-hook-form";
 import toast from "react-hot-toast";
 import { NoContextDefinedError } from "../errors/NoContextDefinedError";
+import { FilledButton } from "./AppButtons";
+import { Row } from "../layouts/row";
+import { CircularProgress } from "@mui/material";
 
 interface IFormSubmitterContext {
   submit: VoidFunction;
@@ -209,3 +212,18 @@ StatefulForm.Submitter = function Submitter({
 
   return render(handleSubmission, submitter.isSubmitting);
 };
+
+export function SubmitterButton(props: { children: ReactNode }) {
+  return (
+    <StatefulForm.Submitter
+      render={(submitter, isSubmitting) => (
+        <FilledButton onClick={submitter} disabled={isSubmitting}>
+          <Row className="gap-1" centerV>
+            {isSubmitting && <CircularProgress size={16} />}
+            {props.children}
+          </Row>
+        </FilledButton>
+      )}
+    />
+  );
+}

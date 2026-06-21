@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useFormContext } from "react-hook-form";
 import toast from "react-hot-toast";
 import { ErrorLabeledInput } from "../../ui/form/errorLabeledInput";
-import { StatefulForm } from "../../ui/form/statefulForm";
+import { StatefulForm, SubmitterButton } from "../../ui/form/statefulForm";
 
 export function LoginForm() {
   const router = useRouter();
@@ -45,12 +45,7 @@ export function LoginForm() {
         Forgot your password?
       </a>
       <RememberMeInput />
-      <button
-        type="submit"
-        className="hover:cursor-pointer bg-blue-500 text-white p-2 rounded w-full"
-      >
-        Login
-      </button>
+      <SubmitterButton>Login</SubmitterButton>
       <div>
         <h3>Or Log In with</h3>
         <div className="flex gap-2">
