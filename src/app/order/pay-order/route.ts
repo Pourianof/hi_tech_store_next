@@ -1,14 +1,16 @@
 import { registerOrderApi } from "@/api/orderApi";
-import { workWithSession } from "@/lib/helpers/sessionHelper";
+import { routes } from "@/app/routes";
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+  const url = new URL(request.url);
+  const { searchParams } = url;
   const discountCode = searchParams.get("discountCode");
 
+  const callbackUrl = new URL(url.origin);
+  callbackUrl.pathname = routes.order.orderPaymentConfirmation;
+
   // register order with pending status and recieve payment url
-  const result = await workWithSession(async (session) => {
-    return registerOrderApi(session.apiToken, discountCode);
-  });
+  const result = await registerOrderApi(callbackUrl.href, discountCode);
 
   if (result.status === "success") {
     return Response.redirect(result.data.paymentCallbackUrl, 302);

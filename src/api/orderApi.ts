@@ -1,10 +1,10 @@
-import { routes } from "@/app/routes";
 import { OrderWithProduct } from "@/core/models/order";
 import { generateResultModelFromResponse } from "./apiHelper";
 import { apiRoutes } from "./apiRoutes";
+import { fetchWrapper } from "./fetchWrapper";
 
 export async function registerOrderApi(
-  apiToken: string,
+  callbackUrl: string,
   discountCode?: string | null,
 ) {
   const searchParams = new URLSearchParams();
@@ -13,17 +13,11 @@ export async function registerOrderApi(
     searchParams.append("discountCode", discountCode);
   }
 
-  return generateResultModelFromResponse<{ paymentCallbackUrl: string }>(
-    await fetch(`${apiRoutes.orders.base}?${searchParams.toString()}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        paymentCallbackUrl: `http://localhost:3000${routes.order.orderPaymentConfirmation}`,
-      }),
-    }),
+  return fetchWrapper.post<{ paymentCallbackUrl: string }>(
+    `${apiRoutes.orders.base}?${searchParams.toString()}`,
+    {
+      paymentCallbackUrl: callbackUrl,
+    },
   );
 }
 
