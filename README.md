@@ -129,6 +129,7 @@ For production deployments (Docker, Kubernetes, etc.), it is recommended to prov
 | **ENCRYPTION_SALT**                    | Salt value used together with `ENCRYPTION_KEY` for encryption and decryption operations.                                                                                                                       |
 | **NEXT_PUBLIC_GOOGLE_CONSOLE_API_KEY** | Google Maps JavaScript API key used by the application to display maps and allow users to select a delivery location. This key must have the appropriate Google Maps APIs enabled in the Google Cloud Console. |
 | **NEXT_PUBLIC_API_SERVER_ADDRESS**     | Base URL of the backend API server that this frontend communicates with. Similar to `API_SERVER_ADDRESS`                                                                                                       |
+| **SUPABASE_STORAGE_URL**               | Supabase url which used to include in Next.js leggal url to use in Image component                                                                                                                             |
 
 ### Example
 
