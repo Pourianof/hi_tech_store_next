@@ -1,6 +1,5 @@
 "use client";
 
-import { isNormalUser } from "@/lib/helpers/roleHelpers";
 import Icon from "@/ui/icons/icon";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -12,7 +11,7 @@ export function DashboardLinkButton() {
 
   if (
     !session?.user.roles?.length ||
-    isNormalUser(session.user.roles) ||
+    !session.user.permissions?.length ||
     pathname.toLowerCase().includes("dashboard")
   ) {
     return null;
