@@ -5,4 +5,5 @@ export interface User {
   lastName: string;
   roles?: string[];
   avatarUrl?: string;
+  permissions?: string[];
 }

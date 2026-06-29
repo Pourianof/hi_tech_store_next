@@ -9,5 +9,6 @@ export interface LoginDto {
     lastName: string;
     roles: string[];
     avatarUrl?: string;
+    permissions: string[];
   };
 }
