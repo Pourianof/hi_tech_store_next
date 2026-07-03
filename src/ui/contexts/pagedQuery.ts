@@ -13,8 +13,8 @@ export function usePagedQuery<TOut>(
   key: string,
   initialData?: PagedResults<TOut>,
 ) {
-  const [page, setPage] = useState(initialData?.pageNumber ?? 1);
-  const [limit, setLimit] = useState(initialData?.pageSize ?? 10);
+  const [page, setPage] = useState(initialData?.pageNumber || 1);
+  const [limit, setLimit] = useState(initialData?.pageSize || 10);
 
   const query = useQuery<PagedResults<TOut>>({
     queryKey: [key, page, limit],
@@ -28,7 +28,10 @@ export function usePagedQuery<TOut>(
 
       return result.data;
     },
-    initialData: page == 1 ? initialData : undefined,
+    initialData:
+      page == initialData?.pageNumber && limit == initialData.pageSize
+        ? initialData
+        : undefined,
   });
 
   function nextPage() {
