@@ -4,6 +4,8 @@ import { FailedBox } from "@/app/_components/failedBox";
 import { DiscountType } from "@/core/Dtos/discountCodeDto";
 import { PagedResults } from "@/core/Dtos/pagedResult";
 import { DiscountCode } from "@/core/models/discount";
+import { getAllDiscountsAction } from "@/lib/server_actions/discountActions";
+import { usePagedQuery } from "@/ui/contexts/pagedQuery";
 import {
   CircularProgress,
   Table,
@@ -18,7 +20,6 @@ import {
 } from "@mui/material";
 import { useDiscountTypeContext } from "../../_components/context/discountTypeContext";
 import { DiscountCodeRow } from "./discountCodeRow";
-import { usePagedDiscountCodes } from "./hooks/usePagedDiscountCodes";
 
 export const QUERY_KEY_DISCOUNT_CODE_PAGED = "discount-codes";
 export const QUERY_KEY_DISCOUNT_PAGED = "discount";
@@ -34,12 +35,13 @@ export function DiscountListTable({
     page,
     nextPage,
     previousPage,
-  } = usePagedDiscountCodes({
-    initialData: pagedDiscounts,
-    key: isDiscountCodeForm
+  } = usePagedQuery(
+    getAllDiscountsAction,
+    isDiscountCodeForm
       ? QUERY_KEY_DISCOUNT_CODE_PAGED
       : QUERY_KEY_DISCOUNT_PAGED,
-  });
+    pagedDiscounts,
+  );
 
   const { category } = useDiscountTypeContext();
 
