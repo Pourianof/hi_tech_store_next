@@ -1,3 +1,5 @@
+import { UserPermissionDto } from "../Dtos/LoginDto";
+
 export interface User {
   email: string;
   name: string;
@@ -5,5 +7,5 @@ export interface User {
   lastName: string;
   roles?: string[];
   avatarUrl?: string;
-  permissions?: string[];
+  permissions?: UserPermissionDto[];
 }

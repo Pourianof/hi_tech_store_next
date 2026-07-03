@@ -9,6 +9,16 @@ export interface LoginDto {
     lastName: string;
     roles: string[];
     avatarUrl?: string;
-    permissions: string[];
+    permissions: UserPermissionDto[];
   };
+}
+
+export interface UserPermissionDto {
+  code: string;
+  scope: PermissionScope;
+}
+
+export enum PermissionScope {
+  Self,
+  All,
 }
