@@ -55,5 +55,5 @@ export function usePagedQuery<TOut>(
     setLimit(limit);
   }
 
-  return { query, page, nextPage, previousPage, changeLimit };
+  return { query, page, nextPage, previousPage, changeLimit, limit };
 }
