@@ -1,5 +1,9 @@
 "use server";
-import { updateUser, updateUserAvatarApi } from "@/api/userApi";
+import {
+  getUsersListApi,
+  updateUser,
+  updateUserAvatarApi,
+} from "@/api/userApi";
 import { workWithSession } from "../helpers/sessionHelper";
 import { UserUpdateDto } from "@/core/Dtos/UserDto";
 
@@ -8,3 +12,4 @@ export async function updateUserAction(userData: UserUpdateDto) {
 }
 
 export const updateUserAvatarAction = updateUserAvatarApi;
+export const getUsersListAction = getUsersListApi;

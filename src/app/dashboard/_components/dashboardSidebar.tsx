@@ -1,3 +1,5 @@
+import { authData } from "@/lib/auth/authHelper";
+import { PERMISSIONS } from "@/lib/auth/permissionHelper";
 import Icon, { IconNames } from "@/ui/icons/icon";
 import Link from "next/link";
 import { auth } from "../../../../auth";
@@ -13,6 +15,7 @@ export default async function DashboardSidebar() {
         <SidebarProductItem />
         <SidebarCategoryItem />
         <SidebarDiscountItem />
+        <UserManagementSidebarItem />
       </ul>
     </div>
   );
@@ -32,26 +35,73 @@ async function SidebarHeader() {
   );
 }
 
-function SidebarProductItem() {
+async function UserManagementSidebarItem() {
+  const session = await authData();
+  const hasGrantAccess = session?.user.hasPermission(PERMISSIONS.access.grant);
+
+  if (!hasGrantAccess) {
+    return;
+  }
+
+  return (
+    <SidebarItem
+      title="User management"
+      iconName="user"
+      subList={[{ title: "List users", path: "/dashboard/users" }]}
+    />
+  );
+}
+
+async function SidebarProductItem() {
+  const session = await authData();
+  const hasProductCreationPermission = session?.user.hasPermission(
+    PERMISSIONS.product.create,
+  );
+  const hasProductDeleteOrEditPermission = session?.user.hasAnyPermissions([
+    { code: PERMISSIONS.product.create },
+    { code: PERMISSIONS.product.edit },
+  ]);
+
+  if (!hasProductCreationPermission && !hasProductDeleteOrEditPermission) {
+    return null;
+  }
+
   return (
     <SidebarItem
       title="Products"
       iconName="product"
       subList={[
-        {
-          title: "Add new product",
-          path: "/dashboard/add-product",
-        },
-        {
-          title: "My products",
-          path: "/dashboard/my-products",
-        },
+        ...(hasProductCreationPermission
+          ? [
+              {
+                title: "Add new product",
+                path: "/dashboard/add-product",
+              },
+            ]
+          : []),
+        ...(hasProductDeleteOrEditPermission
+          ? [
+              {
+                title: "My products",
+                path: "/dashboard/my-products",
+              },
+            ]
+          : []),
       ]}
     />
   );
 }
 
-function SidebarCategoryItem() {
+async function SidebarCategoryItem() {
+  const session = await authData();
+  const hasProductPermission = session?.user.hasPermission(
+    PERMISSIONS.product.create,
+  );
+
+  if (!hasProductPermission) {
+    return null;
+  }
+
   return (
     <SidebarItem
       title="Categories"
@@ -61,7 +111,19 @@ function SidebarCategoryItem() {
   );
 }
 
-function SidebarDiscountItem() {
+async function SidebarDiscountItem() {
+  const session = await authData();
+  const hasDiscountPermission = session?.user.hasAnyPermissions([
+    { code: PERMISSIONS.discount.view },
+    { code: PERMISSIONS.discount.create },
+    { code: PERMISSIONS.discount.delete },
+    { code: PERMISSIONS.discount.edit },
+  ]);
+
+  if (!hasDiscountPermission) {
+    return null;
+  }
+
   return (
     <SidebarItem
       title="Discounts"

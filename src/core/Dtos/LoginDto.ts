@@ -19,6 +19,6 @@ export interface UserPermissionDto {
 }
 
 export enum PermissionScope {
-  Self,
   All,
+  Self,
 }
