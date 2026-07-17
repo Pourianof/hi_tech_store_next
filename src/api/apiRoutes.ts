@@ -25,6 +25,9 @@ export const apiRoutes = {
     get resetPassword() {
       return `${this.base}/reset-password`;
     },
+    updatePermissionsForUser(userId: string) {
+      return `${this.base}/${userId}/permissions`;
+    },
   },
   brands: {
     base: `${server}/brands`,
@@ -110,6 +113,9 @@ export const apiRoutes = {
     },
     get myProducts() {
       return `${this.me}/products`;
+    },
+    forUser(id: string) {
+      return `${this.base}/${id}`;
     },
   },
   discounts: {

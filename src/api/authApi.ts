@@ -1,13 +1,14 @@
-import { LoginDto } from "@/core/Dtos/LoginDto";
+import { LoginDto, UserPermissionDto } from "@/core/Dtos/LoginDto";
+import { PermissionUpdateDto } from "@/core/Dtos/permissionDto";
 import { RegisterDto } from "@/core/Dtos/RegisterDto";
 import { AuthenticationError } from "@/core/errors/AuthErrors/AuthenticationError";
 import { ProblemDetails } from "@/core/errors/AuthErrors/ProblemDetails";
-import { generateResultModelFromResponse } from "./apiHelper";
-import { apiRoutes } from "./apiRoutes";
 import {
   ChangePasswordDto,
   ResetPasswordDto,
 } from "@/core/schemas/passwordChangeSchema";
+import { generateResultModelFromResponse } from "./apiHelper";
+import { apiRoutes } from "./apiRoutes";
 import { fetchWrapper } from "./fetchWrapper";
 
 export async function signIn(
@@ -109,4 +110,14 @@ export async function forgotPasswordApi(forgotDto: {
 
 export async function resetPasswordApi(resetPasswordDto: ResetPasswordDto) {
   return fetchWrapper.post(apiRoutes.auth.resetPassword, resetPasswordDto);
+}
+
+export async function updateUserPermissionsApi(
+  userId: string,
+  updateDto: PermissionUpdateDto,
+) {
+  return fetchWrapper.patch<UserPermissionDto[]>(
+    apiRoutes.auth.updatePermissionsForUser(userId),
+    updateDto,
+  );
 }

@@ -4,13 +4,13 @@ export function isManager(roles: Roles) {
 }
 
 export function isAdmin(roles: Roles) {
-  return findRole(roles, "admin");
+  return !!findRole(roles, "admin");
 }
 
 export function isNormalUser(roles: Roles) {
-  return findRole(roles, "user");
+  return !!findRole(roles, "user");
 }
 
 function findRole(roles: Roles, targetRole: string) {
-  return roles?.find((r) => r?.toLowerCase() == targetRole);
+  return !!roles?.find((r) => r?.toLowerCase() == targetRole);
 }

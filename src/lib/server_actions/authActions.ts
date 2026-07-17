@@ -3,6 +3,7 @@ import {
   changePasswordApi,
   forgotPasswordApi,
   resetPasswordApi,
+  updateUserPermissionsApi,
 } from "@/api/authApi";
 
 export const changePasswordAction = changePasswordApi;
@@ -19,3 +20,4 @@ export async function forgotPasswordAction(email: string) {
 }
 
 export const resetPasswordAction = resetPasswordApi;
+export const updateUserPermissionsAction = updateUserPermissionsApi;

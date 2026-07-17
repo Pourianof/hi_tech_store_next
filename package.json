@@ -11,8 +11,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@casl/ability": "^7.0.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@hookform/resolvers": "^5.4.0",
     "@mapbox/mapbox-gl-geocoder": "^5.1.2",
     "@monaco-editor/react": "^4.7.0",
     "@mui/material": "^7.3.2",
