@@ -26,13 +26,40 @@ export function shouldRefreshToken(token: JWT): boolean {
 
 function updateCookie(sessionToken: string | null, cookieStore: CookieStore) {
   if (sessionToken) {
-    cookieStore.set(SESSION_COOKIE, sessionToken, {
-      httpOnly: true,
-      maxAge: SESSION_TIMEOUT,
-      secure: SESSION_SECURE,
-      sameSite: "lax",
-      path: "/",
-    });
+    for (const cookie of cookieStore.getAll()) {
+      if (cookie.name.startsWith(SESSION_COOKIE)) {
+        cookieStore.delete(cookie.name);
+      }
+    }
+
+    const size = 3933; // maximum size of each chunk
+    const regex = new RegExp(".{1," + size + "}", "g");
+
+    // split the string into an array of strings
+    const tokenChunks = sessionToken.match(regex);
+
+    if (tokenChunks) {
+      // chunk the token as auth.js do it
+      if (tokenChunks.length > 1) {
+        tokenChunks.forEach((tokenChunk, index) => {
+          cookieStore.set(`${SESSION_COOKIE}.${index}`, tokenChunk, {
+            httpOnly: true,
+            maxAge: SESSION_TIMEOUT,
+            secure: SESSION_SECURE,
+            sameSite: "lax",
+            path: "/",
+          });
+        });
+      } else {
+        cookieStore.set(SESSION_COOKIE, sessionToken, {
+          httpOnly: true,
+          maxAge: SESSION_TIMEOUT,
+          secure: SESSION_SECURE,
+          sameSite: "lax",
+          path: "/",
+        });
+      }
+    }
   } else {
     cookieStore.delete(SESSION_COOKIE);
   }

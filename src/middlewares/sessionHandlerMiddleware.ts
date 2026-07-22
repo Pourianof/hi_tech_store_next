@@ -11,6 +11,7 @@ export async function sessionHandlerMiddleware(
     secret: process.env.AUTH_SECRET,
     req: request,
     cookieName: SESSION_COOKIE,
+    salt: SESSION_COOKIE,
   });
 
   // No token - redirect to login
