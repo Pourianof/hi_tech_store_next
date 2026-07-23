@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.14.1",
     "@hookform/resolvers": "^5.4.0",
     "@mapbox/mapbox-gl-geocoder": "^5.1.2",
+    "@microsoft/signalr": "^10.0.0",
     "@monaco-editor/react": "^4.7.0",
     "@mui/material": "^7.3.2",
     "@mui/x-tree-view": "^8.11.2",
