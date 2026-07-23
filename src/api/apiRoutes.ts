@@ -118,6 +118,9 @@ export const apiRoutes = {
       return `${this.base}/${id}`;
     },
   },
+  notifications: {
+    me: `${server}/users/me/notifications`,
+  },
   discounts: {
     base: `${server}/discounts`,
     get codes() {

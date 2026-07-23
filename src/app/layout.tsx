@@ -16,6 +16,8 @@ import { SafelyHealthyApiRender } from "./_components/safelyHealthyApiRender";
 import { Wrapper } from "./_shared/wrapper";
 import "./_styles/global.css";
 import { CCQueryClientProvider } from "./dashboard/categories/_components/queryClientProvider";
+import { AuthStoreHandler } from "./_components/authStoreHandler";
+import { SignalRProvider } from "@/ui/signalR";
 
 const interFont = Inter({
   subsets: ["latin"],
@@ -34,8 +36,9 @@ export default async function MainLayout(props: {
       <body className={interFont.className}>
         <RhfDevToolsClient>
           <SafelyHealthyApiRender>
-            <>
-              <SessionProvider session={await auth()}>
+            <SessionProvider session={await auth()}>
+              <SignalRProvider>
+                <AuthStoreHandler />
                 <CCQueryClientProvider>
                   <CartHandlerProvider>
                     <CategorySSInjector>
@@ -50,10 +53,10 @@ export default async function MainLayout(props: {
                     <Footer />
                   </CartHandlerProvider>
                 </CCQueryClientProvider>
-              </SessionProvider>
-              <ModalContainer />
-              <Toaster position="bottom-center" gutter={10} />
-            </>
+              </SignalRProvider>
+            </SessionProvider>
+            <ModalContainer />
+            <Toaster position="bottom-center" gutter={10} />
           </SafelyHealthyApiRender>
         </RhfDevToolsClient>
       </body>

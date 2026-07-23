@@ -30,3 +30,7 @@ export async function getUsersListApi(params?: QueryParams) {
 export async function getUserById(id: string) {
   return fetchWrapper.get<User>(apiRoutes.users.forUser(id));
 }
+
+export async function getMyDataApi() {
+  return fetchWrapper.get<User>(apiRoutes.users.me);
+}

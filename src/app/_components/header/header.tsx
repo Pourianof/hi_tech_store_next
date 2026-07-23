@@ -15,6 +15,7 @@ import { SearchButton } from "./searchBox";
 import { UserLink } from "./userLink";
 import { Column } from "@/ui/layouts/column";
 import { MobileSearchInput } from "./mobileSearch";
+import { NotificationBadge } from "./notificationBadge";
 
 export async function Header() {
   return (
@@ -37,6 +38,7 @@ export function MobileHeaderTop() {
         <h4 className="font-semibold text-primary-blue-400">HiTech Store</h4>
       </Link>
       <div className="flex gap-4 items-center">
+        <NotificationBadge />
         <CartBadge />
         <UserLink />
       </div>
@@ -87,6 +89,7 @@ function LargeHeader() {
       </div>
       <Row className="gap-x-2" centerV>
         <SearchButton />
+        <NotificationBadge />
         <CartBadge />
         <UserLink />
       </Row>

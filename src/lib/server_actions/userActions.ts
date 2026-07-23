@@ -1,5 +1,6 @@
 "use server";
 import {
+  getMyDataApi,
   getUsersListApi,
   updateUser,
   updateUserAvatarApi,
@@ -13,3 +14,4 @@ export async function updateUserAction(userData: UserUpdateDto) {
 
 export const updateUserAvatarAction = updateUserAvatarApi;
 export const getUsersListAction = getUsersListApi;
+export const getMyDataAction = getMyDataApi;
