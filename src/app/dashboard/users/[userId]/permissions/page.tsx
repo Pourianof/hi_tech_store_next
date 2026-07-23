@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { PermissionFormHandler } from "./_components/permissionFormHandler";
 import { StaticDataInjector } from "@/ui/contexts/StaticDataInjector";
 
-export default async function Page({ params }: { params: Params }) {
+export default async function Page({ params }: { params: Promise<Params> }) {
   const { userId } = await params;
   const session = await authData();
 
