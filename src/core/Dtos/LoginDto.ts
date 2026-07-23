@@ -1,16 +1,10 @@
+import { User } from "../models/user";
+
 export interface LoginDto {
   token: string;
   refreshToken: string;
   expiresAt: number;
-  user: {
-    userName: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    roles: string[];
-    avatarUrl?: string;
-    permissions: UserPermissionDto[];
-  };
+  user: User;
 }
 
 export interface UserPermissionDto {
