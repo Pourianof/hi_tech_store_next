@@ -76,6 +76,7 @@ const ICONS = {
   arrow: dynamic(() => import("@/assets/tech_heim/arrow.svg")),
   video: dynamic(() => import("@/assets/tech_heim/video.svg")),
   play: dynamic(() => import("@/assets/tech_heim/play.svg")),
+  notification: dynamic(() => import("@/assets/tech_heim/notification.svg")),
   facebook: dynamic(() => import("@/assets/tech_heim/socials/Facebook.svg")),
   instagram: dynamic(() => import("@/assets/tech_heim/socials/Instagram.svg")),
   twitter: dynamic(() => import("@/assets/tech_heim/socials/twitter.svg")),
