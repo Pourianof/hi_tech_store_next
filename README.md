@@ -6,6 +6,12 @@ This project provides the client-side UI for the HiTech Store backend API and fo
 
 ---
 
+## Demo
+
+Visit demo: [Demo](https://hi-tech-store-next.vercel.app/)
+
+---
+
 ## Features
 
 - ⚡ Built with Next.js 15 App Router
