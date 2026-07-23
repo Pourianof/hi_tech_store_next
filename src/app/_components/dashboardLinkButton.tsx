@@ -1,5 +1,6 @@
 "use client";
 
+import { isAdmin, isManager } from "@/lib/helpers/roleHelpers";
 import Icon from "@/ui/icons/icon";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -10,8 +11,10 @@ export function DashboardLinkButton() {
   const pathname = usePathname();
 
   if (
-    !session?.user.roles?.length ||
-    !session.user.permissions?.length ||
+    (!(
+      isManager(session?.user.roles ?? []) || isAdmin(session?.user.roles ?? [])
+    ) &&
+      !session?.user.permissions?.length) ||
     pathname.toLowerCase().includes("dashboard")
   ) {
     return null;
