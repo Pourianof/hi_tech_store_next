@@ -10,4 +10,5 @@ export interface User {
   roles?: string[];
   avatarUrl?: string;
   permissions?: UserPermissionDto[];
+  dataAt: string;
 }
