@@ -11,7 +11,7 @@ import { OutlinedButton } from "@/ui/form/AppButtons";
 export default async function ProductListPage({
   searchParams,
 }: {
-  searchParams: Record<string, string>;
+  searchParams: Promise<Record<string, string>>;
 }) {
   const params = await searchParams;
   const productsResult = await productActions.getProducts({
@@ -26,7 +26,7 @@ export default async function ProductListPage({
 
   const productPage = productsResult.data;
   const products = productPage.items;
-  const page = searchParams.page ? +searchParams.page : 1;
+  const page = params.page ? +params.page : 1;
 
   return (
     <div>
@@ -54,14 +54,14 @@ export default async function ProductListPage({
           </div>
           <Row className="justify-between">
             {page > 1 ? (
-              <Link href={{ query: { ...searchParams, page: page - 1 } }}>
+              <Link href={{ query: { ...params, page: page - 1 } }}>
                 <OutlinedButton>Previous Page</OutlinedButton>
               </Link>
             ) : (
               <div></div>
             )}
             {productPage.hasNext ? (
-              <Link href={{ query: { ...searchParams, page: page + 1 } }}>
+              <Link href={{ query: { ...params, page: page + 1 } }}>
                 <OutlinedButton>Next Page</OutlinedButton>
               </Link>
             ) : (
