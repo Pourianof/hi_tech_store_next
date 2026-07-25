@@ -275,6 +275,8 @@ export function CartHandlerProvider({ children }: { children: ReactNode }) {
       const cartState = getFromLocalStorage(CART_KEY) as CartState;
       if (cartState && cartState.cart) {
         dispatch({ action: "Initialize", payload: cartState.cart });
+      } else {
+        dispatch({ action: "Loading", payload: false });
       }
       return;
     }
