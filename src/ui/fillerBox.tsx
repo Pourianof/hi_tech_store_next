@@ -46,7 +46,6 @@ export function FillerBox({ children }: { children: ReactNode }) {
     // for example some css get delayed and layout is different than we expect after css applied
     function safeCalculateOnInitialRender() {
       setTimeout(() => {
-        console.log("CALCULATE DELAY");
         calculateWidth();
       }, 10000);
     }

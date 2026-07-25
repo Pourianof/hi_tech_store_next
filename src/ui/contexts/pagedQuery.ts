@@ -55,11 +55,6 @@ export function usePagedQuery<TOut, TQuery extends object = object>(
     queryKey: [key, page, limit, filtersKey],
     staleTime: 60 * 60 * 1000,
     queryFn: async () => {
-      console.log({
-        page,
-        limit,
-        ...filters,
-      });
       const result = await queryFn({
         page,
         limit,

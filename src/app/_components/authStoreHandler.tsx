@@ -18,9 +18,7 @@ export function AuthStoreHandler() {
 
   const updateUserData = useCallback(
     function updateUserData() {
-      console.log("UPDATE USER DATA");
       getMyDataAction().then((result) => {
-        console.log(result.data);
         if (result.status == "success") {
           update({
             user: result.data,

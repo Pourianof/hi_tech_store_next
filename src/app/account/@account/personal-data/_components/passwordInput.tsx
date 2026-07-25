@@ -210,7 +210,7 @@ function ResetEmailForm({
                     </Column>,
                   );
                 }
-                console.log(result);
+
                 setIsResetting(false);
               }}
             >
