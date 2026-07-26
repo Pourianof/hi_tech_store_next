@@ -1,24 +1,19 @@
+import { FailedBox } from "@/app/_components/failedBox";
 import { getUserOrdersAction } from "@/lib/server_actions/orderActions";
 import { PageTitle } from "../../_components/pageTitle";
-import { OrderRow } from "./_components/orderRow";
-import { Column } from "@/ui/layouts/column";
+import { OrderList } from "./_components/orderList";
 
 export default async function DashboardOrdersPage() {
-  const ordersResult = await getUserOrdersAction();
+  const ordersResult = await getUserOrdersAction({ page: 1, limit: 10 });
 
   if (ordersResult.status == "failed") {
     return (
-      <div>
-        <h1>There is some problem with fetching orders</h1>
-        <div>
-          <h2>{ordersResult.data.title}</h2>
-          {!!ordersResult.data.detail && <p>{ordersResult.data.detail}</p>}
-        </div>
-      </div>
+      <FailedBox
+        title={`Fail to load orders - ${ordersResult.data.title}`}
+        message={ordersResult.data.detail ?? ""}
+      />
     );
   }
-
-  const orders = ordersResult.data;
 
   return (
     <div>
@@ -26,11 +21,7 @@ export default async function DashboardOrdersPage() {
         title="Order History"
         description="Track, return or purchase items"
       />
-      <Column className="gap-24px">
-        {orders.map((order) => (
-          <OrderRow key={order.orderId} order={order} />
-        ))}
-      </Column>
+      <OrderList initialOrders={ordersResult.data} />
     </div>
   );
 }

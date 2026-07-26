@@ -1,5 +1,6 @@
+import { PagedResults } from "@/core/Dtos/pagedResult";
+import { QueryParams } from "@/core/Dtos/QueryParams";
 import { OrderWithProduct } from "@/core/models/order";
-import { generateResultModelFromResponse } from "./apiHelper";
 import { apiRoutes } from "./apiRoutes";
 import { fetchWrapper } from "./fetchWrapper";
 
@@ -21,14 +22,9 @@ export async function registerOrderApi(
   );
 }
 
-export async function getUserOrders(apiToken: string) {
-  return generateResultModelFromResponse<OrderWithProduct[]>(
-    await fetch(apiRoutes.orders.base, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${apiToken}`,
-        "Content-Type": "application/json",
-      },
-    }),
+export async function getUserOrders(searchParams: QueryParams) {
+  return fetchWrapper.get<PagedResults<OrderWithProduct>>(
+    apiRoutes.orders.base,
+    searchParams,
   );
 }

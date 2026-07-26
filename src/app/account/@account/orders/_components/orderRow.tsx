@@ -6,15 +6,16 @@ import {
 } from "@/core/models/order";
 import { ProductVariation } from "@/core/models/product";
 import { ProductVariationModel } from "@/core/models/productModel";
-import { formatDateToYYYYDDMM } from "@/lib/helpers/dateHelper";
 import { CustomImage } from "@/ui/image/customImage";
 import { Column } from "@/ui/layouts/column";
 import { Row } from "@/ui/layouts/row";
 import { RowOnDesktopColumnOnMobile } from "@/ui/layouts/rownOnDesktopColumnOnMobile";
 import { Body } from "@/ui/theme/text/body";
+import { Caption } from "@/ui/theme/text/caption";
 import { H6 } from "@/ui/theme/text/headers";
 import Link from "next/link";
 import { ReactNode } from "react";
+import { DateObject } from "react-multi-date-picker";
 
 export function OrderRow({ order }: { order: OrderWithProduct }) {
   const stat = order.items.reduce(
@@ -28,15 +29,21 @@ export function OrderRow({ order }: { order: OrderWithProduct }) {
     },
   );
 
-  const createdDate = new Date(order.createdAt);
+  const createdDate = new DateObject(new Date(order.createdAt));
   const maxDisplayItemsCount = 5;
+
   return (
     <Column className="gap-16px">
       <RowOnDesktopColumnOnMobile className="desktop:bg-gray-neutral-f6 text-center justify-between p-16px px-5">
         <OrderInfoSlot title={"Order code"} subtitle={`#${order.orderId}`} />
         <OrderInfoSlot
           title={"Placed on"}
-          subtitle={formatDateToYYYYDDMM(createdDate)}
+          subtitle={
+            <Column className="gap-1">
+              <Body size="md">{createdDate.format("YYYY/MM/DD")}</Body>
+              <Caption size="md">{createdDate.format("HH:mm:ss")}</Caption>
+            </Column>
+          }
         />
         <OrderInfoSlot
           title={"Total"}

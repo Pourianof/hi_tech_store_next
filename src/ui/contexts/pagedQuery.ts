@@ -60,7 +60,6 @@ export function usePagedQuery<TOut, TQuery extends object = object>(
         limit,
         ...filters,
       } as QueryParams<TQuery>);
-
       if (result.status == "failed") {
         throw result.data;
       }
