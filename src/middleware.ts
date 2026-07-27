@@ -17,7 +17,6 @@ export async function middleware(request: NextRequest) {
   // Skip static and auth paths
   if (
     request.nextUrl.pathname.startsWith("/_next") ||
-    request.nextUrl.pathname.startsWith("/api/auth") ||
     request.nextUrl.pathname === "/favicon.ico" ||
     request.nextUrl.pathname === "/login" // Add login page to public paths
   ) {
