@@ -24,8 +24,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const mainResponse = new NextResponse();
-  const response = await sessionHandlerMiddleware(request, mainResponse);
+  const response = await sessionHandlerMiddleware(request);
 
   return response;
 }
